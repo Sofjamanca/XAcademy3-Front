@@ -1,1 +1,70 @@
-<p>login works!</p>
+<div class="container_modal">
+    <button mat-button class="close-button-modal" (click)="closeModal()">
+        <mat-icon>close</mat-icon>
+    </button>
+    <div class="container_img_modal">
+        <img [src]="imageUrl" class="img_modal" alt="imagen">
+    </div>
+
+    <mat-dialog-content>
+
+        <div class="title_modal">
+            <div class="container_icon">
+                <img [src]="iconUrl" class="icon-modal" alt="logo">
+            </div>
+            <span class="present">
+                <h2 mat-dialog-title>{{ data.title }}</h2>
+                <p>Impulsa tu proyecto hacia el éxito. Inicia sesión para acceder a tu panel.</p>
+            </span>
+        </div>
+    </mat-dialog-content>
+
+
+
+    <form [formGroup]="loginForm">
+        <div mat-dialog-content class="content">
+            <div class="group_form">
+                <span class="container-label">
+                    <mat-icon>mail</mat-icon>
+                    <label for="">Email</label>
+                </span>
+                <mat-form-field class="example-full-width">
+                    <input type="email" class="input" matInput formControlName="email"
+                        placeholder="Ex. pat@example.com">
+                    <ng-container
+                        *ngIf="loginForm.controls['email'].hasError('email') && !loginForm.controls['email'].hasError('required')">
+                        <mat-error>Please enter a valid email address</mat-error>
+                    </ng-container>
+                </mat-form-field>
+            </div>
+
+            <div class="group_form">
+                <span class="container-label">
+                    <mat-icon>key</mat-icon>
+                    <label for="">Password</label>
+                </span>
+                <mat-form-field class="example-full-width">
+                    <input type="password" class="input" matInput formControlName="password">
+                    <ng-container
+                        *ngIf="loginForm.controls['password'].hasError('password') && !loginForm.controls['password'].hasError('required')">
+                        <mat-error>Please enter a valid password</mat-error>
+                    </ng-container>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="footer_modal">
+            <mat-dialog-actions align-items="end">
+                <app-custom-button
+                text="INICIAR SESIÓN"
+                class="customBtnLogin"
+                (action)="onSubmit()"
+            ></app-custom-button>
+
+            <div class="buttom_group"></div>
+
+        </mat-dialog-actions>
+        </div>
+        
+    </form>
+
+</div>

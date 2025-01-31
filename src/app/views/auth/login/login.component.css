@@ -1,0 +1,32 @@
+.container_icon{
+    width:50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+.title_modal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.icon-modal{
+    width:50px;
+    height: 50px;
+}
+
+.content{
+    border:1px solid red;
+}
+.container-label{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+}
+.footer_modal{
+    border:1px solid red;
+    width:100%;
+    display: flex;
+    justify-content: center;
+}

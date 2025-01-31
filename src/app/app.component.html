@@ -161,7 +161,7 @@
   .social-links a:hover svg path {
     fill: var(--gray-900);
   }
-
+  
   @media screen and (max-width: 650px) {
     .content {
       flex-direction: column;
@@ -176,7 +176,20 @@
     }
   }
 </style>
+<header>
+  <app-custom-button
+    text="Login"
+    class="customBtn"
+    (action)="openLogin()"
+  ></app-custom-button>
 
+  <!-- <app-custom-button
+    text="Registro"
+    class="customBtnLogin"
+    (action)="openRegister()"
+  ></app-custom-button> -->
+
+ 
 <main class="main">
   <div class="content">
     <div class="left-side">
