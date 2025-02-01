@@ -26,6 +26,9 @@ import { CustomButtonComponent } from "../../../shared/components/custom-button/
 export class LoginComponent implements OnInit{
   imageUrl='img/364257859_998131068038033_4290420701209662657_n.jpg';
   iconUrl='img/logo_noc.png';
+  iconSocialG='img/googlechrome_103832.webp';
+  iconSocialF='img/facebook_logo_icon_147291.webp';
+  iconSocialA='img/mac_os_application_apple_3783.webp';
   loginForm !: FormGroup;
  
  constructor(
@@ -34,6 +37,7 @@ export class LoginComponent implements OnInit{
   private dialogRef: MatDialogRef<LoginComponent>,
   @Inject(MAT_DIALOG_DATA) public data: any
 ) { }
+
 
 ngOnInit(): void {
   this.loginForm = new FormGroup({

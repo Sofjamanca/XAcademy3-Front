@@ -1,6 +1,6 @@
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
+import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +8,21 @@ import {MatDialog} from '@angular/material/dialog';
 export class ModalService { 
   constructor(private dialog: MatDialog) {}
  
-  openModal(component: ComponentType<any>, data?: any) {
-    return this.dialog.open(component, {
-      width: '90%', //tamaño de la ventana
-      height:'auto',//altura de la ventana
-      data: data, // esto es para pasar los datos
-      disableClose: true,
-    });
+  openModal<T>(
+    component: ComponentType<T>, 
+    data: any = {}, 
+    config: Partial<MatDialogConfig> = {}
+  ): MatDialogRef<T> {
+    const defaultConfig: MatDialogConfig = {
+      maxWidth: '90vw',
+      width:'100%', 
+      height: 'auto',
+      maxHeight: '100vh',
+      disableClose: true, // Evitar cierre accidental
+      data:data
+    };
+
+    return this.dialog.open(component, { ...defaultConfig, ...config }); // Merge de opciones
   }
 
   closeModal() {
