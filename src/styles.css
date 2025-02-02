@@ -21,112 +21,9 @@ body{
 }
 
 /*-------------------------  general style   -------------------------*/
-.mdc-text-field--filled:not(.mdc-text-field--disabled) {/*Input*/
-        width: 100%;
-        height: 2rem;
-        border-radius: 8px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input{
-        font-size: .75rem;/*tamaño de la letra del input*/
-    }
-.container_modal{
-    width: auto;
-    height: 780px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    
-}
-.content_modal{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.close-button-modal{
-    position: absolute;
-    top: 20px; 
-    right: 20px; 
-    background-color: transparent; 
-    border: none;
-    cursor: pointer;
-    border-radius: 8px;
-    padding: 3px;
-    color: var(--color_font_light);
-}
-.close-button-modal:hover{
-    background: var(--color_font_light);
-    color: var(--color_font_primary);
-}
-.container_img_modal{
-    width: 100%;
-    height:230px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.img_modal{
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-}
-.present{
-    width: 100%;
-    height: 80px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
-    
-}
-.present >h2{
-    text-align: center;
-    font-size: 1.2rem;
-    color:var(--color_font_primary);
-    line-height: 90%;
-}
-.present > p{
-    color:var(--color_placeholder);
-    text-align: center;
-    font-size: .75rem;
-    line-height: normal;
-    margin: 0;
-}
-.msj_pass{
-    color:var(--color_btn_primary);
-    text-align: center;
-    font-size: .75rem;
-}
-.footer_modal > p,
-.msj_reg{
-    
-    text-align: center;
-    font-size: .75rem;
-}
-.msj_reg{
-    color:var(--color_btn_primary);
-}
-.footer_modal > p{
-    color: var(--color_font_primary);
-}
-.group_form{
-    display: flex;
-    flex-direction: column;
-}
-.example-full-width{
-    width: 250px;
-    height: 50%;
-    border-radius:10px ;
-    
-}
 
+
+/*estilo de botones*/
 .customBtn{
     width: 108px;
     height: 20px;
@@ -134,12 +31,19 @@ body{
     padding: 6px 0px;
     justify-content: center;
     align-items: center;
-}
-.customBtn{
     border:1px solid var(--color_btn_primary);
     color: var(--color_btn_primary);
 }
-
+.customBtn2{
+    width: 108px;
+    height: 20px;
+    display: flex;
+    padding: 6px 0px;
+    justify-content: center;
+    align-items: center;
+    background: var(--color_btn_accent);
+    color: var(--color_font_light);
+}
 .customBtn:hover{
     background:var( --color_btn_primary_hover);
     color: var(--color_font_light);
@@ -157,69 +61,4 @@ body{
 }
 
 
-/* @media (min-width: 768px) and (max-width: 991px) {} */
 
-@media (min-width: 1025px) { 
-    .mdc-text-field--filled:not(.mdc-text-field--disabled) {/*Input*/
-        width: 400px;
-        height: 2.5rem;
-    }
-    .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-text-field__input{
-        font-size: .75rem;/*tamaño de la letra del input*/
-    }
-    .container_modal{
-        width: auto;
-       padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .body_modal{
-        width:100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-    }
-    .container_img_modal{
-        width:50%;
-        height:550px;
-        border-top-left-radius:10px;
-        border-bottom-right-radius: 20px;
-    }
-    .img_modal{
-        border-top-left-radius:10px;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-top-left-radius:10px;
-        border-bottom-left-radius: 10px;
-    }
-    .content_modal{
-        width:100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-    }
-    .form_modal{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-   .group_form{
-    width: 400px;
-
-   }
-    .close-button-modal{
-        font-size: 2rem;
-        color:var(--color_font_primary);
-    }
-    .close-button-modal:hover{
-        background: var(--color_font_primary);
-        color: var(--color_font_light);
-    }
-
-    
-}
-   

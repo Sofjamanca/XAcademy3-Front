@@ -1,0 +1,67 @@
+<div class="container_modal">
+    <button mat-button class="close-button-modal" (click)="closeModal()">
+        <mat-icon>close</mat-icon>
+    </button>
+    <div class="content_modal">
+        <div class="container_img_modal">
+            <img [src]="imageUrl" class="img_modal" alt="imagen">
+        </div>
+
+        <div class="form_modal">
+            <mat-dialog-content>
+                <div class="title_modal">
+                    <div *ngIf="showIcon" class="container_icon">
+                        <img [src]="iconUrl" class="icon-modal" alt="logo">
+                    </div>
+                    <span class="present">
+                        <h2 mat-dialog-title>{{ title }}</h2>
+                        <p>{{ subtitle }}</p>
+                    </span>
+                </div>
+            </mat-dialog-content>
+
+            <form [formGroup]="authForm" novalidate>
+                <div mat-dialog-content class="content">
+                    <ng-container *ngFor="let field of formFields">
+                        <div class="group_form">
+                            <span class="container-label">
+                                <mat-icon>{{ field.icon }}</mat-icon>
+                                <label>{{ field.label }}</label>
+                            </span>
+                            <mat-form-field class="custom-field" appearance="outline">
+                                <input [type]="field.type" class="custom-input" matInput [formControlName]="field.controlName">
+                                <ng-container *ngIf="authForm.controls[field.controlName].invalid && authForm.controls[field.controlName].touched">
+                                    <mat-error>{{ field.errorMessage }}</mat-error>
+                                </ng-container>
+                            </mat-form-field>
+                                                     
+                        </div>
+                           
+                    </ng-container>
+                </div>
+
+                <div class="footer_modal">
+                    <mat-dialog-actions align-items="end">
+                        <app-custom-button [text]="buttonText" [className]="'customBtnLogin'" (action)="onSubmit()"></app-custom-button>
+                    </mat-dialog-actions>
+
+                    <div class="buttom_group">
+                        <button mat-button class="btn_social" title="Google">
+                            <img [src]="iconSocialG" alt="google">
+                        </button>
+                        <button mat-button class="btn_social" title="Facebook">
+                            <img [src]="iconSocialF" alt="Facebook">
+                        </button>
+                        <button mat-button class="btn_social" title="Apple">
+                            <img [src]="iconSocialA" alt="Apple">
+                        </button>
+                    </div>
+
+                    <p>{{ footerText }}
+                        <a href="" class="msj_reg">{{ footerLink }}</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

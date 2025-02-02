@@ -6,6 +6,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { CustomButtonComponent } from "./shared/components/custom-button/custom-button.component";
 import { ModalService } from './core/services/modal/modal.service';
 import { LoginComponent } from './views/auth/login/login.component';
+import { RegisterComponent } from './views/auth/register/register.component';
 
 
 @Component({
@@ -27,6 +28,9 @@ export class AppComponent {
 
   openLogin() {
     this.modalService.openModal(LoginComponent, { title: 'Explora, Aprende, Crece' });
+  }
+  openRegister() {
+    this.modalService.openModal(RegisterComponent, {title: 'Registrarse' });
   }
 
   
