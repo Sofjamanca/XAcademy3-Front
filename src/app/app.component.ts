@@ -7,6 +7,8 @@ import { CustomButtonComponent } from "./shared/components/custom-button/custom-
 import { ModalService } from './core/services/modal/modal.service';
 import { LoginComponent } from './views/auth/login/login.component';
 import { RegisterComponent } from './views/auth/register/register.component';
+import { RecoverPasswordComponent } from './views/auth/recover-password/recover-password.component';
+
 
 
 @Component({
@@ -33,5 +35,7 @@ export class AppComponent {
     this.modalService.openModal(RegisterComponent, {title: 'Registrarse' });
   }
 
-  
+  openRecover() {
+    this.modalService.openModal(RecoverPasswordComponent, {title: 'Recuperar contraseña' });
+  }
 }

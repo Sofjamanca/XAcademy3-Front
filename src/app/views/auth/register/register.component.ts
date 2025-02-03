@@ -10,9 +10,12 @@ import { AuthModalComponent } from "../../../shared/components/auth-modal/auth-m
 })
 export class RegisterComponent{
   registerFields = [
-    { label: 'Email', controlName: 'email', type: 'email', icon: 'mail', errorMessage: 'Please enter a valid email' },
-    { label: 'Contraseña', controlName: 'password', type: 'password', icon: 'key', errorMessage: 'Please enter a valid password' },
-    { label: 'Repetir contraseña', controlName: 'password1', type: 'password', icon: 'key', errorMessage: 'Please confirm your password' }
+    { label: 'Nombre', controlName: 'name', type: 'text', icon: '', errorMessage: 'Please enter a valid' },
+    { label: 'Apellido', controlName: 'lastname', type: 'tex', icon: '', errorMessage: 'Please enter a valid password' },
+    { label: 'Email', controlName: 'email', type: 'email', icon: '', errorMessage: 'Please enter a valid email' },
+    { label: 'Contraseña', controlName: 'password', type: 'password', icon: '', errorMessage: 'Please confirm your password' }
   ];
+
+  
 }
 

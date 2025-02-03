@@ -2,6 +2,7 @@
     <button mat-button class="close-button-modal" (click)="closeModal()">
         <mat-icon>close</mat-icon>
     </button>
+
     <div class="content_modal">
         <div class="container_img_modal">
             <img [src]="imageUrl" class="img_modal" alt="imagen">
@@ -14,7 +15,7 @@
                         <img [src]="iconUrl" class="icon-modal" alt="logo">
                     </div>
                     <span class="present">
-                        <h2 mat-dialog-title>{{ title }}</h2>
+                        <h2 mat-dialog-title *ngIf="title">{{ title }}</h2>
                         <p>{{ subtitle }}</p>
                     </span>
                 </div>
@@ -25,7 +26,7 @@
                     <ng-container *ngFor="let field of formFields">
                         <div class="group_form">
                             <span class="container-label">
-                                <mat-icon>{{ field.icon }}</mat-icon>
+                                <mat-icon *ngIf="showIcons">{{ field.icon }}</mat-icon>
                                 <label>{{ field.label }}</label>
                             </span>
                             <mat-form-field class="custom-field" appearance="outline">
@@ -45,7 +46,7 @@
                         <app-custom-button [text]="buttonText" [className]="'customBtnLogin'" (action)="onSubmit()"></app-custom-button>
                     </mat-dialog-actions>
 
-                    <div class="buttom_group">
+                    <div *ngIf="showSocialButtons" class="buttom_group">
                         <button mat-button class="btn_social" title="Google">
                             <img [src]="iconSocialG" alt="google">
                         </button>
@@ -57,8 +58,9 @@
                         </button>
                     </div>
 
+
                     <p>{{ footerText }}
-                        <a href="" class="msj_reg">{{ footerLink }}</a>
+                        <a href="" class="msj_reg" >{{ footerLink }}</a>
                     </p>
                 </div>
             </form>
