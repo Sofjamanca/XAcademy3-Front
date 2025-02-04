@@ -1,1 +1,24 @@
-<p>header works!</p>
+<header class="header">
+  <mat-toolbar class="toolbar">
+    <img [src]="imgLogo" class="logo" alt="Logo">
+
+    <span class="spacer"></span>
+
+    <shared-search-input class="search-bar"></shared-search-input>
+
+    <span class="spacer"></span>
+
+    <div class="menu-container" [ngClass]="{'active': menuOpen}">
+
+      <shared-header-menu [menuItems]="menuItems"></shared-header-menu>
+      <shared-log-btn (click)="openLogin()">Iniciar Sesión</shared-log-btn>
+      <shared-register-btn (click)="openRegister()">Registrarse</shared-register-btn>
+
+    </div>
+
+    <button class="menu-toggle" (click)="toggleMenu()">
+      <i class="bi bi-list"></i>
+    </button>
+
+  </mat-toolbar>
+</header>

@@ -1,1 +1,71 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root{
+    /*------------------------ style font    --------------------------*/
+    --color_font_primary:  rgb(0, 0, 0);
+    --color_placeholder: rgba(0, 0, 0, 0.569);
+    --color_font_light:rgb(255, 255, 255);
+    /*------------------------ style buttom   --------------------------*/
+    --color_btn_primary: rgb(0, 92, 187);
+    --color_btn_primary_hover: rgb(0, 59, 117);
+    --color_btn_accent: rgb(245, 104, 13);
+    --color_btn_accent_hover: rgb(185, 79, 8);
+
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    min-height: 100vh;
+    position: relative;
+    font-family:  "Roboto", serif;
+}
+
+/*-------------------------  general style   -------------------------*/
+
+
+/*estilo de botones*/
+.customBtn{
+    width: 108px;
+    height: 20px;
+    display: flex;
+    padding: 6px 0px;
+    justify-content: center;
+    align-items: center;
+    border:1px solid var(--color_btn_primary);
+    color: var(--color_btn_primary);
+}
+.customBtn2{
+    width: 108px;
+    height: 20px;
+    display: flex;
+    padding: 6px 0px;
+    justify-content: center;
+    align-items: center;
+    background: var(--color_btn_accent);
+    color: var(--color_font_light);
+}
+.customBtn:hover{
+    background:var( --color_btn_primary_hover);
+    color: var(--color_font_light);
+}
+
+.customBtnLogin {
+    width: 200px;
+    height: 35px;
+    padding: 20px 0px !important;
+    border-radius: 8px !important;
+    justify-content: center;
+    align-items: center;
+    background: var(--color_btn_primary) !important;
+    color: white !important;
+}
+
+
+
