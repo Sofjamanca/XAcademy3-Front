@@ -6,5 +6,10 @@
 <!-- Courses -->
 <!-- Testimonials -->
 <!-- Big footer -->
+<div class="card-container">
+  @for (curso of cursos; track curso.title) {
+      <app-card [title]="curso.title" [content]="curso.content" [actions]="curso.actions"></app-card>
+  }
+</div>
 
 <shared-footer></shared-footer>
