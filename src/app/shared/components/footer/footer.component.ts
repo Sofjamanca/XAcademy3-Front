@@ -11,7 +11,7 @@ import 'swiper/css/pagination';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-footer',
+  selector: 'shared-footer',
   standalone: true,
   imports: [CommonModule, MatIconModule],
   templateUrl: './footer.component.html',
