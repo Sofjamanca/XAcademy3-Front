@@ -1,0 +1,17 @@
+<mat-card class="card">
+    <mat-card-title class="card-title">
+        {{title}}   
+    </mat-card-title>
+   
+    <mat-card-content>
+        <p>
+            {{content}}
+        </p>
+    </mat-card-content>
+    
+    <mat-card-actions class="card-actions">
+        @for (action of actions; track action) {
+            <button mat-button class="card-button" (click)="onActionClick(action)">{{action}}</button>
+        }
+    </mat-card-actions>
+</mat-card>

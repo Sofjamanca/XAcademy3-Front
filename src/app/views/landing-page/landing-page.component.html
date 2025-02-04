@@ -1,4 +1,10 @@
 
-<landing-page-hero></landing-page-hero>
+<p>landing-page works!</p>
+
+<div class="card-container">
+    @for (curso of cursos; track curso.title) {
+        <app-card [title]="curso.title" [content]="curso.content" [actions]="curso.actions"></app-card>
+    }
+</div>
 
 
