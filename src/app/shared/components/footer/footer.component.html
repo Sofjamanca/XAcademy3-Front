@@ -1,1 +1,30 @@
-<p>footer works!</p>
+<div class="footer-container">
+  <h2 class="footer-title">Brindamos herramientas para alcanzar el éxito, y ellos nos acompañan:</h2>
+
+  <div class="swiper-container" #swiperContainer>
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" *ngFor="let logo of logos">
+        <img [src]="logo.src" [alt]="logo" class="logo-slide"/>
+      </div>
+    </div>
+
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+
+    <div class="swiper-pagination"></div>
+  </div>
+
+  <div class="footer-contact">
+    <h3 class="contact-title">Contáctanos</h3>
+    <div class="contact-info">
+      <p><mat-icon class="icon">place</mat-icon> Dirección: Mitre 757, Cruz del Eje</p>
+      <p><mat-icon class="icon">mail</mat-icon> Email: &#64;incubadoradelnoc</p>
+      <p><mat-icon class="icon">call</mat-icon> Teléfono: +3549-419156</p>
+    </div>
+
+    <div class="social-icons">
+      <a href="https://web.facebook.com/p/Incubadora-del-NOC-100063640024874/" target="_blank"><img src="https://cdn.pixabay.com/photo/2021/06/15/12/51/facebook-6338508_1280.png" class="social-img" alt="facebook"></a>
+      <a href="https://www.instagram.com/incubadoradelnoc/" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="social-img" alt="Instagram"></a>
+    </div>
+  </div>
+</div>
