@@ -5,30 +5,45 @@
     border-radius: 10px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
-.card-title {
+mat-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
+mat-card-title {
     font-size: 24px;
     font-weight: bold;
-
-}
-
-.card-content {
-    font-size: 16px;
-    color: #666;
-    margin-top: 10px;
-    text-align: justify;
+    padding: 16px;
+    height: 60px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    width: 100%;
 }
 
+mat-card-content {
+    flex-grow: 1;
+    overflow: hidden;
+    padding: 16px;
+    height: 100px; 
+}
 
-.card-actions { 
+mat-card-content p {
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+
+mat-card-actions {
+    padding: 16px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    margin-top: auto; 
 }
 
 .card-button {
