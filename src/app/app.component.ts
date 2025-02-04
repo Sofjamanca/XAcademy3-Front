@@ -8,12 +8,6 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { CommonModule } from '@angular/common';  
 
-import { CustomButtonComponent } from "./shared/components/custom-button/custom-button.component";
-import { ModalService } from './core/services/modal/modal.service';
-import { LoginComponent } from './views/auth/login/login.component';
-import { RegisterComponent } from './views/auth/register/register.component';
-import { LandingPageComponent } from './views/landing-page/landing-page.component';
-import { CardComponent } from './shared/components/card/card.component';
 
 
 import { HeaderComponent } from './shared/components/header/header.component';
@@ -22,19 +16,13 @@ import { LandingPageComponent } from "./views/landing-page/landing-page.componen
 @Component({
   selector: 'app-root',
   standalone: true,
-
-
   imports: [
     HeaderComponent,LandingPageComponent,
     RouterOutlet, MatButtonModule, MatDividerModule, MatGridListModule
     ,MatIconModule, MatToolbarModule, FooterComponent, CommonModule
   ],
-
   templateUrl: './app.component.html',
-
-
   styleUrl: './app.component.css'
-
 })
 export class AppComponent {
   title = 'XAcademy3-Front';
