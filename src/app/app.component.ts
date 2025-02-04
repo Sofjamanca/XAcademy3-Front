@@ -1,7 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { CommonModule } from '@angular/common';  
 
 import { CustomButtonComponent } from "./shared/components/custom-button/custom-button.component";
 import { ModalService } from './core/services/modal/modal.service';
@@ -10,19 +15,21 @@ import { RegisterComponent } from './views/auth/register/register.component';
 import { LandingPageComponent } from './views/landing-page/landing-page.component';
 import { CardComponent } from './shared/components/card/card.component';
 
+
+import { HeaderComponent } from './shared/components/header/header.component';
+import { LandingPageComponent } from "./views/landing-page/landing-page.component";
+
 @Component({
   selector: 'app-root',
   standalone: true,
 
 
   imports: [
-    RouterOutlet,
-    MatButtonModule, MatIconModule,
-    CustomButtonComponent,
-    LandingPageComponent,
-    CardComponent
+    HeaderComponent,LandingPageComponent,
+    RouterOutlet, MatButtonModule, MatDividerModule, MatGridListModule
+    ,MatIconModule, MatToolbarModule, FooterComponent, CommonModule
+  ],
 
-],
   templateUrl: './app.component.html',
 
 
@@ -32,15 +39,8 @@ import { CardComponent } from './shared/components/card/card.component';
 export class AppComponent {
   title = 'XAcademy3-Front';
 
-  constructor(private modalService: ModalService){}
+  
 
-
-  openLogin() {
-    this.modalService.openModal(LoginComponent, { title: 'Explora, Aprende, Crece' });
-  }
-  openRegister() {
-    this.modalService.openModal(RegisterComponent, {title: 'Registrarse' });
-  }
 
   
 }

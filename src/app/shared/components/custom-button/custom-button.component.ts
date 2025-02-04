@@ -14,7 +14,9 @@ import { MatButtonModule } from '@angular/material/button';
 export class CustomButtonComponent {
   @Input() text: string = 'click';  // Texto del botón
   @Input() className: string = ''; //clase para personalizar el boton
+  @Input() disabled: boolean | undefined; //para deshabilitarlo en caso de ser necesario
   @Output() action = new EventEmitter<void>(); // Evento para la acción del botón
+  
 
   onClick() {
     this.action.emit(); // Dispara el evento cuando se hace clic

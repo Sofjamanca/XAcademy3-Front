@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
-import { CardComponent } from '../../shared/components/card/card.component';
+
+import { HeroComponent } from './hero/hero.component';
+
 
 @Component({
-  selector: 'app-landing-page',
+  selector: 'views-landing-page',
   standalone: true,
-  imports: [CardComponent],
+
+  imports: [
+    HeroComponent
+  ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css'
 })
