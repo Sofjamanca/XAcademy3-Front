@@ -13,11 +13,18 @@
     --color_btn_accent_hover: rgb(185, 79, 8);
 
 }
-body{
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
     width: 100%;
-    height:100vh;
+    overflow-x: hidden;
+}
+
+body {
+    min-height: 100vh;
+    position: relative;
     font-family:  "Roboto", serif;
-    overflow: hidden;
 }
 
 /*-------------------------  general style   -------------------------*/
