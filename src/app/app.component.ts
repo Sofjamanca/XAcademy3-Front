@@ -17,6 +17,7 @@ import { LandingPageComponent } from "./views/landing-page/landing-page.componen
   selector: 'app-root',
   standalone: true,
   imports: [
+    HeaderComponent,LandingPageComponent,
     RouterOutlet, MatButtonModule, MatDividerModule, MatGridListModule
     ,MatIconModule, MatToolbarModule, FooterComponent, CommonModule
   ],
