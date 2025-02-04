@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { HeroComponent } from './hero/hero.component';
+import { CardComponent } from '../../shared/components/card/card.component';
 
 
 @Component({
@@ -8,10 +9,12 @@ import { HeroComponent } from './hero/hero.component';
   standalone: true,
 
   imports: [
-    HeroComponent
+    HeroComponent,
+    CardComponent
   ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css'
+
 })
 export class LandingPageComponent {
 
