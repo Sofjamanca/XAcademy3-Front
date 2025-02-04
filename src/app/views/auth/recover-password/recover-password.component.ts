@@ -10,8 +10,9 @@ import { AuthModalComponent } from "../../../shared/components/auth-modal/auth-m
   styleUrl :'./recover-password.component.css'
 })
 export class RecoverPasswordComponent {
+  constructor(router: Router){ }
 
   recoveryFields = [
     { label: 'Email', controlName: 'email', type: 'email', icon: 'mail', errorMessage: 'Please enter a valid email' },
-  ]
+  ];
 }

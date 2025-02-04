@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Optional, Output, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -11,6 +11,8 @@ import { ApiService } from '../../../core/services/api.servi';
 import { ModalService } from '../../../core/services/modal/modal.service';
 import { LoginComponent } from '../../../views/auth/login/login.component';
 import { RegisterComponent } from '../../../views/auth/register/register.component';
+import { response } from 'express';
+import { error } from 'console';
 
 
 @Component({
@@ -39,6 +41,7 @@ export class AuthModalComponent implements OnInit {
   @Input() showIcon: boolean = true;
   @Input() showSocialButtons: boolean = true; 
   @Input() footerAction!: string;
+  @Input() ruta !: string;
  
   @Output() backAction = new EventEmitter<void>();
   
@@ -53,7 +56,8 @@ export class AuthModalComponent implements OnInit {
   errorMessage = '';
 
   constructor(
-    private dialogRef: MatDialogRef<AuthModalComponent>,
+    @Optional() private dialogRef: MatDialogRef<AuthModalComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private modalService: ModalService,
     private apiService: ApiService
   ) { }
@@ -69,50 +73,47 @@ export class AuthModalComponent implements OnInit {
   closeModal() {
     this.dialogRef.close();
   }
-  onSubmit() {
-    if (this.authForm.valid) {
+
+
+  onSubmit(){
+    if(this.authForm.valid){
       this.loading = true;
-      this.errorMessage = '';
-
-      if (this.title === 'Regístrate') {
-        this.apiService.register(
-          this.authForm.value.name,
-          this.authForm.value.lastname,
-          this.authForm.value.email,
-          this.authForm.value.password
-
-        ).subscribe({
-          next: (response) => {
-            console.log(response);
-            this.closeModal();
-          },
-          error: (error) => {
-            this.errorMessage = 'Error al registrarse';
-            console.error(error);
-          },
-          complete: () => this.loading = false
-        });
-      }
-
-      if (this.title === 'Iniciar Sesión') {
-        this.apiService.login(
-          this.authForm.value.email,
-          this.authForm.value.password
-        ).subscribe({
-          next: (response) => {
-            console.log('Login exitoso:', response);
-            this.closeModal();
-          },
-          error: (error) => {
-            this.errorMessage = 'Error al iniciar sesión';
-            console.error(error);
-          },
-          complete: () => this.loading = false
-        });
+      this.errorMessage='';
+      
+      if(this.title === 'Regístrate'){
+        this.logManagement();
+      }else if (this.title === 'Iniciar Sesión'){
+        this.accessManagent();
       }
     }
   }
 
-  
+  private logManagement(){/*funcion para registrarse */
+    const{
+      name, lastname, email, password }= this.authForm.value;
+      this.apiService.register(name, lastname, email, password).subscribe({
+       next:(response) => this.successfulManagement(response),
+       error:(error)=>this.errorHandling('Error al registrarse', error),
+       complete:() => this.loading = false
+      });
+  }
+  private accessManagent(){
+    const {email, password} = this.authForm.value;
+    this.apiService.login(email, password).subscribe({
+      next:(response)=> this.successfulManagement(response),
+      error: (error)=>this.errorHandling('Error al iniciar sesión', error),
+      complete:()=> this.loading =false
+    });
+  }
+
+  private successfulManagement(response:any){/*Mensaje de  exito*/
+    console.log('Respuesta exitosa:', response);
+    this.closeModal();
+
+  }
+  private errorHandling(errorMessage: string, error: any){
+    this.errorMessage = errorMessage;
+    console.error(error);
+  }
   
 }

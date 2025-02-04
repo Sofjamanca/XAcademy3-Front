@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthModalComponent } from "../../../shared/components/auth-modal/auth-modal.component";
+import { Route } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -15,6 +16,7 @@ export class RegisterComponent{
     { label: 'Email', controlName: 'email', type: 'email', icon: '', errorMessage: 'Please enter a valid email' },
     { label: 'Contraseña', controlName: 'password', type: 'password', icon: '', errorMessage: 'Please confirm your password' }
   ];
+
 
   
 }
