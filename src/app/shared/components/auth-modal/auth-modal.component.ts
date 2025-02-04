@@ -96,7 +96,10 @@ export class AuthModalComponent implements OnInit {
       next: (response) => this.successfulManagement(response),
       error: (error) => this.errorHandling('Error al registrarse', error),
       complete: () => this.loading = false
+
     });
+    this.modalService.closeModal();
+
   }
 
   private accessManagent() {//login
@@ -111,13 +114,18 @@ export class AuthModalComponent implements OnInit {
     });
   }
 
-  private successfulManagement(response: any) {/*Mensaje de  exito*/
+  private successfulManagement(response: any) {
     console.log('Respuesta exitosa:', response);
-    this.closeModal();
+    if (response.accessToken && response.refreshToken) {
+      this.apiService.setTokens(response.accessToken, response.refreshToken);
+    }
+    this.modalService.closeModal();
   }
+
   private errorHandling(errorMessage: string, error: any) {
     this.errorMessage = errorMessage;
-    console.error(error);
+    console.error('Error:', error);
+    this.loading = false;
   }
 
 }
