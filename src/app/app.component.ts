@@ -4,7 +4,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 
 import { CustomButtonComponent } from "./shared/components/custom-button/custom-button.component";
-import { ModalService } from './core/services/modal/modal.service';
+import { ModalService } from './services/modal/modal.service';
 import { LoginComponent } from './views/auth/login/login.component';
 import { RegisterComponent } from './views/auth/register/register.component';
 import { RecoverPasswordComponent } from './views/auth/recover-password/recover-password.component';
