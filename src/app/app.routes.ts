@@ -3,8 +3,13 @@ import { LoginComponent } from './views/auth/login/login.component';
 import { RegisterComponent } from './views/auth/register/register.component';
 import { NgModule } from '@angular/core';
 import { RecoverPasswordComponent } from './views/auth/recover-password/recover-password.component';
+import { LandingPageComponent } from './views/landing-page/landing-page.component';
 
 export const routes: Routes = [
+    {
+        path: 'home',
+        component:LandingPageComponent
+    },
     {
         path:'login',
         component:LoginComponent

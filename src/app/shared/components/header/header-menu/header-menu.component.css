@@ -1,0 +1,34 @@
+ul {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  list-style: none;
+  gap: 0.2em;
+  margin: 0;
+}
+
+.nav-btn {
+  border-radius: 4px;
+  width: auto;
+  height: 2.5em;
+  font-size: 0.8rem;
+  padding: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .nav-buttons {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 64px;
+    right: 16px;
+    background: white;
+    padding: 8px;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+}
