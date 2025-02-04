@@ -1,0 +1,52 @@
+.card {
+    width: 300px;
+    height: 300px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+mat-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+mat-card-title {
+    font-size: 24px;
+    font-weight: bold;
+    padding: 16px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+}
+
+mat-card-content {
+    flex-grow: 1;
+    overflow: hidden;
+    padding: 16px;
+    height: 100px; 
+}
+
+mat-card-content p {
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+
+mat-card-actions {
+    padding: 16px;
+    display: flex;
+    justify-content: space-around;
+    margin-top: auto; 
+}
+
+.card-button {
+    background-color: #333;
+    color: #fff;
+}
