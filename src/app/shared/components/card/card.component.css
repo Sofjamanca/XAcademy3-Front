@@ -28,7 +28,7 @@ mat-card-content {
     flex-grow: 1;
     overflow: hidden;
     padding: 16px;
-    height: 100px; 
+    height: 100px;
 }
 
 mat-card-content p {
@@ -43,10 +43,12 @@ mat-card-actions {
     padding: 16px;
     display: flex;
     justify-content: space-around;
-    margin-top: auto; 
+    margin-top: auto;
 }
 
-.card-button {
-    background-color: #333;
-    color: #fff;
+.container-btn {
+  display: flex;
+  width: 100%;
+  justify-content: start;
 }
+

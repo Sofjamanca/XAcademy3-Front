@@ -6,8 +6,7 @@ import { CardComponent } from '../../shared/components/card/card.component';
   selector: 'views-landing-page',
   standalone: true,
   imports: [
-    HeroComponent,
-    CardComponent
+    HeroComponent
   ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css'
@@ -16,6 +15,6 @@ import { CardComponent } from '../../shared/components/card/card.component';
 export class LandingPageComponent {
 
 
-  
-  
+
+
 }
