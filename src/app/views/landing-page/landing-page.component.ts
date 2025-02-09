@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { HeroComponent } from './hero/hero.component';
-import { CardComponent } from '../../shared/components/card/card.component';
 
 @Component({
   selector: 'views-landing-page',

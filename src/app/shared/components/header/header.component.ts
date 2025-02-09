@@ -1,17 +1,15 @@
 import { Component } from '@angular/core';
-import {MatIconModule} from '@angular/material/icon';
-import {MatToolbarModule} from '@angular/material/toolbar';
 import { LogBtnComponent } from '../buttons/log-btn/log-btn.component';
 import { RegisterBtnComponent } from '../buttons/register-btn/register-btn.component';
 import { HeaderMenuComponent } from './header-menu/header-menu.component';
 import { MenuItem } from '../../../core/models/menu-item.model';
-import {MatFormFieldModule} from '@angular/material/form-field';
 import { SearchInputComponent } from '../search-input/search-input.component';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../../services/modal/modal.service';
 import { LoginComponent } from '../../../views/auth/login/login.component';
 import { RegisterComponent } from '../../../views/auth/register/register.component';
 import { RecoverPasswordComponent } from '../../../views/auth/recover-password/recover-password.component';
+import { MaterialModule } from '../../../material/material.module';
 
 
 
@@ -19,12 +17,10 @@ import { RecoverPasswordComponent } from '../../../views/auth/recover-password/r
   selector: 'shared-header',
   standalone: true,
   imports: [
-    MatIconModule,
-    MatToolbarModule,
+    MaterialModule,
     RegisterBtnComponent,
     LogBtnComponent,
     HeaderMenuComponent,
-    MatFormFieldModule,
     SearchInputComponent,
     CommonModule
   ],

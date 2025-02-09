@@ -1,17 +1,15 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { RegisterBtnComponent } from '../buttons/register-btn/register-btn.component';
+import { MaterialModule } from '../../../material/material.module';
 
 @Component({
   selector: 'app-card',
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    RegisterBtnComponent
+    RegisterBtnComponent,
+    MaterialModule
   ],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css'
