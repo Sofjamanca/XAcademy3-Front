@@ -8,12 +8,12 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { MatIconModule } from '@angular/material/icon';
+import { MaterialModule } from '../../../material/material.module';
 
 @Component({
   selector: 'shared-footer',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MaterialModule],
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css']
 })
@@ -41,7 +41,7 @@ export class FooterComponent implements AfterViewInit {
         effect: 'coverflow',
         grabCursor: true,
         centeredSlides: true,
-        slidesPerView: 4,  
+        slidesPerView: 4,
         coverflowEffect: {
           rotate: 0,
           stretch: 0,

@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
+import { MaterialModule } from '../../../material/material.module';
 
 @Component({
   selector: 'shared-search-input',
   standalone: true,
   imports: [
-    MatInputModule,
+    MaterialModule,
     FormsModule
   ],
   templateUrl: './search-input.component.html',

@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
+import { MaterialModule } from '../../../../material/material.module';
 
 @Component({
   selector: 'shared-register-btn',
   standalone: true,
   imports: [
-    MatButtonModule
+    MaterialModule
   ],
   templateUrl: './register-btn.component.html',
   styleUrl: './register-btn.component.css'

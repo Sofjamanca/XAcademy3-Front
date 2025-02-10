@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import {MatButtonModule} from '@angular/material/button';
+import { MaterialModule } from '../../../../material/material.module';
 
 @Component({
   selector: 'shared-log-btn',
   standalone: true,
   imports: [
-    MatButtonModule
+    MaterialModule
   ],
   templateUrl: './log-btn.component.html',
   styleUrl: './log-btn.component.css'
