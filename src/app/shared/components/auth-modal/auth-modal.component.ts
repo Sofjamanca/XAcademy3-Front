@@ -46,7 +46,6 @@ export class AuthModalComponent implements OnInit {
   @Input() showIcon: boolean = true;
   @Input() showSocialButtons: boolean = true;
   @Input() footerAction!: string;
-  @Input() ruta !: string;
 
   @Output() backAction = new EventEmitter<void>();
 

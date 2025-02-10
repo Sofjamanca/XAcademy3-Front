@@ -14,5 +14,7 @@ export class RecoverPasswordComponent {
 
   recoveryFields = [
     { label: 'Email', controlName: 'email', type: 'email', icon: 'mail', errorMessage: 'Please enter a valid email' },
+    { label: 'Contraseña', controlName: 'password', type: 'password', icon: 'key', errorMessage: 'Please enter a valid password' },
+    { label: 'Nueva Contraseña', controlName: 'newpassword', type: 'password', icon: 'key', errorMessage: 'Please enter a valid password' }
   ];
 }
