@@ -1,0 +1,9 @@
+<section class="card-container">
+  @for (curso of cursos; track curso.title) {
+      <app-card
+          [title]="curso.title"
+          [content]="curso.content"
+          [actions]="curso.actions">
+      </app-card>
+  }
+</section>
