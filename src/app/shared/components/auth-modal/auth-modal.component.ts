@@ -76,14 +76,17 @@ export class AuthModalComponent implements OnInit {
     this.authForm = new FormGroup(formControls);
   }
 
+  // Método para cerrar el modal
   closeModal() {
-    this.dialogRef.close();
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      this.modalService.closeModal();
+    }
   }
-
-
 
   onSubmit() {
     if (this.authForm.valid) {
+
       this.loading = true;
       this.errorMessage = '';
 
@@ -101,10 +104,7 @@ export class AuthModalComponent implements OnInit {
       next: (response) => this.successfulManagement(response),
       error: (error) => this.errorHandling('Error al registrarse', error),
       complete: () => this.loading = false
-
     });
-    this.modalService.closeModal();
-
   }
 
   private accessManagent() {//login
@@ -113,9 +113,7 @@ export class AuthModalComponent implements OnInit {
       next: (response) => {
         this.successfulManagement(response);
       },
-
-      error: (error) => this.errorHandling('Error al iniciar sesión', error),
-      complete: () => this.closeModal()
+      error: (error) => this.errorHandling('Error al iniciar sesión', error)
     });
   }
 
@@ -124,7 +122,7 @@ export class AuthModalComponent implements OnInit {
     if (response.accessToken && response.refreshToken) {
       this.apiService.setTokens(response.accessToken, response.refreshToken);
     }
-    this.modalService.closeModal();
+    this.closeModal();
   }
 
   private errorHandling(errorMessage: string, error: any) {
