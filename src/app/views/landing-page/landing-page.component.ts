@@ -9,9 +9,7 @@ import { FooterComponent } from "../../shared/components/footer/footer.component
   standalone: true,
   imports: [
     HeroComponent,
-    CoursesCardsComponent,
-    HeaderComponent,
-    FooterComponent
+    CoursesCardsComponent
 ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css'
