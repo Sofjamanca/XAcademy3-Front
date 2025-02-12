@@ -11,5 +11,5 @@ import { MaterialModule } from '../../../material/material.module';
   styleUrl: './categories.component.css'
 })
 export class CategoriesComponent {
-  typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
+  categories: string[] = ['Hogar', 'Textil', 'Manualidades', 'Fotografía', 'Belleza'];
 }

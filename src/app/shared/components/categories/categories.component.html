@@ -1,9 +1,16 @@
-<mat-selection-list #shoes>
-  @for (shoe of typesOfShoes; track shoe) {
-    <mat-list-option>{{shoe}}</mat-list-option>
-  }
-</mat-selection-list>
+<section class="categories">
 
-<p>
-  Options selected: {{shoes.selectedOptions.selected.length}}
-</p>
+  <h4>Categorías</h4>
+
+  <mat-selection-list>
+    @for (category of categories; track category) {
+      <mat-list-option>{{category}}</mat-list-option>
+    }
+  </mat-selection-list>
+
+  <!-- <p>
+    Options selected: {{shoes.selectedOptions.selected.length}}
+  </p> -->
+</section>
+
+
