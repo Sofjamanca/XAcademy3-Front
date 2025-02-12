@@ -1,0 +1,41 @@
+.container {
+  width: 80%;
+}
+
+h2 {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.content {
+  display: grid;
+  grid-template-areas:
+    "filter filter filter"
+    "categories . courses"
+    "pagination pagination pagination";
+  grid-template-columns: 1fr 0.5fr 3fr;
+  grid-template-rows: auto;
+}
+
+.filter {
+  grid-area: filter;
+}
+
+.categories {
+  grid-area: categories;
+}
+
+.courses {
+  grid-area: courses;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  gap: 20px;
+  margin: 0 0 30px 30px;
+
+}
+
+.pagination {
+  grid-area: pagination;
+}
+
