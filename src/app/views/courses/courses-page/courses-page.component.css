@@ -15,10 +15,16 @@ h2 {
     "pagination pagination pagination";
   grid-template-columns: 1fr 0.5fr 3fr;
   grid-template-rows: auto;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .filter {
+  display: flex;
+  align-items: center;
+  gap: 2em;
   grid-area: filter;
+  margin-bottom: 30px;
 }
 
 .categories {
@@ -37,5 +43,6 @@ h2 {
 
 .pagination {
   grid-area: pagination;
+  justify-content: end;
 }
 

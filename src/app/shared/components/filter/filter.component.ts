@@ -1,6 +1,7 @@
 import { MaterialModule } from './../../../material/material.module';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Filter } from '../../../core/models/filter.model';
 
 interface Food {
   value: string;
@@ -24,17 +25,17 @@ interface Car {
 })
 export class FilterComponent {
   selectedValue?: string;
-  selectedCar?: string;
+  selectedPrice?: string;
 
-  foods: Food[] = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'},
+  types: Filter[] = [
+    {value: 'recomendados', viewValue: 'Recomendados'},
+    {value: 'fecha', viewValue: 'Fecha de actualización'},
+    {value: 'populares', viewValue: 'Populares'},
   ];
 
-  cars: Car[] = [
-    {value: 'volvo', viewValue: 'Volvo'},
-    {value: 'saab', viewValue: 'Saab'},
-    {value: 'mercedes', viewValue: 'Mercedes'},
+  prices: Filter[] = [
+    {value: 'todos', viewValue: 'Todos'},
+    {value: 'gratuitos', viewValue: 'Gratuitos'},
+    {value: 'arancelados', viewValue: 'Arancelados'},
   ];
 }
