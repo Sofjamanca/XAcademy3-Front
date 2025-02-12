@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CoursesService } from '../../../services/courses/courses.service';
 
 @Component({
   selector: 'shared-courses-list',
@@ -8,5 +9,7 @@ import { Component } from '@angular/core';
   styleUrl: './courses-list.component.css'
 })
 export class CoursesListComponent {
+
+  constructor(private coursesSvc: CoursesService) { }
 
 }
