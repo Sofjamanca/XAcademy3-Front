@@ -1,5 +1,5 @@
 <nav class="menu">
-  <ul *ngIf="menuItems">
+  <ul class="nav-menu" *ngIf="menuItems">
     <li *ngFor="let menuItem of menuItems">
       <button mat-button class="nav-btn" [routerLink]="menuItem.route">{{menuItem.text}}</button>
     </li>

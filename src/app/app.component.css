@@ -1,0 +1,16 @@
+:host {
+    display: block;
+    min-height: 100vh;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+}
+
+shared-footer {
+    width: 100%;
+    margin-top: auto;
+}
