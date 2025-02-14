@@ -39,7 +39,51 @@
   font-size: 1.5em;
   cursor: pointer;
 }
+.logout-btn {
+  background-color: red !important;
+  padding: 0 0.7em;
+  width: fit-content;
+  height: 2.5em;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  border-color: var(--color_btn_primary)!important;
+  color: var(--color_font_light)!important;
+}
+/*Boton de cerrar sesion*/
+.logout-btn:hover {
+  background-color: #cc0000; 
+}
+.logout-btn:hover {
+  background-color: #cc0000;
+}
+/*-------- Nombre usuario ------*/
 
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: none;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content button {
+ 
+  
+  width: fit-content;
+  height: 2em;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-content button:hover {
+  background-color: #ddd;
+}
+
+.user-menu:hover .dropdown-content {
+  display: block;
+}
 @media (max-width: 768px) {
   .toolbar {
     width: 100%;

@@ -13,6 +13,7 @@ import { LoginComponent } from '../../../views/auth/login/login.component';
 import { RegisterComponent } from '../../../views/auth/register/register.component';
 import { response } from 'express';
 import { error } from 'console';
+import { AuthStateServiceService } from '../../../services/state/auth-state-service.service';
 
 // import { MaterialModule } from '../../../material/material.module';
 
@@ -64,7 +65,8 @@ export class AuthModalComponent implements OnInit {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private modalService: ModalService,
     private apiService: ApiService,
-    private router: Router
+    private router: Router,
+    private authStateService: AuthStateServiceService
   ) { }
 
   ngOnInit(): void {
@@ -111,6 +113,9 @@ export class AuthModalComponent implements OnInit {
     this.apiService.login(email, password).subscribe({
       next: (response) => {
         this.successfulManagement(response);
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('userName', response.user.name);
+        this.authStateService.setAuthState(true);
       },
       error: (error) => this.errorHandling('Error al iniciar sesión', error)
     });

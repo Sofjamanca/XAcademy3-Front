@@ -11,9 +11,37 @@
     <div class="menu-container" [ngClass]="{'active': menuOpen}">
 
       <shared-header-menu [menuItems]="menuItems"></shared-header-menu>
-      <shared-log-btn (click)="openLogin()">Iniciar Sesión</shared-log-btn>
-      <shared-register-btn (click)="openRegister()">Registrarse</shared-register-btn>
 
+      <div *ngIf="isAuthenticated" class="user-menu">
+        <button mat-button [matMenuTriggerFor]="userMenu" class="user_name">
+          <mat-icon>arrow_drop_down</mat-icon>
+          <span>¡Hola, {{ userName }}!</span>
+          
+        </button>
+      </div>
+
+      <shared-log-btn *ngIf="!isAuthenticated" (click)="openLogin()">
+        Iniciar Sesión
+      </shared-log-btn>
+
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>person</mat-icon>
+          <span>Perfil</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>book</mat-icon>
+          <span>Mis Cursos</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Salir</span>
+        </button>
+      </mat-menu>
+      
+      <shared-register-btn *ngIf="!isAuthenticated" (click)="openRegister()">
+        Registrarse
+      </shared-register-btn>
     </div>
 
     <button class="menu-toggle" (click)="toggleMenu()">

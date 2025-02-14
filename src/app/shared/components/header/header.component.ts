@@ -10,6 +10,8 @@ import { LoginComponent } from '../../../views/auth/login/login.component';
 import { RegisterComponent } from '../../../views/auth/register/register.component';
 import { RecoverPasswordComponent } from '../../../views/auth/recover-password/recover-password.component';
 import { MaterialModule } from '../../../material/material.module';
+import { ApiService } from '../../../services/api.service';
+import { AuthStateServiceService } from '../../../services/state/auth-state-service.service';
 
 
 
@@ -28,7 +30,24 @@ import { MaterialModule } from '../../../material/material.module';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  constructor(private modalService: ModalService){}
+  isAuthenticated = false;
+  userName : string | null = null;
+
+  constructor(private modalService: ModalService,
+    private apiService: ApiService,
+    private authStateService: AuthStateServiceService
+  ){
+    this.authStateService.checkAuthState(); // Verifica el estado de autenticación al cargar la página
+    this.authStateService.isAuthenticated$.subscribe((isAuth) => {
+      this.isAuthenticated = isAuth;
+      if(isAuth){
+        this.userName = localStorage.getItem('userName');
+      }else{
+        this.userName = null;
+      }
+    });
+  }
+
   imgLogo: string = "/assets/images/logo.png";
 
   menuItems: MenuItem[] = [
@@ -40,11 +59,15 @@ export class HeaderComponent {
 
   menuOpen: boolean = false;
 
+ 
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
   }
   openLogin() {
     this.modalService.openModal(LoginComponent, { title: 'Explora, Aprende, Crece' });
+  }
+  logout(): void {
+    this.apiService.logout(); 
   }
   openRegister() {
     this.modalService.openModal(RegisterComponent, {title: 'Registrarse' });
@@ -53,5 +76,6 @@ export class HeaderComponent {
   openRecover() {
     this.modalService.openModal(RecoverPasswordComponent, {title: 'Recuperar contraseña' });
   }
+ 
 
 }
