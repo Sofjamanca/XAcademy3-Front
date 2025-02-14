@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { AuthStateServiceService } from './state/auth-state-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,26 @@ export class ApiService {
   private apiUrl = 'http://localhost:3001/api/auth'; // Agregado el prefijo /api/auth
 
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+    private authStateService: AuthStateServiceService
+  ) {}
 
   login(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, { email, password });
+    return this.http.post(`${this.apiUrl}/login`, { email, password }).pipe(
+      tap((response: any) => {
+        if (response.token) {
+          localStorage.setItem('token', response.token);
+          this.authStateService.setAuthState(true);
+        }
+      })
+    );
+  }
+  
+  logout(): void {
+    localStorage.removeItem('token'); // Elimina el token
+    this.authStateService.setAuthState(false); // Actualiza el estado de autenticación
+    // Actualizar el estado de autenticación
+    this.authStateService.setAuthState(false);
   }
 
   register(name: string, lastname: string, email: string, password: string): Observable<any> {
@@ -49,5 +66,12 @@ export class ApiService {
   clearTokens(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
+  }
+
+  isAuthenticated(): boolean {
+    if (typeof localStorage !== 'undefined') {
+      return !!localStorage.getItem('token');
+    }
+    return false;
   }
 }

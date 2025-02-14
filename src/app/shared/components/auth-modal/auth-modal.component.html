@@ -2,7 +2,7 @@
     <button mat-button class="close-button-modal" (click)="closeModal()" aria-label="Close Modal">
         <mat-icon>close</mat-icon>
     </button>
-
+ 
     <div class="content_modal">
         <div class="container_img_modal">
             <img [src]="imageUrl" class="img_modal" alt="imagen">
@@ -56,7 +56,10 @@
                     </button>
                   </div>
 
-                  <p>{{ footerText }} <a href="ruta" class="msj_reg">{{ footerLink }}</a></p>
+                  <div class="footer_action">
+                    <p>{{ footerText }}</p>
+                    <a href="#" class="msj_reg">{{ footerLink }}</a>
+                  </div>
                 </div>
               </form>
         </div>

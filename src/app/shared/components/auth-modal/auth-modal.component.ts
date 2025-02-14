@@ -13,6 +13,7 @@ import { LoginComponent } from '../../../views/auth/login/login.component';
 import { RegisterComponent } from '../../../views/auth/register/register.component';
 import { response } from 'express';
 import { error } from 'console';
+import { AuthStateServiceService } from '../../../services/state/auth-state-service.service';
 
 // import { MaterialModule } from '../../../material/material.module';
 
@@ -46,7 +47,6 @@ export class AuthModalComponent implements OnInit {
   @Input() showIcon: boolean = true;
   @Input() showSocialButtons: boolean = true;
   @Input() footerAction!: string;
-  @Input() ruta !: string;
 
   @Output() backAction = new EventEmitter<void>();
 
@@ -65,7 +65,8 @@ export class AuthModalComponent implements OnInit {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private modalService: ModalService,
     private apiService: ApiService,
-    private router: Router
+    private router: Router,
+    private authStateService: AuthStateServiceService
   ) { }
 
   ngOnInit(): void {
@@ -76,14 +77,17 @@ export class AuthModalComponent implements OnInit {
     this.authForm = new FormGroup(formControls);
   }
 
+  // Método para cerrar el modal
   closeModal() {
-    this.dialogRef.close();
+    if (this.dialogRef) {
+      this.dialogRef.close();
+      this.modalService.closeModal();
+    }
   }
-
-
 
   onSubmit() {
     if (this.authForm.valid) {
+
       this.loading = true;
       this.errorMessage = '';
 
@@ -101,10 +105,7 @@ export class AuthModalComponent implements OnInit {
       next: (response) => this.successfulManagement(response),
       error: (error) => this.errorHandling('Error al registrarse', error),
       complete: () => this.loading = false
-
     });
-    this.modalService.closeModal();
-
   }
 
   private accessManagent() {//login
@@ -112,10 +113,11 @@ export class AuthModalComponent implements OnInit {
     this.apiService.login(email, password).subscribe({
       next: (response) => {
         this.successfulManagement(response);
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('userName', response.user.name);
+        this.authStateService.setAuthState(true);
       },
-
-      error: (error) => this.errorHandling('Error al iniciar sesión', error),
-      complete: () => this.closeModal()
+      error: (error) => this.errorHandling('Error al iniciar sesión', error)
     });
   }
 
@@ -124,7 +126,7 @@ export class AuthModalComponent implements OnInit {
     if (response.accessToken && response.refreshToken) {
       this.apiService.setTokens(response.accessToken, response.refreshToken);
     }
-    this.modalService.closeModal();
+    this.closeModal();
   }
 
   private errorHandling(errorMessage: string, error: any) {
