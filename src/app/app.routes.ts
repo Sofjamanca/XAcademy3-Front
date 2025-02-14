@@ -4,6 +4,7 @@ import { RegisterComponent } from './views/auth/register/register.component';
 import { NgModule } from '@angular/core';
 import { RecoverPasswordComponent } from './views/auth/recover-password/recover-password.component';
 import { LandingPageComponent } from './views/landing-page/landing-page.component';
+import { CreateCourseComponent } from './shared/components/create-course/create-course.component';
 
 export const routes: Routes = [
     {
@@ -21,7 +22,16 @@ export const routes: Routes = [
     {
         path:'reset-password',
         component:RecoverPasswordComponent
-    }
+    },
+    {
+        path:'create-course',
+        component:CreateCourseComponent
+    },
+    { 
+        path: '',
+        component: LandingPageComponent 
+    },
+    { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
 
 @NgModule({
