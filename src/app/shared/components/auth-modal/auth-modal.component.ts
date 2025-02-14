@@ -14,6 +14,8 @@ import { RegisterComponent } from '../../../views/auth/register/register.compone
 import { response } from 'express';
 import { error } from 'console';
 
+// import { MaterialModule } from '../../../material/material.module';
+
 
 @Component({
   selector: 'app-auth-modal',
@@ -23,8 +25,11 @@ import { error } from 'console';
     RouterModule,
     MatDialogContent,
     MatDialogActions,
-    FormsModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatIconModule,
-    CustomButtonComponent
+    MatFormFieldModule, MatInputModule, MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CustomButtonComponent,
+    // MaterialModule
   ],
   templateUrl: './auth-modal.component.html',
   styleUrl: './auth-modal.component.css',
@@ -74,7 +79,7 @@ export class AuthModalComponent implements OnInit {
   closeModal() {
     this.dialogRef.close();
   }
-  
+
 
 
   onSubmit() {

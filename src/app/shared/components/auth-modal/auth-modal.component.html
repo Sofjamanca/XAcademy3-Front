@@ -1,5 +1,5 @@
-<div class="container_modal">
-    <button mat-button class="close-button-modal" (click)="closeModal()">
+<div class="container_modal" aria-label="Authentication Modal">
+    <button mat-button class="close-button-modal" (click)="closeModal()" aria-label="Close Modal">
         <mat-icon>close</mat-icon>
     </button>
 
@@ -38,12 +38,12 @@
                     </div>
                   </ng-container>
                 </div>
-              
+
                 <div class="footer_modal">
                   <mat-dialog-actions align-items="end">
                     <app-custom-button [text]="buttonText" [className]="'customBtnLogin'" (action)="onSubmit()"></app-custom-button>
                   </mat-dialog-actions>
-              
+
                   <div *ngIf="showSocialButtons" class="buttom_group">
                     <button mat-button class="btn_social" title="Google">
                       <img [src]="iconSocialG" alt="google">
@@ -55,7 +55,7 @@
                       <img [src]="iconSocialA" alt="Apple">
                     </button>
                   </div>
-              
+
                   <p>{{ footerText }} <a href="ruta" class="msj_reg">{{ footerLink }}</a></p>
                 </div>
               </form>
