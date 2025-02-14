@@ -1,2 +1,12 @@
+<div class="content">
+  <landing-page-hero></landing-page-hero>
+  <section class="cards-container">
+    <app-card *ngFor="let course of courses | slice:0:6; let i=index"
+      [title]="course.title"
+      [description]="course.description"
+      [image]="course.image!"
+      [action]="btnContent"
+    ></app-card>
+  </section>
+</div>
 
-<landing-page-hero></landing-page-hero>

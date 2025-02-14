@@ -16,8 +16,8 @@ import { MaterialModule } from '../../../material/material.module';
 })
 export class CardComponent {
   @Input() title: string = '';
-  @Input() content: string = '';
-  @Input() actions: string[] = [];
+  @Input() description: string = '';
+  @Input() action: string = '';
   @Input() image: string = '';
 
   @Output() actionClick = new EventEmitter<string>();

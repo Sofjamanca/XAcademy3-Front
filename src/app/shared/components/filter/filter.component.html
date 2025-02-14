@@ -1,0 +1,22 @@
+<form>
+  <mat-form-field>
+    <mat-label>Selecciona</mat-label>
+    <mat-select [(ngModel)]="selectedValue" name="type">
+      @for (type of types; track type) {
+        <mat-option [value]="type.value">{{type.viewValue}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <!-- <p> Selected food: {{selectedValue}} </p> -->
+  <mat-form-field>
+    <mat-label>Selecciona</mat-label>
+    <select matNativeControl [(ngModel)]="selectedPrice" name="price">
+      <option value="" selected></option>
+      @for (price of prices; track price) {
+        <option [value]="price.value">{{price.viewValue}}</option>
+      }
+    </select>
+  </mat-form-field>
+  <!-- <p> Selected car: {{selectedCar}} </p> -->
+</form>
+
