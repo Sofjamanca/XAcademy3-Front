@@ -6,15 +6,14 @@
     <img *ngIf="image" mat-card-image [src]="image" [alt]="title">
 
     <mat-card-content>
-        <p>{{content}}</p>
+        <p>{{description}}</p>
     </mat-card-content>
 
     <mat-card-actions class="card-actions">
       <div class="container-btn">
-        <shared-register-btn *ngFor="let action of actions"
+        <shared-register-btn
           class="card-button"
-          (click)="onActionClick(action)">
-          {{action}}
+          >{{action}}
         </shared-register-btn>
       </div>
 

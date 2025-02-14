@@ -32,8 +32,8 @@ export class HeaderComponent {
   imgLogo: string = "/assets/images/logo.png";
 
   menuItems: MenuItem[] = [
-    {text: "Inicio", route: ""},
-    {text: "Cursos", route: ""},
+    {text: "Inicio", route: "/home"},
+    {text: "Cursos", route: "/courses"},
     {text: "Nosotros", route: ""},
     {text: "Contacto", route: ""},
   ]
