@@ -27,26 +27,22 @@ export const routes: Routes = [
         path:'create-course',
         component:CreateCourseComponent
     },
-    { 
-        path: '',
-        component: LandingPageComponent 
-    },
-    { path: '**',
-     redirectTo: 'home',
-     pathMatch: 'full' },
-        path:'courses',
-        component: CoursesPageComponent
+    {
+      path:'courses',
+      component: CoursesPageComponent
     },
     {
       path: '',
       redirectTo: '/home',
       pathMatch: 'full'
     },
-    // {
-    //   path: '**',
-    //   redirectTo: '404',
-    // }
-];
+
+    {
+      path: '**',
+      redirectTo: 'home',
+      pathMatch: 'full'
+      },
+    ];
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
