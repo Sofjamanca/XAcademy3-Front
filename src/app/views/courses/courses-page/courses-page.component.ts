@@ -30,6 +30,8 @@ export class CoursesPageComponent {
   constructor(private coursesSvc: CoursesService) { }
 
   ngOnInit() {
-    this.courses = this.coursesSvc.courses;
+    this.coursesSvc.getCourses().subscribe(courses => {
+      this.courses = courses;
+    });
   }
 }

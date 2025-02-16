@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Course } from '../../core/models/course.model';
+import { Category, Course } from '../../core/models/course.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoursesService {
 
-  private apiUrl: string = 'http://localhost:3001/courses/';
+  private apiUrl: string = 'http://localhost:3001/api/courses/';
 
   constructor(private http: HttpClient) { }
 
@@ -21,13 +21,32 @@ export class CoursesService {
   }
 
   addCourse(newCourse: Course): Observable<string> {
-    return this.http.post<string>(this.apiUrl, newCourse);
+    return this.http.post<string>(`${this.apiUrl}create`, newCourse);
   }
 
   updateCourse(course: Course): Observable<string> {
     return this.http.put<string>(`${this.apiUrl}${course.id}`, course);
   }
 
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(`${this.apiUrl}categories`);
+  }
+
+  addCategory(newCategory: Category): Observable<string> {
+    return this.http.post<string>(`${this.apiUrl}categories/create`, newCategory);
+  }
+
+  getCategoryById(id: number): Observable<Category> {
+    return this.http.get<Category>(`${this.apiUrl}categories/${id}`);
+  }
+
+  updateCategory(category: Category): Observable<string> {
+    return this.http.put<string>(`${this.apiUrl}categories/${category.id}`, category);
+  }
+
+  getCoursesCount(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}count`);
+  }
   // disableCourse(id: number): Observable<string> {
   // }
 
@@ -35,44 +54,7 @@ export class CoursesService {
   // enableCourse(id: number): Observable<string> {
   // }
 
-  courses: Course[] = [
-    {
-      title: 'Curso de Plomería',
-      description: 'Aprende a instalar tuberías y sistemas de agua en tu hogar',
-    },
-    {
-      title: 'Curso de Electricidad',
-      description: 'Aprende a instalar cables y sistemas eléctricos en tu hogar',
-    },
-    {
-      title: 'Curso de Ceramica',
-      description: 'Aprende todo sobre la ceramica',
-    },
-    {
-      title: 'Curso de Ceramica',
-      description: 'Aprende todo sobre la ceramica',
-    },
-    {
-      title: 'Curso de Ceramica',
-      description: 'Aprende todo sobre la ceramica',
-    },
-    {
-      title: 'Curso de Ceramica',
-      description: 'Aprende todo sobre la ceramica',
-    },
-    {
-      title: 'Curso de Ceramica',
-      description: 'Aprende todo sobre la ceramica',
-    },
-    {
-      title: 'Curso de Ceramica',
-      description: 'Aprende todo sobre la ceramica',
-    },
-    {
-      title: 'Curso de Ceramica',
-      description: 'Aprende todo sobre la ceramica',
-    }
-  ]
+  
 
 
 

@@ -74,4 +74,8 @@ export class ApiService {
     }
     return false;
   }
+
+  getUsersCount(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/users/count`);
+  }
 }

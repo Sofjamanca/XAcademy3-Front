@@ -4,9 +4,11 @@ import { inject } from '@angular/core';
 import { catchError, switchMap, throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  // Por ahora, pasamos la petición sin modificar
+  return next(req);
 
+  /* Código comentado para usar más tarde cuando implementemos autenticación
   const usuariosService = inject(ApiService);
-
   const token = usuariosService.getAuthToken();
 
   const authReq = req.clone({
@@ -19,10 +21,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((err) => {
       return usuariosService.refreshToken().pipe(
         switchMap((res) => {
-          // guardar nuevo token
           const token = res.accessToken;
           localStorage.setItem('token', token);
-          // volver a intentarlo
           const newReq = req.clone({
             setHeaders: {
               Authorization: `Bearer ${token}`
@@ -30,9 +30,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           });
           return next(newReq);
         }),
-
         catchError((refreshErr) => {
-
           localStorage.removeItem('token');
           localStorage.removeItem('refreshToken');
           return throwError(() => refreshErr);
@@ -40,4 +38,5 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       )
     })
   );
+  */
 };
