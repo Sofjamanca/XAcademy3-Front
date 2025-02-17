@@ -59,7 +59,6 @@ export class HeaderComponent {
 
   menuOpen: boolean = false;
 
- 
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
   }
@@ -67,7 +66,7 @@ export class HeaderComponent {
     this.modalService.openModal(LoginComponent, { title: 'Explora, Aprende, Crece' });
   }
   logout(): void {
-    this.apiService.logout(); 
+    this.apiService.logout();
   }
   openRegister() {
     this.modalService.openModal(RegisterComponent, {title: 'Registrarse' });
@@ -76,6 +75,5 @@ export class HeaderComponent {
   openRecover() {
     this.modalService.openModal(RecoverPasswordComponent, {title: 'Recuperar contraseña' });
   }
- 
 
 }
