@@ -13,14 +13,14 @@ import { Subscription } from 'rxjs';
   styleUrl: './courses-list.component.css'
 })
 
-export class CoursesListComponent implements OnInit, OnDestroy {
-
+export class CoursesListComponent implements OnInit {
+//, OnDestroy
   courses: Course[] = [];
-  filteredCourses: Course[] = [];
-  orderedCourses: Course[] = [];
+  //filteredCourses: Course[] = [];
+  //orderedCourses: Course[] = [];
   btnContent: string = 'Ver curso';
-  private filterSubscription!: Subscription;
-  private orderSubscription!: Subscription;
+  //private filterSubscription!: Subscription;
+  //private orderSubscription!: Subscription;
 
   constructor(private coursesSvc: CoursesService) { }
 
@@ -28,17 +28,17 @@ export class CoursesListComponent implements OnInit, OnDestroy {
     this.coursesSvc.getCourses().subscribe(courses => {
       this.courses = courses;
     });
-    this.courses = this.coursesSvc.courses || [];
+    /*this.courses = this.coursesSvc.courses || [];
     this.filteredCourses = [...this.courses];
     this.filterSubscription = this.coursesSvc.filter$.subscribe(filter => {
       this.applyFilters(filter);
     });
     this.orderSubscription = this.coursesSvc.order$.subscribe(order => {
       this.applyOrderFilters(order);
-    });
+    });*/
   }
 
-  applyFilters(filter: string) {
+  /*applyFilters(filter: string) {
     if (!this.courses) return;
 
     if (!filter || filter === 'todos') {
@@ -68,5 +68,5 @@ export class CoursesListComponent implements OnInit, OnDestroy {
     this.filterSubscription.unsubscribe();
     this.orderSubscription.unsubscribe();
   }
-
+*/
 }

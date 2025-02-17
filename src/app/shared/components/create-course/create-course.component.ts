@@ -126,7 +126,8 @@ export class CreateCourseComponent implements OnInit {
         modalidad: formData.modalidad,
         teacher_id: Number(formData.profesor),
         category_id: Number(formData.categoria),
-        status: 'ACTIVO'
+        status: 'ACTIVO',
+        updatedAt: ''
       };
       
       console.log('Curso a crear:', curso);

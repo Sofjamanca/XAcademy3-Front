@@ -55,22 +55,22 @@ export class CoursesService {
   // }
 
 
-  private filterSubject = new BehaviorSubject<string>('todos');
-  private orderSubject = new BehaviorSubject<string>('fecha');
+  //private filterSubject = new BehaviorSubject<string>('todos');
+  //private orderSubject = new BehaviorSubject<string>('fecha');
 
-  filter$ = this.filterSubject.asObservable();
-  order$ = this.orderSubject.asObservable();
+  //filter$ = this.filterSubject.asObservable();
+  //order$ = this.orderSubject.asObservable();
 
-  setFilter(filter: string) {
-    this.filterSubject.next(filter);
-  }
+  //setFilter(filter: string) {
+  //  this.filterSubject.next(filter);
+  //}
 
-  setOrder(order: string) {
+  /*setOrder(order: string) {
     this.orderSubject.next(order);
   }
 
   getOrder(): string {
     return this.orderSubject.getValue();
-  }
+  }*/
 
 }
