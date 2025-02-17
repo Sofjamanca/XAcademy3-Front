@@ -85,6 +85,5 @@ export class HeaderComponent {
   openRecover() {
     this.modalService.openModal(RecoverPasswordComponent, {title: 'Recuperar contraseña' });
   }
- 
 
 }
