@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Category, Course } from '../../core/models/course.model';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -54,9 +54,23 @@ export class CoursesService {
   // enableCourse(id: number): Observable<string> {
   // }
 
-  
 
+  private filterSubject = new BehaviorSubject<string>('todos');
+  private orderSubject = new BehaviorSubject<string>('fecha');
 
+  filter$ = this.filterSubject.asObservable();
+  order$ = this.orderSubject.asObservable();
 
+  setFilter(filter: string) {
+    this.filterSubject.next(filter);
+  }
+
+  setOrder(order: string) {
+    this.orderSubject.next(order);
+  }
+
+  getOrder(): string {
+    return this.orderSubject.getValue();
+  }
 
 }

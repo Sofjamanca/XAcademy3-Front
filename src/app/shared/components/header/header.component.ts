@@ -12,6 +12,7 @@ import { RecoverPasswordComponent } from '../../../views/auth/recover-password/r
 import { MaterialModule } from '../../../material/material.module';
 import { ApiService } from '../../../services/api.service';
 import { AuthStateServiceService } from '../../../services/state/auth-state-service.service';
+import { Router } from '@angular/router';
 
 
 
@@ -35,7 +36,8 @@ export class HeaderComponent {
 
   constructor(private modalService: ModalService,
     private apiService: ApiService,
-    private authStateService: AuthStateServiceService
+    private authStateService: AuthStateServiceService,
+    private router: Router
   ){
     this.authStateService.checkAuthState(); // Verifica el estado de autenticación al cargar la página
     this.authStateService.isAuthenticated$.subscribe((isAuth) => {
@@ -66,8 +68,15 @@ export class HeaderComponent {
   openLogin() {
     this.modalService.openModal(LoginComponent, { title: 'Explora, Aprende, Crece' });
   }
-  logout(): void {
-    this.apiService.logout(); 
+  logout() {
+    this.apiService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        console.error('Error al cerrar sesión', error);
+      }
+    });
   }
   openRegister() {
     this.modalService.openModal(RegisterComponent, {title: 'Registrarse' });
@@ -76,6 +85,5 @@ export class HeaderComponent {
   openRecover() {
     this.modalService.openModal(RecoverPasswordComponent, {title: 'Recuperar contraseña' });
   }
- 
 
 }

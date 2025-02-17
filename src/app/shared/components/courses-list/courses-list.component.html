@@ -1,8 +1,7 @@
-<app-card *ngFor="let course of courses"
+<app-card *ngFor="let course of filteredCourses"
   [title]="course.title"
   [description]="course.description"
   [image]="course.image_url!"
   [action]="btnContent"
   >
-
 </app-card>

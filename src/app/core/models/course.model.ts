@@ -13,7 +13,7 @@ export interface Course {
   teacher_id?: number;
   category_id?: number
   createAt?: Date;
-  updateAt?: Date;
+  updatedAt: string;
 }
 
 export interface Category {

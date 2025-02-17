@@ -16,16 +16,16 @@ export const routes: Routes = [
         component: LandingPageComponent
     },
     {
-        path: 'login',
-        component: LoginComponent
+        path:'auth/login',
+        component:LoginComponent
     },
     {
-        path: 'register',
-        component: RegisterComponent
+        path:'auth/register',
+        component:RegisterComponent
     },
     {
-        path: 'reset-password',
-        component: RecoverPasswordComponent
+        path:'auth/reset-password',
+        component:RecoverPasswordComponent
     },
     {
         path: 'create-course',
