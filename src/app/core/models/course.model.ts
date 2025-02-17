@@ -9,5 +9,5 @@ export interface Course {
   endDate?: Date;
   hours?: number;
   createAt?: Date;
-  updateAt?: Date;
+  updatedAt: string;
 }

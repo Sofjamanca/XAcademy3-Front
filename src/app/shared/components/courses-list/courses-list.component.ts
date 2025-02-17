@@ -17,8 +17,10 @@ export class CoursesListComponent implements OnInit, OnDestroy {
 
   courses: Course[] = [];
   filteredCourses: Course[] = [];
+  orderedCourses: Course[] = [];
   btnContent: string = 'Ver curso';
   private filterSubscription!: Subscription;
+  private orderSubscription!: Subscription;
 
   constructor(private coursesSvc: CoursesService) { }
 
@@ -27,6 +29,9 @@ export class CoursesListComponent implements OnInit, OnDestroy {
     this.filteredCourses = [...this.courses];
     this.filterSubscription = this.coursesSvc.filter$.subscribe(filter => {
       this.applyFilters(filter);
+    });
+    this.orderSubscription = this.coursesSvc.order$.subscribe(order => {
+      this.applyOrderFilters(order);
     });
   }
 
@@ -40,10 +45,25 @@ export class CoursesListComponent implements OnInit, OnDestroy {
     } else if (filter === 'arancelados') {
       this.filteredCourses = this.courses.filter(course => course.price > 0);
     }
+
+    this.applyOrderFilters(this.coursesSvc.getOrder());
+  }
+
+  applyOrderFilters(order: string) {
+    if (!this.filteredCourses) return;
+
+    if (order === 'fecha') {
+      this.filteredCourses.sort((a, b) => {
+        const dateA = new Date(a.updatedAt || 0).getTime();
+        const dateB = new Date(b.updatedAt || 0).getTime();
+        return dateB - dateA;
+      });
+    }
   }
 
   ngOnDestroy(): void {
     this.filterSubscription.unsubscribe();
+    this.orderSubscription.unsubscribe();
   }
 
 }
