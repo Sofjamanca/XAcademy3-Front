@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthModalComponent } from "../../../shared/components/auth-modal/auth-modal.component";
 
 @Component({
@@ -10,7 +9,7 @@ import { AuthModalComponent } from "../../../shared/components/auth-modal/auth-m
   styleUrl :'./recover-password.component.css'
 })
 export class RecoverPasswordComponent {
-  constructor(router: Router){ }
+  footerAction = '/auth/login';
 
   recoveryFields = [
     { label: 'Email', controlName: 'email', type: 'email', icon: 'mail', errorMessage: 'Please enter a valid email' },

@@ -12,15 +12,15 @@ export const routes: Routes = [
         component:LandingPageComponent
     },
     {
-        path:'login',
+        path:'auth/login',
         component:LoginComponent
     },
     {
-        path:'register',
+        path:'auth/register',
         component:RegisterComponent
     },
     {
-        path:'reset-password',
+        path:'auth/reset-password',
         component:RecoverPasswordComponent
     },
     {

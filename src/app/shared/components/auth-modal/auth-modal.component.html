@@ -1,5 +1,8 @@
 <div class="container_modal" aria-label="Authentication Modal">
-    <button mat-button class="close-button-modal" (click)="closeModal()" aria-label="Close Modal">
+    <button *ngIf="!isStandalone" 
+      mat-button class="close-button-modal"
+      (click)="closeModal()" 
+      aria-label="Close Modal">
         <mat-icon>close</mat-icon>
     </button>
  
@@ -35,6 +38,13 @@
                           {{ field.errorMessage }}
                         </mat-error>
                       </mat-form-field>
+                       <!-- "¿Olvidaste tu contraseña?" visible SOLO para la vista de Iniciar Sesión -->
+                      <a *ngIf="field.controlName === 'password' && title === 'Iniciar Sesión'" 
+                      [routerLink]="'auth/reset-password'" target="_blank" rel="noopener noreferrer"
+                      class="forgot-password">
+                      ¿Olvidaste tu contraseña?
+                      </a>
+
                     </div>
                   </ng-container>
                 </div>
@@ -58,7 +68,7 @@
 
                   <div class="footer_action">
                     <p>{{ footerText }}</p>
-                    <a href="#" class="msj_reg">{{ footerLink }}</a>
+                    <a [routerLink]="footerAction" class="msj_reg" (click)="onFooterLinkClicked()">{{ footerLink }}</a>
                   </div>
                 </div>
               </form>
