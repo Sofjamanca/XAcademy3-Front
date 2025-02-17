@@ -1,22 +1,21 @@
 <form>
   <mat-form-field>
     <mat-label>Selecciona</mat-label>
-    <mat-select [(ngModel)]="selectedValue" name="type">
-      @for (type of types; track type) {
-        <mat-option [value]="type.value">{{type.viewValue}}</mat-option>
+    <mat-select (selectionChange)="onFilterSelected($event.value)">
+      <option value="" selected></option>
+      @for (order of orders; track order) {
+        <mat-option [value]="order.value">{{order.viewValue}}</mat-option>
       }
     </mat-select>
   </mat-form-field>
-  <!-- <p> Selected food: {{selectedValue}} </p> -->
   <mat-form-field>
     <mat-label>Selecciona</mat-label>
-    <select matNativeControl [(ngModel)]="selectedPrice" name="price">
+    <mat-select (selectionChange)="onFilterSelected($event.value)">
       <option value="" selected></option>
       @for (price of prices; track price) {
-        <option [value]="price.value">{{price.viewValue}}</option>
+        <mat-option [value]="price.value">{{price.viewValue}}</mat-option>
       }
-    </select>
+    </mat-select>
   </mat-form-field>
-  <!-- <p> Selected car: {{selectedCar}} </p> -->
 </form>
 

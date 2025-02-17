@@ -3,7 +3,7 @@ export interface Course {
   title: string;
   description: string;
   image?: string;
-  price?: number;
+  price: number;
   quota?: number;
   startDate?: Date;
   endDate?: Date;
