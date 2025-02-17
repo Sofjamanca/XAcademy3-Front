@@ -40,55 +40,74 @@ export class CoursesService {
       title: 'Curso de Plomería',
       description: 'Aprende a instalar tuberías y sistemas de agua en tu hogar',
       price: 100,
+      updatedAt: '2024-01-10T12:00:00Z',
     },
     {
       title: 'Curso de Electricidad',
       description: 'Aprende a instalar cables y sistemas eléctricos en tu hogar',
       price: 50,
+      updatedAt: '2024-02-10T12:00:00Z',
     },
     {
       title: 'Curso de Ceramica',
       description: 'Aprende todo sobre la ceramica',
       price: 0,
+      updatedAt: '2024-03-10T12:00:00Z',
     },
     {
-      title: 'Curso de Ceramica',
+      title: 'Curso de Fotografia',
       description: 'Aprende todo sobre la ceramica',
       price: 0,
+      updatedAt: '2024-04-10T12:00:00Z',
     },
     {
-      title: 'Curso de Ceramica',
+      title: 'Curso de Cocina',
       description: 'Aprende todo sobre la ceramica',
       price: 10,
+      updatedAt: '2024-05-10T12:00:00Z',
     },
     {
-      title: 'Curso de Ceramica',
+      title: 'Curso de Tejido',
       description: 'Aprende todo sobre la ceramica',
       price: 20,
+      updatedAt: '2024-06-10T12:00:00Z',
     },
     {
-      title: 'Curso de Ceramica',
+      title: 'Curso de Costura',
       description: 'Aprende todo sobre la ceramica',
       price: 70,
+      updatedAt: '2024-07-10T12:00:00Z',
     },
     {
-      title: 'Curso de Ceramica',
+      title: 'Curso de Uñas',
       description: 'Aprende todo sobre la ceramica',
       price: 60,
+      updatedAt: '2024-08-10T12:00:00Z',
     },
     {
-      title: 'Curso de Ceramica',
+      title: 'Curso de Maquillaje',
       description: 'Aprende todo sobre la ceramica',
       price: 0,
+      updatedAt: '2024-09-15T08:30:00Z',
     }
-  ]
+  ];
 
+  private filterSubject = new BehaviorSubject<string>('todos');
+  private orderSubject = new BehaviorSubject<string>('fecha');
 
-  private filterSubject = new BehaviorSubject<string>('todos'); // Estado inicial vacío
-  filter$ = this.filterSubject.asObservable(); // Observable para suscribirse
+  filter$ = this.filterSubject.asObservable();
+  order$ = this.orderSubject.asObservable();
 
   setFilter(filter: string) {
-    this.filterSubject.next(filter); // Actualiza el filtro
+    this.filterSubject.next(filter);
+  }
+
+  setOrder(order: string) {
+    this.orderSubject.next(order);
+  }
+
+  getOrder(): string {
+    return this.orderSubject.getValue();
   }
 
 }

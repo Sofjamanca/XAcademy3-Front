@@ -37,4 +37,8 @@ export class FilterComponent {
     this.coursesSvc.setFilter(value);
   }
 
+  onOrderSelected(value: string) {
+    this.coursesSvc.setOrder(value);
+  }
+
 }
