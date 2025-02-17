@@ -5,12 +5,13 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDial
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Route, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Route, Router, RouterModule } from '@angular/router';
 import { CustomButtonComponent } from '../custom-button/custom-button.component';
 import { ApiService } from '../../../services/api.service';
 import { ModalService } from '../../../services/modal/modal.service';
 import { LoginComponent } from '../../../views/auth/login/login.component';
 import { RegisterComponent } from '../../../views/auth/register/register.component';
+
 import { response } from 'express';
 import { error } from 'console';
 import { AuthStateServiceService } from '../../../services/state/auth-state-service.service';
@@ -48,7 +49,7 @@ export class AuthModalComponent implements OnInit {
   @Input() showSocialButtons: boolean = true;
   @Input() footerAction!: string;
 
-  @Output() backAction = new EventEmitter<void>();
+  @Output() footerLinClicked = new EventEmitter<void>();
 
   imageUrl = 'img/364257859_998131068038033_4290420701209662657_n.jpg';
   iconUrl = 'img/logo_noc.png';
@@ -60,21 +61,33 @@ export class AuthModalComponent implements OnInit {
   loading = false;
   errorMessage = '';
 
+  isStandalone = false;
+  route: any;
+
   constructor(
     @Optional() private dialogRef: MatDialogRef<AuthModalComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     private modalService: ModalService,
     private apiService: ApiService,
     private router: Router,
-    private authStateService: AuthStateServiceService
+    private authStateService: AuthStateServiceService,
+    private ruta: ActivatedRoute
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {                       
     let formControls: any = {};
     this.formFields.forEach(field => {
       formControls[field.controlName] = new FormControl('', Validators.required);
     });
     this.authForm = new FormGroup(formControls);
+
+
+    // Detecta si la URL es directamente "/auth/login" o "/auth/register"
+    this.isStandalone = this.ruta.snapshot.routeConfig?.path === 'auth/login' || 
+                        this.ruta.snapshot.routeConfig?.path === 'auth/register' ||
+                        this.ruta.snapshot.routeConfig?.path === 'auth/reset-password';
+
+    
   }
 
   // Método para cerrar el modal
@@ -84,7 +97,14 @@ export class AuthModalComponent implements OnInit {
       this.modalService.closeModal();
     }
   }
+  //Metodo para manejar el evento del footerLink
+  onFooterLinkClicked() {
+    this.footerLinClicked.emit();
+    this.closeModal();
+    this.router.navigate([this.footerAction]);
+  }
 
+  //enviar formulario
   onSubmit() {
     if (this.authForm.valid) {
 
@@ -126,7 +146,11 @@ export class AuthModalComponent implements OnInit {
     if (response.accessToken && response.refreshToken) {
       this.apiService.setTokens(response.accessToken, response.refreshToken);
     }
+    this.authForm.reset(); //limpiar formulario
     this.closeModal();
+    if (this.title === 'Regístrate') {
+      this.router.navigate(['/home']); // Redirige solo si el registro fue exitoso
+    }
   }
 
   private errorHandling(errorMessage: string, error: any) {

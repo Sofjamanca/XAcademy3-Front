@@ -27,13 +27,18 @@ export class ApiService {
       })
     );
   }
-  
-  logout(): void {
-    localStorage.removeItem('token'); // Elimina el token
-    this.authStateService.setAuthState(false); // Actualiza el estado de autenticación
-    // Actualizar el estado de autenticación
-    this.authStateService.setAuthState(false);
+  logout(): Observable<any> {
+    const refresh = this.getRefreshToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${refresh}`);
+    return this.http.post(`${this.apiUrl}/logout`, {}, { headers }).pipe(
+      tap((response: any) => {
+        this.clearTokens(); //limpio los tokens
+        this.authStateService.setAuthState(false); //actualizo el estado de autenticacion
+      })
+    );
   }
+  
+  
 
   register(name: string, lastname: string, email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, { name, lastname, email, password });
