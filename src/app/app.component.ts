@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgFor } from '@angular/common';
@@ -9,20 +9,23 @@ import { LandingPageComponent } from "./views/landing-page/landing-page.componen
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { MaterialModule } from './material/material.module';
 
-
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    HeaderComponent,LandingPageComponent, CardComponent, NgFor,
-    RouterOutlet, MaterialModule, FooterComponent, CommonModule, CreateCourseComponent,
+    HeaderComponent,
+    LandingPageComponent, 
+    CardComponent, 
+    NgFor,
+    RouterOutlet, 
+    MaterialModule, 
+    FooterComponent, 
+    CommonModule, 
+    CreateCourseComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'XAcademy3-Front';
-
-
-
 }

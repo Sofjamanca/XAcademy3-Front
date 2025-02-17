@@ -9,12 +9,24 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { Course } from '../../../core/models/course.model';
+import { CoursesService } from '../../../services/courses/courses.service';
+import { TeacherService } from '../../../services/teacher/teacher.service';
+import { Teacher } from '../../../core/models/teacher.model';
 
 @Component({
   selector: 'app-create-course',
   standalone: true,
-  imports: [MatIconModule, CommonModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, MatInputModule,
-    RouterModule, MatDatepickerModule, MatNativeDateModule
+  imports: [
+    MatIconModule, 
+    CommonModule, 
+    ReactiveFormsModule, 
+    MatFormFieldModule, 
+    MatSelectModule, 
+    MatInputModule,
+    RouterModule, 
+    MatDatepickerModule, 
+    MatNativeDateModule
   ],
   templateUrl: './create-course.component.html',
   styleUrl: './create-course.component.css'
@@ -22,15 +34,26 @@ import { Router } from '@angular/router';
 export class CreateCourseComponent implements OnInit {
   cursoForm!: FormGroup;
   duraciones = ['20 horas', '40 horas', '60 horas'];
-  profesores = ['Juan Chávez', 'María López', 'Carlos Pérez'];
-  modalidades = ['Presencial', 'Virtual', 'Híbrido'];
-  categorias = ['Tecnología', 'Negocios', 'Salud', 'Arte', 'Gastronomía'];
+  profesores: Teacher[] = [];
+  modalidades = ['PRESENCIAL', 'VIRTUAL', 'HÍBRIDO'];
+  categorias: any[] = [];
   imagenSeleccionada: boolean = false;
   minFechaFin: Date | null = null;
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(
+    private fb: FormBuilder, 
+    private router: Router, 
+    private coursesService: CoursesService,
+    private teacherService: TeacherService
+  ) {}
 
   ngOnInit(): void {
+    this.initForm();
+    this.getCategories();
+    this.getTeachers();
+  }
+
+  private initForm(): void {
     this.cursoForm = this.fb.group(
       {
         nombre: ['', Validators.required],
@@ -43,10 +66,34 @@ export class CreateCourseComponent implements OnInit {
         fin: ['', Validators.required],
         precio: ['', [Validators.required, Validators.min(0)]],
         cupo: ['', [Validators.required, Validators.min(1)]],
-        card: [null, Validators.required]
+        card: [null]
       },
       { validators: this.validarFechas }
     );
+  }
+
+  getCategories() {
+    this.coursesService.getCategories().subscribe({
+      next: (categories) => {
+        console.log('Categorías recibidas:', categories);
+        this.categorias = categories;
+      },
+      error: (error) => {
+        console.error('Error al obtener categorías:', error);
+      }
+    });
+  }
+
+  getTeachers() {
+    this.teacherService.getTeachers().subscribe({
+      next: (teachers) => {
+        console.log('Profesores recibidos:', teachers);
+        this.profesores = teachers;
+      },
+      error: (error) => {
+        console.error('Error al obtener profesores:', error);
+      }
+    });
   }
 
   validarFechas(group: FormGroup) {
@@ -66,7 +113,33 @@ export class CreateCourseComponent implements OnInit {
 
   crearCurso() {
     if (this.cursoForm.valid) {
-      console.log('Curso creado:', this.cursoForm.value);
+      const formData = this.cursoForm.value;
+      
+      const curso: Course = {
+        title: formData.nombre,
+        description: formData.descripcion,
+        hours: parseInt(formData.duracion),
+        price: formData.precio,
+        quota: formData.cupo,
+        startDate: formData.inicio,
+        endDate: formData.fin,
+        modalidad: formData.modalidad,
+        teacher_id: Number(formData.profesor),
+        category_id: Number(formData.categoria),
+        status: 'ACTIVO'
+      };
+      
+      console.log('Curso a crear:', curso);
+      
+      this.coursesService.addCourse(curso).subscribe({
+        next: (response) => {
+          console.log('Curso creado:', response);
+          this.router.navigate(['/admin/cursos']);
+        },
+        error: (error) => {
+          console.error('Error al crear el curso:', error);
+        }
+      });
     }
   }
 
@@ -78,9 +151,8 @@ export class CreateCourseComponent implements OnInit {
     }
   }
 
-
   onFileSelected1(event: any) {
-  this.imagenSeleccionada = event.target.files.length > 0;
+    this.imagenSeleccionada = event.target.files.length > 0;
   }
 
   irAHome() {

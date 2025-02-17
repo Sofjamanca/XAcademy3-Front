@@ -22,6 +22,12 @@ import { CommonModule } from '@angular/common';
 })
 
 export class CoursesPageComponent {
+  constructor(private coursesSvc: CoursesService) { }
 
+  ngOnInit() {
+    this.coursesSvc.getCourses().subscribe(courses => {
+      this.courses = courses;
+    });
+  }
 }
-
+}

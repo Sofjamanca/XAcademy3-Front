@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Category, Course } from '../../core/models/course.model';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Course } from '../../core/models/course.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoursesService {
 
-  private apiUrl: string = 'http://localhost:3001/courses/';
+  private apiUrl: string = 'http://localhost:3001/api/courses/';
 
   constructor(private http: HttpClient) { }
 
@@ -21,13 +21,32 @@ export class CoursesService {
   }
 
   addCourse(newCourse: Course): Observable<string> {
-    return this.http.post<string>(this.apiUrl, newCourse);
+    return this.http.post<string>(`${this.apiUrl}create`, newCourse);
   }
 
   updateCourse(course: Course): Observable<string> {
     return this.http.put<string>(`${this.apiUrl}${course.id}`, course);
   }
 
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(`${this.apiUrl}categories`);
+  }
+
+  addCategory(newCategory: Category): Observable<string> {
+    return this.http.post<string>(`${this.apiUrl}categories/create`, newCategory);
+  }
+
+  getCategoryById(id: number): Observable<Category> {
+    return this.http.get<Category>(`${this.apiUrl}categories/${id}`);
+  }
+
+  updateCategory(category: Category): Observable<string> {
+    return this.http.put<string>(`${this.apiUrl}categories/${category.id}`, category);
+  }
+
+  getCoursesCount(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}count`);
+  }
   // disableCourse(id: number): Observable<string> {
   // }
 
@@ -35,62 +54,6 @@ export class CoursesService {
   // enableCourse(id: number): Observable<string> {
   // }
 
-  courses: Course[] = [
-    {
-      title: 'Curso de Plomería',
-      description: 'Aprende a instalar tuberías y sistemas de agua en tu hogar',
-      price: 100,
-      updatedAt: '2024-01-10T12:00:00Z',
-    },
-    {
-      title: 'Curso de Electricidad',
-      description: 'Aprende a instalar cables y sistemas eléctricos en tu hogar',
-      price: 50,
-      updatedAt: '2024-02-10T12:00:00Z',
-    },
-    {
-      title: 'Curso de Ceramica',
-      description: 'Aprende todo sobre la ceramica',
-      price: 0,
-      updatedAt: '2024-03-10T12:00:00Z',
-    },
-    {
-      title: 'Curso de Fotografia',
-      description: 'Aprende todo sobre la ceramica',
-      price: 0,
-      updatedAt: '2024-04-10T12:00:00Z',
-    },
-    {
-      title: 'Curso de Cocina',
-      description: 'Aprende todo sobre la ceramica',
-      price: 10,
-      updatedAt: '2024-05-10T12:00:00Z',
-    },
-    {
-      title: 'Curso de Tejido',
-      description: 'Aprende todo sobre la ceramica',
-      price: 20,
-      updatedAt: '2024-06-10T12:00:00Z',
-    },
-    {
-      title: 'Curso de Costura',
-      description: 'Aprende todo sobre la ceramica',
-      price: 70,
-      updatedAt: '2024-07-10T12:00:00Z',
-    },
-    {
-      title: 'Curso de Uñas',
-      description: 'Aprende todo sobre la ceramica',
-      price: 60,
-      updatedAt: '2024-08-10T12:00:00Z',
-    },
-    {
-      title: 'Curso de Maquillaje',
-      description: 'Aprende todo sobre la ceramica',
-      price: 0,
-      updatedAt: '2024-09-15T08:30:00Z',
-    }
-  ];
 
   private filterSubject = new BehaviorSubject<string>('todos');
   private orderSubject = new BehaviorSubject<string>('fecha');

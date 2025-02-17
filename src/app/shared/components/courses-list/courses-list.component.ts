@@ -25,6 +25,9 @@ export class CoursesListComponent implements OnInit, OnDestroy {
   constructor(private coursesSvc: CoursesService) { }
 
   ngOnInit() {
+    this.coursesSvc.getCourses().subscribe(courses => {
+      this.courses = courses;
+    });
     this.courses = this.coursesSvc.courses || [];
     this.filteredCourses = [...this.courses];
     this.filterSubscription = this.coursesSvc.filter$.subscribe(filter => {

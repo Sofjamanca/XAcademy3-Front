@@ -23,7 +23,9 @@
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Categoría</mat-label>
         <mat-select formControlName="categoria">
-          <mat-option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</mat-option>
+          <mat-option *ngFor="let categoria of categorias" [value]="categoria.id">
+            {{ categoria.title }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
@@ -32,7 +34,9 @@
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Profesor</mat-label>
         <mat-select formControlName="profesor">
-          <mat-option *ngFor="let profesor of profesores" [value]="profesor">{{ profesor }}</mat-option>
+          <mat-option *ngFor="let profesor of profesores" [value]="profesor.user_id">
+            {{ profesor.user.name }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
 
