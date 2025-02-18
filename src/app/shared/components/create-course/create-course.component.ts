@@ -13,7 +13,7 @@ import { Course } from '../../../core/models/course.model';
 import { CoursesService } from '../../../services/courses/courses.service';
 import { TeacherService } from '../../../services/teacher/teacher.service';
 import { Teacher } from '../../../core/models/teacher.model';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-create-course',
   standalone: true,
@@ -44,7 +44,8 @@ export class CreateCourseComponent implements OnInit {
     private fb: FormBuilder, 
     private router: Router, 
     private coursesService: CoursesService,
-    private teacherService: TeacherService
+    private teacherService: TeacherService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -135,9 +136,11 @@ export class CreateCourseComponent implements OnInit {
       this.coursesService.addCourse(curso).subscribe({
         next: (response) => {
           console.log('Curso creado:', response);
+          this.openSnackBar('Curso creado exitosamente', 'Cerrar');
           this.router.navigate(['/admin/cursos']);
         },
         error: (error) => {
+          this.openSnackBar(`Error al crear el curso: ${error.message}`, 'Cerrar');
           console.error('Error al crear el curso:', error);
         }
       });
@@ -159,4 +162,10 @@ export class CreateCourseComponent implements OnInit {
   irAHome() {
     this.router.navigate(['/home']);
   }
+
+  private openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, { duration: 3000 });
+  }
+  
 }
+
