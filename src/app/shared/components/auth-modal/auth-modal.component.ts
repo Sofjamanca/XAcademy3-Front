@@ -132,9 +132,10 @@ export class AuthModalComponent implements OnInit {
     const { email, password } = this.authForm.value;
     this.apiService.login(email, password).subscribe({
       next: (response) => {
-        this.successfulManagement(response);
         localStorage.setItem('token', response.token);
         localStorage.setItem('userName', response.user.name);
+        localStorage.setItem('role', response.user.role);
+        this.successfulManagement(response);       
         this.authStateService.setAuthState(true);
       },
       error: (error) => this.errorHandling('Error al iniciar sesión', error)
@@ -145,11 +146,15 @@ export class AuthModalComponent implements OnInit {
     console.log('Respuesta exitosa:', response);
     if (response.accessToken && response.refreshToken) {
       this.apiService.setTokens(response.accessToken, response.refreshToken);
+      window.location.reload();
+      this.router.navigate(['/']);
     }
     this.authForm.reset(); //limpiar formulario
     this.closeModal();
     if (this.title === 'Regístrate') {
-      this.router.navigate(['/home']); // Redirige solo si el registro fue exitoso
+      window.location.reload()
+      this.router.navigate(['/']); // Redirige solo si el registro fue exitoso
+      
     }
   }
 

@@ -1,0 +1,36 @@
+import { Component, inject, OnInit } from '@angular/core';
+import { MaterialModule } from '../../../../material/material.module';
+import { ApiService } from '../../../../services/api.service';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-user-menu',
+  standalone: true,
+  imports: [MaterialModule, CommonModule],
+  templateUrl: './user-menu.component.html',
+  styleUrl: './user-menu.component.css'
+})
+export class UserMenuComponent implements OnInit{
+  apiService = inject(ApiService);
+
+  constructor(private router: Router){}
+
+  ngOnInit(): void {
+  }
+
+  logout() {
+    this.apiService.logout().subscribe({
+      next: () => {
+        window.location.reload()
+        this.router.navigate(['/home']);
+
+      },
+      error: (error) => {
+        console.error('Error al cerrar sesión', error);
+      }
+    });
+  }
+
+
+}

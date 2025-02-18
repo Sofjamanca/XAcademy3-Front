@@ -30,13 +30,15 @@ export class ApiService {
   logout(): Observable<any> {
     const refresh = this.getRefreshToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${refresh}`);
+  
     return this.http.post(`${this.apiUrl}/logout`, {}, { headers }).pipe(
-      tap((response: any) => {
-        this.clearTokens(); //limpio los tokens
-        this.authStateService.setAuthState(false); //actualizo el estado de autenticacion
+      tap(() => {
+        this.clearTokens();
+        this.authStateService.setAuthState(false);
       })
     );
   }
+  
   
   
 
@@ -74,9 +76,12 @@ export class ApiService {
   }
 
   isAuthenticated(): boolean {
-    if (typeof localStorage !== 'undefined') {
-      return !!localStorage.getItem('token');
-    }
-    return false;
+    return localStorage.getItem('token') !== null;
+  }
+  isAdmin(): boolean {
+    return localStorage.getItem('role') === 'ADMIN';
+  }
+  isStudent(): boolean {
+    return localStorage.getItem('role') === 'STUDENT';
   }
 }

@@ -6,6 +6,8 @@ import { RecoverPasswordComponent } from './views/auth/recover-password/recover-
 import { LandingPageComponent } from './views/landing-page/landing-page.component';
 import { CreateCourseComponent } from './shared/components/create-course/create-course.component';
 import { CoursesPageComponent } from './views/courses/courses-page/courses-page.component';
+import { loginGuard } from './guards/login.guards';
+import { admiGuard } from './guards/admi.guard';
 export const routes: Routes = [
     {
         path: 'home',
@@ -25,7 +27,10 @@ export const routes: Routes = [
     },
     {
         path:'create-course',
-        component:CreateCourseComponent
+        component:CreateCourseComponent,
+        canActivateChild: [loginGuard],
+        canActivate: [admiGuard]       
+        
     },
     {
       path:'courses',

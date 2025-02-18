@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { LogBtnComponent } from '../buttons/log-btn/log-btn.component';
 import { RegisterBtnComponent } from '../buttons/register-btn/register-btn.component';
 import { HeaderMenuComponent } from './header-menu/header-menu.component';
@@ -11,8 +11,9 @@ import { RegisterComponent } from '../../../views/auth/register/register.compone
 import { RecoverPasswordComponent } from '../../../views/auth/recover-password/recover-password.component';
 import { MaterialModule } from '../../../material/material.module';
 import { ApiService } from '../../../services/api.service';
+
 import { AuthStateServiceService } from '../../../services/state/auth-state-service.service';
-import { Router } from '@angular/router';
+import { UserMenuComponent } from "./user-menu/user-menu.component";
 
 
 
@@ -25,29 +26,26 @@ import { Router } from '@angular/router';
     LogBtnComponent,
     HeaderMenuComponent,
     SearchInputComponent,
-    CommonModule
-  ],
+    CommonModule,
+    UserMenuComponent
+],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent {
-  isAuthenticated = false;
+export class HeaderComponent implements OnInit{
   userName : string | null = null;
+  apiService = inject(ApiService);
+  authStateService = inject(AuthStateServiceService);
 
   constructor(private modalService: ModalService,
-    private apiService: ApiService,
-    private authStateService: AuthStateServiceService,
-    private router: Router
-  ){
-    this.authStateService.checkAuthState(); // Verifica el estado de autenticación al cargar la página
-    this.authStateService.isAuthenticated$.subscribe((isAuth) => {
-      this.isAuthenticated = isAuth;
-      if(isAuth){
-        this.userName = localStorage.getItem('userName');
-      }else{
-        this.userName = null;
-      }
-    });
+    
+  ){  
+    
+  }
+  ngOnInit(): void {
+    if (typeof window !== 'undefined') {
+      this.userName = localStorage.getItem('userName');
+    }
   }
 
   imgLogo: string = "/assets/images/logo.png";
@@ -68,16 +66,7 @@ export class HeaderComponent {
   openLogin() {
     this.modalService.openModal(LoginComponent, { title: 'Explora, Aprende, Crece' });
   }
-  logout() {
-    this.apiService.logout().subscribe({
-      next: () => {
-        this.router.navigate(['/']);
-      },
-      error: (error) => {
-        console.error('Error al cerrar sesión', error);
-      }
-    });
-  }
+ 
   openRegister() {
     this.modalService.openModal(RegisterComponent, {title: 'Registrarse' });
   }
