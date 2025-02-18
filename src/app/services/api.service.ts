@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, from, map, mergeMap } from 'rxjs';
 import { AuthStateServiceService } from './state/auth-state-service.service';
+import { Auth, getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import { AuthStateServiceService } from './state/auth-state-service.service';
 export class ApiService {
 
   private apiUrl = 'http://localhost:3001/api/auth'; // Agregado el prefijo /api/auth
-
+  private _auth = inject(Auth);
 
   constructor(private http: HttpClient,
     private authStateService: AuthStateServiceService
@@ -71,6 +72,7 @@ export class ApiService {
   clearTokens(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('userName');
   }
 
   isAuthenticated(): boolean {
@@ -83,4 +85,54 @@ export class ApiService {
   getUsersCount(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/users/count`);
   }
+
+  signInWithGoogle(): Observable<any> {
+    const provider = new GoogleAuthProvider();
+    return from(signInWithPopup(this._auth, provider)).pipe(
+      map((result) => {
+        const user = result.user;
+        // Enviamos los datos relevantes al backend
+        console.log(user);
+        return this.http.post(`${this.apiUrl}/login-social`, {
+          email: user.email,
+          name: user.displayName,
+          uuid: user.uid,
+        }).pipe(
+          tap((response: any) => {
+            if (response.token) {
+              localStorage.setItem('token', response.token);
+              localStorage.setItem('refreshToken', response.refreshToken);
+              this.authStateService.setAuthState(true);
+            }
+          })
+        );
+      }),
+      mergeMap(obs => obs)
+    );
+  }
+
+  signInWithFacebook(): Observable<any> {
+    const provider = new FacebookAuthProvider();
+    return from(signInWithPopup(this._auth, provider)).pipe(
+      map((result) => {
+        const user = result.user;
+        console.log(user);
+        return this.http.post(`${this.apiUrl}/login-social`, {
+          email: user.email,
+          name: user.displayName,
+          uuid: user.uid,
+        }).pipe(
+          tap((response: any) => {
+            if (response.token) {
+              localStorage.setItem('token', response.token);
+              localStorage.setItem('refreshToken', response.refreshToken);
+              this.authStateService.setAuthState(true);
+            }
+          })
+        );
+      }),
+      mergeMap(obs => obs)
+    );
+  }
+
 }
