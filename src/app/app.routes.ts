@@ -11,6 +11,8 @@ import { admiGuard } from './guards/admi.guard';
 import { AdminLayoutComponent } from './views/admin/admin-layout/admin-layout.component';
 import { HomeComponent } from './views/admin/home/home.component';
 import { CoursesListComponent } from './views/admin/courses/courses-list/courses-list.component';
+import { CourseComponent } from './shared/components/course/course.component';
+
 
 export const routes: Routes = [
     {
@@ -38,6 +40,10 @@ export const routes: Routes = [
     {
         path: 'courses',
         component: CoursesPageComponent
+    },
+    { 
+        path: 'course/:id', 
+      component: CourseComponent 
     },
     {
         path: 'admin',
