@@ -1,17 +1,23 @@
 import { inject } from "@angular/core";
 import { Router } from "@angular/router";
 import { ApiService } from "../services/api.service";
-import { Console } from "console";
+import { isPlatformBrowser } from "@angular/common";
+import { PLATFORM_ID } from "@angular/core";
 
-export const loginGuard = ()=>{
+export const loginGuard = () => {
     const router = inject(Router);
-    
-    if(localStorage.getItem('token')){
+    const platformId = inject(PLATFORM_ID);
+    const apiService = inject(ApiService);
+
+    // Durante SSR, permitimos el acceso
+    if (!isPlatformBrowser(platformId)) {
         return true;
-    }else{
+    }
+
+    if (apiService.getAuthToken()) {
+        return true;
+    } else {
         router.navigate(['/']);
         return false;
     }
-
-
 }

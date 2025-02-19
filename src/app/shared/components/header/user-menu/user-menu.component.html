@@ -2,7 +2,7 @@
     <mat-icon>person</mat-icon>
     <span>Perfil</span>
   </button>
-  <button mat-menu-item *ngIf="apiService.isAdmin()">
+  <button mat-menu-item *ngIf="apiService.isAdmin()" (click)="goToAdmin()">
     <mat-icon>book</mat-icon>
     <span >Panel de administrador</span>
   </button>

@@ -35,7 +35,7 @@ import { UserMenuComponent } from "./user-menu/user-menu.component";
 export class HeaderComponent implements OnInit{
   userName : string | null = null;
   apiService = inject(ApiService);
-  authStateService = inject(AuthStateServiceService);
+  authStateService = inject(AuthStateServiceService);  
 
   constructor(private modalService: ModalService,
     

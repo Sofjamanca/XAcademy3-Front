@@ -189,6 +189,7 @@ export class AuthModalComponent implements OnInit {
         localStorage.setItem('userName', response.user.name);
         this.authStateService.setAuthState(true);
         this.openSnackBar('Inicio de sesión con Google exitoso', 'Cerrar');
+        window.location.reload();
       },
       error: (error) => {
         this.loading = false;
@@ -207,6 +208,7 @@ export class AuthModalComponent implements OnInit {
         localStorage.setItem('userName', response.user.name);
         this.authStateService.setAuthState(true);
         this.openSnackBar('Inicio de sesión con Facebook exitoso', 'Cerrar');
+        window.location.reload();
       },
       error: (error) => {
         this.loading = false;

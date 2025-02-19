@@ -31,5 +31,8 @@ export class UserMenuComponent implements OnInit{
     });
   }
 
+  goToAdmin() {
+    this.router.navigate(['/admin']);
+  }
 
 }
