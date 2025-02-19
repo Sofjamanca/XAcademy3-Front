@@ -33,12 +33,12 @@ export class FilterComponent {
 
   constructor(private coursesSvc: CoursesService) { }
 
-  onFilterSelected(value: string) {
+  /*onFilterSelected(value: string) {
     this.coursesSvc.setFilter(value);
   }
 
   onOrderSelected(value: string) {
     this.coursesSvc.setOrder(value);
-  }
+  }*/
 
 }

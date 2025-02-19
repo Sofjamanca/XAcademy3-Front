@@ -1,7 +1,8 @@
 <mat-card class="card">
-    <mat-card-title class="card-title">
-        {{title}}
-    </mat-card-title>
+  <mat-card-header>
+    <mat-card-title class="card-title">{{title}}</mat-card-title>
+    <mat-card-subtitle>{{category}}</mat-card-subtitle>
+  </mat-card-header>
 
     <img *ngIf="image" mat-card-image [src]="image" [alt]="title">
 
@@ -16,6 +17,7 @@
           >{{action}}
         </shared-register-btn>
       </div>
-
+      <mat-icon aria-hidden="false" aria-label="Example favorite border icon" fontIcon="favorite_border"></mat-icon>
     </mat-card-actions>
+
 </mat-card>

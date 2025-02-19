@@ -8,10 +8,14 @@ import { CreateCourseComponent } from './shared/components/create-course/create-
 import { CoursesPageComponent } from './views/courses/courses-page/courses-page.component';
 import { loginGuard } from './guards/login.guards';
 import { admiGuard } from './guards/admi.guard';
+import { AdminLayoutComponent } from './views/admin/admin-layout/admin-layout.component';
+import { HomeComponent } from './views/admin/home/home.component';
+import { CoursesListComponent } from './views/admin/courses/courses-list/courses-list.component';
+
 export const routes: Routes = [
     {
         path: 'home',
-        component:LandingPageComponent
+        component: LandingPageComponent
     },
     {
         path:'auth/login',
@@ -30,27 +34,47 @@ export const routes: Routes = [
         component:CreateCourseComponent,
         canActivateChild: [loginGuard],
         canActivate: [admiGuard]       
-        
     },
     {
-      path:'courses',
-      component: CoursesPageComponent
+        path: 'courses',
+        component: CoursesPageComponent
     },
     {
-      path: '',
-      redirectTo: '/home',
-      pathMatch: 'full'
+        path: 'admin',
+        component: AdminLayoutComponent,
+        children: [
+            {
+                path: '',
+                component: HomeComponent
+            },
+            {
+                path: 'cursos',
+                component: CoursesListComponent
+            },
+            {
+                path: 'cursos/crear',
+                component: CreateCourseComponent
+            },
+            {
+                path: 'cursos/editar/:id',
+                component: CreateCourseComponent
+            }
+        ]
     },
     {
-      path: '**',
-      redirectTo: 'home',
-      pathMatch: 'full'
-      },
-    ];
+        path: '',
+        redirectTo: '/home',
+        pathMatch: 'full'
+    },
+    {
+        path: '**',
+        redirectTo: 'home',
+        pathMatch: 'full'
+    }
+];
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
-    exports:[RouterModule]
+    exports: [RouterModule]
 })
-
-export class AppRoutingModel{}
+export class AppRoutingModel {}

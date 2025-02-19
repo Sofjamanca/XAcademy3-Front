@@ -5,6 +5,8 @@ import { FilterComponent } from '../../../shared/components/filter/filter.compon
 import { CategoriesComponent } from '../../../shared/components/categories/categories.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { CommonModule } from '@angular/common';
+import { CoursesService } from '../../../services/courses/courses.service';
+import { Course } from '../../../core/models/course.model';
 
 @Component({
   selector: 'views-courses-page',
@@ -12,8 +14,8 @@ import { CommonModule } from '@angular/common';
   imports: [
     CoursesListComponent,
     MaterialModule,
-    FilterComponent,
-    CategoriesComponent,
+    //FilterComponent,
+    //CategoriesComponent,
     PaginationComponent,
     CommonModule
   ],
@@ -22,6 +24,12 @@ import { CommonModule } from '@angular/common';
 })
 
 export class CoursesPageComponent {
+  courses?: Course[] = [];
+  constructor(private coursesSvc: CoursesService) { }
 
+  ngOnInit() {
+    this.coursesSvc.getCourses().subscribe(courses => {
+      this.courses = courses;
+    });
+  }
 }
-

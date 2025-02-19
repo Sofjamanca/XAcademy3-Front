@@ -43,3 +43,6 @@ Thumbs.db
 
 # Codigo eliminado
 /codigo-eliminado
+
+# Environments
+/src/environments

@@ -15,7 +15,7 @@ import { RegisterComponent } from '../../../views/auth/register/register.compone
 import { response } from 'express';
 import { error } from 'console';
 import { AuthStateServiceService } from '../../../services/state/auth-state-service.service';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 // import { MaterialModule } from '../../../material/material.module';
 
 
@@ -71,7 +71,8 @@ export class AuthModalComponent implements OnInit {
     private apiService: ApiService,
     private router: Router,
     private authStateService: AuthStateServiceService,
-    private ruta: ActivatedRoute
+    private ruta: ActivatedRoute,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {                       
@@ -122,8 +123,14 @@ export class AuthModalComponent implements OnInit {
   private logManagement() { //registro
     const { name, lastname, email, password } = this.authForm.value;
     this.apiService.register(name, lastname, email, password).subscribe({
-      next: (response) => this.successfulManagement(response),
-      error: (error) => this.errorHandling('Error al registrarse', error),
+      next: (response) => {
+        this.successfulManagement(response)
+        this.openSnackBar('Registro exitoso. Inicia sesión para continuar', 'Cerrar');
+      },
+      error: (error) => {
+        this.errorHandling('Error al registrarse', error)
+        this.openSnackBar(`Error al registrarse: ${error.error.message}`, 'Cerrar');
+      },
       complete: () => this.loading = false
     });
     window.location.reload();
@@ -139,8 +146,9 @@ export class AuthModalComponent implements OnInit {
         this.successfulManagement(response);       
         this.authStateService.setAuthState(true);
         window.location.reload();
+        this.openSnackBar('Inicio de sesión exitoso', 'Cerrar');
       },
-      error: (error) => this.errorHandling('Error al iniciar sesión', error)
+      error: (error) => this.openSnackBar(`Error: ${error.error.message}`, 'Cerrar')
     });
   }
 
@@ -165,6 +173,47 @@ export class AuthModalComponent implements OnInit {
     this.errorMessage = errorMessage;
     console.error('Error:', error);
     this.loading = false;
+    this.openSnackBar(`Error: ${error.error.message}`, 'Cerrar');
+  }
+
+  private openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, { duration: 3000 });
+  }
+
+  signInWithGoogle() {
+    this.loading = true;
+    this.apiService.signInWithGoogle().subscribe({
+      next: (response) => {
+        this.successfulManagement(response);
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('userName', response.user.name);
+        this.authStateService.setAuthState(true);
+        this.openSnackBar('Inicio de sesión con Google exitoso', 'Cerrar');
+      },
+      error: (error) => {
+        this.loading = false;
+        console.error('Error al iniciar sesión con Google:', error);
+        this.openSnackBar('Error al iniciar sesión con Google', 'Cerrar');
+      }
+    });
+  }
+
+  signInWithFacebook() {
+    this.loading = true;
+    this.apiService.signInWithFacebook().subscribe({
+      next: (response) => {
+        this.successfulManagement(response);
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('userName', response.user.name);
+        this.authStateService.setAuthState(true);
+        this.openSnackBar('Inicio de sesión con Facebook exitoso', 'Cerrar');
+      },
+      error: (error) => {
+        this.loading = false;
+        console.error('Error al iniciar sesión con Facebook:', error);
+        this.openSnackBar('Error al iniciar sesión con Facebook', 'Cerrar');
+      }
+    });
   }
 
 }
