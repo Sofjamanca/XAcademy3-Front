@@ -16,6 +16,7 @@ import { MaterialModule } from '../../../material/material.module';
 })
 export class CardComponent {
   @Input() title: string = '';
+  @Input() category: string = '';
   @Input() description: string = '';
   @Input() action: string = '';
   @Input() image: string = '';
