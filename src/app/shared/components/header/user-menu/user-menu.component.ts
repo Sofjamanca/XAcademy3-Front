@@ -22,7 +22,6 @@ export class UserMenuComponent implements OnInit{
   logout() {
     this.apiService.logout().subscribe({
       next: () => {
-        window.location.reload()
         this.router.navigate(['/home']);
 
       },

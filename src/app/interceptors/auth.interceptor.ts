@@ -22,7 +22,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         return usuariosService.refreshToken().pipe(
           switchMap((res) => {
             const token = res.accessToken;//se guarda el nuevo token
-            localStorage.setItem('token', token);
+            usuariosService.setTokens(token, res.refreshToken);
 
             const newReq = req.clone({//intenta de nuevo la peticion con el token nuevo
               setHeaders: {

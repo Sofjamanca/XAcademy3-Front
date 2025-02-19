@@ -126,6 +126,7 @@ export class AuthModalComponent implements OnInit {
       error: (error) => this.errorHandling('Error al registrarse', error),
       complete: () => this.loading = false
     });
+    window.location.reload();
   }
 
   private accessManagent() {//login
@@ -137,6 +138,7 @@ export class AuthModalComponent implements OnInit {
         localStorage.setItem('role', response.user.role);
         this.successfulManagement(response);       
         this.authStateService.setAuthState(true);
+        window.location.reload();
       },
       error: (error) => this.errorHandling('Error al iniciar sesión', error)
     });
@@ -146,14 +148,15 @@ export class AuthModalComponent implements OnInit {
     console.log('Respuesta exitosa:', response);
     if (response.accessToken && response.refreshToken) {
       this.apiService.setTokens(response.accessToken, response.refreshToken);
-      window.location.reload();
-      this.router.navigate(['/']);
+       
+      this.router.navigate(['/home']);
+     
     }
     this.authForm.reset(); //limpiar formulario
     this.closeModal();
     if (this.title === 'Regístrate') {
       window.location.reload()
-      this.router.navigate(['/']); // Redirige solo si el registro fue exitoso
+      this.router.navigate(['/home']); // Redirige solo si el registro fue exitoso
       
     }
   }
