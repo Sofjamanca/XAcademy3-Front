@@ -4,26 +4,25 @@ import { Category, Course } from '../../../core/models/course.model';
 import { CardComponent } from "../card/card.component";
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { RouterModule } from '@angular/router';
+import { MaterialModule } from '../../../material/material.module';
+import { CourseComponent } from '../course/course.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'shared-courses-list',
   standalone: true,
-  imports: [CardComponent, CommonModule],
+  imports: [CourseComponent, RouterModule,CardComponent, CommonModule, MaterialModule],
   templateUrl: './courses-list.component.html',
   styleUrl: './courses-list.component.css'
 })
 
 export class CoursesListComponent implements OnInit {
-//, OnDestroy
   courses: Course[] = [];
   categories: Category[] = [];
   btnContent: string = 'Ver curso';
-  //filteredCourses: Course[] = [];
-  //orderedCourses: Course[] = [];
-  //private filterSubscription!: Subscription;
-  //private orderSubscription!: Subscription;
-
-  constructor(private coursesSvc: CoursesService) { }
+  selectedCourseId: number | null = null;
+  constructor(private coursesSvc: CoursesService, private router:Router) { }
 
   ngOnInit() {
     this.coursesSvc.getCourses().subscribe(courses => {
@@ -35,49 +34,21 @@ export class CoursesListComponent implements OnInit {
       console.log(categories);
     })
 
-    /*this.courses = this.coursesSvc.courses || [];
-    this.filteredCourses = [...this.courses];
-    this.filterSubscription = this.coursesSvc.filter$.subscribe(filter => {
-      this.applyFilters(filter);
-    });
-    this.orderSubscription = this.coursesSvc.order$.subscribe(order => {
-      this.applyOrderFilters(order);
-    });*/
   }
 
   getCategoryTitle(category_id: number): string {
     return this.categories.find(cat => cat.id === category_id)?.title || 'Sin categoría';
   }
 
-  /*applyFilters(filter: string) {
-    if (!this.courses) return;
-
-    if (!filter || filter === 'todos') {
-      this.filteredCourses = [...this.courses];
-    } else if (filter === 'gratuitos') {
-      this.filteredCourses = this.courses.filter(course => course.price === 0);
-    } else if (filter === 'arancelados') {
-      this.filteredCourses = this.courses.filter(course => course.price > 0);
+  goToCourse(courseId?: number) {
+    if (!courseId) {
+      console.error("El ID del curso es inválido:", courseId);
+      return;
     }
-
-    this.applyOrderFilters(this.coursesSvc.getOrder());
+    console.log("🔹 Navegando a /course/", courseId);
+    this.router.navigate(['/course', courseId]);
   }
+  
+  
 
-  applyOrderFilters(order: string) {
-    if (!this.filteredCourses) return;
-
-    if (order === 'fecha') {
-      this.filteredCourses.sort((a, b) => {
-        const dateA = new Date(a.updatedAt || 0).getTime();
-        const dateB = new Date(b.updatedAt || 0).getTime();
-        return dateB - dateA;
-      });
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.filterSubscription.unsubscribe();
-    this.orderSubscription.unsubscribe();
-  }
-*/
 }

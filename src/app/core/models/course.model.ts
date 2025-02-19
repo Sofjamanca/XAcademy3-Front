@@ -1,20 +1,22 @@
 export interface Course {
-  id?: number;
+id?: number;
   title: string;
   description: string;
   image_url?: string;
   price?: number;
   quota?: number;
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: string;  
+  endDate?: string;
   hours?: number;
   modalidad?: string;
   status?: string;
+  isActive?: boolean;  
   teacher_id?: number;
-  category_id?: number
-  createAt?: Date;
-  updatedAt: string;
+  category_id?: number;
+  createdAt?: string; 
+  updatedAt?: string;
 }
+
 
 export interface Category {
   id?: number;
