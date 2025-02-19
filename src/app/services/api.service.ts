@@ -21,8 +21,11 @@ export class ApiService {
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, { email, password }).pipe(
       tap((response: any) => {
-        if (response.token) {
-          localStorage.setItem('token', response.token);
+        console.log('Respuesta login:', response);
+        if (response.token && response.refreshToken) {
+          this.setTokens(response.token, response.refreshToken);
+          localStorage.setItem('role', response.role);
+          localStorage.setItem('userName', response.userName);
           this.authStateService.setAuthState(true);
         }
       })
@@ -31,13 +34,15 @@ export class ApiService {
   logout(): Observable<any> {
     const refresh = this.getRefreshToken();
     const headers = new HttpHeaders().set('Authorization', `Bearer ${refresh}`);
+  
     return this.http.post(`${this.apiUrl}/logout`, {}, { headers }).pipe(
-      tap((response: any) => {
-        this.clearTokens(); //limpio los tokens
-        this.authStateService.setAuthState(false); //actualizo el estado de autenticacion
+      tap(() => {
+        this.clearTokens();
+        this.authStateService.setAuthState(false);
       })
     );
   }
+  
   
   
 
@@ -57,7 +62,9 @@ export class ApiService {
   }
 
   getAuthToken(): string {
-    return localStorage.getItem('token') || '';
+    const token = localStorage.getItem('token');
+    console.log('getAuthToken:', token);
+    return token || '';
   }
 
   getRefreshToken(): string {
@@ -65,6 +72,7 @@ export class ApiService {
   }
 
   setTokens(accessToken: string, refreshToken: string): void {
+    console.log('setTokens - accessToken:', accessToken, 'refreshToken:', refreshToken);
     localStorage.setItem('token', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
   }
@@ -73,13 +81,20 @@ export class ApiService {
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('userName');
+    localStorage.removeItem('role');
   }
 
   isAuthenticated(): boolean {
-    if (typeof localStorage !== 'undefined') {
-      return !!localStorage.getItem('token');
+    if(localStorage.getItem('token') !== null){
+      return true;
     }
     return false;
+  }
+  isAdmin(): boolean {
+    return localStorage.getItem('role') === 'ADMIN';
+  }
+  isStudent(): boolean {
+    return localStorage.getItem('role') === 'STUDENT';
   }
 
   getUsersCount(): Observable<number> {
@@ -91,17 +106,17 @@ export class ApiService {
     return from(signInWithPopup(this._auth, provider)).pipe(
       map((result) => {
         const user = result.user;
-        // Enviamos los datos relevantes al backend
-        console.log(user);
         return this.http.post(`${this.apiUrl}/login-social`, {
           email: user.email,
           name: user.displayName,
           uuid: user.uid,
         }).pipe(
           tap((response: any) => {
-            if (response.token) {
-              localStorage.setItem('token', response.token);
-              localStorage.setItem('refreshToken', response.refreshToken);
+            console.log('Respuesta login social:', response);
+            if (response.token && response.refreshToken) {
+              this.setTokens(response.token, response.refreshToken);
+              localStorage.setItem('role', response.role);
+              localStorage.setItem('userName', response.userName);
               this.authStateService.setAuthState(true);
             }
           })
@@ -116,16 +131,17 @@ export class ApiService {
     return from(signInWithPopup(this._auth, provider)).pipe(
       map((result) => {
         const user = result.user;
-        console.log(user);
         return this.http.post(`${this.apiUrl}/login-social`, {
           email: user.email,
           name: user.displayName,
           uuid: user.uid,
         }).pipe(
           tap((response: any) => {
-            if (response.token) {
-              localStorage.setItem('token', response.token);
-              localStorage.setItem('refreshToken', response.refreshToken);
+            console.log('Respuesta login social:', response);
+            if (response.token && response.refreshToken) {
+              this.setTokens(response.token, response.refreshToken);
+              localStorage.setItem('role', response.role);
+              localStorage.setItem('userName', response.userName);
               this.authStateService.setAuthState(true);
             }
           })

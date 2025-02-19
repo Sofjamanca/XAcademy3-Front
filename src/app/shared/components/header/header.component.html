@@ -8,7 +8,7 @@
     <div class="menu-container" [ngClass]="{'active': menuOpen}">
       <shared-header-menu [menuItems]="menuItems"></shared-header-menu>
 
-      <div *ngIf="isAuthenticated" class="user-menu">
+      <div *ngIf="apiService.isAuthenticated()" class="user-menu">
         <button mat-button [matMenuTriggerFor]="userMenu" class="user_name">
           <mat-icon>arrow_drop_down</mat-icon>
           <span>¡Hola, {{ userName }}!</span>
@@ -16,28 +16,19 @@
         </button>
       </div>
 
-      <shared-log-btn *ngIf="!isAuthenticated" (click)="openLogin()">
-        Iniciar Sesión
-      </shared-log-btn>
-
+      <div class="option_user" *ngIf="!(authStateService.isAuthenticated$ | async)">
+        <shared-log-btn (click)="openLogin()">
+          Iniciar Sesión
+        </shared-log-btn>
+        <shared-register-btn (click)="openRegister()">
+          Registrarse
+        </shared-register-btn>
+      </div>
       <mat-menu #userMenu="matMenu">
-        <button mat-menu-item>
-          <mat-icon>person</mat-icon>
-          <span>Perfil</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>book</mat-icon>
-          <span>Mis Cursos</span>
-        </button>
-        <button mat-menu-item (click)="logout()">
-          <mat-icon>exit_to_app</mat-icon>
-          <span>Salir</span>
-        </button>
+        <app-user-menu></app-user-menu>
       </mat-menu>
       
-      <shared-register-btn *ngIf="!isAuthenticated" (click)="openRegister()">
-        Registrarse
-      </shared-register-btn>
+     
     </div>
 
     <button class="menu-toggle" (click)="toggleMenu()">
