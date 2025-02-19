@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CoursesService } from '../../../services/courses/courses.service';
-import { Course } from '../../../core/models/course.model';
+import { Category, Course } from '../../../core/models/course.model';
 import { CardComponent } from "../card/card.component";
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -16,9 +16,10 @@ import { Subscription } from 'rxjs';
 export class CoursesListComponent implements OnInit {
 //, OnDestroy
   courses: Course[] = [];
+  categories: Category[] = [];
+  btnContent: string = 'Ver curso';
   //filteredCourses: Course[] = [];
   //orderedCourses: Course[] = [];
-  btnContent: string = 'Ver curso';
   //private filterSubscription!: Subscription;
   //private orderSubscription!: Subscription;
 
@@ -28,6 +29,12 @@ export class CoursesListComponent implements OnInit {
     this.coursesSvc.getCourses().subscribe(courses => {
       this.courses = courses;
     });
+
+    this.coursesSvc.getCategories().subscribe(categories => {
+      this.categories = categories;
+      console.log(categories);
+    })
+
     /*this.courses = this.coursesSvc.courses || [];
     this.filteredCourses = [...this.courses];
     this.filterSubscription = this.coursesSvc.filter$.subscribe(filter => {
@@ -36,6 +43,10 @@ export class CoursesListComponent implements OnInit {
     this.orderSubscription = this.coursesSvc.order$.subscribe(order => {
       this.applyOrderFilters(order);
     });*/
+  }
+
+  getCategoryTitle(category_id: number): string {
+    return this.categories.find(cat => cat.id === category_id)?.title || 'Sin categoría';
   }
 
   /*applyFilters(filter: string) {
