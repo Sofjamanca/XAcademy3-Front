@@ -48,6 +48,8 @@ export const routes: Routes = [
     {
         path: 'admin',
         component: AdminLayoutComponent,
+        canActivateChild: [loginGuard],
+        canActivate: [admiGuard],      
         children: [
             {
                 path: '',
@@ -59,11 +61,13 @@ export const routes: Routes = [
             },
             {
                 path: 'cursos/crear',
-                component: CreateCourseComponent
+                component: CreateCourseComponent,
+                canActivate: [admiGuard]       
             },
             {
                 path: 'cursos/editar/:id',
-                component: CreateCourseComponent
+                component: CreateCourseComponent,
+                canActivate: [admiGuard]
             }
         ]
     },
