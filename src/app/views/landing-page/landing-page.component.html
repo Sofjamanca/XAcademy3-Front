@@ -6,7 +6,7 @@
       [category]="getCategoryTitle(course.category_id)"
       [description]="course.description"
       [image]="course.image_url!"
-      [action]="btnContent"
+      (actionClick)="goToCourse(course.id ?? 0)">
     ></app-card>
   </section>
 </div>

@@ -11,12 +11,7 @@
     </mat-card-content>
 
     <mat-card-actions class="card-actions">
-      <div class="container-btn">
-        <shared-register-btn
-          class="card-button"
-          >{{action}}
-        </shared-register-btn>
-      </div>
+      <button mat-raised-button color="primary" (click)="onActionClick()">Ver curso</button>
       <mat-icon aria-hidden="false" aria-label="Example favorite border icon" fontIcon="favorite_border"></mat-icon>
     </mat-card-actions>
 

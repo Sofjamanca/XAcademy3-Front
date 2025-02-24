@@ -6,9 +6,13 @@ import { RecoverPasswordComponent } from './views/auth/recover-password/recover-
 import { LandingPageComponent } from './views/landing-page/landing-page.component';
 import { CreateCourseComponent } from './shared/components/create-course/create-course.component';
 import { CoursesPageComponent } from './views/courses/courses-page/courses-page.component';
+import { loginGuard } from './guards/login.guards';
+import { admiGuard } from './guards/admi.guard';
 import { AdminLayoutComponent } from './views/admin/admin-layout/admin-layout.component';
 import { HomeComponent } from './views/admin/home/home.component';
 import { CoursesListComponent } from './views/admin/courses/courses-list/courses-list.component';
+import { CourseComponent } from './shared/components/course/course.component';
+
 
 export const routes: Routes = [
     {
@@ -28,16 +32,24 @@ export const routes: Routes = [
         component:RecoverPasswordComponent
     },
     {
-        path: 'create-course',
-        component: CreateCourseComponent
+        path:'create-course',
+        component:CreateCourseComponent,
+        canActivateChild: [loginGuard],
+        canActivate: [admiGuard]       
     },
     {
         path: 'courses',
         component: CoursesPageComponent
     },
+    { 
+        path: 'course/:id', 
+      component: CourseComponent 
+    },
     {
         path: 'admin',
         component: AdminLayoutComponent,
+        canActivateChild: [loginGuard],
+        canActivate: [admiGuard],      
         children: [
             {
                 path: '',
@@ -49,11 +61,13 @@ export const routes: Routes = [
             },
             {
                 path: 'cursos/crear',
-                component: CreateCourseComponent
+                component: CreateCourseComponent,
+                canActivate: [admiGuard]       
             },
             {
                 path: 'cursos/editar/:id',
-                component: CreateCourseComponent
+                component: CreateCourseComponent,
+                canActivate: [admiGuard]
             }
         ]
     },

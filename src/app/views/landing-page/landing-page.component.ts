@@ -4,6 +4,7 @@ import { CoursesService } from '../../services/courses/courses.service';
 import { Category, Course } from '../../core/models/course.model';
 import { CardComponent } from '../../shared/components/card/card.component';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'views-landing-page',
@@ -23,7 +24,7 @@ export class LandingPageComponent {
   categories?: Category[];
   btnContent: string = 'Ver curso';
 
-  constructor(private coursesSvc: CoursesService) { }
+  constructor(private coursesSvc: CoursesService, private router: Router) { }
 
   ngOnInit() {
     this.coursesSvc.getCourses().subscribe(courses => {
@@ -37,6 +38,15 @@ export class LandingPageComponent {
 
   getCategoryTitle(category_id?: number): string {
     return this.categories?.find(cat => cat.id === category_id)?.title || 'Sin categoría';
+  }
+
+  goToCourse(courseId?: number) {
+    if (!courseId) {
+      console.error("El ID del curso es inválido:", courseId);
+      return;
+    }
+    console.log("🔹 Navegando a /course/", courseId);
+    this.router.navigate(['/course', courseId]);
   }
 
   // onActionClick(): {

@@ -21,9 +21,9 @@ export class CardComponent {
   @Input() action: string = '';
   @Input() image: string = '';
 
-  @Output() actionClick = new EventEmitter<string>();
+  @Output() actionClick = new EventEmitter<void>();
 
-  onActionClick(action: string) {
-    this.actionClick.emit(action);
+  onActionClick() {
+    this.actionClick.emit();
   }
 }

@@ -77,25 +77,30 @@
       <input matInput formControlName="cupo" type="number">
     </mat-form-field>
 
-
-  <div class="file-upload-container">
-    <div class="file-upload" [ngClass]="{ 'imagen-seleccionada': imagenSeleccionada }">
+    <div class="file-upload-container">
+      <div class="file-upload" [ngClass]="{ 'imagen-seleccionada': imagenSeleccionada }">
         <label for="card">
           <div class="upload-icon"></div>
-            <span>Imagen</span>
+          <span>Imagen</span>
         </label>
         <input type="file" id="card" (change)="onFileSelected1($event)">
+      </div>
+      <div class="preview-container" *ngIf="imagePreview">
+        <h3>Vista previa</h3>
+        <img [src]="imagePreview" alt="Vista previa" class="preview-image">
+      </div>
     </div>
-  </div>
 
     <div class="botones-container">
       <div class="boton-container">
         <button mat-raised-button class="boton-crear" type="submit" [disabled]="cursoForm.invalid">
           Crear curso
         </button>
-    </div>
+      </div>
 
-      <button mat-raised-button class="boton-cancelar" type="button" (click)="irAHome()">Cancelar</button>
+      <button mat-raised-button class="boton-cancelar" type="button" (click)="irAHome()">
+        Cancelar
+      </button>
     </div>
   </form>
 </div>

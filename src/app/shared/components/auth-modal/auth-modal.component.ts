@@ -133,16 +133,19 @@ export class AuthModalComponent implements OnInit {
       },
       complete: () => this.loading = false
     });
+    window.location.reload();
   }
 
   private accessManagent() {//login
     const { email, password } = this.authForm.value;
     this.apiService.login(email, password).subscribe({
       next: (response) => {
-        this.successfulManagement(response);
         localStorage.setItem('token', response.token);
         localStorage.setItem('userName', response.user.name);
+        localStorage.setItem('role', response.user.role);
+        this.successfulManagement(response);       
         this.authStateService.setAuthState(true);
+        window.location.reload();
         this.openSnackBar('Inicio de sesión exitoso', 'Cerrar');
       },
       error: (error) => this.openSnackBar(`Error: ${error.error.message}`, 'Cerrar')
@@ -153,11 +156,16 @@ export class AuthModalComponent implements OnInit {
     console.log('Respuesta exitosa:', response);
     if (response.accessToken && response.refreshToken) {
       this.apiService.setTokens(response.accessToken, response.refreshToken);
+       
+      this.router.navigate(['/home']);
+     
     }
     this.authForm.reset(); //limpiar formulario
     this.closeModal();
     if (this.title === 'Regístrate') {
+      window.location.reload()
       this.router.navigate(['/home']); // Redirige solo si el registro fue exitoso
+      
     }
   }
 
@@ -181,6 +189,7 @@ export class AuthModalComponent implements OnInit {
         localStorage.setItem('userName', response.user.name);
         this.authStateService.setAuthState(true);
         this.openSnackBar('Inicio de sesión con Google exitoso', 'Cerrar');
+        window.location.reload();
       },
       error: (error) => {
         this.loading = false;
@@ -199,6 +208,7 @@ export class AuthModalComponent implements OnInit {
         localStorage.setItem('userName', response.user.name);
         this.authStateService.setAuthState(true);
         this.openSnackBar('Inicio de sesión con Facebook exitoso', 'Cerrar');
+        window.location.reload();
       },
       error: (error) => {
         this.loading = false;
