@@ -8,7 +8,6 @@ import { MaterialModule } from '../../../material/material.module';
   standalone: true,
   imports: [
     CommonModule,
-    RegisterBtnComponent,
     MaterialModule
   ],
   templateUrl: './card.component.html',

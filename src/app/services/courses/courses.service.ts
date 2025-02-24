@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Category, Course } from '../../core/models/course.model';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,6 @@ export class CoursesService {
   getCourseById(id: number): Observable<Course> {
     return this.http.get<Course>(`${this.apiUrl}view/${id}`);
   }
-  
 
   addCourse(newCourse: Course): Observable<string> {
     return this.http.post<string>(`${this.apiUrl}create`, newCourse);
@@ -54,24 +53,5 @@ export class CoursesService {
 
   // enableCourse(id: number): Observable<string> {
   // }
-
-
-  //private filterSubject = new BehaviorSubject<string>('todos');
-  //private orderSubject = new BehaviorSubject<string>('fecha');
-
-  //filter$ = this.filterSubject.asObservable();
-  //order$ = this.orderSubject.asObservable();
-
-  //setFilter(filter: string) {
-  //  this.filterSubject.next(filter);
-  //}
-
-  /*setOrder(order: string) {
-    this.orderSubject.next(order);
-  }
-
-  getOrder(): string {
-    return this.orderSubject.getValue();
-  }*/
 
 }
