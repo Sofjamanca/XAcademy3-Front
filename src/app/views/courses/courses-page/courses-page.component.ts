@@ -14,8 +14,8 @@ import { Course } from '../../../core/models/course.model';
   imports: [
     CoursesListComponent,
     MaterialModule,
-    //FilterComponent,
-    //CategoriesComponent,
+    FilterComponent,
+    CategoriesComponent,
     PaginationComponent,
     CommonModule
   ],

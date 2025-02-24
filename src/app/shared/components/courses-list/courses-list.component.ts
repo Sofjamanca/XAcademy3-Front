@@ -3,16 +3,14 @@ import { CoursesService } from '../../../services/courses/courses.service';
 import { Category, Course } from '../../../core/models/course.model';
 import { CardComponent } from "../card/card.component";
 import { CommonModule } from '@angular/common';
-import { Subscription } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../../../material/material.module';
-import { CourseComponent } from '../course/course.component';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'shared-courses-list',
   standalone: true,
-  imports: [CourseComponent, RouterModule,CardComponent, CommonModule, MaterialModule],
+  imports: [RouterModule,CardComponent, CommonModule, MaterialModule],
   templateUrl: './courses-list.component.html',
   styleUrl: './courses-list.component.css'
 })
@@ -48,7 +46,7 @@ export class CoursesListComponent implements OnInit {
     console.log("🔹 Navegando a /course/", courseId);
     this.router.navigate(['/course', courseId]);
   }
-  
-  
+
+
 
 }
