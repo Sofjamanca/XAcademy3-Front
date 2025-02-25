@@ -1,9 +1,12 @@
 import { inject } from "@angular/core";
 import { Router } from "@angular/router";
+import { LocalStorageService } from "../services/localstorage/local-storage.service";
 
 export const admiGuard = ()=>{
     const router = inject(Router);
-    const role = localStorage.getItem('role');
+    const localStorageService = inject(LocalStorageService);
+    
+    const role = localStorageService.getItem('role');
     console.log("role",role);
 
     if(role === 'STUDENT'){

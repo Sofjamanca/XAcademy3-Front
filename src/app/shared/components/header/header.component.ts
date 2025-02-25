@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { LogBtnComponent } from '../buttons/log-btn/log-btn.component';
 import { RegisterBtnComponent } from '../buttons/register-btn/register-btn.component';
 import { HeaderMenuComponent } from './header-menu/header-menu.component';
@@ -14,6 +14,9 @@ import { ApiService } from '../../../services/api.service';
 
 import { AuthStateServiceService } from '../../../services/state/auth-state-service.service';
 import { UserMenuComponent } from "./user-menu/user-menu.component";
+import { LocalStorageService } from '../../../services/localstorage/local-storage.service';
+import { User } from 'firebase/auth';
+import { UserService } from '../../../services/user/user.service';
 
 
 
@@ -32,20 +35,18 @@ import { UserMenuComponent } from "./user-menu/user-menu.component";
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent implements OnInit{
-  userName : string | null = null;
+export class HeaderComponent implements OnInit {
   apiService = inject(ApiService);
-  authStateService = inject(AuthStateServiceService);  
+  authStateService = inject(AuthStateServiceService);
 
-  constructor(private modalService: ModalService,
-    
-  ){  
-    
+  constructor(
+      private modalService: ModalService,
+      private localStorageService: LocalStorageService,
+      public userService: UserService, // userService es public
+      private cdRef: ChangeDetectorRef
+  ) {
   }
   ngOnInit(): void {
-    if (typeof window !== 'undefined') {
-      this.userName = localStorage.getItem('userName');
-    }
   }
 
   imgLogo: string = "/assets/images/logo.png";

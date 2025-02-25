@@ -1,38 +1,38 @@
 <header class="header">
   <mat-toolbar class="toolbar">
-    <div class="logo-container">
-      <img [src]="imgLogo" class="logo" alt="Logo">
-      <shared-search-input class="search-bar"></shared-search-input>
-    </div>
-
-    <div class="menu-container" [ngClass]="{'active': menuOpen}">
-      <shared-header-menu [menuItems]="menuItems"></shared-header-menu>
-
-      <div *ngIf="apiService.isAuthenticated()" class="user-menu">
-        <button mat-button [matMenuTriggerFor]="userMenu" class="user_name">
-          <mat-icon>arrow_drop_down</mat-icon>
-          <span>¡Hola, {{ userName }}!</span>
-          
-        </button>
+      <div class="logo-container">
+          <img [src]="imgLogo" class="logo" alt="Logo">
+          <shared-search-input class="search-bar"></shared-search-input>
       </div>
 
-      <div class="option_user" *ngIf="!(authStateService.isAuthenticated$ | async)">
-        <shared-log-btn (click)="openLogin()">
-          Iniciar Sesión
-        </shared-log-btn>
-        <shared-register-btn (click)="openRegister()">
-          Registrarse
-        </shared-register-btn>
-      </div>
-      <mat-menu #userMenu="matMenu">
-        <app-user-menu></app-user-menu>
-      </mat-menu>
-      
-     
-    </div>
+      <div class="menu-container" [ngClass]="{'active': menuOpen}">
+          <shared-header-menu [menuItems]="menuItems"></shared-header-menu>
 
-    <button class="menu-toggle" (click)="toggleMenu()">
-      <i class="bi bi-list"></i>
-    </button>
+          <div *ngIf="(authStateService.isAuthenticated$ | async) === true; else showLoginButtons" class="user-menu">
+            <span class="user_name">¡Hola, {{ userService.userName$ | async }}!</span>
+            <button mat-button [matMenuTriggerFor]="userMenu">
+                <mat-icon>arrow_drop_down</mat-icon>
+            </button>
+          </div>
+
+          <ng-template #showLoginButtons>
+              <div class="option_user">
+                  <shared-log-btn (click)="openLogin()">
+                      Iniciar Sesión
+                  </shared-log-btn>
+                  <shared-register-btn (click)="openRegister()">
+                      Registrarse
+                  </shared-register-btn>
+              </div>
+          </ng-template>
+
+          <mat-menu #userMenu="matMenu">
+              <app-user-menu></app-user-menu>
+          </mat-menu>
+      </div>
+
+      <button class="menu-toggle" (click)="toggleMenu()">
+          <i class="bi bi-list"></i>
+      </button>
   </mat-toolbar>
 </header>
