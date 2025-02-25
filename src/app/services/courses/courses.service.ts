@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Category, Course } from '../../core/models/course.model';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +47,14 @@ export class CoursesService {
   getCoursesCount(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}count`);
   }
+
+  searchCourses(searchTerm: string): Observable<Course[]> {
+    console.log(`Buscando cursos con término: "${searchTerm}"`);
+    return this.http.get<Course[]>(`${this.apiUrl}search/${searchTerm}`).pipe(
+      tap(results => console.log(`Resultados de búsqueda para "${searchTerm}":`, results))
+    );
+  }
+
   // disableCourse(id: number): Observable<string> {
   // }
 
