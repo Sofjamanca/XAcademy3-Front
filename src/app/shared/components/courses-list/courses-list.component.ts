@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CoursesService } from '../../../services/courses/courses.service';
 import { Category, Course } from '../../../core/models/course.model';
 import { CardComponent } from "../card/card.component";
@@ -15,24 +15,13 @@ import { Router } from '@angular/router';
   styleUrl: './courses-list.component.css'
 })
 
-export class CoursesListComponent implements OnInit {
-  courses: Course[] = [];
-  categories: Category[] = [];
+export class CoursesListComponent {
+  @Input() courses: Course[] = [];
+  @Input() categories: Category[] = [];
   btnContent: string = 'Ver curso';
   selectedCourseId: number | null = null;
+
   constructor(private coursesSvc: CoursesService, private router:Router) { }
-
-  ngOnInit() {
-    this.coursesSvc.getCourses().subscribe(courses => {
-      this.courses = courses;
-    });
-
-    this.coursesSvc.getCategories().subscribe(categories => {
-      this.categories = categories;
-      console.log(categories);
-    })
-
-  }
 
   getCategoryTitle(category_id: number): string {
     return this.categories.find(cat => cat.id === category_id)?.title || 'Sin categoría';
@@ -46,7 +35,5 @@ export class CoursesListComponent implements OnInit {
     console.log("🔹 Navegando a /course/", courseId);
     this.router.navigate(['/course', courseId]);
   }
-
-
 
 }

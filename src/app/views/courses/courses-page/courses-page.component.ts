@@ -6,7 +6,7 @@ import { CategoriesComponent } from '../../../shared/components/categories/categ
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { CommonModule } from '@angular/common';
 import { CoursesService } from '../../../services/courses/courses.service';
-import { Course } from '../../../core/models/course.model';
+import { Category, Course } from '../../../core/models/course.model';
 
 @Component({
   selector: 'views-courses-page',
@@ -14,22 +14,51 @@ import { Course } from '../../../core/models/course.model';
   imports: [
     CoursesListComponent,
     MaterialModule,
-    FilterComponent,
-    CategoriesComponent,
     PaginationComponent,
-    CommonModule
-  ],
+    CommonModule,
+    CategoriesComponent,
+    FilterComponent
+],
   templateUrl: './courses-page.component.html',
   styleUrl: './courses-page.component.css'
 })
 
 export class CoursesPageComponent {
-  courses?: Course[] = [];
+  courses: Course[] = [];
+  categories: Category[] = [];
+  selectedCategories: number[] = [];
+  selectedPrice: string = '';
+  selectedOrder: string = '';
+
   constructor(private coursesSvc: CoursesService) { }
 
   ngOnInit() {
-    this.coursesSvc.getCourses().subscribe(courses => {
-      this.courses = courses;
-    });
+    this.loadCourses();
+  }
+
+  loadCourses() {
+    this.coursesSvc.getFilteredCourses(this.selectedCategories, this.selectedPrice, this.selectedOrder)
+      .subscribe(courses => {
+        this.courses = courses;
+      });
+  }
+
+  onCategorySelected(categoryId: number, selected: boolean) {
+    if (selected) {
+      this.selectedCategories.push(categoryId);
+    } else {
+      this.selectedCategories = this.selectedCategories.filter(id => id !== categoryId);
+    }
+    this.loadCourses();
+  }
+
+  onPriceSelected(price: string) {
+    this.selectedPrice = price;
+    this.loadCourses();
+  }
+
+  onOrderSelected(orderBy: string) {
+    this.selectedOrder = orderBy;
+    this.loadCourses();
   }
 }
