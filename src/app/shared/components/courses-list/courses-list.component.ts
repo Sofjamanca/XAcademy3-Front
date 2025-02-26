@@ -15,11 +15,12 @@ import { Router } from '@angular/router';
   styleUrl: './courses-list.component.css'
 })
 
-export class CoursesListComponent implements OnInit {
+export class CoursesListComponent {
   @Input() courses: Course[] = [];
-  categories: Category[] = [];
+  @Input() categories: Category[] = [];
   btnContent: string = 'Ver curso';
   selectedCourseId: number | null = null;
+
   constructor(private coursesSvc: CoursesService, private router:Router) { }
 
   ngOnInit() {
@@ -48,4 +49,5 @@ export class CoursesListComponent implements OnInit {
     console.log("🔹 Navegando a /course/", courseId);
     this.router.navigate(['/course', courseId]);
   }
+
 }

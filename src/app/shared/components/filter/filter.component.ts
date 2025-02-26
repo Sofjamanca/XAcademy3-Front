@@ -1,5 +1,5 @@
 import { MaterialModule } from './../../../material/material.module';
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Filter } from '../../../core/models/filter.model';
 import { CoursesService } from '../../../services/courses/courses.service';
@@ -15,30 +15,29 @@ import { CoursesService } from '../../../services/courses/courses.service';
   styleUrl: './filter.component.css'
 })
 export class FilterComponent {
-
-  selectedValue = '';
-  selectedPrice = '';
+  @Output() priceSelected = new EventEmitter<string>();
+  @Output() orderSelected = new EventEmitter<string>();
 
   orders: Filter[] = [
-    {value: 'recomendados', viewValue: 'Recomendados'},
-    {value: 'fecha', viewValue: 'Fecha de actualización'},
-    {value: 'populares', viewValue: 'Populares'},
+    { value: 'recomendados', viewValue: 'Recomendados' },
+    { value: 'fecha', viewValue: 'Fecha de actualización' },
+    { value: 'populares', viewValue: 'Populares' },
   ];
 
   prices: Filter[] = [
-    {value: 'todos', viewValue: 'Todos'},
-    {value: 'gratuitos', viewValue: 'Gratuitos'},
-    {value: 'arancelados', viewValue: 'Arancelados'},
+    { value: '', viewValue: 'Todos' },
+    { value: 'gratuitos', viewValue: 'Gratuitos' },
+    { value: 'arancelados', viewValue: 'Arancelados' },
   ];
 
-  constructor(private coursesSvc: CoursesService) { }
+  constructor(private coursesSvc: CoursesService) {}
 
-  onFilterSelected(value: string) {
-    // this.coursesSvc.setFilter(value);
+  onPriceSelected(value: string) {
+    this.priceSelected.emit(value);
   }
 
   onOrderSelected(value: string) {
-    // this.coursesSvc.setOrder(value);
+    this.orderSelected.emit(value);
   }
-
 }
+

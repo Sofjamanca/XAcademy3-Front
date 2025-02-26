@@ -10,7 +10,7 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Selecciona</mat-label>
-    <mat-select (selectionChange)="onFilterSelected($event.value)">
+    <mat-select (selectionChange)="onPriceSelected($event.value)">
       <option value="" selected></option>
       @for (price of prices; track price) {
         <mat-option [value]="price.value">{{price.viewValue}}</mat-option>

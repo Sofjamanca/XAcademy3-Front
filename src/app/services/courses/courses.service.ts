@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Category, Course } from '../../core/models/course.model';
 import { Observable, tap } from 'rxjs';
@@ -61,5 +61,21 @@ export class CoursesService {
 
   // enableCourse(id: number): Observable<string> {
   // }
+
+  getFilteredCourses(categories: number[], price: string, orderBy: string): Observable<Course[]> {
+    let params = new HttpParams();
+
+    if (categories.length > 0) {
+      params = params.set('categories', categories.join(','));
+    }
+    if (price) {
+      params = params.set('price', price);
+    }
+    if (orderBy) {
+      params = params.set('orderBy', orderBy);
+    }
+
+    return this.http.get<Course[]>(`${this.apiUrl}filter`, { params });
+  }
 
 }
