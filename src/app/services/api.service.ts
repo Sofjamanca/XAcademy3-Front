@@ -1,10 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
-import { Observable, tap, from, map, mergeMap } from 'rxjs';
+import { Observable, tap, from, map, mergeMap, catchError, throwError } from 'rxjs';
 import { AuthStateServiceService } from './state/auth-state-service.service';
-import { Auth, getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from '@angular/fire/auth';
+import { Auth, getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, sendPasswordResetEmail, confirmPasswordReset, verifyPasswordResetCode } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -50,8 +49,63 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/register`, { name, lastname, email, password });
   }
 
-  resetPassword(email: string, oldPassword: string, newPassword: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/reset-password`, { email, oldPassword, newPassword });
+  resetPassword(oobCode: string, newPassword: string): Observable<any> {
+    const auth = getAuth();
+    
+    return from(verifyPasswordResetCode(auth, oobCode)).pipe(
+
+      mergeMap((email) => {
+        return from(confirmPasswordReset(auth, oobCode, newPassword)).pipe(
+          mergeMap(() => {
+            return this.http.post(`${this.apiUrl}/reset-password`, { 
+              email, 
+              newPassword
+            }).pipe(
+              tap(() => {
+                console.log('Contraseña actualizada exitosamente en Firebase y backend');
+              })
+            );
+          })
+        );
+      }),
+      map(() => ({ success: true })),
+      catchError((error) => {
+        let errorMessage = 'Error al restablecer la contraseña';
+        console.error('Error completo:', error);
+        
+        if (error.code) { // Errores de Firebase
+          switch (error.code) {
+            case 'auth/expired-action-code':
+              errorMessage = 'El enlace ha expirado. Por favor solicita uno nuevo.';
+              break;
+            case 'auth/invalid-action-code':
+              errorMessage = 'El enlace es inválido. Por favor solicita uno nuevo.';
+              break;
+            case 'auth/weak-password':
+              errorMessage = 'La contraseña debe tener al menos 6 caracteres.';
+              break;
+            case 'auth/user-disabled':
+              errorMessage = 'Esta cuenta ha sido deshabilitada.';
+              break;
+            case 'auth/user-not-found':
+              errorMessage = 'No se encontró la cuenta de usuario.';
+              break;
+            case 'auth/operation-not-allowed':
+              errorMessage = 'La operación no está permitida.';
+              break;
+            case 'auth/requires-recent-login':
+              errorMessage = 'Por favor inicia sesión nuevamente e intenta otra vez.';
+              break;
+            default:
+              errorMessage = error.message || 'Error al restablecer la contraseña';
+          }
+        } else if (error.error) { // Error del backend
+          errorMessage = error.error.message || 'Error al actualizar la base de datos';
+        }
+        
+        return throwError(() => ({ message: errorMessage }));
+      })
+    );
   }
 
   refreshToken(): Observable<any> {
@@ -148,6 +202,15 @@ export class ApiService {
         );
       }),
       mergeMap(obs => obs)
+    );
+  }
+
+  forgotPassword(email: string): Observable<any> {
+    const auth = getAuth();
+    return from(sendPasswordResetEmail(auth, email)).pipe(
+      tap((response: any) => {
+        console.log('Respuesta forgotPassword:', response);
+      })
     );
   }
 

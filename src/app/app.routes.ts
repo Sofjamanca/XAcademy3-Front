@@ -12,6 +12,7 @@ import { AdminLayoutComponent } from './views/admin/admin-layout/admin-layout.co
 import { HomeComponent } from './views/admin/home/home.component';
 import { CoursesListComponent } from './views/admin/courses/courses-list/courses-list.component';
 import { CourseComponent } from './shared/components/course/course.component';
+import { ForgotPasswordComponent } from './views/auth/forgot-password/forgot-password.component';
 
 
 export const routes: Routes = [
@@ -26,6 +27,10 @@ export const routes: Routes = [
     {
         path:'auth/register',
         component:RegisterComponent
+    },
+    {
+        path:'auth/forgot-password',
+        component:ForgotPasswordComponent
     },
     {
         path:'auth/reset-password',

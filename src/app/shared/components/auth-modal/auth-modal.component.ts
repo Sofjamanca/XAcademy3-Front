@@ -50,6 +50,7 @@ export class AuthModalComponent implements OnInit {
   @Input() footerAction!: string;
 
   @Output() footerLinClicked = new EventEmitter<void>();
+  @Output() formSubmit = new EventEmitter<any>();
 
   imageUrl = 'img/364257859_998131068038033_4290420701209662657_n.jpg';
   iconUrl = 'img/logo_noc.png';
@@ -78,17 +79,17 @@ export class AuthModalComponent implements OnInit {
   ngOnInit(): void {                       
     let formControls: any = {};
     this.formFields.forEach(field => {
-      formControls[field.controlName] = new FormControl('', Validators.required);
+      formControls[field.controlName] = new FormControl('', [
+        Validators.required,
+        ...(field.controlName.toLowerCase().includes('password') ? [Validators.minLength(6)] : [])
+      ]);
     });
     this.authForm = new FormGroup(formControls);
 
-
-    // Detecta si la URL es directamente "/auth/login" o "/auth/register"
     this.isStandalone = this.ruta.snapshot.routeConfig?.path === 'auth/login' || 
                         this.ruta.snapshot.routeConfig?.path === 'auth/register' ||
-                        this.ruta.snapshot.routeConfig?.path === 'auth/reset-password';
-
-    
+                        this.ruta.snapshot.routeConfig?.path === 'auth/reset-password' ||
+                        this.ruta.snapshot.routeConfig?.path === 'auth/forgot-password';  
   }
 
   // Método para cerrar el modal
@@ -107,18 +108,38 @@ export class AuthModalComponent implements OnInit {
 
   //enviar formulario
   onSubmit() {
-    if (this.authForm.valid) {
+    console.log('Estado del formulario:', {
+      valid: this.authForm.valid,
+      value: this.authForm.value,
+      errors: this.authForm.errors,
+      controls: Object.keys(this.authForm.controls).map(key => ({
+        key,
+        value: this.authForm.get(key)?.value,
+        errors: this.authForm.get(key)?.errors,
+        valid: this.authForm.get(key)?.valid
+      }))
+    });
 
-      this.loading = true;
-      this.errorMessage = '';
+    if (!this.authForm.valid) {
 
-      if (this.title === 'Regístrate') {
-        this.logManagement();
-      } else if (this.title === 'Iniciar Sesión') {
-        this.accessManagent();
-      }
+    this.loading = true;
+    this.errorMessage = '';
+
+    if (this.title === 'Restablecer contraseña') {
+      console.log('Emitiendo evento formSubmit con valores:', this.authForm.value);
+      this.formSubmit.emit(this.authForm.value);
+      return;
+    }
+
+    if (this.title === 'Regístrate') {
+      this.logManagement();
+    } else if (this.title === 'Iniciar Sesión') {
+      this.accessManagent();
+    } else if (this.title === 'Recuperar contraseña') {
+      this.forgotPasswordManagement();
     }
   }
+}
 
   private logManagement() { //registro
     const { name, lastname, email, password } = this.authForm.value;
@@ -154,18 +175,33 @@ export class AuthModalComponent implements OnInit {
 
   private successfulManagement(response: any) {
     console.log('Respuesta exitosa:', response);
-    if (response.accessToken && response.refreshToken) {
-      this.apiService.setTokens(response.accessToken, response.refreshToken);
-       
-      this.router.navigate(['/home']);
-     
+    
+    if (this.title === 'Recuperar contraseña') {
+      this.authForm.reset();
+      this.closeModal();
+      this.router.navigate(['/auth/login']);
+      this.openSnackBar('Se ha enviado un correo para restablecer tu contraseña', 'Cerrar');
+      return;
     }
-    this.authForm.reset(); //limpiar formulario
+
+    if (response?.accessToken && response?.refreshToken) {
+      this.apiService.setTokens(response.accessToken, response.refreshToken);
+      this.router.navigate(['/home']);
+    }
+
+    this.authForm.reset();
     this.closeModal();
+
     if (this.title === 'Regístrate') {
-      window.location.reload()
-      this.router.navigate(['/home']); // Redirige solo si el registro fue exitoso
-      
+      window.location.reload();
+      this.router.navigate(['/home']);
+      this.openSnackBar('Registro exitoso. Inicia sesión para continuar', 'Cerrar');
+    }
+
+    if (this.title === 'Iniciar Sesión') {
+      window.location.reload();
+      this.router.navigate(['/home']);
+      this.openSnackBar('Inicio de sesión exitoso', 'Cerrar');
     }
   }
 
@@ -173,7 +209,13 @@ export class AuthModalComponent implements OnInit {
     this.errorMessage = errorMessage;
     console.error('Error:', error);
     this.loading = false;
-    this.openSnackBar(`Error: ${error.error.message}`, 'Cerrar');
+    if (error?.error?.message) {
+      this.openSnackBar(`Error: ${error.error.message}`, 'Cerrar');
+    } else if (error?.message) {
+      this.openSnackBar(`Error: ${error.message}`, 'Cerrar');
+    } else {
+      this.openSnackBar(errorMessage, 'Cerrar');
+    }
   }
 
   private openSnackBar(message: string, action: string) {
@@ -187,8 +229,9 @@ export class AuthModalComponent implements OnInit {
         this.successfulManagement(response);
         localStorage.setItem('token', response.token);
         localStorage.setItem('userName', response.user.name);
+        localStorage.setItem('role', response.user.role);
         this.authStateService.setAuthState(true);
-        this.openSnackBar('Inicio de sesión con Google exitoso', 'Cerrar');
+        this.openSnackBar('Inicio de sesión exitoso', 'Cerrar');
         window.location.reload();
       },
       error: (error) => {
@@ -206,6 +249,7 @@ export class AuthModalComponent implements OnInit {
         this.successfulManagement(response);
         localStorage.setItem('token', response.token);
         localStorage.setItem('userName', response.user.name);
+        localStorage.setItem('role', response.user.role);
         this.authStateService.setAuthState(true);
         this.openSnackBar('Inicio de sesión con Facebook exitoso', 'Cerrar');
         window.location.reload();
@@ -218,4 +262,16 @@ export class AuthModalComponent implements OnInit {
     });
   }
 
+  private forgotPasswordManagement() {
+    const { email } = this.authForm.value;
+    this.apiService.forgotPassword(email).subscribe({
+      next: (response) => {
+        this.successfulManagement(response);
+      },
+      error: (error) => {
+        this.errorHandling('Error al recuperar contraseña', error);
+        this.openSnackBar('Error al recuperar contraseña', 'Cerrar');
+      }
+    });
+  }
 }
