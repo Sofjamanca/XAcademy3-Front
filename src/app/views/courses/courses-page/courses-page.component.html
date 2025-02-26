@@ -12,9 +12,15 @@
   <div class="content">
     <div class="filter" >
       <h5>Ordenar por:</h5>
-      <shared-filter></shared-filter>
+      <shared-filter 
+        (priceSelected)="onPriceSelected($event)" 
+        (orderSelected)="onOrderSelected($event)">
+      </shared-filter>
     </div>
-    <shared-categories class="categories" ></shared-categories>
+    <shared-categories 
+      class="categories" 
+      (categorySelected)="onCategorySelected($event)">
+    </shared-categories>
     <shared-courses-list class="courses" [courses]="courses"></shared-courses-list>
     <div *ngIf="isSearching && courses.length === 0" class="no-results">
       <p>No se encontraron cursos para "{{ searchTerm }}"</p>

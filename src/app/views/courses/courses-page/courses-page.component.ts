@@ -36,6 +36,11 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   private subscription: Subscription = new Subscription();
   
+  // Propiedades para los filtros
+  selectedCategories: number[] = [];
+  selectedPrice: string = '';
+  selectedOrder: string = '';
+  
   constructor(
     private coursesSvc: CoursesService,
     private route: ActivatedRoute
@@ -66,6 +71,9 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
         if (searchTerm) {
           console.log(`Realizando búsqueda con término: "${searchTerm}"`);
           return this.coursesSvc.searchCourses(searchTerm);
+        } else if (this.hasActiveFilters()) {
+          console.log('Aplicando filtros');
+          return this.applyFilters();
         } else {
           console.log('Obteniendo todos los cursos');
           return this.coursesSvc.getCourses();
@@ -82,6 +90,90 @@ export class CoursesPageComponent implements OnInit, OnDestroy {
         this.loading = false;
       }
     });
+  }
+
+  // Método para verificar si hay filtros activos
+  hasActiveFilters(): boolean {
+    return this.selectedCategories.length > 0 || !!this.selectedPrice || !!this.selectedOrder;
+  }
+
+  // Método para aplicar los filtros
+  applyFilters() {
+    console.log('Aplicando filtros:', {
+      categorias: this.selectedCategories,
+      precio: this.selectedPrice,
+      orden: this.selectedOrder
+    });
+    return this.coursesSvc.getFilteredCourses(
+      this.selectedCategories,
+      this.selectedPrice,
+      this.selectedOrder
+    );
+  }
+
+  // Métodos para manejar los eventos de filtro
+  onCategorySelected(event: { categoryId: number; selected: boolean }) {
+    console.log('Categoría seleccionada:', event);
+    if (event.selected) {
+      this.selectedCategories.push(event.categoryId);
+    } else {
+      this.selectedCategories = this.selectedCategories.filter(id => id !== event.categoryId);
+    }
+    this.refreshCourses();
+  }
+
+  onPriceSelected(price: string) {
+    console.log('Precio seleccionado:', price);
+    this.selectedPrice = price;
+    this.refreshCourses();
+  }
+
+  onOrderSelected(order: string) {
+    console.log('Orden seleccionado:', order);
+    this.selectedOrder = order;
+    this.refreshCourses();
+  }
+
+  // Método para refrescar los cursos cuando cambian los filtros
+  refreshCourses() {
+    this.loading = true;
+    if (this.isSearching) {
+      // Si hay una búsqueda activa, mantener la búsqueda
+      this.coursesSvc.searchCourses(this.searchTerm).subscribe({
+        next: (courses) => {
+          this.courses = courses;
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error al buscar cursos:', error);
+          this.loading = false;
+        }
+      });
+    } else if (this.hasActiveFilters()) {
+      // Si hay filtros activos, aplicarlos
+      this.applyFilters().subscribe({
+        next: (courses) => {
+          this.courses = courses;
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error al filtrar cursos:', error);
+          this.loading = false;
+        }
+      });
+    } else {
+      // Si no hay búsqueda ni filtros, obtener todos los cursos
+      this.coursesSvc.getCourses().subscribe({
+        next: (courses) => {
+          this.courses = courses;
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error al obtener cursos:', error);
+          this.loading = false;
+        }
+      });
+    }
   }
 
   ngOnDestroy() {
