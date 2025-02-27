@@ -12,7 +12,7 @@ export const admiGuard = ()=>{
     if(role === 'STUDENT'){
         return true;
     }else{
-        router.navigate(['/']);
+        router.navigate(['/home']);
         return false;
     }
 

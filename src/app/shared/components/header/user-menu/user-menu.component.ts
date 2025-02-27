@@ -13,10 +13,14 @@ import { CommonModule } from '@angular/common';
 })
 export class UserMenuComponent implements OnInit{
   apiService = inject(ApiService);
+  isAdminUser: boolean = false;
+  isStudentUser: boolean = false;
 
   constructor(private router: Router){}
 
   ngOnInit(): void {
+    this.isAdminUser = this.apiService.isAdmin();
+    this.isStudentUser =this.apiService.isStudent();
   }
 
   logout() {

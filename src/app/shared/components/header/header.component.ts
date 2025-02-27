@@ -38,15 +38,18 @@ import { UserService } from '../../../services/user/user.service';
 export class HeaderComponent implements OnInit {
   apiService = inject(ApiService);
   authStateService = inject(AuthStateServiceService);
+  userService = inject(UserService);
 
-  constructor(
-      private modalService: ModalService,
-      private localStorageService: LocalStorageService,
-      public userService: UserService, // userService es public
-      private cdRef: ChangeDetectorRef
-  ) {
-  }
+  constructor(private modalService: ModalService) {}
+
   ngOnInit(): void {
+    this.authStateService.isAuthenticated$.subscribe(isAuthenticated => {
+      console.log('HeaderComponent: isAuthenticated', isAuthenticated);
+    });
+
+    this.userService.userName$.subscribe(userName => {
+      console.log('HeaderComponent: userName', userName);
+    });
   }
 
   imgLogo: string = "/assets/images/logo.png";

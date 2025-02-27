@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Observable, tap, from, map, mergeMap } from 'rxjs';
+import { Observable, tap, from, map, mergeMap, catchError, throwError } from 'rxjs';
 import { AuthStateServiceService } from './state/auth-state-service.service';
 import { Auth, getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from '@angular/fire/auth';
 import { LocalStorageService } from './localstorage/local-storage.service';
@@ -19,35 +19,54 @@ export class ApiService {
   constructor(private http: HttpClient,
     private authStateService: AuthStateServiceService,
     private localStorageService: LocalStorageService
-  ) {}
+  ) { }
 
-  login(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, { email, password }).pipe(
-      tap((response: any) => {
-        console.log('Respuesta login:', response);
-        if (response.token && response.refreshToken) {
-          this.setTokens(response.token, response.refreshToken);
-          this.localStorageService.setItem('role', response.role);
-          this.localStorageService.setItem('name', response.name);
-          this.authStateService.setAuthState(true);
-        }
-      })
+  login(credentials: { email: string, password: string }): Observable<any> {
+    return this.http.post<{ message: string, user: { name: string, role: string }, accessToken: string, refreshToken: string }>(
+        `${this.apiUrl}/login`,
+        credentials).pipe(
+        tap((response: any) => {
+            console.log('Respuesta login completa:', response);
+            if (response.accessToken && response.refreshToken) {
+                this.localStorageService.setItem('token', response.accessToken);
+                console.log('Token almacenado directamente:', this.localStorageService.getItem('token'));
+                // Introduce un pequeño retraso aquí
+                setTimeout(() => {
+                    console.log('Refresh Token almacenado:', this.localStorageService.getItem('refreshToken'));
+                    this.localStorageService.setItem('name', response.user.name);
+                    console.log('nombre:', this.localStorageService.getItem('name'));
+                    this.localStorageService.setItem('role', response.user.role);
+                    console.log('rol:', this.localStorageService.getItem('role'));
+                    this.authStateService.setAuthState(true);
+                }, 10); // 10 milisegundos de retraso
+            }
+        }),
+        catchError(error => {
+            console.error('Error en login:', error);
+            return throwError(() => new Error(error));
+        })
     );
+}
+logout(): Observable<any> {
+  const refresh = this.getRefreshToken();
+  if (!refresh) {
+      console.error('No se encontró el refreshToken para el logout.');
+      // Puedes lanzar un error o manejarlo de otra manera apropiada
+      return throwError(() => new Error('No se encontró el refreshToken para el logout.'));
   }
-  logout(): Observable<any> {
-    const refresh = this.getRefreshToken();
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${refresh}`);
-  
-    return this.http.post(`${this.apiUrl}/logout`, {}, { headers }).pipe(
+  const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + refresh
+  });
+  return this.http.post(`${this.apiUrl}/logout`, {}, { headers }).pipe(
       tap(() => {
-        this.clearTokens();
-        this.authStateService.setAuthState(false);
+          this.clearTokens();
+          this.authStateService.setAuthState(false);
       })
-    );
-  }
-  
-  
-  
+  );
+}
+
+
+
 
   register(name: string, lastname: string, email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, { name, lastname, email, password });
@@ -62,35 +81,27 @@ export class ApiService {
     return this.http.post<any>(`${this.apiUrl}/refresh-token`, {})
   }
 
-  getAuthToken(): string {
-    const token = this.localStorageService.getItem('token');
-    console.log('getAuthToken:', token);
-    return token || '';
+  getAuthToken(): string | null{
+    return this.localStorageService.getItem('token'); 
   }
 
-  getRefreshToken(): string {
-    return this.localStorageService.getItem('refreshToken') || '';
+  getRefreshToken(): string | null{
+    return this.localStorageService.getItem('refreshToken');
   }
 
   setTokens(accessToken: string, refreshToken: string): void {
-    console.log('setTokens - accessToken:', accessToken, 'refreshToken:', refreshToken);
     this.localStorageService.setItem('token', accessToken);
     this.localStorageService.setItem('refreshToken', refreshToken);
-  
+
   }
 
   clearTokens(): void {
     this.localStorageService.removeItem('token');
     this.localStorageService.removeItem('refreshToken');
-    this.localStorageService.removeItem('name');
-    this.localStorageService.removeItem('role');
   }
 
   isAuthenticated(): boolean {
-    if(this.localStorageService.getItem('token') !== null){
-      return true;
-    }
-    return false;
+    return this.localStorageService.getItem('token') !== null;
   }
   isAdmin(): boolean {
     return this.localStorageService.getItem('role') === 'ADMIN';
@@ -119,7 +130,7 @@ export class ApiService {
               this.setTokens(response.token, response.refreshToken);
               this.localStorageService.setItem('role', response.role);
               this.localStorageService.setItem('name', response.name);
-             
+
               this.authStateService.setAuthState(true);
             }
           })
@@ -145,7 +156,7 @@ export class ApiService {
               this.setTokens(response.token, response.refreshToken);
               this.localStorageService.setItem('role', response.role);
               this.localStorageService.setItem('name', response.name);
-             
+
               this.authStateService.setAuthState(true);
             }
           })

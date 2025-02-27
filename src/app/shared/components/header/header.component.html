@@ -8,15 +8,15 @@
       <div class="menu-container" [ngClass]="{'active': menuOpen}">
           <shared-header-menu [menuItems]="menuItems"></shared-header-menu>
 
-          <div *ngIf="(authStateService.isAuthenticated$ | async) === true; else showLoginButtons" class="user-menu">
-            <span class="user_name">¡Hola, {{ userService.userName$ | async }}!</span>
+          <div *ngIf="(authStateService.isAuthenticated$ | async) === true; else showLoginButtons"  class="user-menu">
+            <span class="user_name" *ngIf="(userService?.userName$ | async) as userName">¡Hola, {{ userName }}!</span>
             <button mat-button [matMenuTriggerFor]="userMenu">
                 <mat-icon>arrow_drop_down</mat-icon>
             </button>
           </div>
 
           <ng-template #showLoginButtons>
-              <div class="option_user">
+              <div class="option_user" >
                   <shared-log-btn (click)="openLogin()">
                       Iniciar Sesión
                   </shared-log-btn>

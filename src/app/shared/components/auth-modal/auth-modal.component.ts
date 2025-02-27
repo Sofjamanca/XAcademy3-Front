@@ -17,7 +17,7 @@ import { error } from 'console';
 import { AuthStateServiceService } from '../../../services/state/auth-state-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LocalStorageService } from '../../../services/localstorage/local-storage.service';
-import { UserService } from '../../../services/user/user.service';
+
 // import { MaterialModule } from '../../../material/material.module';
 
 
@@ -74,9 +74,8 @@ export class AuthModalComponent implements OnInit {
     private router: Router,
     private authStateService: AuthStateServiceService,
     private ruta: ActivatedRoute,
-    private snackBar: MatSnackBar, 
-    private localstorageService: LocalStorageService,
-    private userService: UserService 
+    private snackBar: MatSnackBar,
+    private localstorageService: LocalStorageService
   ) { }
 
   ngOnInit(): void {                       
@@ -139,21 +138,27 @@ export class AuthModalComponent implements OnInit {
     });
   }
 
-  private accessManagent() {//login
+  private accessManagent() {
     const { email, password } = this.authForm.value;
-    this.apiService.login(email, password).subscribe({
+    
+    this.apiService.login({ email, password }).subscribe({ 
       next: (response) => {
-        this.localstorageService.setItem('token', response.token);
-        this.localstorageService.setItem('name', response.user.name);
-        this.localstorageService.setItem('role', response.user.role);
-        this.userService.setUserName(response.user.name);
+        console.log('Respuesta login:', response);
+
+      // Guarda los tokens correctamente en LocalStorageService
+      this.localstorageService.setItem('token', response.accessToken);
+      this.localstorageService.setItem('refreshToken', response.refreshToken);
+
+      // Guarda el nombre del usuario
+      this.localstorageService.setItem('userName', response.user.name);
+      console.log('Nombre almacenado:', response.user.name);
         this.successfulManagement(response);       
-        this.authStateService.setAuthState(true);
         this.openSnackBar('Inicio de sesión exitoso', 'Cerrar');
       },
       error: (error) => this.openSnackBar(`Error: ${error.error.message}`, 'Cerrar')
     });
   }
+  
 
   private successfulManagement(response: any) {
     console.log('Respuesta exitosa:', response);
@@ -187,12 +192,12 @@ export class AuthModalComponent implements OnInit {
     this.apiService.signInWithGoogle().subscribe({
       next: (response) => {
         
-        this.localstorageService.setItem('token', response.token);
-        this.localstorageService.setItem('name', response.user.name);
-        this.localstorageService.setItem('role', response.user.role);
-        this.userService.setUserName(response.user.name);
+        // this.localstorageService.setItem('token', response.token);
+        // this.localstorageService.setItem('name', response.user.name);
+        // this.localstorageService.setItem('role', response.user.role);
+        // this.userService.setUserName(response.user.name);
         this.successfulManagement(response);
-        this.authStateService.setAuthState(true);
+        // this.authStateService.setAuthState(true);
         this.openSnackBar('Inicio de sesión con Google exitoso', 'Cerrar');
       },
       error: (error) => {
@@ -208,11 +213,11 @@ export class AuthModalComponent implements OnInit {
     this.loading = true;
     this.apiService.signInWithFacebook().subscribe({
       next: (response) => {
-        this.successfulManagement(response);
-        this.localstorageService.setItem('token', response.token);
-        this.localstorageService.setItem('name', response.user.name);
-        this.localstorageService.setItem('role', response.user.role);
-        this.authStateService.setAuthState(true);
+        // this.successfulManagement(response);
+        // this.localstorageService.setItem('token', response.token);
+        // this.localstorageService.setItem('name', response.user.name);
+        // this.localstorageService.setItem('role', response.user.role);
+        // this.authStateService.setAuthState(true);
         this.openSnackBar('Inicio de sesión con Facebook exitoso', 'Cerrar');
         window.location.reload();
       },

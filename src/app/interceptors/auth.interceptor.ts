@@ -1,32 +1,32 @@
-import { HttpInterceptorFn } from '@angular/common/http';
-import { ApiService } from '../services/api.service';
-import { inject } from '@angular/core';
-import { catchError, switchMap, throwError } from 'rxjs';
-import { Router } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
-import { PLATFORM_ID } from '@angular/core';
+import { HttpInterceptorFn } from "@angular/common/http";
+import { inject, PLATFORM_ID } from "@angular/core";
+import { catchError,  switchMap,  throwError } from "rxjs";
+import { ApiService } from "../services/api.service";
+import { Router } from "@angular/router";
+import { isPlatformBrowser } from "@angular/common";
+
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const usuariosService = inject(ApiService);
+  const apiService = inject(ApiService);
   const router = inject(Router);
   const platformId = inject(PLATFORM_ID);
 
-  // Si estamos en el servidor, pasamos la petición sin modificar
+  // Si la aplicación está corriendo en el servidor, pasamos la petición sin modificar
   if (!isPlatformBrowser(platformId)) {
     return next(req);
   }
 
-  // Solo excluimos las rutas específicas de autenticación
+  // Excluir rutas de autenticación para que no se les agregue el token
   if (req.url.includes('/api/auth/login') || 
       req.url.includes('/api/auth/register') || 
       req.url.includes('/api/auth/login-social')) {
     return next(req);
   }
 
-  const token = usuariosService.getAuthToken();
-  console.log('Token actual:', token); // Agregamos log para debugging
+  const token = apiService.getAuthToken();
+  console.log('Token actual:', token);
 
-  // Clonamos la petición y añadimos el token si existe
+  // Clonar la petición y añadir el token si existe
   const authReq = token ? 
     req.clone({
       headers: req.headers.set('Authorization', `Bearer ${token}`)
@@ -35,29 +35,34 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(authReq).pipe(
     catchError((err) => {
       if (err.status === 401) {
-        console.log('Error 401 detectado, intentando refresh token');
-        return usuariosService.refreshToken().pipe(
-          switchMap((res) => {
-            console.log('Respuesta refresh token:', res);
-            if (res.token && res.refreshToken) {
-              usuariosService.setTokens(res.token, res.refreshToken);
+        console.warn('⚠️ Error 401 detectado. Intentando refrescar token...');
 
+        return apiService.refreshToken().pipe(
+          switchMap((res) => {
+            console.log('🔄 Token refrescado:', res);
+
+            if (res.accesToken && res.refreshToken) {
+              apiService.setTokens(res.accesToken, res.refreshToken);
+
+              // Clonar la petición original con el nuevo token
               const newReq = req.clone({
-                headers: req.headers.set('Authorization', `Bearer ${res.token}`)
+                headers: req.headers.set('Authorization', `Bearer ${res.accesToken}`)
               });
-              return next(newReq);
+
+              return next(newReq); // Reenviar la petición con el nuevo token
             } else {
-              throw new Error('No se recibieron los tokens nuevos');
+              throw new Error('No se recibieron nuevos tokens.');
             }
           }),
           catchError((refreshErr) => {
-            console.warn('Error en refresh token:', refreshErr);
-            usuariosService.clearTokens();
-            router.navigate(['/login']);
+            console.error('❌ Error en el refresh token:', refreshErr);
+            apiService.clearTokens(); // Limpiar tokens si falla
+            router.navigate(['/login']); // Redirigir al login
             return throwError(() => refreshErr);
           })
         );
       }
+
       return throwError(() => err);
     })
   );

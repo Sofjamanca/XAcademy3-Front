@@ -1,40 +1,71 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalStorageService {
-  private tokenSubject = new BehaviorSubject<string | null>(this.getItem('token'));
+  private tokenSubject = new BehaviorSubject<string | null>(this.getItem('accessToken'));
+  
   constructor(@Inject(PLATFORM_ID) private platformId: Object) { 
   }
 
-  getItem(key: string): string | null {
-    if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem(key);
-    }
-    return null; 
+ // En localStorageService.ts
+setItem(key: string, value: string): void {
+  if (isPlatformBrowser(this.platformId)) {
+      try {
+          console.log('setItem: key=', key, 'value=', value);
+          localStorage.setItem(key, value);
+          if(key === 'token'){
+              this.tokenSubject.next(value);
+          }
+      } catch (error) {
+          console.error('Error setting item from localStorage', error);
+      }
   }
+}
 
-  setItem(key: string, value: string): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem(key, value);
-    }
+getItem(key: string): string | null {
+  if (isPlatformBrowser(this.platformId)) {
+      try {
+          const value = localStorage.getItem(key);
+          console.log('getItem: key=', key, 'value=', value);
+          console.trace(); // Agregado
+          return value;
+      } catch (error) {
+          console.error('Error getting item from localStorage', error);
+          return null;
+      }
   }
-
+  return null;
+}
   removeItem(key: string): void {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem(key);
+      try {
+        localStorage.removeItem(key);
+        if(key === 'accessToken'){
+          this.tokenSubject.next(null); //actualizo el observable
+        }
+      } catch (error) {
+        console.error('Error removing item from localStorage', error);
+      }
+      
     }
   }
 
   clear(): void {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.clear();
+      try {
+        localStorage.clear();
+        this.tokenSubject.next(null); //actualizo el observable
+      } catch (error) {
+        console.error('Error clearing localStorage', error);
+      }
     }
   }
-  getTokenObservable(): BehaviorSubject<string | null> {
-    return this.tokenSubject;
-}
+  
+  getTokenObservable(): Observable<string | null> {
+    return this.tokenSubject.asObservable();
+  }
 }
