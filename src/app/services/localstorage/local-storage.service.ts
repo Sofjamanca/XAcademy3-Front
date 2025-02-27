@@ -15,7 +15,6 @@ export class LocalStorageService {
 setItem(key: string, value: string): void {
   if (isPlatformBrowser(this.platformId)) {
       try {
-          console.log('setItem: key=', key, 'value=', value);
           localStorage.setItem(key, value);
           if(key === 'token'){
               this.tokenSubject.next(value);
@@ -30,8 +29,6 @@ getItem(key: string): string | null {
   if (isPlatformBrowser(this.platformId)) {
       try {
           const value = localStorage.getItem(key);
-          console.log('getItem: key=', key, 'value=', value);
-          console.trace(); // Agregado
           return value;
       } catch (error) {
           console.error('Error getting item from localStorage', error);

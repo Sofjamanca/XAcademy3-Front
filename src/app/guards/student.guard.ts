@@ -7,7 +7,6 @@ export const admiGuard = ()=>{
     const localStorageService = inject(LocalStorageService);
     
     const role = localStorageService.getItem('role');
-    console.log("role",role);
 
     if(role === 'STUDENT'){
         return true;

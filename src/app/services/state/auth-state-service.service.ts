@@ -11,18 +11,29 @@ export class AuthStateServiceService {
   private isAuthenticatedSubject: BehaviorSubject<boolean>;
   isAuthenticated$: Observable<boolean>;
 
+  private userNameSubject: BehaviorSubject<string | null>; // Nueva propiedad
+  userName$: Observable<string | null>; // Nueva propiedad observable
+
   constructor(
     private localStorageService: LocalStorageService,
-    @Inject(PLATFORM_ID) private platformId: Object) {
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
     this.isAuthenticatedSubject = new BehaviorSubject<boolean>(this.checkAuthentication());
     this.isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
-    console.log('AuthStateServiceService: Constructor llamado');
-    console.log('AuthStateServiceService: Estado inicial', this.isAuthenticatedSubject.value);
+
+    // Inicializar userName con el valor del localStorage si está disponible
+    this.userNameSubject = new BehaviorSubject<string | null>(this.localStorageService.getItem('name'));
+    this.userName$ = this.userNameSubject.asObservable();
+
   }
 
   setAuthState(isAuthenticated: boolean): void {
-    console.log('AuthStateServiceService: setAuthState llamado', isAuthenticated);
     this.isAuthenticatedSubject.next(isAuthenticated);
+  }
+
+  setUserName(name: string | null): void { // Nuevo método
+    console.log('AuthStateServiceService: setUserName llamado', name);
+    this.userNameSubject.next(name);
   }
 
   private checkAuthentication(): boolean {
@@ -34,3 +45,4 @@ export class AuthStateServiceService {
     }
   }
 }
+

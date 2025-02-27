@@ -24,7 +24,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   const token = apiService.getAuthToken();
-  console.log('Token actual:', token);
 
   // Clonar la petición y añadir el token si existe
   const authReq = token ? 
@@ -39,7 +38,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
         return apiService.refreshToken().pipe(
           switchMap((res) => {
-            console.log('🔄 Token refrescado:', res);
 
             if (res.accesToken && res.refreshToken) {
               apiService.setTokens(res.accesToken, res.refreshToken);

@@ -26,14 +26,22 @@ export class UserMenuComponent implements OnInit{
   logout() {
     this.apiService.logout().subscribe({
       next: () => {
+        console.log('Sesión cerrada exitosamente.');
         this.router.navigate(['/home']);
-
+  
+        setTimeout(() => {
+          window.location.reload();
+        }, 300); // Luego recargar
       },
       error: (error) => {
         console.error('Error al cerrar sesión', error);
       }
     });
   }
+  
+  
+  
+  
 
   goToAdmin() {
     this.router.navigate(['/admin']);

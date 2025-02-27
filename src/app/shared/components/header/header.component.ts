@@ -44,11 +44,9 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.authStateService.isAuthenticated$.subscribe(isAuthenticated => {
-      console.log('HeaderComponent: isAuthenticated', isAuthenticated);
     });
 
     this.userService.userName$.subscribe(userName => {
-      console.log('HeaderComponent: userName', userName);
     });
   }
 

@@ -78,7 +78,7 @@ export class AuthModalComponent implements OnInit {
     private localstorageService: LocalStorageService
   ) { }
 
-  ngOnInit(): void {                       
+  ngOnInit(): void {
     let formControls: any = {};
     this.formFields.forEach(field => {
       formControls[field.controlName] = new FormControl('', Validators.required);
@@ -87,11 +87,11 @@ export class AuthModalComponent implements OnInit {
 
 
     // Detecta si la URL es directamente "/auth/login" o "/auth/register"
-    this.isStandalone = this.ruta.snapshot.routeConfig?.path === 'auth/login' || 
-                        this.ruta.snapshot.routeConfig?.path === 'auth/register' ||
-                        this.ruta.snapshot.routeConfig?.path === 'auth/reset-password';
+    this.isStandalone = this.ruta.snapshot.routeConfig?.path === 'auth/login' ||
+      this.ruta.snapshot.routeConfig?.path === 'auth/register' ||
+      this.ruta.snapshot.routeConfig?.path === 'auth/reset-password';
 
-    
+
   }
 
   // Método para cerrar el modal
@@ -140,39 +140,38 @@ export class AuthModalComponent implements OnInit {
 
   private accessManagent() {
     const { email, password } = this.authForm.value;
-    
-    this.apiService.login({ email, password }).subscribe({ 
+
+    this.apiService.login({ email, password }).subscribe({
       next: (response) => {
-        console.log('Respuesta login:', response);
 
-      // Guarda los tokens correctamente en LocalStorageService
-      this.localstorageService.setItem('token', response.accessToken);
-      this.localstorageService.setItem('refreshToken', response.refreshToken);
+        // Guarda los tokens correctamente en LocalStorageService
+        this.localstorageService.setItem('token', response.accessToken);
+        this.localstorageService.setItem('refreshToken', response.refreshToken);
 
-      // Guarda el nombre del usuario
-      this.localstorageService.setItem('userName', response.user.name);
-      console.log('Nombre almacenado:', response.user.name);
-        this.successfulManagement(response);       
+        // Guarda el nombre del usuario
+        this.localstorageService.setItem('userName', response.user.name);
+        this.successfulManagement(response);
+         window.location.reload();
         this.openSnackBar('Inicio de sesión exitoso', 'Cerrar');
+       
       },
       error: (error) => this.openSnackBar(`Error: ${error.error.message}`, 'Cerrar')
     });
   }
-  
+
 
   private successfulManagement(response: any) {
-    console.log('Respuesta exitosa:', response);
     if (response.accessToken && response.refreshToken) {
       this.apiService.setTokens(response.accessToken, response.refreshToken);
-       
+      
       this.router.navigate(['/home']);
-     
+
     }
     this.authForm.reset(); //limpiar formulario
     this.closeModal();
     if (this.title === 'Regístrate') {
       this.router.navigate(['/home']); // Redirige solo si el registro fue exitoso
-      
+
     }
   }
 
@@ -191,14 +190,19 @@ export class AuthModalComponent implements OnInit {
     this.loading = true;
     this.apiService.signInWithGoogle().subscribe({
       next: (response) => {
-        
-        // this.localstorageService.setItem('token', response.token);
-        // this.localstorageService.setItem('name', response.user.name);
-        // this.localstorageService.setItem('role', response.user.role);
-        // this.userService.setUserName(response.user.name);
+        // Guarda los tokens correctamente en LocalStorageService
+        this.localstorageService.setItem('token', response.accessToken);
+        this.localstorageService.setItem('refreshToken', response.refreshToken);
+
+        // Guarda el nombre del usuario
+        this.localstorageService.setItem('userName', response.user.name);
+
+        //Guarda el rol
+        this.localstorageService.setItem('rol', response.user.rol);
         this.successfulManagement(response);
-        // this.authStateService.setAuthState(true);
+        window.location.reload();
         this.openSnackBar('Inicio de sesión con Google exitoso', 'Cerrar');
+        
       },
       error: (error) => {
         this.loading = false;
