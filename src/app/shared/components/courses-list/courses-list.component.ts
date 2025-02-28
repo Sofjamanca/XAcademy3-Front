@@ -33,7 +33,6 @@ export class CoursesListComponent {
 
     this.coursesSvc.getCategories().subscribe(categories => {
       this.categories = categories;
-      console.log(categories);
     })
   }
 
