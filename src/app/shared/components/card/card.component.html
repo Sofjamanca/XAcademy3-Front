@@ -1,20 +1,18 @@
 <mat-card class="card">
-    <mat-card-title class="card-title">
-        {{title}}
-    </mat-card-title>
-    
+  <mat-card-header>
+    <mat-card-title class="card-title">{{title}}</mat-card-title>
+    <mat-card-subtitle>{{category}}</mat-card-subtitle>
+  </mat-card-header>
+
     <img *ngIf="image" mat-card-image [src]="image" [alt]="title">
-    
+
     <mat-card-content>
-        <p>{{content}}</p>
+        <p>{{description}}</p>
     </mat-card-content>
-    
+
     <mat-card-actions class="card-actions">
-        <button mat-button 
-                *ngFor="let action of actions" 
-                class="card-button" 
-                (click)="onActionClick(action)">
-            {{action}}
-        </button>
+      <button mat-raised-button color="primary" (click)="onActionClick()">Ver curso</button>
+      <mat-icon aria-hidden="false" aria-label="Example favorite border icon" fontIcon="favorite_border"></mat-icon>
     </mat-card-actions>
+
 </mat-card>

@@ -1,7 +1,12 @@
-
 <div class="input-group">
-  <input type="text" class="form-control" placeholder="Buscar" aria-label="Buscar">
-  <span class="input-group-text">
+  <input 
+    type="text" 
+    class="form-control" 
+    placeholder="Buscar" 
+    aria-label="Buscar"
+    [(ngModel)]="searchQuery"
+    (keyup.enter)="search()">
+  <span class="input-group-text" aria-label="Buscar" (click)="search()" style="cursor: pointer;">
     <i class="bi bi-search"></i>
   </span>
 </div>

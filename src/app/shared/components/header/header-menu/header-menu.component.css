@@ -1,10 +1,32 @@
-ul {
+.menu {
   display: flex;
-  justify-content: end;
+  flex-direction: column;
   align-items: center;
+  width: 100%;
+}
+
+.nav-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.nav-menu {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
   list-style: none;
-  gap: 0.2em;
   margin: 0;
+  padding: 0;
+  flex-wrap: nowrap; 
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px; 
 }
 
 .nav-btn {
@@ -12,23 +34,21 @@ ul {
   width: auto;
   height: 2.5em;
   font-size: 0.8rem;
-  padding: 0;
+  padding: 0.5em 1em;
 }
 
-.hidden {
-  display: none;
-}
 
 @media (max-width: 768px) {
+  .menu {
+    align-items: center;
+  }
+
+  .nav-menu {
+    justify-content: center; 
+  }
+
   .nav-buttons {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 64px;
-    right: 16px;
-    background: white;
-    padding: 8px;
-    border-radius: 4px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    width: 100%;
   }
 }

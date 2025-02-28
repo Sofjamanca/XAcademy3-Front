@@ -1,0 +1,11 @@
+<section class="categories">
+  <h4>Categorías</h4>
+
+  <mat-selection-list (selectionChange)="onCategoryChange($event)">
+    @for (category of categories; track category) {
+      <mat-list-option [value]="category.id">{{category.title}}</mat-list-option>
+    }
+  </mat-selection-list>
+</section>
+
+

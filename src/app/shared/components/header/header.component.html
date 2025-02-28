@@ -1,24 +1,38 @@
 <header class="header">
   <mat-toolbar class="toolbar">
-    <img [src]="imgLogo" class="logo" alt="Logo">
+      <div class="logo-container">
+          <img [src]="imgLogo" class="logo" alt="Logo">
+          <shared-search-input class="search-bar"></shared-search-input>
+      </div>
 
-    <span class="spacer"></span>
+      <div class="menu-container" [ngClass]="{'active': menuOpen}">
+          <shared-header-menu [menuItems]="menuItems"></shared-header-menu>
 
-    <shared-search-input class="search-bar"></shared-search-input>
+          <div *ngIf="(authStateService.isAuthenticated$ | async) === true; else showLoginButtons"  class="user-menu">
+            <span class="user_name" *ngIf="(userService?.userName$ | async) as userName">¡Hola, {{ userName }}!</span>
+            <button mat-button [matMenuTriggerFor]="userMenu">
+                <mat-icon>arrow_drop_down</mat-icon>
+            </button>
+          </div>
 
-    <span class="spacer"></span>
+          <ng-template #showLoginButtons>
+              <div class="option_user" >
+                  <shared-log-btn (click)="openLogin()">
+                      Iniciar Sesión
+                  </shared-log-btn>
+                  <shared-register-btn (click)="openRegister()">
+                      Registrarse
+                  </shared-register-btn>
+              </div>
+          </ng-template>
 
-    <div class="menu-container" [ngClass]="{'active': menuOpen}">
+          <mat-menu #userMenu="matMenu">
+              <app-user-menu></app-user-menu>
+          </mat-menu>
+      </div>
 
-      <shared-header-menu [menuItems]="menuItems"></shared-header-menu>
-      <shared-log-btn (click)="openLogin()">Iniciar Sesión</shared-log-btn>
-      <shared-register-btn (click)="openRegister()">Registrarse</shared-register-btn>
-
-    </div>
-
-    <button class="menu-toggle" (click)="toggleMenu()">
-      <i class="bi bi-list"></i>
-    </button>
-
+      <button class="menu-toggle" (click)="toggleMenu()">
+          <i class="bi bi-list"></i>
+      </button>
   </mat-toolbar>
 </header>

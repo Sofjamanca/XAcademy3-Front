@@ -1,28 +1,28 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { RegisterBtnComponent } from '../buttons/register-btn/register-btn.component';
+import { MaterialModule } from '../../../material/material.module';
 
 @Component({
   selector: 'app-card',
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule, 
-    MatButtonModule
+    MaterialModule
   ],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css'
 })
 export class CardComponent {
   @Input() title: string = '';
-  @Input() content: string = '';
-  @Input() actions: string[] = [];
+  @Input() category: string = '';
+  @Input() description: string = '';
+  @Input() action: string = '';
   @Input() image: string = '';
 
-  @Output() actionClick = new EventEmitter<string>();
+  @Output() actionClick = new EventEmitter<void>();
 
-  onActionClick(action: string) {
-    this.actionClick.emit(action);
+  onActionClick() {
+    this.actionClick.emit();
   }
 }

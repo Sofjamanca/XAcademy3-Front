@@ -1,8 +1,11 @@
-<div class="container_modal">
-    <button mat-button class="close-button-modal" (click)="closeModal()">
+<div class="container_modal" aria-label="Authentication Modal">
+    <button *ngIf="!isStandalone" 
+      mat-button class="close-button-modal"
+      (click)="closeModal()" 
+      aria-label="Close Modal">
         <mat-icon>close</mat-icon>
     </button>
-
+ 
     <div class="content_modal">
         <div class="container_img_modal">
             <img [src]="imageUrl" class="img_modal" alt="imagen">
@@ -35,28 +38,38 @@
                           {{ field.errorMessage }}
                         </mat-error>
                       </mat-form-field>
+                       <!-- "¿Olvidaste tu contraseña?" visible SOLO para la vista de Iniciar Sesión -->
+                      <a *ngIf="field.controlName === 'password' && title === 'Iniciar Sesión'" 
+                      [routerLink]="'auth/reset-password'" target="_blank" rel="noopener noreferrer"
+                      class="forgot-password">
+                      ¿Olvidaste tu contraseña?
+                      </a>
+
                     </div>
                   </ng-container>
                 </div>
-              
+
                 <div class="footer_modal">
                   <mat-dialog-actions align-items="end">
                     <app-custom-button [text]="buttonText" [className]="'customBtnLogin'" (action)="onSubmit()"></app-custom-button>
                   </mat-dialog-actions>
-              
+
                   <div *ngIf="showSocialButtons" class="buttom_group">
-                    <button mat-button class="btn_social" title="Google">
+                    <button mat-button class="btn_social" title="Google" (click)="signInWithGoogle()">
                       <img [src]="iconSocialG" alt="google">
                     </button>
-                    <button mat-button class="btn_social" title="Facebook">
+                    <button mat-button class="btn_social" title="Facebook" (click)="signInWithFacebook()">
                       <img [src]="iconSocialF" alt="Facebook">
                     </button>
                     <button mat-button class="btn_social" title="Apple">
                       <img [src]="iconSocialA" alt="Apple">
                     </button>
                   </div>
-              
-                  <p>{{ footerText }} <a href="ruta" class="msj_reg">{{ footerLink }}</a></p>
+
+                  <div class="footer_action">
+                    <p>{{ footerText }}</p>
+                    <a [routerLink]="footerAction" class="msj_reg" (click)="onFooterLinkClicked()">{{ footerLink }}</a>
+                  </div>
                 </div>
               </form>
         </div>

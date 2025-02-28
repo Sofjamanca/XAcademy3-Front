@@ -1,0 +1,26 @@
+<div class="main-container">
+  <div class="page-container">
+    <div class="course-image-container">
+      <img [src]="course?.image_url" alt="Imagen del curso" class="course-image animate-fade-in">
+    </div>
+
+    <mat-card class="floating-card animate-float">
+      <p class="highlight-text">✅ Certificado de finalización</p>
+      <p class="highlight-text">📥 Material descargable</p>
+      <button mat-raised-button color="primary" class="start-button animate-scale">Empezar curso</button>
+    </mat-card>
+
+    <div class="course-details animate-slide-up">
+      <h2 class="title">{{ course?.title }}</h2>
+      <p class="info"><span>👨‍🏫 Profesor:</span> {{ course?.teacher_id }}</p>
+      <p class="info"><span>👥 Alumnos:</span> X</p>
+      <p class="info"><span>📖 Descripción:</span> {{ course?.description }}</p>
+      <p class="info"><span>⏳ Duración:</span> {{ course?.hours }} horas</p>
+      <p class="info"><span>📅 Fecha inicio:</span> {{ course?.startDate }}</p>
+      <p class="info"><span>📅 Fecha fin:</span> {{ course?.endDate }}</p>
+      <p class="info"><span>🎯 Modalidad:</span> {{ course?.modalidad }}</p>
+      <p class="price"><strong>💰 Precio:</strong> {{ course?.price | currency:'USD' }}</p>
+      <button mat-button color="accent" class="home-button animate-scale" (click)="goHome()">Volver al Home</button>
+    </div>
+  </div>
+</div>

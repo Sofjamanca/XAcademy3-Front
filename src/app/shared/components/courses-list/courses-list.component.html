@@ -1,0 +1,11 @@
+<div *ngIf="courses.length === 0" class="no-courses">
+  <p>No hay cursos disponibles</p>
+</div>
+
+<app-card *ngFor="let course of courses"
+  [title]="course.title"
+  [category]="getCategoryTitle(course.category_id!)"
+  [description]="course.description"
+  [image]="course.image_url!"
+  (actionClick)="goToCourse(course.id ?? 0)">
+</app-card>

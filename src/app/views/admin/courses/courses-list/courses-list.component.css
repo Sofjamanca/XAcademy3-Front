@@ -1,0 +1,11 @@
+ .create-course-button {
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+    float: right;
+      background-color: #FFF;
+  /* width: 7.5em; */
+  border-radius: 4px;
+  border-color: var(--color_btn_primary)!important;
+  color: var(--color_btn_primary)!important;
+ }

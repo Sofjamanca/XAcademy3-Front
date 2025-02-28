@@ -1,0 +1,16 @@
+<button mat-menu-item>
+    <mat-icon>person</mat-icon>
+    <span>Perfil</span>
+  </button>
+  <button mat-menu-item *ngIf="isAdminUser" (click)="goToAdmin()">
+    <mat-icon>book</mat-icon>
+    <span >Panel de administrador</span>
+  </button>
+  <button mat-menu-item *ngIf="isStudentUser">
+    <mat-icon>book</mat-icon>
+    <span >Mis Cursos </span>
+  </button>
+  <button mat-menu-item (click)="logout()">
+    <mat-icon>exit_to_app</mat-icon>
+    <span>Salir</span>
+  </button>

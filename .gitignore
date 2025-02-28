@@ -40,3 +40,9 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Codigo eliminado
+/codigo-eliminado
+
+# Environments
+/src/environments
