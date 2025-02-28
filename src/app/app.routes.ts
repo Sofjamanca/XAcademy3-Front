@@ -21,35 +21,56 @@ export const routes: Routes = [
     },
     {
         path:'auth/login',
-        component:LoginComponent
+        loadComponent: () =>
+          import('./views/auth/login/login.component').then(
+            (m) => m.LoginComponent
+          ),
     },
     {
         path:'auth/register',
-        component:RegisterComponent
+        loadComponent: () =>
+          import('./views/auth/register/register.component').then(
+            (m) => m.RegisterComponent
+          ),
     },
     {
         path:'auth/reset-password',
-        component:RecoverPasswordComponent
+        loadComponent: () =>
+          import('./views/auth/recover-password/recover-password.component').then(
+            (m) => m.RecoverPasswordComponent
+          ),
     },
     {
         path:'create-course',
-        component:CreateCourseComponent,
+        loadComponent: () =>
+          import('./shared/components/create-course/create-course.component').then(
+            (m) => m.CreateCourseComponent
+          ),
         canActivateChild: [loginGuard],
-        canActivate: [admiGuard]       
+        canActivate: [admiGuard]
     },
     {
         path: 'courses',
-        component: CoursesPageComponent
+        loadComponent: () =>
+          import('./views/courses/courses-page/courses-page.component').then(
+            (m) => m.CoursesPageComponent
+          ),
     },
-    { 
-        path: 'course/:id', 
-      component: CourseComponent 
+    {
+        path: 'course/:id',
+        loadComponent: () =>
+          import('./shared/components/course/course.component').then(
+            (m) => m.CourseComponent
+          ),
     },
     {
         path: 'admin',
-        component: AdminLayoutComponent,
+        loadComponent: () =>
+          import('./views/admin/admin-layout/admin-layout.component').then(
+            (m) => m.AdminLayoutComponent
+          ),
         canActivateChild: [loginGuard],
-        canActivate: [admiGuard],      
+        canActivate: [admiGuard],
         children: [
             {
                 path: '',
@@ -62,7 +83,7 @@ export const routes: Routes = [
             {
                 path: 'cursos/crear',
                 component: CreateCourseComponent,
-                canActivate: [admiGuard]       
+                canActivate: [admiGuard]
             },
             {
                 path: 'cursos/editar/:id',
@@ -87,4 +108,4 @@ export const routes: Routes = [
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule]
 })
-export class AppRoutingModel {}
+export class AppRoutingModule {}
