@@ -7,6 +7,23 @@ h2 {
   margin-bottom: 1em;
 }
 
+.header-section {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1em;
+}
+
+.search-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5em;
+}
+
+.search-results-header h2 {
+  margin: 0;
+}
+
 .content {
   display: grid;
   grid-template-areas:
@@ -38,11 +55,28 @@ h2 {
   justify-content: start;
   gap: 20px;
   margin: 0 0 30px 30px;
-
 }
 
 .pagination {
   grid-area: pagination;
   justify-content: end;
+}
+
+.no-results {
+  grid-area: courses;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  margin-top: 30px;
+  text-align: center;
+}
+
+.no-results p {
+  margin-bottom: 1em;
+  font-size: 1.2em;
+  color: #666;
 }
 

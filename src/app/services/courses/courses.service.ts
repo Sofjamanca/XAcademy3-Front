@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Category, Course } from '../../core/models/course.model';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,6 @@ export class CoursesService {
   getCourseById(id: number): Observable<Course> {
     return this.http.get<Course>(`${this.apiUrl}view/${id}`);
   }
-  
 
   addCourse(newCourse: Course): Observable<string> {
     return this.http.post<string>(`${this.apiUrl}create`, newCourse);
@@ -48,6 +47,14 @@ export class CoursesService {
   getCoursesCount(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}count`);
   }
+
+  searchCourses(searchTerm: string): Observable<Course[]> {
+    console.log(`Buscando cursos con término: "${searchTerm}"`);
+    return this.http.get<Course[]>(`${this.apiUrl}search/${searchTerm}`).pipe(
+      tap(results => console.log(`Resultados de búsqueda para "${searchTerm}":`, results))
+    );
+  }
+
   // disableCourse(id: number): Observable<string> {
   // }
 
@@ -55,23 +62,20 @@ export class CoursesService {
   // enableCourse(id: number): Observable<string> {
   // }
 
+  getFilteredCourses(categories: number[], price: string, orderBy: string): Observable<Course[]> {
+    let params = new HttpParams();
 
-  //private filterSubject = new BehaviorSubject<string>('todos');
-  //private orderSubject = new BehaviorSubject<string>('fecha');
+    if (categories.length > 0) {
+      params = params.set('categories', categories.join(','));
+    }
+    if (price) {
+      params = params.set('price', price);
+    }
+    if (orderBy) {
+      params = params.set('orderBy', orderBy);
+    }
 
-  //filter$ = this.filterSubject.asObservable();
-  //order$ = this.orderSubject.asObservable();
-
-  //setFilter(filter: string) {
-  //  this.filterSubject.next(filter);
-  //}
-
-  /*setOrder(order: string) {
-    this.orderSubject.next(order);
+    return this.http.get<Course[]>(`${this.apiUrl}filter`, { params });
   }
-
-  getOrder(): string {
-    return this.orderSubject.getValue();
-  }*/
 
 }
