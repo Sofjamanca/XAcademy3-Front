@@ -34,7 +34,7 @@
       <mat-form-field appearance="outline" class="half-width">
         <mat-label>Profesor</mat-label>
         <mat-select formControlName="profesor">
-          <mat-option *ngFor="let profesor of profesores" [value]="profesor.user_id">
+          <mat-option *ngFor="let profesor of profesores" [value]="profesor.id">
             {{ profesor.user.name }}
           </mat-option>
         </mat-select>
