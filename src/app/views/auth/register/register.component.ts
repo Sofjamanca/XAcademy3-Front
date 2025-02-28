@@ -10,7 +10,6 @@ import { Route } from '@angular/router';
     styleUrls: ['./register.component.css']
 })
 export class RegisterComponent{
-  footerAction = '/auth/login';
   registerFields = [
     { label: 'Nombre', controlName: 'name', type: 'text', icon: '', errorMessage: 'Please enter a valid' },
     { label: 'Apellido', controlName: 'lastname', type: 'tex', icon: '', errorMessage: 'Please enter a valid password' },

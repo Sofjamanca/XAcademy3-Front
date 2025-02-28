@@ -9,13 +9,9 @@ import { AuthModalComponent } from "../../../shared/components/auth-modal/auth-m
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent{
-  footerAction = 'auth/register';
   loginFields = [
-    { label: 'Email', controlName: 'email', type: 'email', icon: 'mail', errorMessage: 'Por favor ingrese un email válido' },
-    { label: 'Contraseña', controlName: 'password', type: 'password', icon: 'key', errorMessage: 'Por favor ingrese una contraseña válida' }
+    { label: 'Email', controlName: 'email', type: 'email', icon: 'mail', errorMessage: 'Please enter a valid email' },
+    { label: 'Contraseña', controlName: 'password', type: 'password', icon: 'key', errorMessage: 'Please enter a valid password' }
   ];
   
-  onFooterLinkClick() {
-    console.log('ir a registro');
-  }
 }

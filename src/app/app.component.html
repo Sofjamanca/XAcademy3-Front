@@ -1,9 +1,24 @@
-<shared-header></shared-header>
-
 <div class="app-container">
+    <shared-header></shared-header>
+    
     <main class="content-container">
-        <router-outlet></router-outlet>
+        <views-landing-page></views-landing-page>
+        
+        <section class="card-container">
+            @for (curso of cursos; track curso.title) {
+                <app-card 
+                    [title]="curso.title" 
+                    [content]="curso.content" 
+                    [actions]="curso.actions">
+                </app-card>
+            }
+        </section>
     </main>
+
+    <shared-footer></shared-footer>
 </div>
 
-<shared-footer></shared-footer>
+<!-- TODO -->
+<!-- Courses -->
+<!-- Testimonials -->
+<!-- Big footer -->

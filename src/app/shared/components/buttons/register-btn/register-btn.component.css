@@ -1,10 +1,9 @@
 .custom-btn {
   background-color: var(--color_btn_accent)!important;
   border: 0;
-  padding: 0 1.2em;
   color: #fff;
   font-size: 0.8rem;
-  width: fit-content;
+  width: 7.5em;
   height: 2.5em;
   border-radius: 4px;
 }
