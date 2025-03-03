@@ -1,106 +1,12 @@
-<div class="curso-form-container">
-  <form [formGroup]="cursoForm" (ngSubmit)="crearCurso()" class="curso-form">
-    <div class="titulo">Crea un curso</div>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Nombre</mat-label>
-      <input matInput formControlName="nombre">
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Descripción</mat-label>
-      <textarea matInput formControlName="descripcion"></textarea>
-    </mat-form-field>
-
-    <div class="form-row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Duración</mat-label>
-        <mat-select formControlName="duracion">
-          <mat-option *ngFor="let duracion of duraciones" [value]="duracion">{{ duracion }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Categoría</mat-label>
-        <mat-select formControlName="categoria">
-          <mat-option *ngFor="let categoria of categorias" [value]="categoria.id">
-            {{ categoria.title }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <div class="form-row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Profesor</mat-label>
-        <mat-select formControlName="profesor">
-          <mat-option *ngFor="let profesor of profesores" [value]="profesor.user_id">
-            {{ profesor.user.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Modalidad</mat-label>
-        <mat-select formControlName="modalidad">
-          <mat-option *ngFor="let modalidad of modalidades" [value]="modalidad">{{ modalidad }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <div class="form-row">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Fecha de inicio</mat-label>
-        <input matInput [matDatepicker]="inicioPicker" formControlName="inicio" (dateChange)="actualizarMinFecha()">
-        <mat-datepicker-toggle matSuffix [for]="inicioPicker"></mat-datepicker-toggle>
-        <mat-datepicker #inicioPicker></mat-datepicker>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Fecha de fin</mat-label>
-        <input matInput [matDatepicker]="finPicker" formControlName="fin" [min]="minFechaFin">
-        <mat-datepicker-toggle matSuffix [for]="finPicker"></mat-datepicker-toggle>
-        <mat-datepicker #finPicker></mat-datepicker>
-        <mat-error *ngIf="cursoForm.hasError('fechaInvalida')">
-          La fecha de fin debe ser mayor o igual a la de inicio.
-        </mat-error>
-      </mat-form-field>
-    </div>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Precio</mat-label>
-      <input matInput formControlName="precio" type="number">
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Cupo</mat-label>
-      <input matInput formControlName="cupo" type="number">
-    </mat-form-field>
-
-    <div class="file-upload-container">
-      <div class="file-upload" [ngClass]="{ 'imagen-seleccionada': imagenSeleccionada }">
-        <label for="card">
-          <div class="upload-icon"></div>
-          <span>Imagen</span>
-        </label>
-        <input type="file" id="card" (change)="onFileSelected1($event)">
-      </div>
-      <div class="preview-container" *ngIf="imagePreview">
-        <h3>Vista previa</h3>
-        <img [src]="imagePreview" alt="Vista previa" class="preview-image">
-      </div>
-    </div>
-
-    <div class="botones-container">
-      <div class="boton-container">
-        <button mat-raised-button class="boton-crear" type="submit" [disabled]="cursoForm.invalid">
-          Crear curso
-        </button>
-      </div>
-
-      <button mat-raised-button class="boton-cancelar" type="button" (click)="irAHome()">
-        Cancelar
-      </button>
-    </div>
-  </form>
+<div class="crear-curso-container">
+  <mat-card class="crear-curso-card">
+    <mat-card-content>
+      <app-course-form
+      title="Crea un curso"
+      [inputs]="inputs"
+      (formSubmit)="crearCurso($event)"
+      (cancel)="goAdmin()">
+    </app-course-form>
+    </mat-card-content>
+  </mat-card>
 </div>

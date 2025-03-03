@@ -1,0 +1,24 @@
+<div class="inscripcion-container">
+    <div class="curso-info animate-fade-in" *ngIf="curso">
+        <img [src]="curso.image_url" alt="Imagen del curso" class="curso-imagen">
+        <div class="curso-detalles">
+          <h2>{{ curso.title }}</h2>
+          <p><strong>Modalidad:</strong> {{ curso.modalidad }}</p>
+          <p><strong>Duración:</strong> {{ curso.hours }} horas</p>
+          <p><strong>Fecha de inicio:</strong> {{ curso.startDate | date }}</p>
+          <p><strong>Fecha de fin:</strong> {{ curso.endDate | date }}</p>
+          <p><strong>Precio:</strong> ${{ curso.price }}</p>
+          <p><strong>Categoría:</strong> {{ categoria.title }}</p>
+        </div>
+    </div>
+  
+    <app-course-form
+      *ngIf="curso"
+      title="Formulario de inscripción:"
+      [inputs]="fields"
+      [curso]="curso"
+      (formSubmit)="onFormSubmit($event)"
+      (cancel)="goHome()">
+    </app-course-form>
+  </div>
+  

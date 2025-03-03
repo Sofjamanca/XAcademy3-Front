@@ -49,6 +49,5 @@ export class CoursesListComponent implements OnInit {
     this.router.navigate(['/course', courseId]);
   }
   
-  
 
 }

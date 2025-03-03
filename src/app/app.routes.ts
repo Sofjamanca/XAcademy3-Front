@@ -12,7 +12,7 @@ import { AdminLayoutComponent } from './views/admin/admin-layout/admin-layout.co
 import { HomeComponent } from './views/admin/home/home.component';
 import { CoursesListComponent } from './views/admin/courses/courses-list/courses-list.component';
 import { CourseComponent } from './shared/components/course/course.component';
-
+import { InscripcionComponent } from './shared/components/inscripcion/inscripcion.component';
 
 export const routes: Routes = [
     {
@@ -44,6 +44,10 @@ export const routes: Routes = [
     { 
         path: 'course/:id', 
       component: CourseComponent 
+    },
+    {   path: 'inscribir/:id', 
+        component: InscripcionComponent,
+        canActivate: [loginGuard]
     },
     {
         path: 'admin',

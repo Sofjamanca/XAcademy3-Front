@@ -1,26 +1,43 @@
 <div class="main-container">
-  <div class="page-container">
-    <div class="course-image-container">
-      <img [src]="course?.image_url" alt="Imagen del curso" class="course-image animate-fade-in">
+
+  <div class="course-header" style="background-image: url('/assets/images/portada.png')">
+    <div class="info-portada">
+    <h2 class="title">{{ course?.title }}</h2>
+      <span class="tag">Nuevo</span>
+      <span class="students">👥 32</span>
+      <span class="teacher">👨‍🏫 Profesor: {{ course?.teacher_id }}</span>
     </div>
+    <div class="course-status">Disponible</div>
+  </div>
 
-    <mat-card class="floating-card animate-float">
-      <p class="highlight-text">✅ Certificado de finalización</p>
-      <p class="highlight-text">📥 Material descargable</p>
-      <button mat-raised-button color="primary" class="start-button animate-scale">Empezar curso</button>
-    </mat-card>
 
-    <div class="course-details animate-slide-up">
-      <h2 class="title">{{ course?.title }}</h2>
-      <p class="info"><span>👨‍🏫 Profesor:</span> {{ course?.teacher_id }}</p>
-      <p class="info"><span>👥 Alumnos:</span> X</p>
-      <p class="info"><span>📖 Descripción:</span> {{ course?.description }}</p>
-      <p class="info"><span>⏳ Duración:</span> {{ course?.hours }} horas</p>
-      <p class="info"><span>📅 Fecha inicio:</span> {{ course?.startDate }}</p>
-      <p class="info"><span>📅 Fecha fin:</span> {{ course?.endDate }}</p>
-      <p class="info"><span>🎯 Modalidad:</span> {{ course?.modalidad }}</p>
-      <p class="price"><strong>💰 Precio:</strong> {{ course?.price | currency:'USD' }}</p>
+  <div class="page-container">
+    <div class="course-info">
+      <p class="info"><strong>📖 Descripción:</strong> {{ course?.description }}</p>
+      <p class="info"><strong>⏳ Duración:</strong> {{ course?.hours }} horas</p>
+      <p class="info"><strong>📅 Fecha inicio:</strong> {{ course?.startDate }}</p>
+      <p class="info"><strong>📅 Fecha fin:</strong> {{ course?.endDate }}</p>
+      <p class="info"><strong>🎯 Modalidad:</strong> {{ course?.modalidad }}</p>
+      
+      <p class="price"><strong>💰 Precio:</strong> ${{ course?.price }}</p>
+      
+      <div class="payment-methods">
+        <img src="assets/images/mercado_pago.png" alt="Mercado Pago">
+        <img src="assets/images/visa.png" alt="Visa">
+        <img src="assets/images/mastercard.png" alt="Mastercard">
+        <img src="assets/images/rapipago.png" alt="Rapipago">
+      </div>
       <button mat-button color="accent" class="home-button animate-scale" (click)="goHome()">Volver al Home</button>
     </div>
-  </div>
+
+
+    <mat-card class="floating-card">
+      <img [src]="course?.image_url" alt="Imagen del curso" class="course-thumbnail">
+      <button mat-raised-button color="primary" class="start-button" (click)="inscribirse()">Empezar curso</button>
+      <div class="course-includes">
+        <p>✅ Certificado de finalización</p>
+        <p>📥 Material descargable</p>
+      </div>
+    </mat-card>
+
 </div>

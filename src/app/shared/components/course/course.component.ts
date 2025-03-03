@@ -41,4 +41,10 @@ export class CourseComponent implements OnInit {
   goHome() {
     this.router.navigate(['/home']);
   }
+
+  inscribirse() {
+    if (this.course?.id) {
+      this.router.navigate(['/inscribir', this.course.id]);
+    }
+  }
     };

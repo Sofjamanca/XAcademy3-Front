@@ -111,7 +111,9 @@
 
 .main-content {
   flex: 1;
-  padding: 24px;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 50px;
   overflow-y: auto;
   position: relative;
 }

@@ -8,6 +8,11 @@ import { HeaderComponent } from './shared/components/header/header.component';
 import { LandingPageComponent } from "./views/landing-page/landing-page.component";
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { MaterialModule } from './material/material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+
 
 @Component({
   selector: 'app-root',
@@ -20,8 +25,8 @@ import { MaterialModule } from './material/material.module';
     RouterOutlet, 
     MaterialModule, 
     FooterComponent, 
-    CommonModule, 
-    CreateCourseComponent,
+    CommonModule, FormsModule, ReactiveFormsModule,
+    MatDatepickerModule, MatInputModule, MatNativeDateModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

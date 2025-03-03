@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
 import { TeacherService } from '../../../../services/teacher/teacher.service';
 import { Teacher } from '../../../../core/models/teacher.model';
 import { forkJoin } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateCourseComponent } from '../../../../shared/components/create-course/create-course.component';
+
 
 @Component({
   selector: 'admin-courses-list',
@@ -33,7 +36,8 @@ export class CoursesListComponent implements OnInit {
   constructor(
     private coursesService: CoursesService,
     private router: Router,
-    private teacherService: TeacherService
+    private teacherService: TeacherService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
