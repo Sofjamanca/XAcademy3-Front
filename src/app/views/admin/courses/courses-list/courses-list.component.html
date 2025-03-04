@@ -1,13 +1,13 @@
-<div class="courses-container">
+<div class="container">
   <div class="header-actions">
-    <h1>Gestión de Cursos</h1>
+    <h2>Gestión de Cursos</h2>
     <button mat-raised-button color="primary" class="create-course-button" (click)="createCourse()">
       <mat-icon>add</mat-icon>
       Nuevo Curso
     </button>
   </div>
 
-  <table mat-table [dataSource]="courses" class="courses-table">
+  <table mat-table [dataSource]="courses" class="full-width-table mat-elevation-z8">
     <!-- ID Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef>ID</th>

@@ -5,6 +5,7 @@ import { Category, Course } from '../../core/models/course.model';
 import { CardComponent } from '../../shared/components/card/card.component';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'views-landing-page',
@@ -12,7 +13,8 @@ import { Router } from '@angular/router';
   imports: [
     HeroComponent,
     CardComponent,
-    CommonModule
+    CommonModule,
+    MatButtonModule
 ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css'
@@ -47,6 +49,10 @@ export class LandingPageComponent {
     }
     console.log("🔹 Navegando a /course/", courseId);
     this.router.navigate(['/course', courseId]);
+  }
+
+  goToAllCourses() {
+    this.router.navigate(['/courses']);
   }
 
   // onActionClick(): {

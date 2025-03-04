@@ -1,0 +1,111 @@
+<div class="container">
+    <div class="header">
+      <button mat-icon-button color="primary" (click)="goBack()" aria-label="Volver">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1>{{ editMode ? 'Editar' : 'Crear' }} Profesor</h1>
+    </div>
+    
+    <mat-card class="form-card">
+      <mat-card-content>
+        <form [formGroup]="createTeacherForm" (ngSubmit)="createTeacher()">
+          <div class="checkbox-container">
+            <label class="checkbox-label">El usuario ya está registrado</label>
+            <mat-checkbox [checked]="isRegistered()" (change)="toggleRegistered($event)"></mat-checkbox>
+          </div>
+  
+          <!-- Campo de Email -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" required>
+            <mat-error *ngIf="createTeacherForm.get('email')?.hasError('required')">
+              El email es requerido
+            </mat-error>
+            <mat-error *ngIf="createTeacherForm.get('email')?.hasError('email')">
+              El formato del email es inválido
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Campos de Nombre, Apellido y Teléfono solo si el usuario no está registrado -->
+          <ng-container *ngIf="!isRegistered()">
+            <!-- Campo de Nombre -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Nombre</mat-label>
+              <input matInput formControlName="name" required>
+              <mat-error *ngIf="createTeacherForm.get('name')?.hasError('required')">
+                El nombre es requerido
+              </mat-error>
+            </mat-form-field>
+  
+            <!-- Campo de Apellido -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Apellido</mat-label>
+              <input matInput formControlName="lastname" required>
+              <mat-error *ngIf="createTeacherForm.get('lastname')?.hasError('required')">
+                El apellido es requerido
+              </mat-error>
+            </mat-form-field>
+  
+            <!-- Campo de Teléfono -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Teléfono</mat-label>
+              <input matInput formControlName="phone" required>
+              <mat-error *ngIf="createTeacherForm.get('phone')?.hasError('required')">
+                El teléfono es requerido
+              </mat-error>
+            </mat-form-field>
+          </ng-container>
+  
+          <!-- Campo de Especialidad -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Especialidad</mat-label>
+            <input matInput formControlName="specialty" required>
+            <mat-error *ngIf="createTeacherForm.get('specialty')?.hasError('required')">
+              La especialidad es requerida
+            </mat-error>
+          </mat-form-field>
+  
+          <!-- Campo de Cursos -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Cursos</mat-label>
+            <mat-select formControlName="courses" multiple>
+              <mat-option *ngFor="let course of courses" [value]="course.id">
+                {{ course.title }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+  
+          <!-- Campos de contraseña solo si el usuario no está registrado -->
+          <ng-container *ngIf="!isRegistered()">
+            <!-- Campo de Contraseña -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Contraseña</mat-label>
+              <input matInput type="password" formControlName="password">
+              <mat-error *ngIf="createTeacherForm.get('password')?.hasError('required')">
+                La contraseña es requerida
+              </mat-error>
+            </mat-form-field>
+  
+            <!-- Campo de Confirmar Contraseña -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Confirmar Contraseña</mat-label>
+              <input matInput type="password" formControlName="confirmPassword">
+              <mat-error *ngIf="createTeacherForm.get('confirmPassword')?.hasError('required')">
+                La confirmación de contraseña es requerida
+              </mat-error>
+            </mat-form-field>
+          </ng-container>
+  
+          <!-- Botones de acción -->
+          <div class="form-actions">
+            <button mat-button type="button" (click)="goBack()">Cancelar</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="createTeacherForm.invalid">
+              {{ editMode ? 'Actualizar' : 'Crear' }}
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  
+  

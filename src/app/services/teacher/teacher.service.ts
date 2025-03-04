@@ -16,11 +16,11 @@ export class TeacherService {
   }
 
   getTeacherById(id: number) {
-    return this.http.get<Teacher>(`${this.baseUrl}${id}`);
+    return this.http.get<Teacher>(`${this.baseUrl}view/${id}`);
   }
 
   createTeacher(teacher: Teacher) {
-    return this.http.post<Teacher>(this.baseUrl, teacher);
+    return this.http.post<Teacher>(`${this.baseUrl}create`, teacher);
   }
 
   updateTeacher(id: number, teacher: Teacher) {
@@ -34,6 +34,12 @@ export class TeacherService {
   getTeachersCount(): Observable<number> {
     return this.http.get<number>(`${this.baseUrl}count`);
   }
+
+  // Método para asignar el rol de profesor a un usuario existente
+  assignTeacherRole(userData: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/assign-role`, userData);
+  }
 }
+
 
 

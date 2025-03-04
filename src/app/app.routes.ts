@@ -12,6 +12,9 @@ import { AdminLayoutComponent } from './views/admin/admin-layout/admin-layout.co
 import { HomeComponent } from './views/admin/home/home.component';
 import { CoursesListComponent } from './views/admin/courses/courses-list/courses-list.component';
 import { CourseComponent } from './shared/components/course/course.component';
+import { TeachersListComponent } from './views/admin/teachers/teachers-list/teachers-list.component';
+import { TeacherDetailComponent } from './views/admin/teachers/teacher-detail/teacher-detail.component';
+import { CreateTeacherComponent } from './views/admin/teachers/create-teacher/create-teacher.component';
 
 
 export const routes: Routes = [
@@ -67,6 +70,25 @@ export const routes: Routes = [
             {
                 path: 'cursos/editar/:id',
                 component: CreateCourseComponent,
+                canActivate: [admiGuard]
+            },
+            {
+                path: 'profesores',
+                component: TeachersListComponent
+            },
+            {
+                path: 'profesores/view/:id',
+                component: TeacherDetailComponent,
+                canActivate: [admiGuard]
+            },
+            {
+                path: 'profesores/new',
+                component: CreateTeacherComponent,
+                canActivate: [admiGuard]
+            },
+            {
+                path: 'profesores/editar/:id',
+                component: CreateTeacherComponent,
                 canActivate: [admiGuard]
             }
         ]
