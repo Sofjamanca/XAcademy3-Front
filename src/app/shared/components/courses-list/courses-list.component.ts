@@ -49,5 +49,6 @@ export class CoursesListComponent {
     console.log("🔹 Navegando a /course/", courseId);
     this.router.navigate(['/course', courseId]);
   }
+  
 
 }

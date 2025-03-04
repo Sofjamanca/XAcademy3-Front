@@ -1,0 +1,34 @@
+<div class="perfil-layout">
+    <aside class="sidebar" [class.collapsed]="isCollapsed">
+        <div class="sidebar-header">
+            <img class="student-icon" src="/assets/images/icon_gral.png" alt="Icono estudiante">
+            <h2 *ngIf="!isCollapsed">Perfil Estudiante</h2>
+            <button mat-icon-button (click)="toggleSidenav()">
+                <mat-icon>{{ isCollapsed ? 'menu' : 'chevron_left' }}</mat-icon>
+            </button>
+        </div>
+        
+      
+      <nav class="sidebar-nav">
+        <a routerLink="mis-cursos" routerLinkActive="active" class="nav-item">
+          <mat-icon>school</mat-icon>
+          <span *ngIf="!isCollapsed">Mis Cursos</span>
+        </a>
+        <a routerLink="pendientes-pago" routerLinkActive="active" class="nav-item">
+          <mat-icon>credit_card</mat-icon>
+          <span *ngIf="!isCollapsed">Pendientes de Pago</span>
+        </a>
+        <a routerLink="configuracion" routerLinkActive="active" class="nav-item">
+          <mat-icon>workspace_premium</mat-icon>
+          <span *ngIf="!isCollapsed">Certificados</span>
+        </a>
+        <a routerLink="configuracion" routerLinkActive="active" class="nav-item">
+            <mat-icon>settings</mat-icon>
+            <span *ngIf="!isCollapsed">Configuración</span>
+          </a>
+      </nav>
+    </aside>    
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>

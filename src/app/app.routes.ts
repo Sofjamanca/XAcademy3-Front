@@ -12,7 +12,8 @@ import { AdminLayoutComponent } from './views/admin/admin-layout/admin-layout.co
 import { HomeComponent } from './views/admin/home/home.component';
 import { CoursesListComponent } from './views/admin/courses/courses-list/courses-list.component';
 import { CourseComponent } from './shared/components/course/course.component';
-
+import { InscripcionComponent } from './shared/components/inscripcion/inscripcion.component';
+import { StudentProfileComponent } from './views/student-profile/student-profile.component';
 
 export const routes: Routes = [
     {
@@ -45,6 +46,10 @@ export const routes: Routes = [
         path: 'course/:id', 
       component: CourseComponent 
     },
+    {   path: 'inscribir/:id', 
+        component: InscripcionComponent,
+        canActivate: [loginGuard]
+    },
     {
         path: 'admin',
         component: AdminLayoutComponent,
@@ -69,6 +74,18 @@ export const routes: Routes = [
                 component: CreateCourseComponent,
                 canActivate: [admiGuard]
             }
+        ]
+    },
+    {
+        path: 'perfil',
+        component: StudentProfileComponent,
+        // canActivateChild: [loginGuard],
+        // canActivate: [admiGuard],      
+        children: [
+            {
+                path: '',
+                component: HomeComponent
+            },
         ]
     },
     {

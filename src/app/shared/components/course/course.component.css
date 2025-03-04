@@ -1,149 +1,166 @@
-.main-container {
-    display: flex;
-    justify-content: center; 
-    align-items: center;
-    flex-wrap: wrap;
-    padding: 20px;
-    width: 100%;
-    max-width: 1200px;
-    margin: auto;
-  }
-  
-  
-  .page-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 800px; 
-    margin-bottom: 20px;
-    animation: slideUp 0.8s ease-in-out;
-  }
-  
 
-  .course-image {
-    width: 100%;
-    max-width: 600px;
-    border-radius: 15px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    animation: fadeIn 0.8s ease-in-out;
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-height: 1100px;
+}
+
+.course-header {
+  width: 100%;
+  height: 250px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.course-status {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #38d82f;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.page-container {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  max-width: 2500px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.info-portada {
+  position: absolute; 
+  left: 10%; 
+  top: 50%; 
+  transform: translateY(-50%); 
+  color: white; 
+  text-align: left; 
+}
+
+.info-portada .title {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.info-portada .tag {
+  background: #34c759;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.info-portada .students,
+.info-portada .teacher {
+  font-size: 16px;
+  margin-left: 10px;
+  color: white; 
+}
+
+/* Estilos generales para la información del curso */
+.course-info {
+  width: 100%; /* Que ocupe todo el ancho */
+  padding: 20px;
+  font-size: 18px; /* Aumentamos el tamaño del texto */
+  color: #333;
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Aumentamos más el tamaño del título */
+.course-info .title {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+/* Mejoramos los iconos y textos de detalles */
+.course-info .info {
+  font-size: 20px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Mejoramos el precio */
+.course-info .price {
+  font-size: 22px;
+  font-weight: bold;
+  color: #ff5733;
+  margin-top: 15px;
+}
+
+/* Animación de aparición */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  .floating-card {
-    position: relative; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background:rgb(255 201 160);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    width: 90%;
-    max-width: 350px; 
-    margin-top: 30px;
-    margin-bottom: 30px;
-    animation: float 3s ease-in-out infinite;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .floating-card button {
-    width: 100%; 
-    margin-top: 10px; 
-  }
-  
-  .start-button {
-    background-color: #635BFF;
-    color: white;
-    font-size: 18px;
-    padding: 10px;
-    border-radius: 8px;
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .start-button:hover {
-    transform: scale(1.05);
-  }
-  
-  .title {
-    font-size: 26px;
-    font-weight: bold;
-    text-align: center;
-    color: #333;
-    margin-bottom: 15px;
-  }
-  
-  .info {
-    font-size: 18px;
-    line-height: 1.6;
-    color: #444;
-  }
-  
-  .price {
-    font-size: 22px;
-    font-weight: bold;
-    color: #E53E3E;
-    margin-top: 15px;
-  }
-  
- 
-  .home-button {
-    margin-top: 20px;
-    font-size: 18px;
-    background-color: #635BFF;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  }
-  
-  .home-button {
-    background-color: #635BFF;
-    color: white;
-    font-size: 18px;
-    padding: 10px;
-    border-radius: 8px;
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .home-button:hover {
-    transform: scale(1.05);
-  }
-  
-  
-  .start-button, .home-button {
-    margin-top: 15px;
-    font-size: 18px;
-    background-color: #635BFF;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  }
-  
-  .start-button:hover, .home-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 5px 15px rgba(99, 91, 255, 0.5);
-  }
-  
-  
-  @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
-  }
-  
-  @keyframes float {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0); }
-  }
-  
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
+}
+
+
+.floating-card {
+  width: 30%;
+  height: 30%;
+  margin-top: -10%; /* Reducimos la distancia de la tarjeta */
+  background: rgb(214, 212, 212);
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.course-thumbnail {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.start-button {
+  width: 100%;
+  background: #635BFF;
+  color: white;
+  font-size: 18px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.course-includes p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+
+.payment-methods {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.payment-methods img {
+  width: 70px; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.payment-methods img:hover {
+  transform: scale(1.2); 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+}

@@ -1,0 +1,55 @@
+<div class="curso-form-container">
+  <form *ngIf="cursoForm" [formGroup]="cursoForm" (ngSubmit)="onSubmit()" class="curso-form">
+    <div class="titulo">{{ title }}</div>
+
+    <ng-container *ngFor="let input of inputs">
+      <mat-form-field *ngIf="input.type !== 'media'" appearance="outline">
+        <mat-label>{{ input.label }}</mat-label>
+    
+        <input matInput *ngIf="input.type === 'text'" [formControlName]="input.atr" type="text">
+    
+        <input matInput *ngIf="input.type === 'number'" [formControlName]="input.atr" type="number">
+    
+        <mat-select *ngIf="input.type === 'select'" [formControlName]="input.atr">
+          <mat-option *ngFor="let option of input.options" [value]="option.value || option.label">
+            {{ option.label }}
+          </mat-option>
+        </mat-select>
+
+        <div *ngIf="input.type === 'date'" >
+          <div class="conteiner-date">
+          <input matInput  [formControlName]="input.atr" [matDatepicker]="picker" [min]="input.atr === 'startDate' ? minFechaInicio : (input.atr === 'endDate' ? minFechaFin : null)">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+               <mat-datepicker #picker></mat-datepicker>
+          </div>
+        </div>
+
+        <textarea matInput *ngIf="input.type === 'textarea'" [formControlName]="input.atr"></textarea>
+      </mat-form-field>
+
+        <div *ngIf="input.type === 'media'" class="file-upload-container">
+            <label for="fileInput" class="file-upload" *ngIf="!imagePreview">
+              <img src="assets/images/upload-icon.png" alt="Subir imagen" class="upload-icon" />
+            </label>
+            <input type="file" id="fileInput" (change)="onFileSelected($event)" hidden />
+            
+          
+            <div *ngIf="imagePreview" class="preview-container">
+              <p class="preview-text">Vista previa</p>
+              <img [src]="imagePreview" alt="Vista previa" class="preview-image" />
+              <button class="delete-button" (click)="removeImage()">✖</button>
+          </div>
+        </div>
+    </ng-container>
+    
+
+    <div class="botones-container">
+      <button mat-raised-button class="boton-crear" type="submit" [disabled]="cursoForm.invalid">
+        {{ tipo === 'crear' ? 'Crear curso' : 'Inscribirse' }}
+      </button>      
+      <button mat-raised-button class="boton-cancelar" type="button" (click)="onCancel()">
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>
