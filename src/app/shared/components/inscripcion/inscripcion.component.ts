@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { StudentService } from '../../../services/student/student.service';
+import { LocalStorageService } from '../../../services/localstorage/local-storage.service';
 
 @Component({
   selector: 'app-inscripcion',
@@ -26,19 +27,23 @@ export class InscripcionComponent implements OnInit {
     { label: 'Dirección', atr: 'address', type: 'text' }
   ];
   studentData: any = null;
+  title: string ='';
+
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private coursesService: CoursesService,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
     const courseId = Number(this.route.snapshot.paramMap.get('id'));
     
+    const userId = this.localStorageService.getItem('user_id');
+    console.log(userId);
     this.studentData = this.studentService.getStudentData();
-     console.log (this.studentData);
 
     if (courseId) {
       this.coursesService.getCourseById(courseId).subscribe((data) => {

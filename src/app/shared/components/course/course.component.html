@@ -5,7 +5,8 @@
     <h2 class="title">{{ course?.title }}</h2>
       <span class="tag">Nuevo</span>
       <span class="students">👥 32</span>
-      <span class="teacher">👨‍🏫 Profesor: {{ course?.teacher_id }}</span>
+      <span class="teacher">👨‍🏫 Profesor: {{ course?.teacherName || 'No asignado' }}</span>
+
     </div>
     <div class="course-status">Disponible</div>
   </div>
@@ -18,7 +19,8 @@
       <p class="info"><strong>📅 Fecha inicio:</strong> {{ course?.startDate }}</p>
       <p class="info"><strong>📅 Fecha fin:</strong> {{ course?.endDate }}</p>
       <p class="info"><strong>🎯 Modalidad:</strong> {{ course?.modalidad }}</p>
-      
+      <p class="info"><strong>📖 Categoría:</strong> {{ course?.categoryTitle || 'Sin categoría' }}</p>
+
       <p class="price"><strong>💰 Precio:</strong> ${{ course?.price }}</p>
       
       <div class="payment-methods">
