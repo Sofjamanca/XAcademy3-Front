@@ -16,6 +16,8 @@ import { response } from 'express';
 import { error } from 'console';
 import { AuthStateServiceService } from '../../../services/state/auth-state-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LocalStorageService } from '../../../services/localstorage/local-storage.service';
+
 // import { MaterialModule } from '../../../material/material.module';
 
 
@@ -72,10 +74,11 @@ export class AuthModalComponent implements OnInit {
     private router: Router,
     private authStateService: AuthStateServiceService,
     private ruta: ActivatedRoute,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private localstorageService: LocalStorageService
   ) { }
 
-  ngOnInit(): void {                       
+  ngOnInit(): void {
     let formControls: any = {};
     this.formFields.forEach(field => {
       formControls[field.controlName] = new FormControl('', Validators.required);
@@ -84,11 +87,11 @@ export class AuthModalComponent implements OnInit {
 
 
     // Detecta si la URL es directamente "/auth/login" o "/auth/register"
-    this.isStandalone = this.ruta.snapshot.routeConfig?.path === 'auth/login' || 
-                        this.ruta.snapshot.routeConfig?.path === 'auth/register' ||
-                        this.ruta.snapshot.routeConfig?.path === 'auth/reset-password';
+    this.isStandalone = this.ruta.snapshot.routeConfig?.path === 'auth/login' ||
+      this.ruta.snapshot.routeConfig?.path === 'auth/register' ||
+      this.ruta.snapshot.routeConfig?.path === 'auth/reset-password';
 
-    
+
   }
 
   // Método para cerrar el modal
@@ -133,39 +136,42 @@ export class AuthModalComponent implements OnInit {
       },
       complete: () => this.loading = false
     });
-    window.location.reload();
   }
 
-  private accessManagent() {//login
+  private accessManagent() {
     const { email, password } = this.authForm.value;
-    this.apiService.login(email, password).subscribe({
+
+    this.apiService.login({ email, password }).subscribe({
       next: (response) => {
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('userName', response.user.name);
-        localStorage.setItem('role', response.user.role);
-        this.successfulManagement(response);       
-        this.authStateService.setAuthState(true);
-        window.location.reload();
+
+        // Guarda los tokens correctamente en LocalStorageService
+        this.localstorageService.setItem('token', response.accessToken);
+        this.localstorageService.setItem('refreshToken', response.refreshToken);
+
+        // Guarda el nombre del usuario
+        this.localstorageService.setItem('userName', response.user.name);
+        this.successfulManagement(response);
+         window.location.reload();
         this.openSnackBar('Inicio de sesión exitoso', 'Cerrar');
+       
       },
       error: (error) => this.openSnackBar(`Error: ${error.error.message}`, 'Cerrar')
     });
   }
 
+
   private successfulManagement(response: any) {
-    console.log('Respuesta exitosa:', response);
     if (response.accessToken && response.refreshToken) {
       this.apiService.setTokens(response.accessToken, response.refreshToken);
-       
+      
       this.router.navigate(['/home']);
-     
+
     }
     this.authForm.reset(); //limpiar formulario
     this.closeModal();
     if (this.title === 'Regístrate') {
-      window.location.reload()
       this.router.navigate(['/home']); // Redirige solo si el registro fue exitoso
-      
+
     }
   }
 
@@ -184,19 +190,26 @@ export class AuthModalComponent implements OnInit {
     this.loading = true;
     this.apiService.signInWithGoogle().subscribe({
       next: (response) => {
+        // Guarda los tokens correctamente en LocalStorageService
+        this.localstorageService.setItem('token', response.accessToken);
+        this.localstorageService.setItem('refreshToken', response.refreshToken);
+
+        // Guarda el nombre del usuario
+        this.localstorageService.setItem('userName', response.user.name);
+
+        //Guarda el rol
+        this.localstorageService.setItem('rol', response.user.rol);
         this.successfulManagement(response);
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('userName', response.user.name);
-        localStorage.setItem('role', response.user.role);
-        this.authStateService.setAuthState(true);
-        this.openSnackBar('Inicio de sesión con Google exitoso', 'Cerrar');
         window.location.reload();
+        this.openSnackBar('Inicio de sesión con Google exitoso', 'Cerrar');
+        
       },
       error: (error) => {
         this.loading = false;
         console.error('Error al iniciar sesión con Google:', error);
         this.openSnackBar('Error al iniciar sesión con Google', 'Cerrar');
-      }
+      },
+      complete: () => this.loading = false
     });
   }
 
@@ -204,11 +217,11 @@ export class AuthModalComponent implements OnInit {
     this.loading = true;
     this.apiService.signInWithFacebook().subscribe({
       next: (response) => {
-        this.successfulManagement(response);
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('userName', response.user.name);
-        localStorage.setItem('role', response.user.role);
-        this.authStateService.setAuthState(true);
+        // this.successfulManagement(response);
+        // this.localstorageService.setItem('token', response.token);
+        // this.localstorageService.setItem('name', response.user.name);
+        // this.localstorageService.setItem('role', response.user.role);
+        // this.authStateService.setAuthState(true);
         this.openSnackBar('Inicio de sesión con Facebook exitoso', 'Cerrar');
         window.location.reload();
       },

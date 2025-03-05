@@ -13,23 +13,35 @@ import { CommonModule } from '@angular/common';
 })
 export class UserMenuComponent implements OnInit{
   apiService = inject(ApiService);
+  isAdminUser: boolean = false;
+  isStudentUser: boolean = false;
 
   constructor(private router: Router){}
 
   ngOnInit(): void {
+    this.isAdminUser = this.apiService.isAdmin();
+    this.isStudentUser =this.apiService.isStudent();
   }
 
   logout() {
     this.apiService.logout().subscribe({
       next: () => {
+        console.log('Sesión cerrada exitosamente.');
         this.router.navigate(['/home']);
-
+  
+        setTimeout(() => {
+          window.location.reload();
+        }, 300); // Luego recargar
       },
       error: (error) => {
         console.error('Error al cerrar sesión', error);
       }
     });
   }
+  
+  
+  
+  
 
   goToAdmin() {
     this.router.navigate(['/admin']);
