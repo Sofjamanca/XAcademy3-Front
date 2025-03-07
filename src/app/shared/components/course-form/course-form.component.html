@@ -18,13 +18,34 @@
 
         <div *ngIf="input.type === 'date'" >
           <div class="conteiner-date">
-          <input matInput  [formControlName]="input.atr" [matDatepicker]="picker" [min]="input.atr === 'startDate' ? minFechaInicio : (input.atr === 'endDate' ? minFechaFin : null)">
+          <input matInput  [formControlName]="input.atr" [matDatepicker]="picker" [max]="maxFechaNacimiento" [min]="input.atr === 'startDate' ? minFechaInicio : (input.atr === 'endDate' ? minFechaFin : null) ">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                <mat-datepicker #picker></mat-datepicker>
           </div>
         </div>
 
         <textarea matInput *ngIf="input.type === 'textarea'" [formControlName]="input.atr"></textarea>
+        
+        <mat-error *ngIf="cursoForm.get(input.atr)?.invalid && cursoForm.get(input.atr)?.touched">
+          <span *ngIf="cursoForm.get(input.atr)?.hasError('required')">El campo es obligatorio.</span>
+          <span *ngIf="cursoForm.get(input.atr)?.hasError('email')">El email no es válido.</span>
+          <span *ngIf="cursoForm.get(input.atr)?.hasError('minlength')">Debe tener al menos 7 caracteres.</span>
+          <span *ngIf="cursoForm.get(input.atr)?.hasError('maxlength')">No puede tener más de 8 caracteres.</span>
+          <span *ngIf="cursoForm.get(input.atr)?.hasError('pattern') && input.atr !== 'dni' && input.atr !== 'phone'">
+            Formato incorrecto.
+          </span>
+        
+          <span *ngIf="cursoForm.get(input.atr)?.hasError('edadInvalida')">Debe tener al menos 18 años.</span>
+
+          <span *ngIf="input.atr === 'dni' && cursoForm.get('dni')?.hasError('pattern')">
+            Debe tener entre 7 y 8 dígitos.
+          </span>
+        
+
+          <span *ngIf="input.atr === 'phone' && cursoForm.get('phone')?.hasError('pattern')">
+            El teléfono debe tener 10 dígitos.
+          </span>
+        </mat-error>
       </mat-form-field>
 
         <div *ngIf="input.type === 'media'" class="file-upload-container">

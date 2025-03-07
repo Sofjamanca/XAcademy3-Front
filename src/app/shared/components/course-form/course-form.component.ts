@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Component({
   selector: 'app-course-form',
@@ -34,8 +34,8 @@ export class CourseFormComponent implements OnInit {
   @Input() categorias: any[] = [];
   @Output() formSubmit = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
-
   @Input() title: string = '';
+  maxFechaNacimiento: string = new Date().toISOString().split('T')[0];
   cursoForm!: FormGroup;
   minFechaFin: Date | null = null;
   minFechaInicio: Date = new Date();
@@ -48,7 +48,6 @@ export class CourseFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('Inputs recibidos:', this.inputs);
     this.initForm();
     this.cursoForm.get('startDate')?.valueChanges.subscribe((startDate: Date) => {
     this.minFechaFin = startDate; 
@@ -72,17 +71,50 @@ export class CourseFormComponent implements OnInit {
     const group: { [key: string]: any } = {}; 
   
     this.inputs.forEach(input => {
-      const required = input.required === undefined ? true : input.required ;
-      const value = input.type === 'media' ? [null] :['', required ? Validators.required : null]
-      group[input.atr] = value;
-    });
+      let validators = [];
+      if (input.required !== false) {
+        validators.push(Validators.required);
+      }
+
+      switch (input.type) {
+        case 'text':
+          if (input.atr === 'email') {
+            validators.push(Validators.email); 
+          }
+          break;
   
+        case 'number':
+          if (input.atr === 'dni') {
+            validators.push(
+              Validators.pattern(/^\d{7,8}$/) 
+            );
+          }
+          if (input.atr === 'phone') {
+            validators.push(Validators.pattern(/^\d{10}$/));
+          }
+          break;
+  
+        case 'date':
+          validators.push(Validators.required); 
+          if (input.atr === 'birthday') {
+            validators.push(this.validateEdadNacimiento); 
+          }
+          break;
+  
+        case 'media':
+          group[input.atr] = [null, input.required ? Validators.required : null];
+          return; 
+      }
+      group[input.atr] = ['', { validators, updateOn: 'blur' }];
+    });
+
     this.cursoForm = this.fb.group(group, { validators: this.validarFechas });
   
     this.cursoForm.get('startDate')?.valueChanges.subscribe((inicio) => {
       this.minFechaFin = inicio ? new Date(inicio) : null;
     });
   }
+  
 
   onSubmit(): void {
     if (this.cursoForm.valid) {
@@ -134,4 +166,22 @@ export class CourseFormComponent implements OnInit {
   onCancel(): void {
     this.cancel.emit();
   }
+
+
+
+private validateEdadNacimiento(control: AbstractControl): ValidationErrors | null {
+  const fechaNacimiento = control.value;
+  if (!fechaNacimiento) return null; 
+
+  const fechaHoy = new Date();
+  const edad = fechaHoy.getFullYear() - new Date(fechaNacimiento).getFullYear();
+  const mes = fechaHoy.getMonth() - new Date(fechaNacimiento).getMonth();
+
+  if (edad < 18 || (edad === 18 && mes < 0)) {
+    return { edadInvalida: true }; 
+  }
+
+  return null; 
+}
+
 }

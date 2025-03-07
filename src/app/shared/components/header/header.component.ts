@@ -11,13 +11,12 @@ import { RegisterComponent } from '../../../views/auth/register/register.compone
 import { RecoverPasswordComponent } from '../../../views/auth/recover-password/recover-password.component';
 import { MaterialModule } from '../../../material/material.module';
 import { ApiService } from '../../../services/api.service';
-
 import { AuthStateServiceService } from '../../../services/state/auth-state-service.service';
 import { UserMenuComponent } from "./user-menu/user-menu.component";
 import { LocalStorageService } from '../../../services/localstorage/local-storage.service';
 import { User } from 'firebase/auth';
 import { UserService } from '../../../services/user/user.service';
-
+import { StudentService } from '../../../services/student/student.service';
 
 
 @Component({
@@ -39,11 +38,14 @@ export class HeaderComponent implements OnInit {
   apiService = inject(ApiService);
   authStateService = inject(AuthStateServiceService);
   userService = inject(UserService);
+  studentService = inject (StudentService);
 
   constructor(private modalService: ModalService) {}
 
   ngOnInit(): void {
     this.authStateService.isAuthenticated$.subscribe(isAuthenticated => {
+      const studentData = this.apiService.getMe();
+      this.studentService.saveStudentData(studentData);
     });
 
     this.userService.userName$.subscribe(userName => {

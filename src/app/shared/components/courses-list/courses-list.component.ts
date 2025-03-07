@@ -33,7 +33,6 @@ export class CoursesListComponent {
 
     this.coursesSvc.getCategories().subscribe(categories => {
       this.categories = categories;
-      console.log(categories);
     })
   }
 
@@ -46,7 +45,6 @@ export class CoursesListComponent {
       console.error("El ID del curso es inválido:", courseId);
       return;
     }
-    console.log("🔹 Navegando a /course/", courseId);
     this.router.navigate(['/course', courseId]);
   }
   

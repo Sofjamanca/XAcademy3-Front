@@ -43,10 +43,8 @@ export class CourseComponent implements OnInit {
             });
           }
           if (this.course.category_id) {
-            // Asegurarse de que category_id sea válido
             this.coursesService.getCategoryById(this.course.category_id).subscribe({
-              next: (category) => {
-                console.log('Categoría obtenida:', category);  // Verifica si llega correctamente la categoría
+              next: (category) => {  
                 if (category) {
                   this.course.categoryTitle = category.title;
                 }
