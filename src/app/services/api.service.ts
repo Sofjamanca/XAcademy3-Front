@@ -27,7 +27,6 @@ export class ApiService {
     this.localStorageService.setItem('refreshToken', response.refreshToken);
     this.localStorageService.setItem('name', response.name);
     this.localStorageService.setItem('role', response.role);
-     
     this.authStateService.setAuthState(true);
   }
   
@@ -42,7 +41,7 @@ export class ApiService {
             token: response.accessToken,
             refreshToken: response.refreshToken,
             name: response.user.name,
-            role: response.user.role
+            role: response.user.role,
           });
         }
       }),
@@ -60,8 +59,10 @@ export class ApiService {
       this.localStorageService.removeItem('token');
       this.localStorageService.removeItem('refreshToken');
       this.localStorageService.removeItem('userName');
+      this.localStorageService.removeItem('name');
       this.localStorageService.removeItem('role');
-  
+      this.localStorageService.removeItem('studentData');
+
       from(signOut(this._auth)).subscribe({
         next: () => {
           observer.next();
@@ -107,6 +108,7 @@ export class ApiService {
     this.localStorageService.removeItem('refreshToken');
     this.localStorageService.removeItem('name');
     this.localStorageService.removeItem('role');
+    this.localStorageService.removeItem('studentData');
   }
 
   isAuthenticated(): boolean {
@@ -180,4 +182,29 @@ export class ApiService {
     );
   }
 
-}
+  getMe(): Observable<any> {
+    const token = this.localStorageService.getItem('token'); 
+
+    if (!token) {
+      console.error('Token no encontrado');
+      return throwError(() => new Error('Token no proporcionado'));
+    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<any>(`${this.apiUrl}/me`, { headers }).pipe(
+      map(data => ({
+        user_id: data.id,  
+        dni: data.dni,
+        phone: data.phone,
+        birthday: data.birthday,
+        address: data.address
+      })),
+      catchError(error => {
+        console.error("Error en getMe:", error);
+        return throwError(() => new Error(error));
+      })
+    );
+  }
+  
+  }

@@ -37,7 +37,7 @@ export class CoursesService {
   }
 
   getCategoryById(id: number): Observable<Category> {
-    return this.http.get<Category>(`${this.apiUrl}categories/${id}`);
+    return this.http.get<Category>(`${this.apiUrl}categories/view/${id}`);
   }
 
   updateCategory(category: Category): Observable<string> {

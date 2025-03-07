@@ -47,4 +47,8 @@ export class UserMenuComponent implements OnInit{
     this.router.navigate(['/admin']);
   }
 
+  goToStudent(){
+    this.router.navigate(['/perfil']);
+  }
+
 }

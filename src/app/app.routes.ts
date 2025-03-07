@@ -4,7 +4,11 @@ import { LandingPageComponent } from './views/landing-page/landing-page.componen
 import { CreateCourseComponent } from './shared/components/create-course/create-course.component';
 import { HomeComponent } from './views/admin/home/home.component';
 import { CoursesListComponent } from './views/admin/courses/courses-list/courses-list.component';
+import { CourseComponent } from './shared/components/course/course.component';
 import { adminGuard } from './guards/admin.guard';
+import { loginGuard } from './guards/login.guards';
+import { InscripcionComponent } from './shared/components/inscripcion/inscripcion.component';
+import { StudentProfileComponent } from './views/student-profile/student-profile.component';
 
 export const routes: Routes = [
     {
@@ -54,6 +58,10 @@ export const routes: Routes = [
             (m) => m.CourseComponent
           ),
     },
+    {   path: 'inscribir/:id', 
+        component: InscripcionComponent,
+        canActivate: [loginGuard]
+    },
     {
         path: 'admin',
         loadComponent: () =>
@@ -80,6 +88,18 @@ export const routes: Routes = [
                 component: CreateCourseComponent,
                 canActivate: [adminGuard]
             }
+        ]
+    },
+    {
+        path: 'perfil',
+        component: StudentProfileComponent,
+        // canActivateChild: [loginGuard],
+        // canActivate: [admiGuard],      
+        children: [
+            {
+                path: '',
+                component: HomeComponent
+            },
         ]
     },
     {

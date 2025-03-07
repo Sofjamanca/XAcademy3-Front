@@ -45,8 +45,8 @@ export class CoursesListComponent {
       console.error("El ID del curso es inválido:", courseId);
       return;
     }
-    console.log("🔹 Navegando a /course/", courseId);
     this.router.navigate(['/course', courseId]);
   }
+  
 
 }
