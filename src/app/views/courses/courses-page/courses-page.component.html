@@ -9,16 +9,20 @@
     </div>
   </div>
   <mat-divider></mat-divider>
+  <button class="filters-btn" mat-button color="primary" (click)="toggleFilters()">
+    <mat-icon>filter_list</mat-icon> Filtrar
+  </button>
+  <!-- <shared-log-btn (click)="toggleFilters()"><mat-icon>filter_list</mat-icon></shared-log-btn> -->
   <div class="content">
-    <div class="filter" >
+    <div class="filter" [ngClass]="{'show-filters': showFilters}" >
       <h5>Ordenar por:</h5>
-      <shared-filter 
-        (priceSelected)="onPriceSelected($event)" 
+      <shared-filter
+        (priceSelected)="onPriceSelected($event)"
         (orderSelected)="onOrderSelected($event)">
       </shared-filter>
     </div>
-    <shared-categories 
-      class="categories" 
+    <shared-categories
+      class="categories"
       (categorySelected)="onCategorySelected($event)">
     </shared-categories>
     <shared-courses-list class="courses" [courses]="courses"></shared-courses-list>
@@ -26,6 +30,25 @@
       <p>No se encontraron cursos para "{{ searchTerm }}"</p>
       <button mat-raised-button color="primary" [routerLink]="['/courses']" [queryParams]="{search: null}">Ver todos los cursos</button>
     </div>
-    <shared-pagination class="pagination"></shared-pagination>
   </div>
+  <shared-pagination class="pagination"></shared-pagination>
 </section>
+
+<!-- Modal de filtros para pantallas pequeñas -->
+<ng-template #filterModal>
+  <h2>Filtrar cursos</h2>
+  <mat-divider></mat-divider>
+
+  <shared-filter
+    (priceSelected)="onPriceSelected($event)"
+    (orderSelected)="onOrderSelected($event)">
+  </shared-filter>
+
+  <shared-categories
+    (categorySelected)="onCategorySelected($event)"></shared-categories>
+
+  <div class="modal-actions">
+    <button mat-button (click)="closeFilterModal()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="applyFilters()">Aplicar</button>
+  </div>
+</ng-template>

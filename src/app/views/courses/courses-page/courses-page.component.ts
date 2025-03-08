@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { CoursesListComponent } from '../../../shared/components/courses-list/courses-list.component';
 import { MaterialModule } from '../../../material/material.module';
 import { FilterComponent } from '../../../shared/components/filter/filter.component';
@@ -9,6 +9,7 @@ import { CoursesService } from '../../../services/courses/courses.service';
 import { Category, Course } from '../../../core/models/course.model';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'views-courses-page',
@@ -28,6 +29,8 @@ import { MatIconModule } from '@angular/material/icon';
 })
 
 export class CoursesPageComponent implements OnInit {
+  @ViewChild('filterModal') filterModal!: TemplateRef<any>;
+
   courses: Course[] = [];
   categories: Category[] = [];
   selectedCategories: number[] = [];
@@ -36,10 +39,14 @@ export class CoursesPageComponent implements OnInit {
   searchTerm: string = '';
   isSearching: boolean = false;
   loading: boolean = true;
-  
+
+  showFilters: boolean = false;
+
   constructor(
     private coursesSvc: CoursesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -48,13 +55,39 @@ export class CoursesPageComponent implements OnInit {
       const search = params.get('search');
       this.searchTerm = search ? search.trim() : '';
       this.isSearching = !!this.searchTerm;
-      
+
       if (this.isSearching) {
         this.searchCourses();
       } else {
         this.loadCourses();
       }
     });
+  }
+
+  toggleFilters(): void {
+    if (window.innerWidth <= 768) {
+      this.openFilterModal();
+    } else {
+      this.showFilters = !this.showFilters;
+    }
+  }
+
+  openFilterModal(): void {
+    this.dialog.open(this.filterModal, {
+      width: '90%',
+      maxWidth: '400px',
+      maxHeight: '90vh',
+      panelClass: 'scrollable-modal'
+    });
+  }
+
+  closeFilterModal(): void {
+    this.dialog.closeAll();
+  }
+
+  applyFilters(): void {
+    this.dialog.closeAll();
+    this.loadCourses();
   }
 
   loadCourses() {
@@ -93,7 +126,7 @@ export class CoursesPageComponent implements OnInit {
     } else {
       this.selectedCategories = this.selectedCategories.filter(id => id !== event.categoryId);
     }
-    
+
     if (!this.isSearching) {
       this.loadCourses();
     }
@@ -101,7 +134,7 @@ export class CoursesPageComponent implements OnInit {
 
   onPriceSelected(price: string) {
     this.selectedPrice = price;
-    
+
     if (!this.isSearching) {
       this.loadCourses();
     }
@@ -109,7 +142,7 @@ export class CoursesPageComponent implements OnInit {
 
   onOrderSelected(orderBy: string) {
     this.selectedOrder = orderBy;
-    
+
     if (!this.isSearching) {
       this.loadCourses();
     }

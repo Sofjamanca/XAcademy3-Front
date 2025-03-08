@@ -106,12 +106,12 @@ img[mat-card-image] {
     max-width: 100%;
     padding: 0;
   }
-  
+
   .card-title {
     font-size: 16px;
   }
-  
+
   .course-description {
     max-height: 3em;
   }
-} 
+}

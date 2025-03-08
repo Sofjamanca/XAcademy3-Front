@@ -33,12 +33,10 @@ export class FilterComponent {
   constructor(private coursesSvc: CoursesService) {}
 
   onPriceSelected(value: string) {
-    console.log('Precio seleccionado:', value);
     this.priceSelected.emit(value);
   }
 
   onOrderSelected(value: string) {
-    console.log('Orden seleccionado:', value);
     this.orderSelected.emit(value);
   }
 }
