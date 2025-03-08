@@ -1,0 +1,14 @@
+<div class="editar-curso-container">
+    <mat-card class="editar-curso-card">
+      <mat-card-content>
+        <app-course-form
+          title="Editar curso"
+          [inputs]="inputs"
+          [curso]="cursoExistente"
+          (formSubmit)="editarCurso()"
+          (cancel)="goBack()">
+        </app-course-form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  

@@ -13,6 +13,7 @@ import { HomeComponent } from './views/admin/home/home.component';
 import { CoursesListComponent } from './views/admin/courses/courses-list/courses-list.component';
 import { CourseComponent } from './shared/components/course/course.component';
 import { InscripcionComponent } from './shared/components/inscripcion/inscripcion.component';
+import { EditCourseComponent } from './shared/components/edit-course/edit-course.component';
 
 export const routes: Routes = [
     {
@@ -70,7 +71,7 @@ export const routes: Routes = [
             },
             {
                 path: 'cursos/editar/:id',
-                component: CreateCourseComponent,
+                component: EditCourseComponent,
                 canActivate: [admiGuard]
             }
         ]
