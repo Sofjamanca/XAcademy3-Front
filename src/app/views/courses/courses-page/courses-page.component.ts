@@ -121,8 +121,11 @@ export class CoursesPageComponent implements OnInit {
   }
 
   onCategorySelected(event: { categoryId: number; selected: boolean }) {
+
     if (event.selected) {
-      this.selectedCategories.push(event.categoryId);
+      if (!this.selectedCategories.includes(event.categoryId)) {
+        this.selectedCategories.push(event.categoryId);
+      }
     } else {
       this.selectedCategories = this.selectedCategories.filter(id => id !== event.categoryId);
     }

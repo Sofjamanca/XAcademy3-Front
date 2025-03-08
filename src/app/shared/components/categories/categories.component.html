@@ -3,7 +3,7 @@
 
   <mat-selection-list (selectionChange)="onCategoryChange($event)">
     @for (category of categories; track category) {
-      <mat-list-option [value]="category.id">{{category.title}}</mat-list-option>
+      <mat-list-option [value]="category.id" [selected]="isSelected(category.id)">{{category.title}}</mat-list-option>
     }
   </mat-selection-list>
 </section>

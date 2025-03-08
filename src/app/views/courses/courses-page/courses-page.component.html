@@ -12,7 +12,6 @@
   <button class="filters-btn" mat-button color="primary" (click)="toggleFilters()">
     <mat-icon>filter_list</mat-icon> Filtrar
   </button>
-  <!-- <shared-log-btn (click)="toggleFilters()"><mat-icon>filter_list</mat-icon></shared-log-btn> -->
   <div class="content">
     <div class="filter" [ngClass]="{'show-filters': showFilters}" >
       <h5>Ordenar por:</h5>
@@ -34,17 +33,20 @@
   <shared-pagination class="pagination"></shared-pagination>
 </section>
 
-<!-- Modal de filtros para pantallas pequeñas -->
 <ng-template #filterModal>
   <h2>Filtrar cursos</h2>
   <mat-divider></mat-divider>
 
   <shared-filter
+    [selectedPrice]="selectedPrice"
+    [selectedOrder]="selectedOrder"
+
     (priceSelected)="onPriceSelected($event)"
     (orderSelected)="onOrderSelected($event)">
   </shared-filter>
 
   <shared-categories
+    [selectedCategories]="selectedCategories"
     (categorySelected)="onCategorySelected($event)"></shared-categories>
 
   <div class="modal-actions">

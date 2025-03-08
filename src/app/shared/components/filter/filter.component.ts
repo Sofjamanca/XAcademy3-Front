@@ -1,5 +1,5 @@
 import { MaterialModule } from './../../../material/material.module';
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Filter } from '../../../core/models/filter.model';
 import { CoursesService } from '../../../services/courses/courses.service';
@@ -15,6 +15,8 @@ import { CoursesService } from '../../../services/courses/courses.service';
   styleUrl: './filter.component.css'
 })
 export class FilterComponent {
+  @Input() selectedPrice: string = '';
+  @Input() selectedOrder: string = '';
   @Output() priceSelected = new EventEmitter<string>();
   @Output() orderSelected = new EventEmitter<string>();
 
@@ -33,10 +35,12 @@ export class FilterComponent {
   constructor(private coursesSvc: CoursesService) {}
 
   onPriceSelected(value: string) {
+    this.selectedPrice = value;
     this.priceSelected.emit(value);
   }
 
   onOrderSelected(value: string) {
+    this.selectedOrder = value;
     this.orderSelected.emit(value);
   }
 }
