@@ -1,0 +1,20 @@
+<div class="mis-cursos">
+    <h2>Cursos a los que te encuentras inscripto</h2>
+    <div *ngIf="cursos.length === 0">No estás inscrito en ningún curso.</div>
+  
+    <div class="courses-grid">
+      <app-card 
+        *ngFor="let curso of cursos"
+        [title]="curso.title"
+        [image]="curso.image_url"
+        [startDate]="curso.startDate"
+        [endDate]="curso.endDate"
+        [action]="'Ver detalles'"
+        [modalidad]="curso.modalidad"
+        [showDetails]="true"
+        [showActions]="false"
+        [showFavoriteIcon]="false">
+      </app-card>
+    </div>
+  </div>
+  

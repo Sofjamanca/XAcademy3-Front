@@ -1,0 +1,10 @@
+<div class="container" >
+    <section *ngFor="let section of sections" class="section">
+      <img [src]="section.image" alt="{{ section.title }}" class="section-image">
+      <div class="section-text">
+        <h2>{{ section.title }}</h2>
+        <p>{{ section.content }}</p>
+      </div>
+    </section>
+  </div>
+  

@@ -9,11 +9,19 @@ import { adminGuard } from './guards/admin.guard';
 import { loginGuard } from './guards/login.guards';
 import { InscripcionComponent } from './shared/components/inscripcion/inscripcion.component';
 import { StudentProfileComponent } from './views/student-profile/student-profile.component';
+import { MisCursosComponent } from './views/student-profile/mis-cursos/mis-cursos.component';
+import { PendingComponent } from './views/student-profile/pending/pending.component';
+import { HomeStudentComponent } from './views/student-profile/homeStu/homestudent.component';
+import { WeComponent } from './shared/components/we/we.component';
 
 export const routes: Routes = [
     {
         path: 'home',
         component: LandingPageComponent
+    },
+    {
+      path: 'we',
+      component: WeComponent
     },
     {
         path:'auth/login',
@@ -93,13 +101,21 @@ export const routes: Routes = [
     {
         path: 'perfil',
         component: StudentProfileComponent,
-        // canActivateChild: [loginGuard],
-        // canActivate: [admiGuard],      
+        // canActivate: [loginGuard],  
         children: [
             {
                 path: '',
-                component: HomeComponent
+                component: HomeStudentComponent
             },
+            { path: 'mis-cursos', 
+              component: MisCursosComponent
+            },
+            { path: 'pagos',
+              component: PendingComponent
+            },
+            // { path: 'configuracion', 
+            //   component:  
+            // }
         ]
     },
     {
