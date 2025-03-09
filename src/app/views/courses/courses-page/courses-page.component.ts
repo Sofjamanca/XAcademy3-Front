@@ -10,6 +10,8 @@ import { Category, Course } from '../../../core/models/course.model';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
+import {LayoutModule} from '@angular/cdk/layout';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'views-courses-page',
@@ -22,7 +24,8 @@ import { MatDialog } from '@angular/material/dialog';
     PaginationComponent,
     CommonModule,
     RouterModule,
-    MatIconModule
+    MatIconModule,
+    LayoutModule
   ],
   templateUrl: './courses-page.component.html',
   styleUrl: './courses-page.component.css'
@@ -39,15 +42,26 @@ export class CoursesPageComponent implements OnInit {
   searchTerm: string = '';
   isSearching: boolean = false;
   loading: boolean = true;
-
   showFilters: boolean = false;
+  currentPage: number = 1;
+  pageSize: number = 10;
+  totalItems: number = 0;
+  totalPages: number = 0;
+  isMobile: boolean = false;
+
 
   constructor(
     private coursesSvc: CoursesService,
     private route: ActivatedRoute,
-
-    private dialog: MatDialog
-  ) { }
+    private dialog: MatDialog,
+    private breakpointObserver: BreakpointObserver
+  ) {
+    this.breakpointObserver
+      .observe(['(max-width: 768px)'])
+      .subscribe(result => {
+        this.isMobile = result.matches;
+      });
+  }
 
   ngOnInit() {
     // Verificar si hay un parámetro de búsqueda
@@ -62,6 +76,12 @@ export class CoursesPageComponent implements OnInit {
         this.loadCourses();
       }
     });
+  }
+
+  onPageChange(event: any) {
+    this.currentPage = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.loadCourses();
   }
 
   toggleFilters(): void {
@@ -102,10 +122,17 @@ export class CoursesPageComponent implements OnInit {
 
   loadCourses() {
     this.loading = true;
-    this.coursesSvc.getFilteredCourses(this.selectedCategories, this.selectedPrice, this.selectedOrder)
-      .subscribe({
-        next: (courses) => {
-          this.courses = courses;
+    this.coursesSvc.getFilteredCourses(
+      this.selectedCategories,
+      this.selectedPrice,
+      this.selectedOrder,
+      this.currentPage,
+      this.pageSize
+    ).subscribe({
+        next: (data) => {
+          this.courses = data.courses;
+          this.totalItems = data.totalItems;
+          this.totalPages = data.totalPages;
           this.loading = false;
         },
         error: (error) => {

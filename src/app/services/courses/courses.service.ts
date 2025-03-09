@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Category, Course } from '../../core/models/course.model';
+import { Category, Course, CourseResponse } from '../../core/models/course.model';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({
@@ -55,15 +55,17 @@ export class CoursesService {
     );
   }
 
-  // disableCourse(id: number): Observable<string> {
-  // }
+  getFilteredCourses(
+    categories: number[] = [],
+    price: string = '',
+    orderBy: string = '',
+    page: number = 1,
+    limit: number = 10
 
-
-  // enableCourse(id: number): Observable<string> {
-  // }
-
-  getFilteredCourses(categories: number[], price: string, orderBy: string): Observable<Course[]> {
-    let params = new HttpParams();
+  ): Observable<CourseResponse> {
+    let params = new HttpParams()
+    .set('page', page.toString())
+    .set('limit', limit.toString());
 
     if (categories.length > 0) {
       params = params.set('categories', categories.join(','));
@@ -75,7 +77,7 @@ export class CoursesService {
       params = params.set('orderBy', orderBy);
     }
 
-    return this.http.get<Course[]>(`${this.apiUrl}filter`, { params });
+    return this.http.get<CourseResponse>(`${this.apiUrl}filter`, { params });
   }
 
 }
