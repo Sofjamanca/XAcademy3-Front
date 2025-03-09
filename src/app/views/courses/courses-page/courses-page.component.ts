@@ -73,19 +73,29 @@ export class CoursesPageComponent implements OnInit {
   }
 
   openFilterModal(): void {
-    this.dialog.open(this.filterModal, {
-      width: '90%',
-      maxWidth: '400px',
-      maxHeight: '90vh',
-      panelClass: 'scrollable-modal'
+    document.querySelector('.container')?.classList.add('blur-background');
+
+    const dialogRef = this.dialog.open(this.filterModal, {
+    width: '90%',
+    maxWidth: '400px',
+    maxHeight: '90vh',
+    panelClass: ['scrollable-modal', 'filter-modal'],
+    backdropClass: 'filter-modal-overlay',
+    hasBackdrop: true
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+    document.querySelector('.container')?.classList.remove('blur-background');
     });
   }
 
   closeFilterModal(): void {
+    document.querySelector('.container')?.classList.remove('blur-background');
     this.dialog.closeAll();
   }
 
   applyFilters(): void {
+    document.querySelector('.container')?.classList.remove('blur-background');
     this.dialog.closeAll();
     this.loadCourses();
   }

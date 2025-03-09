@@ -147,20 +147,16 @@ h2 {
 }
 
 ::ng-deep .scrollable-modal .mat-dialog-container {
-  display: flex;
-  flex-direction: column;
-  max-height: 90vh;
-  overflow: hidden;
-  padding: 20px;
+  padding: 0;
   border-radius: 8px;
+  overflow: hidden;
+  max-height: 90vh;
 }
 
 ::ng-deep .scrollable-modal .mat-dialog-content {
-  flex-grow: 1;
   overflow-y: auto;
-  flex-grow: 1;
-  padding: 16px;
-  max-height: 70vh;
+  padding: 20px;
+  margin: 0;
 }
 
 ::ng-deep .scrollable-modal .modal-actions {
@@ -169,7 +165,20 @@ h2 {
   position: sticky;
   bottom: 0;
   z-index: 10;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
 }
 
+.blur-background {
+  filter: blur(4px);
+  transition: filter 0.3s ease;
+  pointer-events: none;
+}
 
+::ng-deep .filter-modal-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
 
+::ng-deep .filter-modal {
+  background: white;
+  border-radius: 8px;
+}
