@@ -7,8 +7,8 @@
                 <mat-icon>{{ isCollapsed ? 'menu' : 'chevron_left' }}</mat-icon>
             </button>
         </div>
-        
-      
+
+
       <nav class="sidebar-nav">
         <a routerLink="mis-cursos" routerLinkActive="active" class="nav-item">
           <mat-icon>school</mat-icon>
@@ -25,10 +25,14 @@
         <a routerLink="configuracion" routerLinkActive="active" class="nav-item">
             <mat-icon>settings</mat-icon>
             <span *ngIf="!isCollapsed">Configuración</span>
-          </a>
+        </a>
+        <a routerLink="editar" routerLinkActive="active" class="nav-item">
+            <mat-icon>edit</mat-icon>
+            <span *ngIf="!isCollapsed">Editar perfil</span>
+        </a>
       </nav>
-    </aside>    
+    </aside>
     <main class="main-content">
       <router-outlet></router-outlet>
     </main>
-  </div>
+</div>
