@@ -13,9 +13,12 @@ interface User {
   updatedAt: string;
 }
 
+import { Course } from './course.model';
+
 export interface Teacher {
   id: number;
   user_id: number;
   specialty: string;
   user: User;
+  courses: Course[];
 }

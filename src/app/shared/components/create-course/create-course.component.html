@@ -3,6 +3,7 @@
     <mat-card-content>
       <app-course-form
       title="Crea un curso"
+      tipo="crear"
       [inputs]="inputs"
       (formSubmit)="crearCurso($event)"
       (cancel)="goAdmin()">

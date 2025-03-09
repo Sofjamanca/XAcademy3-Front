@@ -1,0 +1,138 @@
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  margin-left: 10px;
+  font-size: 24px;
+  margin-bottom: 0;
+  color: #3f51b5;
+}
+
+.loading, .error-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  text-align: center;
+  padding: 20px;
+}
+
+.error-message {
+  color: #f44336;
+}
+
+.error-message button {
+  margin-top: 16px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.teacher-card {
+  width: 100%;
+  margin-bottom: 20px;
+  background-color: #fff;
+}
+
+.teacher-info {
+  padding: 10px 0;
+}
+
+.courses-section h2 {
+  color: #3f51b5;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.no-courses {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #666;
+}
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.course-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.course-card mat-card-content {
+  flex-grow: 1;
+}
+
+.course-description {
+  max-height: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  margin-bottom: 10px;
+}
+
+.course-details {
+  font-size: 14px;
+}
+
+.course-details p {
+  margin: 5px 0;
+}
+
+img[mat-card-image] {
+  height: 150px;
+  object-fit: cover;
+}
+
+.modalidad-chip {
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.virtual-chip {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.presencial-chip {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.hibrido-chip {
+  background-color: #fff8e1;
+  color: #ff8f00;
+}
+
+@media (max-width: 768px) {
+  .courses-grid {
+    grid-template-columns: 1fr;
+  }
+} 

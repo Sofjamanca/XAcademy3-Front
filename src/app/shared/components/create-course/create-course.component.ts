@@ -35,7 +35,7 @@ import { Course } from '../../../core/models/course.model';
   styleUrl: './create-course.component.css'
 })
 export class CreateCourseComponent implements OnInit {
-  @Input() tipo: 'crear' | 'inscribir' = 'crear'; 
+  @Input() tipo: 'crear' | 'editar'|'inscribir' = 'crear'; 
   @Input() curso!: any;
   inputs: any[] = [];
 
@@ -77,7 +77,7 @@ export class CreateCourseComponent implements OnInit {
   getTeachers() {
     this.teacherService.getTeachers().subscribe({
       next: (teachers) => {
-        this.updateInput('teacher_id','options',teachers.map((teacher)=>{ return {label:teacher.user.name, value: teacher.user_id }}));
+        this.updateInput('teacher_id','options',teachers.map((teacher)=>{ return {label:teacher.user.name, value: teacher.id }}));
       },
       error: (error) => console.error('Error al obtener profesores:', error)
     });

@@ -2,13 +2,13 @@
     <mat-icon>person</mat-icon>
     <span>Perfil</span>
   </button>
-  <button mat-menu-item *ngIf="apiService.isAdmin()" (click)="goToAdmin()">
+  <button mat-menu-item *ngIf="isAdminUser" (click)="goToAdmin()">
     <mat-icon>book</mat-icon>
     <span >Panel de administrador</span>
   </button>
-  <button mat-menu-item *ngIf="apiService.isStudent()">
+  <button mat-menu-item *ngIf="apiService.isStudent()" (click)="goToStudent()">
     <mat-icon>book</mat-icon>
-    <span >Mis Cursos </span>
+    <span >Mi panel </span>
   </button>
   <button mat-menu-item (click)="logout()">
     <mat-icon>exit_to_app</mat-icon>

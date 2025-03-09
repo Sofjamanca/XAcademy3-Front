@@ -10,3 +10,51 @@
   margin-bottom: 30px;
 }
 
+.courses-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.section-title {
+  font-size: 2rem;
+  color: #3f51b5;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.courses-grid {
+  max-width: 80%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.view-all-container {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 40px;
+}
+
+.view-all-button {
+  padding: 0.6rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .courses-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+}
+

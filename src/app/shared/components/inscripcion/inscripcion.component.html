@@ -1,24 +1,32 @@
 <div class="inscripcion-container">
-    <div class="curso-info animate-fade-in" *ngIf="curso">
-        <img [src]="curso.image_url" alt="Imagen del curso" class="curso-imagen">
-        <div class="curso-detalles">
-          <h2>{{ curso.title }}</h2>
-          <p><strong>Modalidad:</strong> {{ curso.modalidad }}</p>
-          <p><strong>Duración:</strong> {{ curso.hours }} horas</p>
-          <p><strong>Fecha de inicio:</strong> {{ curso.startDate | date }}</p>
-          <p><strong>Fecha de fin:</strong> {{ curso.endDate | date }}</p>
-          <p><strong>Precio:</strong> ${{ curso.price }}</p>
-          <p><strong>Categoría:</strong> {{ categoria.title }}</p>
-        </div>
+  <div class="curso-info animate-fade-in" *ngIf="curso">
+    <img [src]="curso.image_url" alt="Imagen del curso" class="curso-imagen">
+    <div class="curso-detalles">
+      <h2>{{ curso.title }}</h2>
+      <p><strong>Modalidad:</strong> {{ curso.modalidad }}</p>
+      <p><strong>Duración:</strong> {{ curso.hours }} horas</p>
+      <p><strong>Fecha de inicio:</strong> {{ curso.startDate | date }}</p>
+      <p><strong>Fecha de fin:</strong> {{ curso.endDate | date }}</p>
+      <p><strong>Precio:</strong> ${{ curso.price }}</p>
+      <p><strong>Categoría:</strong> {{ category?.title || 'Categoría no disponible' }}</p>
     </div>
-  
+  </div>
+
+  <ng-container *ngIf="!isEnrolled; else yaInscripto">
     <app-course-form
       *ngIf="curso"
       title="Formulario de inscripción:"
+      tipo="inscribir"
       [inputs]="fields"
       [curso]="curso"
       (formSubmit)="onFormSubmit($event)"
       (cancel)="goHome()">
     </app-course-form>
-  </div>
-  
+  </ng-container>
+
+  <ng-template #yaInscripto>
+    <div class="alert alert-info">
+      <p>✅ Ya estás inscripto como alumno en este curso.</p>
+      <button (click)="router.navigate(['/perfil'])" class="btn btn-primary">Ir a perfil</button>
+    </div>
+  </ng-template>

@@ -1,0 +1,63 @@
+<div class="container">
+    <div class="header-actions">
+        <h2>Lista de Profesores</h2>
+        <button mat-raised-button color="primary" class="create-teacher-button" [routerLink]="['/admin/profesores/new']">
+            <mat-icon>add</mat-icon> Nuevo Profesor
+        </button>
+        <div *ngIf="teachers.length === 0" class="no-teachers">
+            <p>No hay profesores disponibles</p>
+    </div>
+</div>
+
+  <div class="mat-elevation-z8" *ngIf="teachers.length > 0">
+    <table mat-table [dataSource]="teachers" class="full-width-table">
+      
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let teacher">{{ teacher.id }}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let teacher">{{ teacher.user.name }} {{ teacher.user.lastname }}</td>
+      </ng-container>
+
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let teacher">{{ teacher.user.email }}</td>
+      </ng-container>
+
+      <!-- Courses Column -->
+      <ng-container matColumnDef="courses">
+        <th mat-header-cell *matHeaderCellDef>Cursos</th>
+        <td mat-cell *matCellDef="let teacher">{{ getTeacherCourses(teacher) }}</td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let teacher">
+          <button mat-icon-button color="accent" [routerLink]="['/admin/profesores/view', teacher.id]" aria-label="Ver detalles del profesor">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" (click)="editTeacher(teacher)" aria-label="Editar profesor">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteTeacher(teacher)" aria-label="Eliminar profesor">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Seleccionar página de profesores"></mat-paginator>
+  </div>
+
+
+</div>

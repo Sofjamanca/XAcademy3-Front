@@ -1,0 +1,62 @@
+<div class="container">
+  <div class="header">
+    <button mat-icon-button color="primary" (click)="goBack()" aria-label="Volver">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>Detalles del Profesor</h1>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">
+    <p>Cargando información...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="goBack()">Volver a la lista</button>
+  </div>
+
+  <div *ngIf="!isLoading && !error && teacher" class="content">
+    <!-- Información del profesor -->
+    <mat-card class="teacher-card">
+      <mat-card-header>
+        <mat-card-title>{{ teacher.user.name }} {{ teacher.user.lastname }}</mat-card-title>
+        <mat-card-subtitle>{{ teacher.specialty }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="teacher-info">
+          <p><strong>Email:</strong> {{ teacher.user.email }}</p>
+          <p><strong>Teléfono:</strong> {{ teacher.user.phone || 'No disponible' }}</p>
+          <p><strong>Dirección:</strong> {{ teacher.user.address || 'No disponible' }}</p>
+        </div>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-button color="primary" (click)="editTeacher()">
+          <mat-icon>edit</mat-icon> Editar Profesor
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Listado de cursos -->
+    <div class="courses-section">
+      <h2>Cursos a cargo ({{ courses.length }})</h2>
+      
+      <div *ngIf="courses.length === 0" class="no-courses">
+        <p>Este profesor no tiene cursos asignados</p>
+      </div>
+
+      <div class="courses-grid">
+        <app-card 
+          *ngFor="let course of courses" 
+          class="course-card"
+          [title]="course.title"
+          [image]="course.image_url || ''"
+          [modalidad]="course.modalidad || ''"
+          [showDetails]="true"
+          [showFavoriteIcon]="false"
+          [action]="'Ver Detalles'"
+          (actionClick)="goToCourse(course.id || 0)">
+        </app-card>
+      </div>
+    </div>
+  </div>
+</div> 

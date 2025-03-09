@@ -1,86 +1,117 @@
 .card {
   width: 100%;
-  max-width: 300px;
-  height: 450px;
+  height: 100%;
   background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition: box-shadow 0.3s, transform 0.3s;
+  margin: 0 auto;
 }
 
 .card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
 }
 
 mat-card-header {
-  display: flex;
-  margin-bottom: 10px;
+  padding: 16px 16px 0;
 }
 
-mat-card-title {
-  font-size: 20px;
-  font-weight: bold;
-  /* padding: 16px; */
-  height: auto;
-  display: flex;
-  align-items: center;
-}
-
-mat-card-subtitle {
-  font-size: 14px;
+.card-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: block;
 }
 
 mat-card-content {
   flex-grow: 1;
+  padding: 0 16px 8px;
   overflow: hidden;
-  padding: 16px;
-  height: auto;
 }
 
-mat-card-content p {
-  margin: 0;
+.course-description {
+  max-height: 4.5em;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  line-height: 1.5;
+  margin-bottom: 12px;
 }
 
-mat-card-actions {
-  padding: 16px;
+.course-details {
+  font-size: 14px;
+}
+
+.course-details p {
+  margin: 5px 0;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.card-actions {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px 16px;
   margin-top: auto;
 }
 
-.container-btn {
-  display: flex;
-  width: 100%;
-  justify-content: start;
+img[mat-card-image] {
+  height: 150px;
+  object-fit: cover;
+  margin: 0;
+}
+
+.modalidad-chip {
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.virtual-chip {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.presencial-chip {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.hibrido-chip {
+  background-color: #fff8e1;
+  color: #ff8f00;
+}
+
+@media (max-width: 1200px) {
+  .card {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .card {
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 600px) {
   .card {
-    margin: 0 auto;
-      max-width: 85%;
-      padding: 10px;
-      height: auto;
+    max-width: 100%;
+    padding: 0;
   }
-
-  mat-card-title {
-      font-size: 1.2rem;
-      padding: 10px;
+  
+  .card-title {
+    font-size: 16px;
   }
-
-  mat-card-content {
-      padding: 10px;
+  
+  .course-description {
+    max-height: 3em;
   }
-
-  mat-card-actions {
-      padding: 10px;
-  }
-}
+} 

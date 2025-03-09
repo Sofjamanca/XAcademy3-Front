@@ -5,21 +5,21 @@ id?: number;
   image_url?: string;
   price?: number;
   quota?: number;
-  startDate?: string;  
+  startDate?: string;
   endDate?: string;
   hours?: number;
   modalidad?: string;
   status?: string;
-  isActive?: boolean;  
+  isActive?: boolean;
   teacher_id?: number;
   category_id?: number;
-  createdAt?: string; 
+  createdAt?: string;
   updatedAt?: string;
 }
 
 
 export interface Category {
-  id?: number;
+  id: number;
   title: string;
 }
 

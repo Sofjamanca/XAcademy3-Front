@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild  } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Course } from '../../../core/models/course.model';
 import { Teacher } from '../../../core/models/teacher.model';
@@ -12,8 +12,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { LoaderComponent } from '../loader/loader.component';
-
 
 @Component({
   selector: 'app-course-form',
@@ -29,112 +29,136 @@ import { LoaderComponent } from '../loader/loader.component';
   templateUrl: './course-form.component.html',
   styleUrls: ['./course-form.component.css']
 })
-export class CourseFormComponent implements OnInit {
-  @Input() inputs: any[] = []; 
-  @Input() tipo: 'crear' | 'inscribir' = 'crear';
+export class CourseFormComponent implements OnInit, OnChanges {
+  @Input() inputs: any[] = [];
+  @Input() tipo: 'crear' | 'inscribir' | 'editar' = 'crear' ;
   @Input() curso?: Course;
   @Input() profesores: Teacher[] = [];
   @Input() categorias: any[] = [];
   @Output() formSubmit = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
-
   @Input() title: string = '';
+  maxFechaNacimiento: string = new Date().toISOString().split('T')[0];
   cursoForm!: FormGroup;
   minFechaFin: Date | null = null;
   minFechaInicio: Date = new Date();
   imageFile: File | null = null;
   imagePreview: string | null = null;
-  isLoading: boolean =false;
+  isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private storage: Storage
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    console.log('Inputs recibidos:', this.inputs);
     this.initForm();
-
     this.cursoForm.get('startDate')?.valueChanges.subscribe((startDate: Date) => {
-    this.minFechaFin = startDate; 
-  });
+      this.minFechaFin = startDate;
+    });
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['curso'] && this.curso) {
       this.cursoForm.patchValue({
         ...this.curso
       });
-  
+
       // Si el curso tiene una imagen guardada, mostrarla
       if (!this.imageFile) {
         this.imagePreview = this.curso.image_url ?? null;
       }
     }
   }
-  
-
   private validarFechas(form: FormGroup) {
     const inicio = form.get('startDate')?.value;
     const fin = form.get('endDate')?.value;
-  
-    if (!inicio || !fin) return null; 
-  
+
+    if (!inicio || !fin) return null;
+
     const inicioDate = new Date(inicio);
     const finDate = new Date(fin);
-  
+
     return finDate < inicioDate ? { fechaInvalida: true } : null;
   }
-  
-  
+
+
   private initForm() {
-    const group: { [key: string]: any } = {}; 
-  
+    const group: { [key: string]: any } = {};
+
     this.inputs.forEach(input => {
-      const required = input.required === undefined ? true : input.required ;
-      const value = input.type === 'media' ? [null] : ['', required ? Validators.required : null];
-      group[input.atr] = value;
+      let validators = [];
+      if (input.required !== false) {
+        validators.push(Validators.required);
+      }
+
+      switch (input.type) {
+        case 'text':
+          if (input.atr === 'email') {
+            validators.push(Validators.email);
+          }
+          break;
+
+        case 'number':
+          if (input.atr === 'dni') {
+            validators.push(
+              Validators.pattern(/^\d{7,8}$/)
+            );
+          }
+          if (input.atr === 'phone') {
+            validators.push(Validators.pattern(/^\d{10}$/));
+          }
+          break;
+
+        case 'date':
+          validators.push(Validators.required);
+          if (input.atr === 'birthday') {
+            validators.push(this.validateEdadNacimiento);
+          }
+          break;
+
+        case 'media':
+          group[input.atr] = [null, input.required ? Validators.required : null];
+          return;
+      }
+      group[input.atr] = ['', { validators, updateOn: 'blur' }];
     });
-  
+
     this.cursoForm = this.fb.group(group, { validators: this.validarFechas });
-  
+
     this.cursoForm.get('startDate')?.valueChanges.subscribe((inicio) => {
       this.minFechaFin = inicio ? new Date(inicio) : null;
     });
   }
 
+
   onSubmit(): void {
     if (this.cursoForm.valid) {
-      this.isLoading =true
+      this.isLoading = true;
       const formValues = this.cursoForm.value;
-  
+
       if (this.imageFile) {
-        this.uploadImage(this.imageFile)
-        .then((imageUrl) => {
+        this.uploadImage(this.imageFile).
+        then((imageUrl) => {
+          formValues.imageUrl = imageUrl;
+          this.formSubmit.emit(formValues);
           const inputIndex = this.inputs.findIndex((input) => input.type === 'media');
-          if (inputIndex !== -1) {
-            formValues[this.inputs[inputIndex].atr] = imageUrl;
-          }
+          const currentInput = this.inputs[inputIndex];
+          formValues[currentInput.atr] = imageUrl;
           this.formSubmit.emit(formValues);
         })
-        .catch((error) => console.error("Error al subir la imagen:", error))
-        .finally(() => {
-          this.isLoading = false; // ✅ Ocultar loader después del proceso
+        .catch(error => console.error("Error al subir la imagen:", error))
+        .finally(()=>{
+          this.isLoading=false;
         });
       } else {
-         // Si no hay imagen y el campo es obligatorio, no se debe emitir el formulario
-      const mediaInputIndex = this.inputs.findIndex(input => input.type === 'media');
-      if (mediaInputIndex !== -1 && this.inputs[mediaInputIndex].required && !this.imagePreview) {
-        console.log("La imagen es obligatoria.");
-        this.isLoading = false; // Asegúrate de ocultar el loader
-        return; // Salir si la imagen es obligatoria y no se ha proporcionado
+        if (this.imagePreview) {
+          formValues.imageUrl = this.imagePreview;
+        }
+        this.formSubmit.emit(formValues);
+        this.isLoading=false;
       }
-
-      // Emitir el formulario si la imagen no es obligatoria o ya hay una imagen previa
-      this.formSubmit.emit(formValues);
-      this.isLoading = false;
-      }
-    } else {
-      console.log("Formulario inválido, revisa los campos", this.cursoForm.errors);
+    }else{
+      console.log('Formulario invalido, revisar los campos', this.cursoForm.errors);
     }
   }
 
@@ -166,15 +190,27 @@ export class CourseFormComponent implements OnInit {
   removeImage() {
     this.imageFile = null;
     this.imagePreview = null;
-    
-    this.cursoForm.patchValue({
-      imageUrl: null
-    });
-
-    event?.stopPropagation();
   }
 
   onCancel(): void {
     this.cancel.emit();
   }
+
+
+
+  private validateEdadNacimiento(control: AbstractControl): ValidationErrors | null {
+    const fechaNacimiento = control.value;
+    if (!fechaNacimiento) return null;
+
+    const fechaHoy = new Date();
+    const edad = fechaHoy.getFullYear() - new Date(fechaNacimiento).getFullYear();
+    const mes = fechaHoy.getMonth() - new Date(fechaNacimiento).getMonth();
+
+    if (edad < 18 || (edad === 18 && mes < 0)) {
+      return { edadInvalida: true };
+    }
+
+    return null;
+  }
+
 }
