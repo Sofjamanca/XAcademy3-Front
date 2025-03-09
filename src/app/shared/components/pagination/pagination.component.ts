@@ -1,44 +1,62 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../../material/material.module';
-import {Subject} from 'rxjs';
 import { MatPaginatorIntl } from '@angular/material/paginator';
-// import { $localize } from '@angular/localize';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { Subject } from 'rxjs';
 
-// @Injectable()
-// export class MyCustomPaginatorIntl implements MatPaginatorIntl {
-//   changes = new Subject<void>();
+@Injectable()
+export class CustomPaginatorIntl extends MatPaginatorIntl {
+  override itemsPerPageLabel = 'Por página';
+  override nextPageLabel = 'Siguiente';
+  override previousPageLabel = 'Anterior';
+  override firstPageLabel = 'Primera página';
+  override lastPageLabel = 'Última página';
+  override changes = new Subject<void>();
 
-//   // For internationalization, the `$localize` function from
-//   // the `@angular/localize` package can be used.
-//   firstPageLabel = $localize`First page`;
-//   itemsPerPageLabel = $localize`Items per page:`;
-//   lastPageLabel = $localize`Last page`;
-
-//   // You can set labels to an arbitrary string too, or dynamically compute
-//   // it through other third-party internationalization libraries.
-//   nextPageLabel = 'Next page';
-//   previousPageLabel = 'Previous page';
-
-//   getRangeLabel(page: number, pageSize: number, length: number): string {
-//     if (length === 0) {
-//       return $localize`Page 1 of 1`;
-//     }
-//     const amountPages = Math.ceil(length / pageSize);
-//     return $localize`Page ${page + 1} of ${amountPages}`;
-//   }
-// }
+  override getRangeLabel = (page: number, pageSize: number, length: number) => {
+    if (length === 0) {
+      return 'Página 1 de 1';
+    }
+    const amountPages = Math.ceil(length / pageSize);
+    return `Página ${page + 1} de ${amountPages}`;
+  };
+}
 
 @Component({
   selector: 'shared-pagination',
   standalone: true,
   imports: [
-    MaterialModule,
-    // MatPaginatorIntl
+    CommonModule,
+    MaterialModule
   ],
-  // providers: [{provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl}],
+  providers: [
+    {provide: MatPaginatorIntl, useClass: CustomPaginatorIntl}
+  ],
   templateUrl: './pagination.component.html',
   styleUrl: './pagination.component.css'
 })
-export class PaginationComponent {
+export class PaginationComponent implements OnInit {
+  @Input() length: number = 0;
+  @Input() pageSize: number = 10;
+  @Input() pageIndex: number = 0;
+  @Input() pageSizeOptions: number[] = [5, 10, 25, 100];
+  @Input() hidePageSize: boolean = false;
+  @Output() page = new EventEmitter<any>();
 
+  isMobile: boolean = false;
+
+  constructor(private breakpointObserver: BreakpointObserver) { }
+
+  ngOnInit() {
+    this.breakpointObserver
+      .observe(['(max-width: 768px)'])
+      .subscribe(result => {
+        this.isMobile = result.matches;
+      });
+  }
+
+  onPageChange(event: any) {
+    this.page.emit(event);
+  }
 }

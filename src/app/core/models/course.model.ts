@@ -17,10 +17,16 @@ id?: number;
   updatedAt?: string;
 }
 
-
 export interface Category {
   id: number;
   title: string;
+}
+
+export interface CourseResponse {
+  courses: Course[];
+  totalItems: number;
+  currentPage: number;
+  totalPages: number;
 }
 
 
