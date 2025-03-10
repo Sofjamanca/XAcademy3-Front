@@ -14,6 +14,7 @@ import { TeachersListComponent } from './views/admin/teachers/teachers-list/teac
 import { TeacherDetailComponent } from './views/admin/teachers/teacher-detail/teacher-detail.component';
 import { CreateTeacherComponent } from './views/admin/teachers/create-teacher/create-teacher.component';
 import { CourseManagementComponent } from './views/course-management/course-management.component';
+import { teacherGuard } from './guards/teacher.guard';
 
 export const routes: Routes = [
     {
@@ -86,7 +87,8 @@ export const routes: Routes = [
             },
             {
                 path: 'cursos',
-                component: CoursesListComponent
+                component: CoursesListComponent,
+               
             },
             {
                 path: 'cursos/crear',
@@ -101,17 +103,17 @@ export const routes: Routes = [
             {
                 path: 'profesores',
                 component: TeachersListComponent,
-                canActivate: [loginGuard]
+                canActivate: [adminGuard]
             },
             {
                 path: 'profesores/view/:id',
                 component: TeacherDetailComponent,
-                canActivate: [loginGuard]
+                canActivate: [adminGuard]
             },
             {
                 path: 'profesores/new',
                 component: CreateTeacherComponent,
-                canActivate: [loginGuard]
+                canActivate: [adminGuard]
             }
         ]
     },
@@ -130,7 +132,7 @@ export const routes: Routes = [
     {
         path: 'profesor',
         component: TeacherProfileComponent,
-        canActivate: [loginGuard]
+        canActivate: [teacherGuard]
     },
     {
         path: '',

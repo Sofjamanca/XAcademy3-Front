@@ -1,4 +1,4 @@
-<button mat-menu-item>
+<button mat-menu-item *ngIf="isTeacher" (click)="goToTeacher()">
     <mat-icon>person</mat-icon>
     <span>Perfil</span>
   </button>
