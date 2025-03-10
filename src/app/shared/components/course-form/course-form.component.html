@@ -19,7 +19,10 @@
 
         <div *ngIf="input.type === 'date'" >
           <div class="conteiner-date">
-          <input matInput  [formControlName]="input.atr" [matDatepicker]="picker" [max]="maxFechaNacimiento" [min]="input.atr === 'startDate' ? minFechaInicio : (input.atr === 'endDate' ? minFechaFin : null) ">
+          <input matInput  [formControlName]="input.atr" [matDatepicker]="picker" 
+          [max]="input?.max" 
+          [min]="input?.getMin ? input.getMin(cursoForm.value) : input?.min"
+          >
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                <mat-datepicker #picker></mat-datepicker>
           </div>
@@ -66,7 +69,7 @@
 
     <div class="botones-container">
       <button mat-raised-button class="boton-crear" type="submit" [disabled]="isLoading || cursoForm.invalid">
-        {{ tipo === 'crear' ? 'Crear curso' : 'Inscribirse' }}
+        {{ tipo === 'crear' ? 'Crear curso' : (tipo === 'editar' ? 'Guardar cambios' : 'Inscribirse') }}
       </button>    
       <button mat-raised-button class="boton-cancelar" type="button" (click)="onCancel()">
         Cancelar

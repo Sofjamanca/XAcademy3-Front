@@ -40,8 +40,6 @@ export class CourseFormComponent implements OnInit, OnChanges {
   @Input() title: string = '';
   maxFechaNacimiento: string = new Date().toISOString().split('T')[0];
   cursoForm!: FormGroup;
-  minFechaFin: Date | null = null;
-  minFechaInicio: Date = new Date();
   imageFile: File | null = null;
   imagePreview: string | null = null;
   isLoading: boolean = false;
@@ -53,15 +51,15 @@ export class CourseFormComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.initForm();
-    this.cursoForm.get('startDate')?.valueChanges.subscribe((startDate: Date) => {
-      this.minFechaFin = startDate;
-    });
   }
+  
+  
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['curso'] && this.curso) {
+    if (changes['curso'] && this.curso && this.cursoForm) {
+      // Asegúrate de que el formulario esté inicializado antes de intentar aplicar patchValue
       this.cursoForm.patchValue({
         ...this.curso
-      });
+      });  
 
       // Si el curso tiene una imagen guardada, mostrarla
       if (!this.imageFile) {
@@ -69,18 +67,6 @@ export class CourseFormComponent implements OnInit, OnChanges {
       }
     }
   }
-  private validarFechas(form: FormGroup) {
-    const inicio = form.get('startDate')?.value;
-    const fin = form.get('endDate')?.value;
-
-    if (!inicio || !fin) return null;
-
-    const inicioDate = new Date(inicio);
-    const finDate = new Date(fin);
-
-    return finDate < inicioDate ? { fechaInvalida: true } : null;
-  }
-
 
   private initForm() {
     const group: { [key: string]: any } = {};
@@ -123,11 +109,8 @@ export class CourseFormComponent implements OnInit, OnChanges {
       group[input.atr] = ['', { validators, updateOn: 'blur' }];
     });
 
-    this.cursoForm = this.fb.group(group, { validators: this.validarFechas });
+    this.cursoForm = this.fb.group(group, { });
 
-    this.cursoForm.get('startDate')?.valueChanges.subscribe((inicio) => {
-      this.minFechaFin = inicio ? new Date(inicio) : null;
-    });
   }
 
 

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Input } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, Input } from '@angular/core';
 import {ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,6 +15,7 @@ import { CourseFormComponent } from '../course-form/course-form.component';
 import { MaterialModule } from '../../../material/material.module';
 import { Router } from '@angular/router';
 import { Course } from '../../../core/models/course.model';
+
 
 @Component({
   selector: 'app-create-course',
@@ -44,6 +45,7 @@ export class CreateCourseComponent implements OnInit {
     private teacherService: TeacherService,
     private snackBar: MatSnackBar,
     private router: Router,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -56,13 +58,15 @@ export class CreateCourseComponent implements OnInit {
       {label:'Categoría',atr:'category_id', options: [],  type: 'select'},
       {label:'Profesor',atr:'teacher_id', options: [],  type: 'select'},
       {label:'Modalidad',atr:'modalidad', options: [{label: 'Presencial', value: "PRESENCIAL"},{label: 'Virtual', value: "VIRTUAL"}, {label: 'Híbrido', value: "HIBRIDO"}],  type: 'select'},
-      {label:'Fecha inicio',atr:'startDate',  type: 'date'},
-      {label:'Fecha fin',atr:'endDate', type: 'date'},
+      {label:'Fecha inicio',atr:'startDate',  type: 'date', min:new Date()},
+      {label:'Fecha fin',atr:'endDate', type: 'date',getMin:(data: any)=>{return  data.startDate ? data.startDate : new Date()}},
       {label:'Precio',atr:'price',  type: 'number'},
       {label:'Cupo',atr:'quota',  type: 'number'},
       {label:'Status',atr:'status',  options: [{label: 'Activo', value: "ACTIVO"},{label: 'Pendiente', value: "PENDIENTE"}, {label: 'Finalizado', value: "FINALIZADO"}],  type: 'select'},
       {atr:'image_url',  type: 'media', require: false},
     ];
+
+    this.cdRef.detectChanges(); 
   }
 
   getCategories() {
