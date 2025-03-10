@@ -1,0 +1,161 @@
+.course-management-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.course-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.back-button {
+  margin-right: 16px;
+}
+
+.course-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.course-title h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.course-category {
+  font-size: 14px;
+  color: #666;
+}
+
+.loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 50px 0;
+  gap: 20px;
+  text-align: center;
+}
+
+.error-container mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+}
+
+.course-content {
+  margin-top: 20px;
+}
+
+.tab-content {
+  padding: 20px 0;
+}
+
+.tab-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.tab-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.course-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detail-row {
+  display: flex;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-row strong {
+  width: 120px;
+  font-weight: 500;
+}
+
+.student-table, .attendance-table, .payment-table {
+  width: 100%;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+}
+
+.empty-state mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+  margin-bottom: 16px;
+  color: #ccc;
+}
+
+.date-picker {
+  width: 180px;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-paid {
+  background-color: #e6f7ed;
+  color: #00875a;
+}
+
+.status-pending {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.status-overdue {
+  background-color: #fff4e5;
+  color: #e96c00;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .course-management-container {
+    padding: 10px;
+  }
+
+  .tab-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .spacer {
+    display: none;
+  }
+
+  .detail-row {
+    flex-direction: column;
+  }
+
+  .detail-row strong {
+    width: 100%;
+    margin-bottom: 4px;
+  }
+} 

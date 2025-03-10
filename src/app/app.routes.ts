@@ -9,6 +9,11 @@ import { adminGuard } from './guards/admin.guard';
 import { loginGuard } from './guards/login.guards';
 import { InscripcionComponent } from './shared/components/inscripcion/inscripcion.component';
 import { StudentProfileComponent } from './views/student-profile/student-profile.component';
+import { TeacherProfileComponent } from './views/teacher-profile/teacher-profile.component';
+import { TeachersListComponent } from './views/admin/teachers/teachers-list/teachers-list.component';
+import { TeacherDetailComponent } from './views/admin/teachers/teacher-detail/teacher-detail.component';
+import { CreateTeacherComponent } from './views/admin/teachers/create-teacher/create-teacher.component';
+import { CourseManagementComponent } from './views/course-management/course-management.component';
 
 export const routes: Routes = [
     {
@@ -63,6 +68,11 @@ export const routes: Routes = [
         canActivate: [loginGuard]
     },
     {
+        path: 'course-management/:id',
+        component: CourseManagementComponent,
+        canActivate: [loginGuard]
+    },
+    {
         path: 'admin',
         loadComponent: () =>
           import('./views/admin/admin-layout/admin-layout.component').then(
@@ -87,6 +97,21 @@ export const routes: Routes = [
                 path: 'cursos/editar/:id',
                 component: CreateCourseComponent,
                 canActivate: [adminGuard]
+            },
+            {
+                path: 'profesores',
+                component: TeachersListComponent,
+                canActivate: [loginGuard]
+            },
+            {
+                path: 'profesores/view/:id',
+                component: TeacherDetailComponent,
+                canActivate: [loginGuard]
+            },
+            {
+                path: 'profesores/new',
+                component: CreateTeacherComponent,
+                canActivate: [loginGuard]
             }
         ]
     },
@@ -101,6 +126,11 @@ export const routes: Routes = [
                 component: HomeComponent
             },
         ]
+    },
+    {
+        path: 'profesor',
+        component: TeacherProfileComponent,
+        canActivate: [loginGuard]
     },
     {
         path: '',

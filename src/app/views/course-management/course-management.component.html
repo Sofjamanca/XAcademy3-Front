@@ -1,0 +1,253 @@
+<div class="course-management-container">
+  <div class="course-header">
+    <button mat-icon-button (click)="goBack()" class="back-button">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div *ngIf="course" class="course-title">
+      <h2>{{ course.title }}</h2>
+      <span class="course-category" *ngIf="course.category_id">Categoría: {{ course.category_id }}</span>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Cargando información del curso...</p>
+  </div>
+
+  <div *ngIf="error && !loading" class="error-container">
+    <mat-icon color="warn">error</mat-icon>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="goBack()">Volver</button>
+  </div>
+
+  <div *ngIf="course && !loading" class="course-content">
+    <mat-tab-group [(selectedIndex)]="selectedTabIndex" animationDuration="0ms">
+      <mat-tab label="Información">
+        <div class="tab-content">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>Detalles del Curso</mat-card-title>
+              <div class="spacer"></div>
+              <button mat-icon-button color="primary" (click)="editCourseInfo()">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="course-details">
+                <div class="detail-row">
+                  <strong>Título:</strong>
+                  <span>{{ course.title }}</span>
+                </div>
+                <div class="detail-row">
+                  <strong>Descripción:</strong>
+                  <span>{{ course.description }}</span>
+                </div>
+                <div class="detail-row">
+                  <strong>Precio:</strong>
+                  <span>{{ course.price | currency }}</span>
+                </div>
+                <div class="detail-row">
+                  <strong>Cupos:</strong>
+                  <span>{{ course.quota }}</span>
+                </div>
+                <div class="detail-row">
+                  <strong>Modalidad:</strong>
+                  <span>{{ course.modalidad || 'No especificada' }}</span>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Alumnos">
+        <div class="tab-content">
+          <div class="tab-header">
+            <h3>Alumnos inscritos</h3>
+            <div class="spacer"></div>
+            <button mat-raised-button color="primary">
+              <mat-icon>person_add</mat-icon> Añadir Alumno
+            </button>
+          </div>
+
+          <mat-card *ngIf="students.length === 0" class="empty-state">
+            <mat-card-content>
+              <mat-icon>people</mat-icon>
+              <p>No hay alumnos inscritos en este curso</p>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card *ngIf="students.length > 0">
+            <mat-card-content>
+              <table mat-table [dataSource]="students" class="mat-elevation-z0 student-table">
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                  <td mat-cell *matCellDef="let student">{{ student.name }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="email">
+                  <th mat-header-cell *matHeaderCellDef>Email</th>
+                  <td mat-cell *matCellDef="let student">{{ student.email }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                  <td mat-cell *matCellDef="let student">
+                    <button mat-icon-button color="primary" matTooltip="Ver perfil">
+                      <mat-icon>visibility</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" matTooltip="Eliminar alumno">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="['name', 'email', 'actions']"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['name', 'email', 'actions'];"></tr>
+              </table>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Asistencias">
+        <div class="tab-content">
+          <div class="tab-header">
+            <h3>Registro de Asistencias</h3>
+            <div class="spacer"></div>
+            <mat-form-field appearance="outline" class="date-picker">
+              <mat-label>Fecha</mat-label>
+              <input matInput [matDatepicker]="picker" [(ngModel)]="currentDate">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <mat-card *ngIf="students.length === 0" class="empty-state">
+            <mat-card-content>
+              <mat-icon>how_to_reg</mat-icon>
+              <p>No hay alumnos para registrar asistencia</p>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card *ngIf="students.length > 0">
+            <mat-card-content>
+              <table mat-table [dataSource]="students" class="mat-elevation-z0 attendance-table">
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                  <td mat-cell *matCellDef="let student">{{ student.name }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="email">
+                  <th mat-header-cell *matHeaderCellDef>Email</th>
+                  <td mat-cell *matCellDef="let student">{{ student.email }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="present">
+                  <th mat-header-cell *matHeaderCellDef>Asistencia</th>
+                  <td mat-cell *matCellDef="let student">
+                    <mat-checkbox 
+                      [checked]="getAttendanceStatus(student, currentDate)" 
+                      (change)="toggleAttendance(student)">
+                    </mat-checkbox>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                  <td mat-cell *matCellDef="let student">
+                    <button mat-icon-button color="primary" matTooltip="Ver historial de asistencias">
+                      <mat-icon>history</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedAttendanceColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedAttendanceColumns;"></tr>
+              </table>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Pagos">
+        <div class="tab-content">
+          <div class="tab-header">
+            <h3>Gestión de Pagos</h3>
+          </div>
+
+          <mat-card *ngIf="students.length === 0" class="empty-state">
+            <mat-card-content>
+              <mat-icon>payments</mat-icon>
+              <p>No hay alumnos para gestionar pagos</p>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card *ngIf="students.length > 0">
+            <mat-card-content>
+              <table mat-table [dataSource]="students" class="mat-elevation-z0 payment-table">
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef>Nombre</th>
+                  <td mat-cell *matCellDef="let student">{{ student.name }}</td>
+                </ng-container>
+
+                <!-- Columna de Email -->
+                <ng-container matColumnDef="email">
+                  <th mat-header-cell *matHeaderCellDef>Email</th>
+                  <td mat-cell *matCellDef="let student">{{ student.email }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="amount">
+                  <th mat-header-cell *matHeaderCellDef>Próximo Pago</th>
+                  <td mat-cell *matCellDef="let student">
+                    {{ (student.payments | findPendingPayment)?.amount | currency }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="date">
+                  <th mat-header-cell *matHeaderCellDef>Fecha Vencimiento</th>
+                  <td mat-cell *matCellDef="let student">
+                    {{ (student.payments | findPendingPayment)?.date | date:'dd/MM/yyyy' }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>Estado</th>
+                  <td mat-cell *matCellDef="let student">
+                    <span class="status-badge" 
+                          [ngClass]="{
+                            'status-paid': (student.payments | findPendingPayment)?.status === 'paid',
+                            'status-pending': (student.payments | findPendingPayment)?.status === 'pending',
+                            'status-overdue': (student.payments | findPendingPayment)?.status === 'overdue'
+                          }">
+                      {{ (student.payments | findPendingPayment)?.status === 'paid' ? 'Pagado' : 
+                         (student.payments | findPendingPayment)?.status === 'pending' ? 'Pendiente' : 'Vencido' }}
+                    </span>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                  <td mat-cell *matCellDef="let student">
+                    <button mat-icon-button color="primary" matTooltip="Ver historial de pagos">
+                      <mat-icon>history</mat-icon>
+                    </button>
+                    <button mat-icon-button color="accent" 
+                            [disabled]="(student.payments | findPendingPayment)?.status === 'paid'"
+                            (click)="registerPayment(student)" 
+                            matTooltip="Registrar pago">
+                      <mat-icon>paid</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedPaymentColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedPaymentColumns;"></tr>
+              </table>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div> 

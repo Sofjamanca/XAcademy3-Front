@@ -1,0 +1,83 @@
+<div class="perfil-layout">
+  <!-- Sidebar a la izquierda -->
+  <aside class="sidebar" [class.collapsed]="isCollapsed">
+    <div class="sidebar-header">
+      <img class="teacher-icon" src="/assets/images/icon_gral.png" alt="Icono profesor">
+      <h2 *ngIf="!isCollapsed">Perfil Profesor</h2>
+      <button mat-icon-button (click)="toggleSidenav()">
+        <mat-icon>{{ isCollapsed ? 'menu' : 'chevron_left' }}</mat-icon>
+      </button>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <a routerLink="./mis-cursos" routerLinkActive="active" class="nav-item">
+        <mat-icon>school</mat-icon>
+        <span *ngIf="!isCollapsed">Mis Cursos</span>
+      </a>
+      <a routerLink="./perfil" routerLinkActive="active" class="nav-item">
+        <mat-icon>person</mat-icon>
+        <span *ngIf="!isCollapsed">Alumnos</span>
+      </a>
+      <a routerLink="./cuotas" routerLinkActive="active" class="nav-item">
+        <mat-icon>payments</mat-icon>
+        <span *ngIf="!isCollapsed">Cuotas</span>
+      </a>
+      <a routerLink="./configuracion" routerLinkActive="active" class="nav-item">
+        <mat-icon>settings</mat-icon>
+        <span *ngIf="!isCollapsed">Configuración</span>
+      </a>
+    </nav>
+  </aside>    
+
+  <main class="main-content">
+    <div *ngIf="loading" class="loading-container">
+      <mat-spinner></mat-spinner>
+      <p>Cargando perfil...</p>
+    </div>
+
+    <div *ngIf="error && !loading" class="error-container">
+      <mat-icon color="warn">error</mat-icon>
+      <p>{{ error }}</p>
+      <button mat-raised-button color="primary" routerLink="/courses">Volver a cursos</button>
+    </div>
+
+    <div *ngIf="teacher && !loading" class="profile-content">
+
+
+      <mat-card class="info-card">
+        <mat-card-header>
+          <div mat-card-avatar class="profile-avatar">
+            <mat-icon>person</mat-icon>
+          </div>
+          <mat-card-title *ngIf="teacher.user?.name">{{ teacher.user.name }} {{ teacher.user.lastname }}</mat-card-title>
+          <mat-card-subtitle>{{ teacher.specialty || 'Profesor' }}</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+
+      <section class="courses-section">
+        <h3>Mis Cursos</h3>
+        
+        <div *ngIf="courses.length === 0" class="no-content">
+          <p>No tienes cursos creados todavía.</p>
+          <button mat-raised-button color="primary" routerLink="/courses/create">
+            <mat-icon>add</mat-icon>
+            Crear un curso
+          </button>
+        </div>
+        
+        <div *ngIf="courses.length > 0" class="courses-grid">
+          <app-card *ngFor="let course of courses"
+            [title]="course.title || ''"
+            [description]="course.description || ''"
+            [image]="course.image_url || '/assets/images/course-placeholder.jpg'"
+            [action]="'Editar curso'"
+            [showDetails]="true"
+            [price]="course.price ? course.price.toString() : ''"
+            [quota]="course.quota || null"
+            (actionClick)="course.id ? editCourse(course.id) : null">
+          </app-card>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>

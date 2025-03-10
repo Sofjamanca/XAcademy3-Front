@@ -120,6 +120,9 @@ export class ApiService {
   isStudent(): boolean {
     return this.localStorageService.getItem('role') === 'STUDENT';
   }
+  isTeacher(): boolean {
+    return this.localStorageService.getItem('role') === 'TEACHER';
+  }
 
   getUsersCount(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/users/count`);

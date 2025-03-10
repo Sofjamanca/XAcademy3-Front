@@ -55,6 +55,11 @@ export class CoursesService {
     );
   }
 
+  // Método para obtener cursos por ID de profesor
+  getCoursesByTeacherId(teacherId: number): Observable<Course[]> {
+    return this.http.get<Course[]>(`${this.apiUrl}teacher/${teacherId}`);
+  }
+
   // disableCourse(id: number): Observable<string> {
   // }
 
