@@ -25,6 +25,8 @@ export class EditProfileComponent {
     private router: Router
   ) {
     this.profileForm = this.fb.group({
+      name: ['', [Validators.required]],
+      lastname: ['', [Validators.required]],
       dni: ['', [Validators.required]],
       phone: ['', [Validators.required]],
       address: ['', [Validators.required]],
