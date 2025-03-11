@@ -4,14 +4,12 @@ import { LandingPageComponent } from './views/landing-page/landing-page.componen
 import { CreateCourseComponent } from './shared/components/create-course/create-course.component';
 import { HomeComponent } from './views/admin/home/home.component';
 import { CoursesListComponent } from './views/admin/courses/courses-list/courses-list.component';
-import { CourseComponent } from './shared/components/course/course.component';
 import { adminGuard } from './guards/admin.guard';
 import { loginGuard } from './guards/login.guards';
 import { InscripcionComponent } from './shared/components/inscripcion/inscripcion.component';
 import { StudentProfileComponent } from './views/student-profile/student-profile.component';
 import { MisCursosComponent } from './views/student-profile/mis-cursos/mis-cursos.component';
 import { PendingComponent } from './views/student-profile/pending/pending.component';
-import { HomeStudentComponent } from './views/student-profile/homeStu/homestudent.component';
 import { WeComponent } from './shared/components/we/we.component';
 import { ContactComponent } from './shared/components/contact/contact.component';
 import { CreditsComponent } from './shared/components/credits/credits.component';
@@ -111,21 +109,18 @@ export const routes: Routes = [
     {
         path: 'perfil',
         component: StudentProfileComponent,
-        // canActivate: [loginGuard],  
+        canActivate: [loginGuard],  
         children: [
             {
                 path: '',
-                component: HomeStudentComponent
+                component: MisCursosComponent
             },
             { path: 'mis-cursos', 
               component: MisCursosComponent
             },
             { path: 'pagos',
               component: PendingComponent
-            },
-            // { path: 'configuracion', 
-            //   component:  
-            // }
+            }
         ]
     },
     {
