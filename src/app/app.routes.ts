@@ -13,6 +13,7 @@ import { MisCursosComponent } from './views/student-profile/mis-cursos/mis-curso
 import { PendingComponent } from './views/student-profile/pending/pending.component';
 import { HomeStudentComponent } from './views/student-profile/homeStu/homestudent.component';
 import { WeComponent } from './shared/components/we/we.component';
+import { ContactComponent } from './shared/components/contact/contact.component';
 
 export const routes: Routes = [
     {
@@ -22,6 +23,10 @@ export const routes: Routes = [
     {
       path: 'we',
       component: WeComponent
+    },
+    {
+      path: 'contact',
+      component: ContactComponent
     },
     {
         path:'auth/login',

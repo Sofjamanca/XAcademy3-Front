@@ -6,7 +6,7 @@ import { CommonModule, NgFor, NgIf } from '@angular/common';
   selector: 'app-homestudent',
   standalone: true,
   imports: [MaterialModule, CommonModule, NgFor, NgIf],
-  template: './homestudent.component.html',  
+  templateUrl: './homestudent.component.html',  
   styleUrls: ['./homestudent.component.css'] 
 })
 export class HomeStudentComponent implements OnInit {
