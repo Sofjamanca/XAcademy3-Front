@@ -14,6 +14,7 @@ import { PendingComponent } from './views/student-profile/pending/pending.compon
 import { HomeStudentComponent } from './views/student-profile/homeStu/homestudent.component';
 import { WeComponent } from './shared/components/we/we.component';
 import { ContactComponent } from './shared/components/contact/contact.component';
+import { CreditsComponent } from './shared/components/credits/credits.component';
 
 export const routes: Routes = [
     {
@@ -27,6 +28,10 @@ export const routes: Routes = [
     {
       path: 'contact',
       component: ContactComponent
+    },
+    {
+      path: 'credits',
+      component: CreditsComponent
     },
     {
         path:'auth/login',

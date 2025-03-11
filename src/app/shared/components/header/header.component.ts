@@ -59,7 +59,7 @@ export class HeaderComponent implements OnInit {
     {text: "Cursos", route: "/courses"},
     {text: "Nosotros", route: "/we"},
     {text: "Contacto", route: "/contact"},
-    {text: "Créditos", route: ""},
+    {text: "Créditos", route: "/credits"},
   ]
 
   menuOpen: boolean = false;
