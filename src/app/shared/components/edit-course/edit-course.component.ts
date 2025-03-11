@@ -71,7 +71,7 @@ export class EditCourseComponent implements OnInit{
     });
     this.cargarCurso();
     this.getTeachers();
-    
+    this.getCategories();
   }
 
   getCategories() {
