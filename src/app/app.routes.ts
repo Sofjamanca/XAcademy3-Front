@@ -87,7 +87,7 @@ export const routes: Routes = [
             },
             {
                 path: 'curso/editar/:id',
-                component:EditCourseComponent,
+                component:CreateCourseComponent,
                 canActivate:[adminGuard]
             }
         ]

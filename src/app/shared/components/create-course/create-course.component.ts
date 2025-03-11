@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit, Input } from '@angular/core';
-import {ReactiveFormsModule } from '@angular/forms';
+import { Component, Inject, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -35,20 +35,43 @@ import { Course } from '../../../core/models/course.model';
   styleUrl: './create-course.component.css'
 })
 export class CreateCourseComponent implements OnInit {
-  @Input() tipo: 'crear' | 'editar'|'inscribir' = 'crear'; 
+  @Input() tipo: 'crear' | 'editar'= 'crear'; 
   @Input() curso!: any;
   inputs: any[] = [];
+  cursoForm: any;
+  cursoExistente !: Course;
+  cursoId!: number | 0;
 
   constructor(
     private coursesService: CoursesService,
     private teacherService: TeacherService,
     private snackBar: MatSnackBar,
     private router: Router,
+    private route: ActivatedRoute,
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+    this.initForm();
     this.getCategories();
     this.getTeachers();
+
+    const id = this.route.snapshot.paramMap.get('id');
+    this.cursoId = id !== null ? +id : 0;
+    console.log(this.cursoId);
+    if (this.cursoId) {
+      // Si hay ID, estamos en edición
+      this.tipo = 'editar';
+      console.log('el tipo es:',this.tipo);
+      
+      this.cargarCurso(this.cursoId);
+    } else {
+      // Si no hay ID, es un curso nuevo
+      this.tipo = 'crear';
+      console.log('el tipo es:',this.tipo);
+    }
+
     this.inputs =   [
       {label:'Título',atr:'title', type: 'text'},
       {label:'Descripción', atr:'description', type: 'text'},
@@ -63,8 +86,67 @@ export class CreateCourseComponent implements OnInit {
       {label:'Status',atr:'status',  options: [{label: 'Activo', value: "ACTIVO"},{label: 'Pendiente', value: "PENDIENTE"}, {label: 'Finalizado', value: "FINALIZADO"}],  type: 'select'},
       {atr:'image_url',  type: 'media', require: false},
     ];
+   
   }
 
+  
+  private initForm() {
+    this.cursoForm = this.fb.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      hours: ['', Validators.required],
+      category_id: ['', Validators.required],
+      teacher_id: ['', Validators.required],
+      modalidad: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      price: ['', Validators.required],
+      status: ['', Validators.required],
+      image_url: ['']
+    }); 
+  }
+  
+  cargarCurso(id: number): void {
+    if (!id) {
+      console.error('No hay ID de curso para cargar.');
+      return;
+    }
+  
+    this.coursesService.getCourseById(id).subscribe({
+      next: (curso) => {
+        if (!curso) {
+          console.error('No se encontró el curso');
+          return;
+        }
+  
+        this.cursoExistente = curso;
+        console.log('Curso Existente', this.cursoExistente);
+  
+        
+        //Aplicar valores al formulario
+          this.cursoForm.patchValue({
+            title: curso.title ?? '',
+            description: curso.description ?? '',
+            hours: curso.hours ?? '',
+            category_id: curso.category_id ?? '',
+            teacher_id: curso.teacher_id ?? '',
+            modalidad: curso.modalidad ?? '',
+            startDate: curso.startDate ?? '',
+            endDate: curso.endDate ?? '',
+            price: curso.price ?? '',
+            quota: curso.quota ?? '',
+            status: curso.status ?? '',
+            image_url: curso.image_url ?? ''
+          });
+  
+          console.log('Formulario actualizado:', this.cursoForm.value);
+          this.cdr.detectChanges();
+        
+      },
+      error: (error) => console.error('Error al cargar el curso:', error)
+    });
+  }
+  
   getCategories() {
     this.coursesService.getCategories().subscribe({
       next: (categories) => {
@@ -115,3 +197,7 @@ export class CreateCourseComponent implements OnInit {
   }
   
 }
+function recibirFormulario(form: any, FormGroup: any) {
+  throw new Error('Function not implemented.');
+}
+

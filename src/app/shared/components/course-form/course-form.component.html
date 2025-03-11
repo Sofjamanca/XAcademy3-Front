@@ -1,6 +1,6 @@
 <div class="curso-form-container">
   <app-loader *ngIf="isLoading"></app-loader>
-  <form *ngIf="cursoForm" [formGroup]="cursoForm" (ngSubmit)="onSubmit()" class="curso-form">
+  <form *ngIf="cursoForm && cursoForm.controls" [formGroup]="cursoForm" (ngSubmit)="onSubmit()" class="curso-form">
     <div class="titulo">{{ title }}</div>
 
     <ng-container *ngFor="let input of inputs">
@@ -19,7 +19,8 @@
 
         <div *ngIf="input.type === 'date'" >
           <div class="conteiner-date">
-          <input matInput  [formControlName]="input.atr" [matDatepicker]="picker" [max]="maxFechaNacimiento" [min]="input.atr === 'startDate' ? minFechaInicio : (input.atr === 'endDate' ? minFechaFin : null) ">
+          <input matInput  [formControlName]="input.atr" [matDatepicker]="picker" [max]="maxFechaNacimiento" 
+          [min]="input.atr === 'startDate' ? minFechaInicio : (input.atr === 'endDate' ? minFechaFin : null) ">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                <mat-datepicker #picker></mat-datepicker>
           </div>
@@ -66,7 +67,7 @@
 
     <div class="botones-container">
       <button mat-raised-button class="boton-crear" type="submit" [disabled]="isLoading || cursoForm.invalid">
-        {{ tipo === 'crear' ? 'Crear curso' : 'Inscribirse' }}
+        {{ tipo === 'editar' ? 'Actualizar Curso' : 'Crear Curso' }}
       </button>    
       <button mat-raised-button class="boton-cancelar" type="button" (click)="onCancel()">
         Cancelar

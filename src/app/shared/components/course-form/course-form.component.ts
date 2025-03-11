@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, input, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { Course } from '../../../core/models/course.model';
 import { Teacher } from '../../../core/models/teacher.model';
 import { Storage, ref, uploadBytesResumable, getDownloadURL } from '@angular/fire/storage';
@@ -31,13 +31,14 @@ import { LoaderComponent } from '../loader/loader.component';
 })
 export class CourseFormComponent implements OnInit, OnChanges {
   @Input() inputs: any[] = [];
-  @Input() tipo: 'crear' | 'inscribir' | 'editar' = 'crear' ;
-  @Input() curso?: Course;
+  @Input() tipo: 'crear' |'incribir'| 'editar' = 'crear';
+  @Input() curso!: Course;
   @Input() profesores: Teacher[] = [];
   @Input() categorias: any[] = [];
   @Output() formSubmit = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
   @Input() title: string = '';
+  @Output() formReady = new EventEmitter<FormGroup>();
   maxFechaNacimiento: string = new Date().toISOString().split('T')[0];
   cursoForm!: FormGroup;
   minFechaFin: Date | null = null;
@@ -53,15 +54,25 @@ export class CourseFormComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.initForm();
+    console.log('Curso en ngOnInit:', this.curso);
+
+    // Si es un curso existente, cargar los valores
+    if (this.curso) {
+      this.cursoForm.patchValue({ ...this.curso });
+    }
+
     this.cursoForm.get('startDate')?.valueChanges.subscribe((startDate: Date) => {
       this.minFechaFin = startDate;
     });
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['curso'] && this.curso) {
+      console.log('Curso actualizado en ngOnChanges:', this.curso); // Verifica que el curso tenga datos
       this.cursoForm.patchValue({
         ...this.curso
       });
+    
 
       // Si el curso tiene una imagen guardada, mostrarla
       if (!this.imageFile) {
@@ -69,97 +80,106 @@ export class CourseFormComponent implements OnInit, OnChanges {
       }
     }
   }
-  private validarFechas(form: FormGroup) {
+  private validarFechas(form: FormGroup, tipo: 'crear' | 'incribir' | 'editar') {
     const inicio = form.get('startDate')?.value;
     const fin = form.get('endDate')?.value;
-
-    if (!inicio || !fin) return null;
-
+    const today = new Date();
+  
+    if (!inicio || !fin) return null; 
+  
     const inicioDate = new Date(inicio);
     const finDate = new Date(fin);
-
-    return finDate < inicioDate ? { fechaInvalida: true } : null;
+  
+    
+  
+    if (tipo === 'crear') { 
+      console.log(tipo);
+      return finDate < inicioDate ? { fechaInvalida: true } : null;
+    } else if (tipo === 'editar') {
+      // Permitir fechas pasadas en inicio, pero la fecha de fin debe ser mayor o igual a la de inicio
+      if (finDate < today) {
+        return { fechaInvalida: true };
+      }
+    }
+  
+    return null; // Si pasa todas las validaciones, es válido
   }
+  
 
 
   private initForm() {
-    const group: { [key: string]: any } = {};
+    const group: any = {};
 
     this.inputs.forEach(input => {
       let validators = [];
       if (input.required !== false) {
         validators.push(Validators.required);
       }
-
-      switch (input.type) {
-        case 'text':
-          if (input.atr === 'email') {
-            validators.push(Validators.email);
-          }
-          break;
-
-        case 'number':
-          if (input.atr === 'dni') {
-            validators.push(
-              Validators.pattern(/^\d{7,8}$/)
-            );
-          }
-          if (input.atr === 'phone') {
-            validators.push(Validators.pattern(/^\d{10}$/));
-          }
-          break;
-
-        case 'date':
-          validators.push(Validators.required);
-          if (input.atr === 'birthday') {
-            validators.push(this.validateEdadNacimiento);
-          }
-          break;
-
-        case 'media':
-          group[input.atr] = [null, input.required ? Validators.required : null];
-          return;
+  
+      if (input.type === 'text' && input.atr === 'email') {
+        validators.push(Validators.email);
       }
-      group[input.atr] = ['', { validators, updateOn: 'blur' }];
+  
+      if (input.type === 'number') {
+        if (input.atr === 'dni') {
+          validators.push(Validators.pattern(/^\d{7,8}$/));
+        }
+        if (input.atr === 'phone') {
+          validators.push(Validators.pattern(/^\d{10}$/));
+        }
+      }
+  
+      if (input.type === 'date') {
+        validators.push(Validators.required);
+        if (input.atr === 'birthday') {
+          validators.push(this.validateEdadNacimiento);
+        }
+      }
+  
+      // Cargar valores preexistentes en caso de edición
+      group[input.atr] = new FormControl(
+        this.curso ? (this.curso as any)[input.atr] : '', 
+        { validators, updateOn: 'blur' }
+      );
     });
-
-    this.cursoForm = this.fb.group(group, { validators: this.validarFechas });
-
-    this.cursoForm.get('startDate')?.valueChanges.subscribe((inicio) => {
-      this.minFechaFin = inicio ? new Date(inicio) : null;
-    });
+  
+    this.cursoForm = this.fb.group(group, { validators: (form: AbstractControl) => this.validarFechas(form as FormGroup, this.tipo) });
   }
 
 
   onSubmit(): void {
     if (this.cursoForm.valid) {
       this.isLoading = true;
-      const formValues = this.cursoForm.value;
-
+      const formValues = { ...this.cursoForm.value };
+  
+      // Si se subió una imagen, guardarla en la propiedad correcta
       if (this.imageFile) {
-        this.uploadImage(this.imageFile).
-        then((imageUrl) => {
-          formValues.imageUrl = imageUrl;
-          this.formSubmit.emit(formValues);
-          const inputIndex = this.inputs.findIndex((input) => input.type === 'media');
-          const currentInput = this.inputs[inputIndex];
-          formValues[currentInput.atr] = imageUrl;
-          this.formSubmit.emit(formValues);
-        })
-        .catch(error => console.error("Error al subir la imagen:", error))
-        .finally(()=>{
-          this.isLoading=false;
-        });
+        this.uploadImage(this.imageFile)
+          .then(imageUrl => {
+            formValues.imageUrl = imageUrl;
+            this.emitFormEvent(formValues);
+          })
+          .catch(error => console.error("Error al subir la imagen:", error))
+          .finally(() => {
+            this.isLoading = false;
+          });
       } else {
         if (this.imagePreview) {
           formValues.imageUrl = this.imagePreview;
         }
-        this.formSubmit.emit(formValues);
-        this.isLoading=false;
+        this.emitFormEvent(formValues);
+        this.isLoading = false;
       }
-    }else{
-      console.log('Formulario invalido, revisar los campos', this.cursoForm.errors);
+    } else {
+      console.log('Formulario inválido, revisar los campos', this.cursoForm.errors);
     }
+  }
+  // Nueva función para emitir el evento correcto
+  private emitFormEvent(formValues: any) {
+    if (this.tipo === 'editar' && this.curso) {
+      formValues.id = this.curso.id; // Asegurar que conserve el ID
+    }
+    this.formSubmit.emit(formValues);
   }
 
 
@@ -177,13 +197,14 @@ export class CourseFormComponent implements OnInit, OnChanges {
     });
   }
 
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files?.length) {
-      this.imageFile = input.files[0];
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
       const reader = new FileReader();
-      reader.onload = () => this.imagePreview = reader.result as string;
-      reader.readAsDataURL(this.imageFile);
+      reader.onload = () => {
+        this.imagePreview = reader.result as string;
+      };
+      reader.readAsDataURL(file);
     }
   }
 
