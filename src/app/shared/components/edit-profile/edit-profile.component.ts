@@ -35,10 +35,12 @@ export class EditProfileComponent {
   }
 
   ngOnInit() {
-    this.apiService.getMe().subscribe(
-      data => {
+    this.apiService.getMe().subscribe({
+      next: (data) => {
         if (data) {
           this.profileForm.patchValue({
+            name: data.name,
+            lastname: data.lastname,
             dni: data.dni,
             phone: data.phone,
             address: data.address,
@@ -46,27 +48,27 @@ export class EditProfileComponent {
           });
         }
       },
-      error => {
-        console.error('Error obteniendo datos del estudiante:', error);
+      error: (error) => {
+        console.error('Error obteniendo datos del usuario:', error);
         this.snackBar.open('Error al cargar los datos del perfil', 'Cerrar', {
           duration: 3000
         });
       }
-    );
+    });
   }
 
   onSubmit() {
     if (this.profileForm.valid) {
-      this.studentService.updateStudentData(this.profileForm.value).subscribe({
-        next: () => {
+      this.apiService.updateUserProfile(this.profileForm.value).subscribe({
+        next: (response) => {
           this.snackBar.open('Perfil actualizado exitosamente', 'Cerrar', {
             duration: 3000
           });
           this.router.navigate(['/perfil']);
         },
         error: (error) => {
-          console.error('Error actualizando perfil:', error);
-          this.snackBar.open('Error al actualizar el perfil', 'Cerrar', {
+          console.error('Error completo:', error);
+          this.snackBar.open(`Error al actualizar el perfil: ${error.message}`, 'Cerrar', {
             duration: 3000
           });
         }

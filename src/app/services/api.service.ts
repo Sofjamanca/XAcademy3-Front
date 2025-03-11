@@ -29,7 +29,7 @@ export class ApiService {
     this.localStorageService.setItem('role', response.role);
     this.authStateService.setAuthState(true);
   }
-  
+
   login(credentials: { email: string, password: string }): Observable<any> {
     return this.http.post<{ message: string, user: { name: string, role: string }, accessToken: string, refreshToken: string }>(
       `${this.apiUrl}/login`,
@@ -51,7 +51,7 @@ export class ApiService {
       })
     );
   }
-  
+
   logout(): Observable<void> {
     return new Observable(observer => {
       this.authStateService.setAuthState(false);
@@ -75,7 +75,7 @@ export class ApiService {
       });
     });
   }
-  
+
 
   register(name: string, lastname: string, email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, { name, lastname, email, password });
@@ -90,7 +90,7 @@ export class ApiService {
   }
 
   getAuthToken(): string | null{
-    return this.localStorageService.getItem('token'); 
+    return this.localStorageService.getItem('token');
   }
 
   getRefreshToken(): string | null{
@@ -131,7 +131,7 @@ export class ApiService {
       switchMap((result) => {
         const user = result.user;
         return this.http.post<{ token: string, refreshToken: string, role: string, name: string }>(
-          `${this.apiUrl}/login-social`, 
+          `${this.apiUrl}/login-social`,
           {
             email: user.email,
             name: user.displayName,
@@ -155,7 +155,7 @@ export class ApiService {
       })
     );
   }
-  
+
 
   signInWithFacebook(): Observable<any> {
     const provider = new FacebookAuthProvider();
@@ -183,7 +183,7 @@ export class ApiService {
   }
 
   getMe(): Observable<any> {
-    const token = this.localStorageService.getItem('token'); 
+    const token = this.localStorageService.getItem('token');
 
     if (!token) {
       console.error('Token no encontrado');
@@ -194,7 +194,7 @@ export class ApiService {
 
     return this.http.get<any>(`${this.apiUrl}/me`, { headers }).pipe(
       map(data => ({
-        user_id: data.id,  
+        user_id: data.id,
         dni: data.dni,
         phone: data.phone,
         birthday: data.birthday,
@@ -206,5 +206,9 @@ export class ApiService {
       })
     );
   }
-  
+
+  updateUserProfile(userData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update-profile`, userData);
+  }
+
   }
