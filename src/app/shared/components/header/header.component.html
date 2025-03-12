@@ -23,12 +23,16 @@
                   <shared-register-btn (click)="openRegister()">
                       Registrarse
                   </shared-register-btn>
+                  
               </div>
-          </ng-template>
-
-          <mat-menu #userMenu="matMenu">
+          
+            </ng-template>
+        <div class="use_name">
+            <mat-menu #userMenu="matMenu">
               <app-user-menu></app-user-menu>
           </mat-menu>
+        </div>
+          
       </div>
 
       <button class="menu-toggle" (click)="toggleMenu()">

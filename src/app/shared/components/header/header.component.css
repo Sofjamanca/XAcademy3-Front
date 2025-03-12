@@ -31,13 +31,6 @@
   min-width: 200px;
 }
 
-.menu-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-grow: 2;
-  max-width: 600px;
-}
 
 .auth-buttons {
   display: flex;
@@ -57,7 +50,11 @@
   margin-left: auto; 
 }
 .option_user{
+  margin-top: 1rem;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 10px;
 }
 /*-------- Nombre usuario ------*/
@@ -90,32 +87,45 @@
 .user-menu:hover .dropdown-content {
   display: block;
 }
+
+
 @media (max-width: 768px) {
   .toolbar {
     padding: 0; 
   }
 
   .menu-container {
-    display: none; 
-    flex-direction: column; 
+    display: none; /* Inicialmente oculta el menú */
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    background-color: #fff; /* Opcional: el color del fondo del menú */
     position: absolute;
-    top: 50px; 
+    top: 56px; /* Ajusta según la altura de la barra de navegación */
     left: 0;
-    background: #f9f9f9;
-    width: 100%;
-    padding: 10px;
-    z-index: 1000; 
-    margin-top: 10px;
+    right: 0;
+    z-index: 1000;
+    margin-top: 2rem;
   }
-
+.use_name{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+}
   .menu-container.active {
     display: flex; 
+    color: var(--color_btn_primary);
   }
 
   .menu-toggle {
-    display: block; 
-    font-size: 1.5em; 
-    padding: 5px; 
+    display: block;
+    background: none;
+    border: none;
+    font-size: 30px;
+    color: #333;
+    cursor: pointer; 
   }
 
   .auth-buttons {
@@ -152,6 +162,30 @@
 
   .logo {
     padding-left: 5px; 
+  }
+}
+
+@media (min-width: 768px) {
+  .menu-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 900px;
+    height: 100%;
+  }
+  .option_user{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-between;
+    height: 100%;
+    margin-top: 0%;
+  }
+  
+
+  .menu-toggle {
+    display: none; /* Oculta el menú hamburguesa en pantallas grandes */
   }
 }
 
