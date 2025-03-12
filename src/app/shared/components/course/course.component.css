@@ -75,7 +75,7 @@
   line-height: 1.6;
   opacity: 0;
   transform: translateY(20px);
-  /* animation: fadeInUp 0.8s ease-out forwards; */
+  animation: fadeInUp 0.8s ease-out forwards;
 }
 
 
@@ -128,10 +128,6 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease; 
 }
 
-.floating-card:hover {
-  transform: translateY(-10px); 
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); 
-}
 
 .course-thumbnail {
   width: 100%;
@@ -169,4 +165,88 @@
 .payment-methods img:hover {
   transform: scale(1.2); 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+}
+
+@media screen and (max-width: 768px) {
+  .page-container {
+    flex-direction: column;
+    width: 90%;
+    padding: 15px;
+  }
+
+  .course-header {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .info-portada {
+    position: relative; 
+    width: 90%;
+    max-width: 90%;
+    margin: 0 auto; 
+    text-align: center;
+    overflow: hidden;
+    word-wrap: break-word;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline; 
+    padding: 10px;
+  }
+
+  .info-portada .title {
+    font-size: 20px; 
+    line-height: 1.2;
+    max-width: 100%;
+  }
+
+  .info-portada .tag,
+  .info-portada .students,
+  .info-portada .teacher {
+    font-size: 12px; /* Ajustado para pantallas pequeñas */
+    display: block;
+    text-align: center;
+    margin: 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .floating-card {
+    order: -1;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    height: auto;
+    padding: 15px;
+  }
+
+  .course-thumbnail {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .start-button {
+    font-size: 16px;
+    padding: 8px;
+    width: 100%;
+  }
+
+  .payment-methods {
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .payment-methods img {
+    width: 50px;
+  }
+
+  .course-status {
+    margin-top: 120px;
+  }
 }

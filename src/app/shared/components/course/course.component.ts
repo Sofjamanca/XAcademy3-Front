@@ -59,6 +59,7 @@ export class CourseComponent implements OnInit {
         error: (err) => console.error('Error obteniendo el curso:', err),
       });
     }
+
   }
   
   goHome() {

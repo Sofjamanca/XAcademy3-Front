@@ -1,20 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgForOf } from '@angular/common';
+import { NgIf, NgForOf, NgClass } from '@angular/common';
 import { MaterialModule } from '../../../material/material.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DeviceHelper } from '../../../core/models/helpers/device-helper';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [FormsModule, NgForOf, NgIf, MaterialModule],
+  imports: [FormsModule, NgForOf, NgIf, MaterialModule, NgClass],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.css'
 })
 
-export class ContactComponent {
-  constructor(private snackBar: MatSnackBar) {}
+export class ContactComponent implements OnInit{
+  isMobile: boolean = false;
+  
+  constructor(private deviceHelper: DeviceHelper, private snackBar: MatSnackBar) {}
 
    faqs = [
     { 
@@ -64,6 +67,11 @@ export class ContactComponent {
     }
   ];
   
+  ngOnInit(): void {
+    this.deviceHelper.watchDeviceChange((isMobile) => {
+      this.isMobile = isMobile;
+    });
+  }
 
   toggleAnswer(item: any) {
     item.showAnswer = !item.showAnswer; 

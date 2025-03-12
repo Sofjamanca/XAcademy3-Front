@@ -4,6 +4,7 @@ import { LandingPageComponent } from './views/landing-page/landing-page.componen
 import { CreateCourseComponent } from './shared/components/create-course/create-course.component';
 import { HomeComponent } from './views/admin/home/home.component';
 import { CoursesListComponent } from './views/admin/courses/courses-list/courses-list.component';
+import { CourseComponent } from './shared/components/course/course.component';
 import { adminGuard } from './guards/admin.guard';
 import { loginGuard } from './guards/login.guards';
 import { InscripcionComponent } from './shared/components/inscripcion/inscripcion.component';
@@ -109,7 +110,7 @@ export const routes: Routes = [
     {
         path: 'perfil',
         component: StudentProfileComponent,
-        canActivate: [loginGuard],  
+        // canActivate: [loginGuard],  
         children: [
             {
                 path: '',
