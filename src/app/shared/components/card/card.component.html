@@ -28,7 +28,7 @@
     </div>
   </mat-card-content>
 
-  <mat-card-actions class="card-actions">
+  <mat-card-actions  *ngIf="showActions" class="card-actions">
     <button mat-raised-button color="primary" (click)="onActionClick()">{{action}}</button>
     <mat-icon *ngIf="showFavoriteIcon" aria-hidden="false" aria-label="Añadir a favoritos" fontIcon="favorite_border"></mat-icon>
   </mat-card-actions>

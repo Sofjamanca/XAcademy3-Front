@@ -41,5 +41,8 @@ export class StudentService {
     return data ? JSON.parse(data) : null;
   }
   
+  getStudentByUserId(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/student/${userId}`);
+  }
 
 }

@@ -47,7 +47,7 @@ export class InscripcionComponent implements OnInit {
     this.apiService.getMe().subscribe(
       data => {
         this.studentData = data;
-  
+        console.log(data);
         if (courseId && this.studentData) {
           this.checkEnrollmentStatus(courseId);
         } else {
@@ -120,7 +120,7 @@ export class InscripcionComponent implements OnInit {
         this.snackBar.open('Inscripción exitosa. Redirigiendo a tu panel...', 'Cerrar', { duration: 3000 });
   
         setTimeout(() => {
-          this.router.navigate(['/perfil']);
+          this.router.navigate(['/perfil/mis-cursos']);
         }, 3000);
       },
       (error) => {
@@ -181,7 +181,7 @@ export class InscripcionComponent implements OnInit {
         });
       }
 
-      this.router.navigate(['/perfil']);
+      this.router.navigate(['/perfil/mis-cursos']);
     },
     (error) => {
       console.error('Error en la inscripción:', error);
