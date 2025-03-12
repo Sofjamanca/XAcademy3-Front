@@ -1,7 +1,7 @@
 .menu {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  justify-content: left;
   width: 100%;
 }
 
@@ -14,30 +14,37 @@
 
 .nav-menu {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   gap: 1em;
   list-style: none;
   margin: 0;
   padding: 0;
-  flex-wrap: nowrap; 
+  
 }
 
 .nav-buttons {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   gap: 10px;
   margin-top: 10px; 
+  
 }
 
 .nav-btn {
   border-radius: 4px;
-  width: auto;
+  width: 100px;
   height: 2.5em;
   font-size: 0.8rem;
   padding: 0.5em 1em;
 }
 
-
+.nav-btn.active {
+  border-bottom: 2px solid var(--color_btn_primary); 
+  transition: .4s;
+}
 @media (max-width: 768px) {
   .menu {
     align-items: center;
@@ -50,5 +57,21 @@
   .nav-buttons {
     justify-content: center;
     width: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .nav-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+  }
+  .nav-menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 }

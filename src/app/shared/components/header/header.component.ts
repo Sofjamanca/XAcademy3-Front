@@ -61,8 +61,9 @@ export class HeaderComponent implements OnInit {
     {text: "Contacto", route: "/contact"},
     {text: "Créditos", route: "/credits"},
   ]
-
+  activeMenuItem: string = 'Inicio';
   menuOpen: boolean = false;
+  
 
  
   toggleMenu(): void {

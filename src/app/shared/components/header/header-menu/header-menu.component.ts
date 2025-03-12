@@ -11,10 +11,18 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     CommonModule,
     MaterialModule,
     RouterLink,
+    RouterLinkActive 
   ],
   templateUrl: './header-menu.component.html',
   styleUrl: './header-menu.component.css'
 })
 export class HeaderMenuComponent {
   @Input() menuItems?: MenuItem[];
+
+  activeMenuItem: string = '';
+
+  setActive(menuItemRoute: string) {
+    this.activeMenuItem = menuItemRoute;
+  }
+  
 }
