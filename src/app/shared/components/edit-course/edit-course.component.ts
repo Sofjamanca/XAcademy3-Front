@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CoursesService } from '../../../services/courses/courses.service';
 import { MatCardModule } from '@angular/material/card';
 import { Course } from '../../../core/models/course.model';
@@ -16,7 +16,6 @@ import { response } from 'express';
 })
 export class EditCourseComponent implements OnInit{
   cursoExistente !: Course;
-  cursoForm!: FormGroup;
   courseId: number | null = null;
 
   inputs = [
@@ -37,8 +36,8 @@ export class EditCourseComponent implements OnInit{
         {label: 'Virtual', value: "VIRTUAL"}, 
         {label: 'Híbrido', value: "HIBRIDO"}],  
     type: 'select', required:true},
-    // {label:'Fecha inicio',atr:'startDate',  type: 'date'},
-    //   {label:'Fecha fin',atr:'endDate', type: 'date'},
+    {label:'Fecha inicio',atr:'startDate',  type: 'date'},
+      {label:'Fecha fin',atr:'endDate', type: 'date', getMin:(data: any)=>{return  data.startDate ? data.startDate : new Date()}},
     {label:'Precio',atr:'price',  type: 'number', require:true},
     {label:'Cupo',atr:'quota',  type: 'number', required:true},
     {label:'Status',atr:'status',  options: [
@@ -55,14 +54,8 @@ export class EditCourseComponent implements OnInit{
     private router: Router,
     private courseService:CoursesService,
     private teacherService: TeacherService,
-  ){
-    // this.cursoForm = this.fb.group(
-    //   this.inputs.reduce((acc, input) => {
-    //     acc[input.atr] = [null, input.required ? Validators.required : []];
-    //     return acc;
-    //   }, {} as { [key: string]: any })
-    // );
-  }
+    private cdRef: ChangeDetectorRef
+  ){}
 
   ngOnInit(): void {
 
@@ -73,12 +66,14 @@ export class EditCourseComponent implements OnInit{
       if(this.courseId){
         this.cargarCurso();
       }else{
-        console.error('ID del curso nu válido');
+        console.error('ID del curso no válido');
       }
     });
     this.cargarCurso();
-    this.getTeachers();    
+    this.getTeachers();
+    this.getCategories();
   }
+
   getCategories() {
     this.courseService.getCategories().subscribe({
       next: (categories) => {
@@ -123,30 +118,20 @@ export class EditCourseComponent implements OnInit{
     // this.getTeachers();
   
     this.courseService.getCourseById(this.courseId).subscribe({
-      next: (curso) => {
+      next: (curso : any) => {
         if (!curso) {
           console.error('No se encontró el curso');
           return;
         }
   
-        this.cursoExistente = curso;
+        this.cursoExistente = {
+          ...curso, 
+          startDate: new Date(curso.startDate),
+          endDate: new Date(curso.endDate)
+        };
         console.log('curso Existente',this.cursoExistente);
 
-        this.cursoForm.patchValue({
-          title: curso.title,
-          description: curso.description,
-          hours: curso.hours,
-          category_id: curso.category_id,
-          teacher_id: curso.teacher_id,
-          modalidad: curso.modalidad,
-          inicioDate: curso.startDate,
-          finDate: curso.endDate,
-          price: curso.price,
-          status: curso.status,
-          image_url: curso.image_url
-        });
-  
-        console.log('Curso cargado:', curso);
+        this.cdRef.detectChanges();
       },
       error: (error) => console.error('Error al cargar el curso:', error)
     });
@@ -154,17 +139,13 @@ export class EditCourseComponent implements OnInit{
   
   editarCurso(): void {
     console.log("Editando curso...");
-  
-    if (this.cursoForm.invalid) {
-      console.log("Formulario inválido, revisa los campos", this.cursoForm.errors);
-      return;
-    }
+
     if (!this.cursoExistente) {
       console.error("Error: No se encontró el curso existente");
       return;
     }
   
-    const datosActualizados = { ...this.cursoExistente, ...this.cursoForm.value };
+    const datosActualizados = { ...this.cursoExistente};
     console.log("Datos actualizados:", datosActualizados); // Verifica que los datos sean correctos
   
     this.courseService.updateCourse(this.courseId!, datosActualizados).subscribe(
@@ -177,9 +158,6 @@ export class EditCourseComponent implements OnInit{
       }
     );
   }
-
-  
-  
 
   goBack(): void {
     this.router.navigate(['/admin']);

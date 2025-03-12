@@ -44,8 +44,8 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.authStateService.isAuthenticated$.subscribe(isAuthenticated => {
-      const studentData = this.apiService.getMe();
-      this.studentService.saveStudentData(studentData);
+      // const studentData = this.apiService.getMe();
+      // this.studentService.saveStudentData(studentData);
     });
 
     this.userService.userName$.subscribe(userName => {

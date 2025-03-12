@@ -183,28 +183,40 @@ export class ApiService {
   }
 
   getMe(): Observable<any> {
-    const token = this.localStorageService.getItem('token'); 
-
+    let token = this.localStorageService.getItem('token');
+  
     if (!token) {
       console.error('Token no encontrado');
       return throwError(() => new Error('Token no proporcionado'));
     }
-
+  
+    if (this.isTokenExpired(token)) {
+      console.log('Token expirado, intentando refrescar...');
+      return this.refreshToken().pipe(
+        switchMap(newToken => {
+          this.localStorageService.setItem('token', newToken);
+          return this.getMe(); // Llamar de nuevo con el nuevo token
+        }),
+        catchError(error => {
+          console.error('Error al refrescar token:', error);
+          return throwError(() => new Error('Error al refrescar token'));
+        })
+      );
+    }
+  
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
+  
     return this.http.get<any>(`${this.apiUrl}/me`, { headers }).pipe(
-      map(data => ({
-        user_id: data.id,  
-        dni: data.dni,
-        phone: data.phone,
-        birthday: data.birthday,
-        address: data.address
-      })),
       catchError(error => {
         console.error("Error en getMe:", error);
         return throwError(() => new Error(error));
       })
     );
   }
-  
+
+  isTokenExpired(token: string): boolean {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const expiration = payload.exp * 1000;
+    return Date.now() >= expiration;
   }
+}  

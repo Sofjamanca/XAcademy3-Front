@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit, Input, ChangeDetectorRef } from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, ChangeDetectorRef, OnInit, Input } from '@angular/core';
+import {FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -16,6 +16,7 @@ import { MaterialModule } from '../../../material/material.module';
 import { Router } from '@angular/router';
 import { Course } from '../../../core/models/course.model';
 
+
 @Component({
   selector: 'app-create-course',
   standalone: true,
@@ -30,12 +31,12 @@ import { Course } from '../../../core/models/course.model';
     MatDatepickerModule, 
     MatNativeDateModule,
     CourseFormComponent, MaterialModule
-  ],
+  ], 
   templateUrl: './create-course.component.html',
   styleUrl: './create-course.component.css'
 })
 export class CreateCourseComponent implements OnInit {
-  @Input() tipo: 'crear' | 'editar'= 'crear'; 
+  @Input() tipo: 'crear' | 'editar'| 'inscribir'= 'crear'; 
   @Input() curso!: any;
   inputs: any[] = [];
   cursoForm: any;
@@ -64,12 +65,13 @@ export class CreateCourseComponent implements OnInit {
       // Si hay ID, estamos en edición
       this.tipo = 'editar';
       console.log('el tipo es:',this.tipo);
-      
       this.cargarCurso(this.cursoId);
+
     } else {
       // Si no hay ID, es un curso nuevo
       this.tipo = 'crear';
       console.log('el tipo es:',this.tipo);
+      this.cargarCurso(0);
     }
 
     this.inputs =   [
@@ -79,14 +81,15 @@ export class CreateCourseComponent implements OnInit {
       {label:'Categoría',atr:'category_id', options: [],  type: 'select'},
       {label:'Profesor',atr:'teacher_id', options: [],  type: 'select'},
       {label:'Modalidad',atr:'modalidad', options: [{label: 'Presencial', value: "PRESENCIAL"},{label: 'Virtual', value: "VIRTUAL"}, {label: 'Híbrido', value: "HIBRIDO"}],  type: 'select'},
-      {label:'Fecha inicio',atr:'startDate',  type: 'date'},
-      {label:'Fecha fin',atr:'endDate', type: 'date'},
+      {label:'Fecha inicio',atr:'startDate',  type: 'date', min:new Date()},
+      {label:'Fecha fin',atr:'endDate', type: 'date',getMin:(data: any)=>{return  data.startDate ? data.startDate : new Date()}},
       {label:'Precio',atr:'price',  type: 'number'},
       {label:'Cupo',atr:'quota',  type: 'number'},
       {label:'Status',atr:'status',  options: [{label: 'Activo', value: "ACTIVO"},{label: 'Pendiente', value: "PENDIENTE"}, {label: 'Finalizado', value: "FINALIZADO"}],  type: 'select'},
       {atr:'image_url',  type: 'media', require: false},
     ];
-   
+
+    this.cdr.detectChanges(); 
   }
 
   
@@ -98,8 +101,6 @@ export class CreateCourseComponent implements OnInit {
       category_id: ['', Validators.required],
       teacher_id: ['', Validators.required],
       modalidad: ['', Validators.required],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
       price: ['', Validators.required],
       status: ['', Validators.required],
       image_url: ['']
@@ -131,8 +132,6 @@ export class CreateCourseComponent implements OnInit {
             category_id: curso.category_id ?? '',
             teacher_id: curso.teacher_id ?? '',
             modalidad: curso.modalidad ?? '',
-            startDate: curso.startDate ?? '',
-            endDate: curso.endDate ?? '',
             price: curso.price ?? '',
             quota: curso.quota ?? '',
             status: curso.status ?? '',
@@ -140,7 +139,6 @@ export class CreateCourseComponent implements OnInit {
           });
   
           console.log('Formulario actualizado:', this.cursoForm.value);
-          this.cdr.detectChanges();
         
       },
       error: (error) => console.error('Error al cargar el curso:', error)
@@ -177,19 +175,35 @@ export class CreateCourseComponent implements OnInit {
       ...event
     };
   
-    console.log('Curso a crear:', curso);
+    console.log('Curso a guardar:', curso);
   
-    this.coursesService.addCourse(curso).subscribe({
-      next: (response) => {
-        console.log('Curso creado exitosamente:', response);
-        this.snackBar.open('Curso creado con éxito', 'Cerrar', { duration: 3000 });
-        this.router.navigate(['/admin/cursos']);
-      },
-      error: (error) => {
-        console.error('Error al crear curso:', error);
-        this.snackBar.open('Error al crear el curso: ' + error.message, 'Cerrar', { duration: 3000 });
-      }
-    });
+    if (this.tipo === 'editar') {
+      // Actualizar curso existente
+      this.coursesService.updateCourse(this.cursoId, curso).subscribe({
+        next: (response) => {
+          console.log('Curso actualizado exitosamente:', response);
+          this.snackBar.open('Curso actualizado con éxito', 'Cerrar', { duration: 3000 });
+          this.router.navigate(['/admin/cursos']);
+        },
+        error: (error) => {
+          console.error('Error al actualizar curso:', error);
+          this.snackBar.open('Error al actualizar el curso: ' + error.message, 'Cerrar', { duration: 3000 });
+        }
+      });
+    } else {
+      // Crear nuevo curso
+      this.coursesService.addCourse(curso).subscribe({
+        next: (response) => {
+          console.log('Curso creado exitosamente:', response);
+          this.snackBar.open('Curso creado con éxito', 'Cerrar', { duration: 3000 });
+          this.router.navigate(['/admin/cursos']);
+        },
+        error: (error) => {
+          console.error('Error al crear curso:', error);
+          this.snackBar.open('Error al crear el curso: ' + error.message, 'Cerrar', { duration: 3000 });
+        }
+      });
+    }
   }
 
   goAdmin(){

@@ -31,7 +31,7 @@ import { LoaderComponent } from '../loader/loader.component';
 })
 export class CourseFormComponent implements OnInit, OnChanges {
   @Input() inputs: any[] = [];
-  @Input() tipo: 'crear' |'incribir'| 'editar' = 'crear';
+  @Input() tipo: 'crear' |'inscribir'| 'editar' = 'crear';
   @Input() curso!: Course;
   @Input() profesores: Teacher[] = [];
   @Input() categorias: any[] = [];
@@ -41,8 +41,6 @@ export class CourseFormComponent implements OnInit, OnChanges {
   @Output() formReady = new EventEmitter<FormGroup>();
   maxFechaNacimiento: string = new Date().toISOString().split('T')[0];
   cursoForm!: FormGroup;
-  minFechaFin: Date | null = null;
-  minFechaInicio: Date = new Date();
   imageFile: File | null = null;
   imagePreview: string | null = null;
   isLoading: boolean = false;
@@ -54,25 +52,16 @@ export class CourseFormComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.initForm();
-    console.log('Curso en ngOnInit:', this.curso);
-
-    // Si es un curso existente, cargar los valores
-    if (this.curso) {
-      this.cursoForm.patchValue({ ...this.curso });
-    }
-
-    this.cursoForm.get('startDate')?.valueChanges.subscribe((startDate: Date) => {
-      this.minFechaFin = startDate;
-    });
   }
-
+  
+  
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['curso'] && this.curso) {
-      console.log('Curso actualizado en ngOnChanges:', this.curso); // Verifica que el curso tenga datos
+    if (changes['curso'] && this.curso && this.cursoForm) {
+      // Asegúrate de que el formulario esté inicializado antes de intentar aplicar patchValue
       this.cursoForm.patchValue({
-        ...this.curso
-      });
-    
+        ...this.curso,
+        fechaInicio: this.curso.startDate? new Date(this.curso.startDate) : null,
+      });  
 
       // Si el curso tiene una imagen guardada, mostrarla
       if (!this.imageFile) {
@@ -80,72 +69,52 @@ export class CourseFormComponent implements OnInit, OnChanges {
       }
     }
   }
-  private validarFechas(form: FormGroup, tipo: 'crear' | 'incribir' | 'editar') {
-    const inicio = form.get('startDate')?.value;
-    const fin = form.get('endDate')?.value;
-    const today = new Date();
-  
-    if (!inicio || !fin) return null; 
-  
-    const inicioDate = new Date(inicio);
-    const finDate = new Date(fin);
-  
-    
-  
-    if (tipo === 'crear') { 
-      console.log(tipo);
-      return finDate < inicioDate ? { fechaInvalida: true } : null;
-    } else if (tipo === 'editar') {
-      // Permitir fechas pasadas en inicio, pero la fecha de fin debe ser mayor o igual a la de inicio
-      if (finDate < today) {
-        return { fechaInvalida: true };
-      }
-    }
-  
-    return null; // Si pasa todas las validaciones, es válido
-  }
-  
-
 
   private initForm() {
-    const group: any = {};
+    const group: { [key: string]: any } = {};
 
     this.inputs.forEach(input => {
       let validators = [];
       if (input.required !== false) {
         validators.push(Validators.required);
       }
-  
-      if (input.type === 'text' && input.atr === 'email') {
-        validators.push(Validators.email);
-      }
-  
-      if (input.type === 'number') {
-        if (input.atr === 'dni') {
-          validators.push(Validators.pattern(/^\d{7,8}$/));
-        }
-        if (input.atr === 'phone') {
-          validators.push(Validators.pattern(/^\d{10}$/));
-        }
-      }
-  
-      if (input.type === 'date') {
-        validators.push(Validators.required);
-        if (input.atr === 'birthday') {
-          validators.push(this.validateEdadNacimiento);
-        }
-      }
-  
-      // Cargar valores preexistentes en caso de edición
-      group[input.atr] = new FormControl(
-        this.curso ? (this.curso as any)[input.atr] : '', 
-        { validators, updateOn: 'blur' }
-      );
-    });
-  
-    this.cursoForm = this.fb.group(group, { validators: (form: AbstractControl) => this.validarFechas(form as FormGroup, this.tipo) });
-  }
 
+      switch (input.type) {
+        case 'text':
+          if (input.atr === 'email') {
+            validators.push(Validators.email);
+          }
+          break;
+
+        case 'number':
+          if (input.atr === 'dni') {
+            validators.push(
+              Validators.pattern(/^\d{7,8}$/)
+            );
+          }
+          if (input.atr === 'phone') {
+            validators.push(Validators.pattern(/^\d{10}$/));
+          }
+          break;
+
+        case 'date':
+          validators.push(Validators.required);
+          if (input.atr === 'birthday') {
+            validators.push(this.validateEdadNacimiento);
+          }
+          break;
+
+        case 'media':
+          group[input.atr] = [null, input.required ? Validators.required : null];
+          return;
+      }
+      group[input.atr] = ['', { validators, updateOn: 'blur' }];
+    });
+
+    this.cursoForm = this.fb.group(group, { });
+
+  
+  }
 
   onSubmit(): void {
     if (this.cursoForm.valid) {
@@ -158,6 +127,10 @@ export class CourseFormComponent implements OnInit, OnChanges {
           .then(imageUrl => {
             formValues.imageUrl = imageUrl;
             this.emitFormEvent(formValues);
+            const inputIndex = this.inputs.findIndex((input) => input.type === 'media');
+            const currentInput = this.inputs[inputIndex];
+            formValues[currentInput.atr] = imageUrl;
+            this.formSubmit.emit(formValues);
           })
           .catch(error => console.error("Error al subir la imagen:", error))
           .finally(() => {
@@ -174,6 +147,7 @@ export class CourseFormComponent implements OnInit, OnChanges {
       console.log('Formulario inválido, revisar los campos', this.cursoForm.errors);
     }
   }
+
   // Nueva función para emitir el evento correcto
   private emitFormEvent(formValues: any) {
     if (this.tipo === 'editar' && this.curso) {
