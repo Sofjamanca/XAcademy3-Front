@@ -1,0 +1,95 @@
+.article-form-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.form-row {
+  margin-bottom: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.image-label {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.image-upload {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.upload-container {
+  margin-bottom: 10px;
+}
+
+.image-preview-container {
+  max-width: 300px;
+}
+
+.image-preview {
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.remove-image {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  transform: scale(0.8);
+}
+
+.upload-progress {
+  margin-top: 15px;
+  width: 100%;
+}
+
+.progress-text {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 5px;
+  display: block;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .header button {
+    margin-top: 10px;
+  }
+  
+  .image-upload {
+    flex-direction: column;
+  }
+} 

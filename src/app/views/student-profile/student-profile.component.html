@@ -1,34 +1,40 @@
-<div class="perfil-layout">
-    <aside class="sidebar" [class.collapsed]="isCollapsed">
-        <div class="sidebar-header">
-            <img class="student-icon" src="/assets/images/icon_gral.png" alt="Icono estudiante">
-            <h2 *ngIf="!isCollapsed">Perfil Estudiante</h2>
-            <button mat-icon-button (click)="toggleSidenav()">
-                <mat-icon>{{ isCollapsed ? 'menu' : 'chevron_left' }}</mat-icon>
-            </button>
-        </div>
-        
+<div class="student-profile-layout">
+  <aside class="sidebar" [class.collapsed]="isCollapsed">
+      <div class="sidebar-header">
+          <img class="student-icon" src="/assets/images/icon_gral.png" alt="Icono estudiante">
+          <h2 *ngIf="!isCollapsed">Perfil Estudiante</h2>
+          <button mat-icon-button (click)="toggleSidenav()">
+              <mat-icon>{{ isCollapsed ? 'menu' : 'chevron_left' }}</mat-icon>
+          </button>
+      </div>
       
-      <nav class="sidebar-nav">
-        <a routerLink="mis-cursos" routerLinkActive="active" class="nav-item">
-          <mat-icon>school</mat-icon>
-          <span *ngIf="!isCollapsed">Mis Cursos</span>
+    
+    <nav class="sidebar-nav">
+      <a routerLink="/perfil/mis-cursos" routerLinkActive="active" class="nav-item">
+        <mat-icon>school</mat-icon>
+        <span *ngIf="!isCollapsed">Mis cursos</span>
+      </a>
+      <a routerLink="/perfil/pagos" routerLinkActive="active" class="nav-item">
+        <mat-icon>paid</mat-icon>
+        <span *ngIf="!isCollapsed">Pagos</span>
+      </a>
+      <a routerLink="configuracion" routerLinkActive="active" class="nav-item">
+        <mat-icon>workspace_premium</mat-icon>
+        <span *ngIf="!isCollapsed">Certificados</span>
+      </a>
+      <a routerLink="configuracion" routerLinkActive="active" class="nav-item">
+          <mat-icon>settings</mat-icon>
+          <span *ngIf="!isCollapsed">Configuración</span>
         </a>
-        <a routerLink="pendientes-pago" routerLinkActive="active" class="nav-item">
-          <mat-icon>credit_card</mat-icon>
-          <span *ngIf="!isCollapsed">Pendientes de Pago</span>
-        </a>
-        <a routerLink="configuracion" routerLinkActive="active" class="nav-item">
-          <mat-icon>workspace_premium</mat-icon>
-          <span *ngIf="!isCollapsed">Certificados</span>
-        </a>
-        <a routerLink="configuracion" routerLinkActive="active" class="nav-item">
-            <mat-icon>settings</mat-icon>
-            <span *ngIf="!isCollapsed">Configuración</span>
-          </a>
-      </nav>
-    </aside>    
-    <main class="main-content">
+    </nav>
+  </aside>    
+  <main class="main-content">
+    <ng-container *ngIf="isStudent; else errorMessage">
       <router-outlet></router-outlet>
-    </main>
-  </div>
+    </ng-container>
+
+    <ng-template #errorMessage>
+      <p>No tienes permiso para acceder a esta sección.</p>
+    </ng-template>
+  </main>
+</div>

@@ -1,0 +1,76 @@
+mat-table {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+}
+
+mat-header-cell {
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    background: #e3f2fd;
+    color: #333;
+    padding: 12px;
+    font-size: 14px;
+}
+
+mat-cell {
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    color: #444;
+}
+
+mat-row:hover {
+    background-color: #f0f8ff;
+    transition: background 0.3s ease-in-out;
+}
+
+mat-chip {
+    font-weight: bold;
+    padding: 6px 10px;
+    border-radius: 16px;
+    font-size: 13px;
+}
+
+mat-chip[color="warn"] {
+    background-color: #ffdbb4;
+    color: #000000;
+}
+
+button {
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    background-color: #0d47a1 !important;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+mat-icon {
+    margin-right: 5px;
+}
+
+p {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #777;
+    margin-top: 15px;
+}
+
+.aprobado{
+    color: #74c325;
+    margin-left: 25px;
+}

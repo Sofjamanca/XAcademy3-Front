@@ -14,7 +14,15 @@ import { TeachersListComponent } from './views/admin/teachers/teachers-list/teac
 import { TeacherDetailComponent } from './views/admin/teachers/teacher-detail/teacher-detail.component';
 import { CreateTeacherComponent } from './views/admin/teachers/create-teacher/create-teacher.component';
 import { CourseManagementComponent } from './views/course-management/course-management.component';
-import { teacherGuard } from './guards/teacher.guard';
+import { PendingComponent } from './views/student-profile/pending/pending.component';
+import { MisCursosComponent } from './views/student-profile/mis-cursos/mis-cursos.component';
+import { HomeStudentComponent } from './views/student-profile/homeStu/homestudent.component';
+import { ListArticlesComponent } from './views/admin/news/list-articles/list-articles.component';
+import { CreateArticleComponent } from './views/admin/news/create-article/create-article.component';
+import { EditArticleComponent } from './views/admin/news/edit-article/edit-article.component';
+import { NewsListComponent } from './views/news/news-list/news-list.component';
+import { NewsDetailComponent } from './views/news/news-detail/news-detail.component';
+import { PaymentDashboardComponent } from './views/admin/payments/payment-dashboard.component';
 
 export const routes: Routes = [
     {
@@ -87,8 +95,7 @@ export const routes: Routes = [
             },
             {
                 path: 'cursos',
-                component: CoursesListComponent,
-               
+                component: CoursesListComponent
             },
             {
                 path: 'cursos/crear',
@@ -103,36 +110,68 @@ export const routes: Routes = [
             {
                 path: 'profesores',
                 component: TeachersListComponent,
-                canActivate: [adminGuard]
+                canActivate: [loginGuard]
             },
             {
                 path: 'profesores/view/:id',
                 component: TeacherDetailComponent,
-                canActivate: [adminGuard]
+                canActivate: [loginGuard]
             },
             {
                 path: 'profesores/new',
                 component: CreateTeacherComponent,
-                canActivate: [adminGuard]
+                canActivate: [loginGuard]
+            },
+            {
+                path: 'noticias',
+                component: ListArticlesComponent
+            },
+            {
+                path: 'noticias/crear',
+                component: CreateArticleComponent
+            },
+            {
+                path: 'noticias/editar/:id',
+                component: EditArticleComponent
+            },
+            {
+                path: 'pagos',
+                component: PaymentDashboardComponent
             }
         ]
     },
     {
         path: 'perfil',
         component: StudentProfileComponent,
-        // canActivateChild: [loginGuard],
-        // canActivate: [admiGuard],      
+        // canActivate: [loginGuard],  
         children: [
             {
                 path: '',
-                component: HomeComponent
+                component: HomeStudentComponent
             },
+            { path: 'mis-cursos', 
+              component: MisCursosComponent
+            },
+            { path: 'pagos',
+              component: PendingComponent
+            },
+            // { path: 'configuracion', 
+            //   component:  
+            // }
         ]
     },
     {
         path: 'profesor',
         component: TeacherProfileComponent,
-        canActivate: [teacherGuard]
+        canActivate: [loginGuard]
+    },
+    {
+        path: 'noticias',
+        component: NewsListComponent
+    },
+    {
+        path: 'noticias/:id',
+        component: NewsDetailComponent
     },
     {
         path: '',

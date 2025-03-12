@@ -27,7 +27,7 @@ export class CardComponent {
   @Input() endDate: string = '';
   @Input() showFavoriteIcon: boolean = true;
   @Input() showDetails: boolean = false;
-
+  @Input() showActions: boolean = true;
   @Output() actionClick = new EventEmitter<void>();
 
   onActionClick() {

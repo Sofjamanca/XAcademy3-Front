@@ -8,7 +8,7 @@ import { LocalStorageService } from '../localstorage/local-storage.service';
 })
 export class StudentService {
   private baseUrl: string = 'http://localhost:3001/api/inscriptions';
-
+  private studentsUrl: string = 'http://localhost:3001/api/students';
 
   constructor(private http: HttpClient, private localStorageService: LocalStorageService) { }
 
@@ -17,7 +17,7 @@ export class StudentService {
   }
 
   getInscriptionsByCourse(courseId: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/course/${courseId}`);
+    return this.http.get(`${this.baseUrl}/courses/${courseId}`);
   }
 
   getInscriptionsByStudent(): Observable<any> {
@@ -41,5 +41,23 @@ export class StudentService {
     return data ? JSON.parse(data) : null;
   }
   
+  getStudentByUserId(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/student/${userId}`);
+  }
+
+  getStudentById(studentId: number): Observable<any> {
+    return this.http.get<any>(`${this.studentsUrl}/view/${studentId}`);
+  }
+
+  updateStudentGrade(data: {
+    student_id: number;
+    course_id: number;
+    qualification: number;
+    studentCondition: string;
+    comments?: string;
+  }): Observable<any> {
+    // Esta URL deberá actualizarse cuando el endpoint esté disponible en el backend
+    return this.http.post<any>(`${this.baseUrl}/update-grade`, data);
+  }
 
 }

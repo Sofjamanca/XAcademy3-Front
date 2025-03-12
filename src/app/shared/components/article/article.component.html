@@ -1,0 +1,38 @@
+<div class="article-card" (click)="goToArticle(article.id || 0)">
+  <mat-card>
+    <div class="article-image-container" *ngIf="getImageUrl()">
+      <img [src]="getImageUrl()" alt="{{article.title}}" class="article-image">
+    </div>
+    
+    <mat-card-content>
+      <div class="article-meta">
+        <span class="article-date">
+          <mat-icon>calendar_today</mat-icon>
+          {{ getFormattedDate(article.createdAt) }}
+        </span>
+        <span *ngIf="article.author" class="article-author">
+          <mat-icon>person</mat-icon>
+          {{ article.author.name }} {{ article.author.lastname }}
+        </span>
+      </div>
+      
+      <h2 class="article-title">{{ article.title }}</h2>
+      
+      <p class="article-description" *ngIf="article.description">
+        {{ showFullContent ? article.description : getContentPreview(article.description) }}
+      </p>
+      
+      <div class="article-content" *ngIf="showFullContent && article.content">
+        <h3>Contenido completo</h3>
+        <p>{{ article.content }}</p>
+      </div>
+    </mat-card-content>
+    
+    <mat-card-actions *ngIf="!showFullContent">
+      <button mat-button color="primary" (click)="$event.stopPropagation(); goToArticle(article.id || 0)">
+        LEER MÁS
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

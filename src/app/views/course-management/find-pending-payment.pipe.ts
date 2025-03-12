@@ -16,19 +16,19 @@ export class FindPendingPaymentPipe implements PipeTransform {
       return null;
     }
 
-    // Primero buscar pagos pendientes
+    // primero busca pagos pendientes
     const pendingPayment = payments.find(p => p.status === 'pending');
     if (pendingPayment) {
       return pendingPayment;
     }
 
-    // Si no hay pendientes, buscar vencidos
+    // si no hay pendientes, buscar vencidos
     const overduePayment = payments.find(p => p.status === 'overdue');
     if (overduePayment) {
       return overduePayment;
     }
 
-    // Si no hay ni pendientes ni vencidos, mostrar el último pago
+    // si no hay ni pendientes ni vencidos, mostrar el último pago
     return payments[payments.length - 1];
   }
 } 

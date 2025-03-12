@@ -1,0 +1,107 @@
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+  }
+  
+  
+  mat-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  
+  mat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  
+  mat-card-header {
+    background-color: #3f51b5;
+    color: #fff;
+    font-size: 1.25rem;
+    padding: 16px;
+    border-bottom: 2px solid #e0e0e0;
+  }
+  
+  
+  mat-card-content {
+    padding: 16px;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  
+  mat-progress-bar {
+    margin-top: 10px;
+    background-color: #e0e0e0;
+  }
+  
+  mat-progress-bar.mat-primary {
+    background-color: #4caf50;
+  }
+  
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  ul li {
+    background-color: #e3f2fd;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #1e88e5;
+  }
+  
+  ul li:hover {
+    background-color: #bbdefb;
+    cursor: pointer;
+  }
+  
+  
+  button {
+    margin-top: 10px;
+    background-color: #4caf50;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 10px 16px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+  }
+  
+  button:hover {
+    background-color: #388e3c;
+  }
+  
+  
+  button:focus, button:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  
+  mat-card h3 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #3f51b5;
+  }
+  
+  mat-card mat-chip {
+    background-color: #4caf50;
+    color: white;
+    font-size: 1rem;
+  }

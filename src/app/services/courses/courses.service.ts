@@ -60,12 +60,9 @@ export class CoursesService {
     return this.http.get<Course[]>(`${this.apiUrl}teacher/${teacherId}`);
   }
 
-  // disableCourse(id: number): Observable<string> {
-  // }
-
-
-  // enableCourse(id: number): Observable<string> {
-  // }
+   enableDisableCourse(id: number, active: boolean): Observable<string> {
+    return this.http.put<string>(`${this.apiUrl}active/${id}`, { active });
+   }
 
   getFilteredCourses(categories: number[], price: string, orderBy: string): Observable<Course[]> {
     let params = new HttpParams();
