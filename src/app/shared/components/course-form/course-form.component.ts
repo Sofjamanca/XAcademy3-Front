@@ -31,7 +31,8 @@ import { LoaderComponent } from '../loader/loader.component';
 })
 export class CourseFormComponent implements OnInit, OnChanges {
   @Input() inputs: any[] = [];
-  @Input() tipo: 'crear' |'inscribir'| 'editar' = 'crear';
+  @Input() tipo: 'crear' | 'editar' | 'inscribir' = 'crear';
+
   @Input() curso!: Course;
   @Input() profesores: Teacher[] = [];
   @Input() categorias: any[] = [];
@@ -43,7 +44,10 @@ export class CourseFormComponent implements OnInit, OnChanges {
   cursoForm!: FormGroup;
   imageFile: File | null = null;
   imagePreview: string | null = null;
+  minFechaFin: Date | null = null;
+  minFechaInicio: Date = new Date();
   isLoading: boolean = false;
+  minDate: string = new Date().toISOString().split('T')[0];
 
   constructor(
     private fb: FormBuilder,
@@ -52,8 +56,22 @@ export class CourseFormComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.initForm();
-  }
+    this.cursoForm.get('startDate')?.valueChanges.subscribe((startDate: Date) => {
+      this.minFechaFin = startDate; 
+    });
+    }
   
+    private validarFechas(form: FormGroup) {
+      const inicio = form.get('startDate')?.value;
+      const fin = form.get('endDate')?.value;
+    
+      if (!inicio || !fin) return null; 
+    
+      const inicioDate = new Date(inicio);
+      const finDate = new Date(fin);
+    
+      return finDate < inicioDate ? { fechaInvalida: true } : null;
+    }
   
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['curso'] && this.curso && this.cursoForm) {
@@ -119,10 +137,11 @@ export class CourseFormComponent implements OnInit, OnChanges {
   onSubmit(): void {
     if (this.cursoForm.valid) {
       this.isLoading = true;
-      const formValues = { ...this.cursoForm.value };
+      const formValues = this.cursoForm.value ;
   
       // Si se subió una imagen, guardarla en la propiedad correcta
       if (this.imageFile) {
+        console.log('Subiendo imagen...', this.imageFile);
         this.uploadImage(this.imageFile)
           .then(imageUrl => {
             formValues.imageUrl = imageUrl;
@@ -171,14 +190,13 @@ export class CourseFormComponent implements OnInit, OnChanges {
     });
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files?.length) {
+      this.imageFile = input.files[0];
       const reader = new FileReader();
-      reader.onload = () => {
-        this.imagePreview = reader.result as string;
-      };
-      reader.readAsDataURL(file);
+      reader.onload = () => this.imagePreview = reader.result as string;
+      reader.readAsDataURL(this.imageFile);
     }
   }
 
@@ -186,6 +204,7 @@ export class CourseFormComponent implements OnInit, OnChanges {
     this.imageFile = null;
     this.imagePreview = null;
   }
+
 
   onCancel(): void {
     this.cancel.emit();

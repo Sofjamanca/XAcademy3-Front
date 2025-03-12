@@ -9,7 +9,7 @@ import { adminGuard } from './guards/admin.guard';
 import { loginGuard } from './guards/login.guards';
 import { InscripcionComponent } from './shared/components/inscripcion/inscripcion.component';
 import { StudentProfileComponent } from './views/student-profile/student-profile.component';
-import { EditCourseComponent } from './shared/components/edit-course/edit-course.component';
+
 
 
 export const routes: Routes = [
