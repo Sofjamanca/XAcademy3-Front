@@ -1,4 +1,68 @@
-.hero-container {
+.hero-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height:100%;
+  overflow:hidden;
+  position: relative;
+} 
+.carousel-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to bottom, rgba(255,0,0,0), rgba(2, 2, 28,1) 70%);
+  z-index: 1;
+}
+.carousel-inner {
+  height: 100%;
+  width: 100%;
+  aspect-ratio: 16 / 9; 
+  overflow: hidden;
+  position: inherit;
+  z-index: 0;
+}
+
+.carousel-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.carousel-item {
+  transition: transform 0.6s ease-in-out;
+}
+.carousel-caption{
+  position: absolute;
+  z-index: 100;
+  left: 0;
+  bottom:10%;
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content: flex-end;
+  width: 100%;
+  height:200px;
+}
+.carousel-caption > h5{
+  color:white;
+  font-size: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+}
+.custon_btn{
+  background: transparent;
+  width:100px;
+  color:var(--color_btn_primary);
+  border:1px solid var(--color_btn_primary);
+
+}
+/* .hero-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,7 +74,6 @@
   max-height: 60vh;
   position: relative;
 }
-
 .carousel-inner {
   height: 100%;
   border-radius: 8px;
@@ -51,4 +114,4 @@
   .carousel-inner img {
     max-height: 300px;
   }
-}
+} */

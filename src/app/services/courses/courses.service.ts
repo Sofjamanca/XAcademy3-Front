@@ -79,4 +79,8 @@ export class CoursesService {
     return this.http.get<Course[]>(`${this.apiUrl}filter`, { params });
   }
 
+  getLastestCourses(): Observable<Course[]> {
+    return this.http.get<Course[]>(`${this.apiUrl}lastest`);
+  }
+
 }
