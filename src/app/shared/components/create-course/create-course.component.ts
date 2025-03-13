@@ -192,11 +192,12 @@ export class CreateCourseComponent implements OnInit {
   
     if (this.tipo === 'editar') {
       // Actualizar curso existente
-      
+          
       this.coursesService.updateCourse(this.cursoId, curso).subscribe({
         next: (response) => {
           console.log('Curso actualizado exitosamente:', response);
           this.snackBar.open('Curso actualizado con éxito', 'Cerrar', { duration: 3000 });
+          this.cdr.detectChanges(); 
           this.router.navigate(['/admin/cursos']);
         },
         error: (error) => {

@@ -14,6 +14,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { LoaderComponent } from '../loader/loader.component';
+import { convertToWebP } from '../../../services/image-utils';
 
 @Component({
   selector: 'app-course-form',
@@ -40,6 +41,8 @@ export class CourseFormComponent implements OnInit, OnChanges {
   @Output() cancel = new EventEmitter<void>();
   @Input() title: string = '';
   @Output() formReady = new EventEmitter<FormGroup>();
+  @Input() imageUrl!: string;
+
   maxFechaNacimiento: string = new Date().toISOString().split('T')[0];
   cursoForm!: FormGroup;
   imageFile: File | null = null;
@@ -48,6 +51,7 @@ export class CourseFormComponent implements OnInit, OnChanges {
   minFechaInicio: Date = new Date();
   isLoading: boolean = false;
   minDate: string = new Date().toISOString().split('T')[0];
+ 
 
   constructor(
     private fb: FormBuilder,
@@ -78,7 +82,9 @@ export class CourseFormComponent implements OnInit, OnChanges {
       // Asegúrate de que el formulario esté inicializado antes de intentar aplicar patchValue
       this.cursoForm.patchValue({
         ...this.curso,
-        fechaInicio: this.curso.startDate? new Date(this.curso.startDate) : null,
+        fechaInicio: this.curso.startDate 
+        ? new Date(this.curso.startDate).toISOString().split('T')[0]
+        : null,
       });  
 
       // Si el curso tiene una imagen guardada, mostrarla
@@ -133,6 +139,10 @@ export class CourseFormComponent implements OnInit, OnChanges {
 
   
   }
+  get fullImageUrl(): string {
+    const baseURL = "https://firebasestorage.googleapis.com/v0/b/xacademy-3.firebasestorage.app/o/uploads%2Fcursos%2F";
+    return `${baseURL}${this.imageUrl}?alt=media`;
+  }
 
   onSubmit(): void {
     if (this.cursoForm.valid) {
@@ -177,18 +187,28 @@ export class CourseFormComponent implements OnInit, OnChanges {
 
 
   uploadImage(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const filePath = `uploads/cursos/${Date.now()}_${file.name}`;
-      const storageRef = ref(this.storage, filePath);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-
-      uploadTask.on('state_changed',
-        (snapshot) => console.log(`Progreso: ${(snapshot.bytesTransferred / snapshot.totalBytes) * 100}%`),
-        reject,
-        () => getDownloadURL(uploadTask.snapshot.ref).then(resolve).catch(reject)
-      );
+    return new Promise(async (resolve, reject) => {
+      try {
+        // 🔥 Convertir la imagen a WebP antes de subirla
+        const webpFile = await convertToWebP(file);
+  
+        // Ruta en Firebase Storage
+        const filePath = `uploads/cursos/${webpFile.name}`;
+        const storageRef = ref(this.storage, filePath);
+        const uploadTask = uploadBytesResumable(storageRef, webpFile);
+  
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => console.log(`Progreso: ${(snapshot.bytesTransferred / snapshot.totalBytes) * 100}%`),
+          reject,
+          () => getDownloadURL(uploadTask.snapshot.ref).then(resolve).catch(reject)
+        );
+      } catch (error) {
+        reject(error);
+      }
     });
   }
+  
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -203,6 +223,10 @@ export class CourseFormComponent implements OnInit, OnChanges {
   removeImage() {
     this.imageFile = null;
     this.imagePreview = null;
+    // Opcional: Si la imagen ya estaba guardada en la base de datos, también puedes limpiar el campo
+    if (this.cursoForm) {
+      this.cursoForm.patchValue({ image_url: null });
+    }
   }
 
 
