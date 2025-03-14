@@ -75,7 +75,7 @@ export const routes: Routes = [
             (m) => m.CourseComponent
           ),
     },
-    {   path: 'inscribir/:id', 
+    {   path: 'inscribir/:id',
         component: InscripcionComponent,
         canActivate: [loginGuard]
     },
@@ -108,22 +108,29 @@ export const routes: Routes = [
         ]
     },
     {
-        path: 'perfil',
-        component: StudentProfileComponent,
-        // canActivate: [loginGuard],  
-        children: [
-            {
-                path: '',
-                component: MisCursosComponent
-            },
-            { path: 'mis-cursos', 
-              component: MisCursosComponent
-            },
-            { path: 'pagos',
-              component: PendingComponent
-            }
-        ]
-    },
+      path: 'perfil',
+      loadComponent: () =>
+        import('./views/student-profile/student-profile.component').then(
+          (m) => m.StudentProfileComponent
+        ),
+      // canActivateChild: [loginGuard],
+      children: [
+        {
+          path: '',
+          component: MisCursosComponent
+        },
+        { path: 'mis-cursos', 
+          component: MisCursosComponent
+        },
+        { path: 'pagos',
+          component: PendingComponent
+        },
+        {
+          path: 'editar',
+          loadComponent: () => import('./shared/components/edit-profile/edit-profile.component')
+            .then(m => m.EditProfileComponent)
+        },
+      ]},
     {
         path: '',
         redirectTo: '/home',

@@ -9,7 +9,6 @@ import { LocalStorageService } from '../localstorage/local-storage.service';
 export class StudentService {
   private baseUrl: string = 'http://localhost:3001/api/inscriptions';
 
-
   constructor(private http: HttpClient, private localStorageService: LocalStorageService) { }
 
   getAllInscriptions(): Observable<any> {
@@ -33,14 +32,14 @@ export class StudentService {
   }
 
   updateStudentData(studentData: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/update`, studentData); 
+    return this.http.put(`${this.baseUrl}/update`, studentData);
   }
 
   getStudentData(): any {
     const data = this.localStorageService.getItem('studentData');
     return data ? JSON.parse(data) : null;
   }
-  
+
   getStudentByUserId(userId: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/student/${userId}`);
   }
