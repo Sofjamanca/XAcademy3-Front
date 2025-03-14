@@ -17,7 +17,7 @@ export class StudentService {
   }
 
   getInscriptionsByCourse(courseId: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/course/${courseId}`);
+    return this.http.get(`${this.baseUrl}/courses/${courseId}`);
   }
 
   getInscriptionsByStudent(): Observable<any> {

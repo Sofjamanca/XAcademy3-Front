@@ -56,15 +56,6 @@ export class WeComponent {
       image: 'assets/images/we/compromiso.png'
     }
   ];
-
-  values = [
-    { icon: 'assets/images/we/Innovadores.png', title: 'Innovadores', content: 'Somos curiosos, nos gustan los desafíos y siempre estamos buscando cómo mejorar nuestro trabajo.' },
-    { icon: 'assets/images/we/Proactivos.png', title: 'Proactivos', content: 'Buscamos que las cosas sucedan en vez de quedarnos esperando.' },
-    { icon: 'assets/images/we/Equipo.png', title: 'Unidos como equipo', content: 'Somos parte de un equipo que logra resultados increíbles trabajando entre todos.' },
-    { icon: 'assets/images/we/Apasionados.png', title: 'Apasionados', content: 'Disfrutamos nuestro día a día y amamos lo que hacemos.' },
-    { icon: 'assets/images/we/Globales.png', title: 'Globales', content: 'Perseguimos un pensamiento más allá de nuestras comunidades.' },
-    { icon: 'assets/images/we/Perseverantes.png', title: 'Perseverantes', content: 'No nos conformamos con un "no se puede", buscamos que las cosas pasen.' }
-  ];
   
 }
 

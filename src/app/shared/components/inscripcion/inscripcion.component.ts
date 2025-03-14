@@ -47,7 +47,6 @@ export class InscripcionComponent implements OnInit {
     this.apiService.getMe().subscribe(
       data => {
         this.studentData = data;
-        console.log(data);
         if (courseId && this.studentData) {
           this.checkEnrollmentStatus(courseId);
         } else {
