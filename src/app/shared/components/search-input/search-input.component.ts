@@ -16,7 +16,7 @@ import { CoursesService } from '../../../services/courses/courses.service';
 })
 export class SearchInputComponent implements OnInit {
   @Output() searchEvent = new EventEmitter<string>();
-  
+
   searchQuery: string = '';
 
   constructor(
@@ -30,7 +30,7 @@ export class SearchInputComponent implements OnInit {
     this.route.queryParamMap.subscribe(params => {
       const search = params.get('search');
       if (search) {
-        console.log('Parámetro de búsqueda encontrado en URL:', search);
+        // console.log('Parámetro de búsqueda encontrado en URL:', search);
         this.searchQuery = search;
       }
     });
@@ -38,21 +38,21 @@ export class SearchInputComponent implements OnInit {
 
   search() {
     if (this.searchQuery.trim()) {
-      console.log('Realizando búsqueda con término:', this.searchQuery.trim());
-      
+      // console.log('Realizando búsqueda con término:', this.searchQuery.trim());
+
       // Navegar a la página de cursos con el parámetro de búsqueda
       // y preservar otros parámetros que puedan existir
-      this.router.navigate(['/courses'], { 
+      this.router.navigate(['/courses'], {
         queryParams: { search: this.searchQuery.trim() },
         queryParamsHandling: 'merge' // Fusionar con otros parámetros existentes
       });
-      
+
       // Emitir el evento de búsqueda para componentes padres que puedan necesitarlo
       this.searchEvent.emit(this.searchQuery.trim());
     } else {
       // Si la búsqueda está vacía y estamos en la página de cursos, eliminar el parámetro de búsqueda
       if (this.router.url.includes('/courses')) {
-        this.router.navigate(['/courses'], { 
+        this.router.navigate(['/courses'], {
           queryParams: { search: null },
           queryParamsHandling: 'merge'
         });

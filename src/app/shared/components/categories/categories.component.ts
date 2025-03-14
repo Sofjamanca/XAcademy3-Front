@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { MaterialModule } from '../../../material/material.module';
 import { CoursesService } from '../../../services/courses/courses.service';
 import { MatSelectionListChange } from '@angular/material/list';
@@ -13,6 +13,7 @@ import { MatSelectionListChange } from '@angular/material/list';
   styleUrl: './categories.component.css'
 })
 export class CategoriesComponent {
+  @Input() selectedCategories: number[] = [];
   @Output() categorySelected = new EventEmitter<{ categoryId: number; selected: boolean }>();
   categories: { id: number; title: string }[] = [];
 
@@ -29,10 +30,25 @@ export class CategoriesComponent {
 
   onCategoryChange(event: MatSelectionListChange) {
     event.options.forEach(option => {
+      const categoryId = option.value;
+      const selected = option.selected;
+
       this.categorySelected.emit({
-        categoryId: option.value,
-        selected: option.selected
+        categoryId,
+        selected
       });
+
+      if (selected) {
+        if (!this.selectedCategories.includes(categoryId)) {
+          this.selectedCategories = [...this.selectedCategories, categoryId];
+        }
+      } else {
+        this.selectedCategories = this.selectedCategories.filter(id => id !== categoryId);
+      }
     });
+  }
+
+  isSelected(categoryId: number): boolean {
+    return this.selectedCategories.includes(categoryId);
   }
 }

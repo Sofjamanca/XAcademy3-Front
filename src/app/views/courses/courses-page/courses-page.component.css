@@ -32,16 +32,20 @@ h2 {
     "pagination pagination pagination";
   grid-template-columns: 1fr 0.5fr 3fr;
   grid-template-rows: auto;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin-top: 2em;
+  margin-bottom: 2em;
 }
 
 .filter {
   display: flex;
-  align-items: center;
+  align-items: start;
   gap: 2em;
   grid-area: filter;
   margin-bottom: 30px;
+}
+
+.filter.show-filters {
+  display: flex;
 }
 
 .categories {
@@ -60,6 +64,7 @@ h2 {
 .pagination {
   grid-area: pagination;
   justify-content: end;
+  margin-bottom: 2em;
 }
 
 .no-results {
@@ -80,3 +85,100 @@ h2 {
   color: #666;
 }
 
+@media (min-width: 769px) {
+  .filters-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+
+  mat-divider {
+    margin-bottom: 1em;
+  }
+
+  shared-filter{
+    margin-left: 2em;
+  }
+
+  h2 {
+    margin-left: 1em;
+  }
+
+  .categories {
+    display: none;
+  }
+
+  .filter {
+    display: none;
+  }
+
+  .filter.show-filters {
+    display: flex;
+  }
+
+  h5 {
+    display: none;
+  }
+
+  .content {
+    display: grid;
+    grid-template-areas:
+      "filter"
+      "courses"
+      "pagination";
+    grid-template-columns: 1fr;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .courses {
+    justify-content: center;
+    gap: 20px;
+    margin: 0;
+  }
+
+  .pagination {
+    grid-area: pagination;
+    justify-content: center;
+    margin-bottom: 1em;
+  }
+
+}
+
+::ng-deep .scrollable-modal .mat-dialog-container {
+  padding: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 90vh;
+}
+
+::ng-deep .scrollable-modal .mat-dialog-content {
+  overflow-y: auto;
+  padding: 20px;
+  margin: 0;
+}
+
+::ng-deep .scrollable-modal .modal-actions {
+  padding: 16px;
+  background: white;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.blur-background {
+  filter: blur(4px);
+  transition: filter 0.3s ease;
+  pointer-events: none;
+}
+
+::ng-deep .filter-modal-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+::ng-deep .filter-modal {
+  background: white;
+  border-radius: 8px;
+}
