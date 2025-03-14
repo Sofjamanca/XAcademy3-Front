@@ -29,12 +29,12 @@ export class HeroComponent implements OnInit{
       });
   }
 
-  goToCourseDetail(courseId: number){
-    this.router.navigate(['/courses', courseId]);
+  goToCourseDetail(courseId: number, event?: Event) {
+    if (event) {
+      event.stopPropagation(); // Evita que el clic en el botón active el clic en la imagen
+    }
+    this.router.navigate(['/course', courseId]);
   }
 
-  banner1: string = "assets/images/banner-1.png";
-  banner2: string = "assets/images/banner-2.png";
-  banner3: string = "assets/images/banner-3.png";
 
 }

@@ -15,7 +15,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(to bottom, rgba(255,0,0,0), rgba(2, 2, 28,1) 70%);
+  background-image: linear-gradient(to bottom, rgba(245, 104, 13, .2), rgba(0, 59, 117,.9) 70%);
   z-index: 1;
 }
 .carousel-inner {
@@ -30,88 +30,53 @@
 .carousel-inner img {
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
   object-fit: cover;
   transition: opacity 0.8s ease-in-out;
 }
 
 .carousel-item {
+  
   transition: transform 0.6s ease-in-out;
 }
 .carousel-caption{
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 100;
-  left: 0;
-  bottom:10%;
   display: flex;
   flex-direction: column;
-  align-items:center;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  height:200px;
+  text-align: center;
+  color: white;
 }
-.carousel-caption > h5{
+.carousel-caption > h1{
   color:white;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   text-align: center;
   font-weight: bold;
 }
 .custon_btn{
   background: transparent;
   width:100px;
-  color:var(--color_btn_primary);
-  border:1px solid var(--color_btn_primary);
+  color:white;
+  border:1px solid white;
 
 }
-/* .hero-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 1200px;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  margin: 0 auto;
-  max-height: 60vh;
-  position: relative;
-}
-.carousel-inner {
-  height: 100%;
-  border-radius: 8px;
-  overflow: hidden;
-}
 
-.carousel-inner img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: opacity 0.8s ease-in-out;
-}
 
-.carousel-item {
-  transition: transform 0.6s ease-in-out;
-}
-
-@media (max-width: 1024px) {
-  .hero-container {
-    aspect-ratio: 4 / 3;
-    max-height: 50vh;
+@media (min-width: 1024px) {
+  .hero-container{
+    height:60%;
+  }
+  .carousel-caption{
+    bottom: 40%;
+  }
+  .carousel-caption > h1{
+    font-size: 2.5rem;
   }
 }
-
-@media (max-width: 768px) {
-  .hero-container {
-    aspect-ratio: 1 / 1;
-    max-height: 40vh;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero-container {
-    aspect-ratio: 3 / 4;
-    max-height: 35vh;
-  }
-
-  .carousel-inner img {
-    max-height: 300px;
-  }
-} */
