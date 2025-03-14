@@ -23,6 +23,7 @@ import { EditArticleComponent } from './views/admin/news/edit-article/edit-artic
 import { NewsListComponent } from './views/news/news-list/news-list.component';
 import { NewsDetailComponent } from './views/news/news-detail/news-detail.component';
 import { PaymentDashboardComponent } from './views/admin/payments/payment-dashboard.component';
+import { teacherGuard } from './guards/teacher.guard';
 
 export const routes: Routes = [
     {
@@ -79,7 +80,7 @@ export const routes: Routes = [
     {
         path: 'course-management/:id',
         component: CourseManagementComponent,
-        canActivate: [loginGuard]
+        canActivate: [teacherGuard]
     },
     {
         path: 'admin',
@@ -168,7 +169,7 @@ export const routes: Routes = [
     {
         path: 'profesor',
         component: TeacherProfileComponent,
-        canActivate: [loginGuard]
+        canActivate: [teacherGuard]
     },
     {
         path: 'noticias',
