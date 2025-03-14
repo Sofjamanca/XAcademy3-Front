@@ -69,6 +69,9 @@ export class HeaderComponent implements OnInit {
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
   }
+  closeMenu():void{
+    this.menuOpen = false;
+  }
   openLogin() {
     this.modalService.openModal(LoginComponent, { title: 'Explora, Aprende, Crece' });
   }

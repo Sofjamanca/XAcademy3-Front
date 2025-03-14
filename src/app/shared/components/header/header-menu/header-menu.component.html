@@ -1,6 +1,6 @@
 <nav class="menu">
   <ul class="nav-menu" *ngIf="menuItems">
-    <li *ngFor="let menuItem of menuItems">
+    <li *ngFor="let menuItem of menuItems" (click)="itemClicked()">
       <button mat-button 
       class="nav-btn" 
       [routerLink]="menuItem.route"

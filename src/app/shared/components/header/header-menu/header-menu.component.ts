@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MenuItem } from '../../../../core/models/menu-item.model';
 import { MaterialModule } from '../../../../material/material.module';
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -18,6 +18,11 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class HeaderMenuComponent {
   @Input() menuItems?: MenuItem[];
+  @Output() itemClick = new EventEmitter<void>();
+
+  itemClicked(): void {
+    this.itemClick.emit();
+  }
 
   activeMenuItem: string = '';
 

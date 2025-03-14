@@ -3,6 +3,7 @@
   background: #f9f9f9; 
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 10px 0; 
   height: 76px;
 }
@@ -11,7 +12,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 80%; 
+  max-width: 100%; 
   width: 100%;
   padding: 10px 0;
 }
@@ -78,7 +79,7 @@
   .menu-container {
     display: none; /* Inicialmente oculta el menú */
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-content: center;
     background-color: rgb(255, 255, 255); 
     position: absolute;
@@ -86,10 +87,19 @@
     right: 0;
     z-index: 1000;
     padding: 2rem 0;
-    width: 60%;
+    width: 50%;
     transition: .4s;
     z-index: 1000;
+    height:100%;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
   }
+  .menu-container.active {
+    transform: translateX(0);
+  }
+
   .overlay {
     position: fixed; 
     top: 76px;
@@ -102,7 +112,7 @@
 }
 
 .overlay.active {
-    display: block; /* Muestra el overlay cuando el menú está abierto */
+    display: block; 
 }
   .user-menu{
     display: flex;
@@ -175,13 +185,21 @@
 }
 
 @media (min-width: 768px) {
+  .logo-container {
+    margin-left:1rem;
+  }
   .menu-container {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
-    width: 900px;
+    width: 800px;
     height: 100%;
+  }
+  .toolbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
   .option_user{
     display: flex;
@@ -196,5 +214,8 @@
   .menu-toggle {
     display: none; /* Oculta el menú hamburguesa en pantallas grandes */
   }
+  .search-bar input{
+    width:60%;
+  } 
 }
 
