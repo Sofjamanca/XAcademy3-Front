@@ -35,7 +35,7 @@ export class LandingPageComponent {
 
   ngOnInit() {
     this.coursesSvc.getCourses().subscribe(courses => {
-      this.courses = courses;
+      this.courses = courses.filter(course => course.isActive === true);
     });
 
     this.newsService.getNews().subscribe(articles => {
