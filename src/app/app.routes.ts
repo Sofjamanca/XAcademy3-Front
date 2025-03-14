@@ -58,7 +58,7 @@ export const routes: Routes = [
             (m) => m.CourseComponent
           ),
     },
-    {   path: 'inscribir/:id', 
+    {   path: 'inscribir/:id',
         component: InscripcionComponent,
         canActivate: [loginGuard]
     },
@@ -92,14 +92,23 @@ export const routes: Routes = [
     },
     {
         path: 'perfil',
-        component: StudentProfileComponent,
+        loadComponent: () =>
+          import('./views/student-profile/student-profile.component').then(
+            (m) => m.StudentProfileComponent
+          ),
         // canActivateChild: [loginGuard],
-        // canActivate: [admiGuard],      
+        // canActivate: [admiGuard],
         children: [
-            {
-                path: '',
-                component: HomeComponent
-            },
+          {
+            path: 'editar',
+            loadComponent: () => import('./shared/components/edit-profile/edit-profile.component')
+              .then(m => m.EditProfileComponent)
+          },
+          {
+            path: '',
+            component: HomeComponent,
+            pathMatch: 'full'
+          }
         ]
     },
     {
