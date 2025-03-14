@@ -118,6 +118,11 @@ export const routes: Routes = [
                 canActivate: [loginGuard]
             },
             {
+                path: 'profesores/editar/:id',
+                component: CreateTeacherComponent,
+                canActivate: [loginGuard]
+            },
+            {
                 path: 'profesores/new',
                 component: CreateTeacherComponent,
                 canActivate: [loginGuard]

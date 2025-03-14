@@ -1,448 +1,100 @@
-<div class="course-management-container">
+<div class="course-management-container" *ngIf="!loading; else loadingTemplate">
+  <div *ngIf="error" class="error-message">
+    <mat-icon>error</mat-icon>
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="!error && course" class="course-info">
   <div class="course-header">
-    <button mat-icon-button (click)="goBack()" class="back-button">
+        <button mat-icon-button color="primary" (click)="goBack()" aria-label="Volver">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <div *ngIf="course" class="course-title">
       <h2>{{ course.title }}</h2>
-      <span class="course-category" *ngIf="course.categoryTitle">Categoría: {{ course.categoryTitle }}</span>
     </div>
-  </div>
 
-  <div *ngIf="loading" class="loading-container">
-    <mat-spinner></mat-spinner>
-    <p>Cargando información del curso...</p>
-  </div>
 
-  <div *ngIf="error && !loading" class="error-container">
-    <mat-icon color="warn">error</mat-icon>
-    <p>{{ error }}</p>
-    <button mat-raised-button color="primary" (click)="goBack()">Volver</button>
-  </div>
-
-  <div *ngIf="course && !loading" class="course-content">
-    <mat-tab-group [(selectedIndex)]="selectedTabIndex" animationDuration="0ms">
-      <mat-tab label="Información">
+    <!-- Tabs para organizar la información -->
+    <mat-tab-group [(selectedIndex)]="selectedTabIndex" animationDuration="300ms">
+      <!-- Tab de estudiantes -->
+      <mat-tab label="Estudiantes">
         <div class="tab-content">
-          <mat-card>
-            <mat-card-header>
-              <mat-card-title>Detalles del Curso</mat-card-title>
-              <div class="spacer"></div>
-              <button mat-icon-button color="primary" (click)="editCourseInfo()">
-                <mat-icon>edit</mat-icon>
-              </button>
-            </mat-card-header>
-            <mat-card-content>
-              <div class="course-details">
-                <div class="detail-row">
-                  <strong>Título:</strong>
-                  <span>{{ course.title }}</span>
-                </div>
-                <div class="detail-row">
-                  <strong>Descripción:</strong>
-                  <span>{{ course.description }}</span>
-                </div>
-                <div class="detail-row">
-                  <strong>Precio:</strong>
-                  <span>{{ course.price | currency }}</span>
-                </div>
-                <div class="detail-row">
-                  <strong>Cupos:</strong>
-                  <span>{{ course.quota }}</span>
-                </div>
-                <div class="detail-row">
-                  <strong>Modalidad:</strong>
-                  <span>{{ course.modalidad || 'No especificada' }}</span>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
+          <h2>Estudiantes inscritos</h2>
+          
+          <div *ngIf="loadingStudents" class="loading-spinner">
+            <mat-spinner diameter="40"></mat-spinner>
+            <p>Cargando estudiantes...</p>
+  </div>
+
+          <div *ngIf="!loadingStudents && students.length === 0" class="no-data-message">
+            <mat-icon>people_outline</mat-icon>
+            <p>No hay estudiantes inscritos en este curso</p>
+  </div>
+
+          <!-- Componente modularizado de estudiantes con apariencia original -->
+          <app-student-management 
+            [courseId]="courseId" 
+            [students]="students"
+            [loadingStudents]="loadingStudents">
+          </app-student-management>
         </div>
       </mat-tab>
 
-      <mat-tab label="Alumnos">
-        <div class="tab-content">
-          <div class="tab-header">
-            <h3>Alumnos inscritos</h3>
-            <div class="spacer"></div>
-            <button mat-raised-button color="primary">
-              <mat-icon>person_add</mat-icon> Añadir Alumno
-            </button>
-          </div>
-
-          <div *ngIf="loadingStudents" class="loading-container-small">
-            <mat-spinner diameter="30"></mat-spinner>
-            <p>Cargando alumnos...</p>
-          </div>
-
-          <mat-card *ngIf="!loadingStudents && students.length === 0" class="empty-state">
-            <mat-card-content>
-              <mat-icon>people</mat-icon>
-              <p>No hay alumnos inscritos en este curso</p>
-            </mat-card-content>
-          </mat-card>
-
-          <mat-card *ngIf="!loadingStudents && students.length > 0">
-            <mat-card-content>
-              <table mat-table [dataSource]="students" class="mat-elevation-z0 student-table">
-                <ng-container matColumnDef="name">
-                  <th mat-header-cell *matHeaderCellDef>Nombre</th>
-                  <td mat-cell *matCellDef="let student">
-                    {{ student.name }}
-                    <div class="student-condition">
-                      <span class="status-badge" [ngClass]="{
-                        'status-active': student.studentCondition === 'EN_CURSO',
-                        'status-completed': student.studentCondition === 'APROBADO',
-                        'status-suspended': student.studentCondition === 'SUSPENDIDO'
-                      }">
-                        {{ student.studentCondition === 'EN_CURSO' ? 'En curso' : 
-                           student.studentCondition === 'APROBADO' ? 'Aprobado' : 
-                           student.studentCondition === 'SUSPENDIDO' ? 'Suspendido' : 'No definido' }}
-                      </span>
-                    </div>
-                  </td>
-                </ng-container>
-
-                <ng-container matColumnDef="email">
-                  <th mat-header-cell *matHeaderCellDef>Email</th>
-                  <td mat-cell *matCellDef="let student">
-                    {{ student.email }}
-                    <div class="payment-status">
-                      <span class="status-badge" [ngClass]="{
-                        'status-paid': student.payment_status === 'PAGADO',
-                        'status-pending': student.payment_status === 'PENDIENTE',
-                        'status-overdue': student.payment_status === 'VENCIDO'
-                      }">
-                        {{ student.payment_status === 'PAGADO' ? 'Pagado' : 
-                           student.payment_status === 'PENDIENTE' ? 'Pendiente' : 
-                           student.payment_status === 'VENCIDO' ? 'Vencido' : 'No definido' }}
-                      </span>
-                    </div>
-                  </td>
-                </ng-container>
-
-                <ng-container matColumnDef="qualification">
-                  <th mat-header-cell *matHeaderCellDef>Calificación</th>
-                  <td mat-cell *matCellDef="let student">
-                    <div class="qualification-container">
-                      <span *ngIf="student.qualification !== null && student.qualification !== undefined" 
-                            class="qualification-value">
-                        {{ student.qualification }}
-                      </span>
-                      <span *ngIf="student.qualification === null || student.qualification === undefined" 
-                            class="no-qualification">
-                        Sin calificar
-                      </span>
-                    </div>
-                  </td>
-                </ng-container>
-
-                <ng-container matColumnDef="actions">
-                  <th mat-header-cell *matHeaderCellDef>Acciones</th>
-                  <td mat-cell *matCellDef="let student">
-                    <button mat-icon-button color="primary" matTooltip="Ver perfil">
-                      <mat-icon>visibility</mat-icon>
-                    </button>
-                    <button mat-icon-button color="primary" (click)="gradeStudent(student)" matTooltip="Calificar alumno">
-                      <mat-icon>edit</mat-icon>
-                    </button>
-                    <button mat-icon-button color="warn" matTooltip="Eliminar alumno">
-                      <mat-icon>delete</mat-icon>
-                    </button>
-                  </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="['name', 'email', 'qualification', 'actions']"></tr>
-                <tr mat-row *matRowDef="let row; columns: ['name', 'email', 'qualification', 'actions'];"></tr>
-              </table>
-            </mat-card-content>
-          </mat-card>
-        </div>
-      </mat-tab>
-
-      <mat-tab label="Asistencias">
-        <div class="tab-content">
-          <div class="tab-header">
-            <h3>Registro de Asistencias</h3>
-            <div class="spacer"></div>
-            <button mat-raised-button color="primary" (click)="createNewClass()">
-              <mat-icon>add</mat-icon> Nueva Clase
-            </button>
-          </div>
-
-          <div *ngIf="loadingClasses" class="loading-container-small">
-            <mat-spinner diameter="30"></mat-spinner>
-            <p>Cargando clases...</p>
-          </div>
-
-          <mat-card *ngIf="!loadingClasses && classes.length === 0" class="empty-state">
-            <mat-card-content>
-              <mat-icon>school</mat-icon>
-              <p>No hay clases registradas para este curso</p>
-              <button mat-raised-button color="primary" (click)="createNewClass()">
-                Crear Primera Clase
-              </button>
-            </mat-card-content>
-          </mat-card>
-
-          <!-- Vista de clases con acordeón -->
-          <div *ngIf="!loadingClasses && classes.length > 0" class="classes-accordion-container">
-            <!-- Buscador de clases -->
-            <div class="class-search">
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Buscar clases</mat-label>
-                <input matInput [(ngModel)]="classFilterText" placeholder="Tema o fecha">
-                <button *ngIf="classFilterText" matSuffix mat-icon-button aria-label="Limpiar" (click)="classFilterText=''">
-                  <mat-icon>close</mat-icon>
-                </button>
-              </mat-form-field>
-            </div>
-
-            <!-- Acordeón de clases -->
-            <mat-accordion class="classes-accordion">
-              <mat-expansion-panel 
-                *ngFor="let class of filteredClasses" 
-                [expanded]="expandedClassId === class.id"
-                (opened)="expandedClassId = class.id">
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    <div class="class-header">
-                      <div class="class-date">
-                        {{ getClassDate(class) }}
-                      </div>
-                      <div class="class-title">{{ class.topic || 'Sin título' }}</div>
-                    </div>
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-
-                <!-- Contenido del panel (Tabla de asistencias) -->
-                <div class="attendance-content">
-                  <mat-card *ngIf="students.length === 0" class="empty-state">
-                    <mat-card-content>
-                      <mat-icon>how_to_reg</mat-icon>
-                      <p>No hay alumnos para registrar asistencia</p>
-                    </mat-card-content>
-                  </mat-card>
-
-                  <div *ngIf="students.length > 0">
-                    <!-- Botón de guardar cambios -->
-                    <div class="save-attendance-actions">
-                      <button mat-raised-button color="primary" 
-                              [disabled]="pendingAttendanceChanges.size === 0 || savingAttendance"
-                              (click)="saveAttendanceChanges(class.id)">
-                        <mat-icon>save</mat-icon>
-                        <span>Guardar cambios</span>
-                        <span *ngIf="pendingAttendanceChanges.size > 0" class="pending-badge">
-                          {{ pendingAttendanceChanges.size }}
-                        </span>
-                      </button>
-                      <mat-spinner *ngIf="savingAttendance" diameter="24" class="save-spinner"></mat-spinner>
-                    </div>
-
-                    <table mat-table [dataSource]="students" class="mat-elevation-z0 attendance-table">
-                      <ng-container matColumnDef="name">
-                        <th mat-header-cell *matHeaderCellDef>Nombre</th>
-                        <td mat-cell *matCellDef="let student">
-                          {{ student.name }}
-                          <div class="student-condition">
-                            <span class="status-badge" [ngClass]="{
-                              'status-active': student.studentCondition === 'EN_CURSO',
-                              'status-completed': student.studentCondition === 'APROBADO',
-                              'status-suspended': student.studentCondition === 'SUSPENDIDO'
-                            }">
-                              {{ student.studentCondition === 'EN_CURSO' ? 'En curso' : 
-                                 student.studentCondition === 'APROBADO' ? 'Aprobado' : 
-                                 student.studentCondition === 'SUSPENDIDO' ? 'Suspendido' : 'No definido' }}
-                            </span>
-                          </div>
-                        </td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="email">
-                        <th mat-header-cell *matHeaderCellDef>Email</th>
-                        <td mat-cell *matCellDef="let student">
-                          {{ student.email }}
-                          <div class="payment-status">
-                            <span class="status-badge" [ngClass]="{
-                              'status-paid': student.payment_status === 'PAGADO',
-                              'status-pending': student.payment_status === 'PENDIENTE',
-                              'status-overdue': student.payment_status === 'VENCIDO'
-                            }">
-                              {{ student.payment_status === 'PAGADO' ? 'Pagado' : 
-                                 student.payment_status === 'PENDIENTE' ? 'Pendiente' : 
-                                 student.payment_status === 'VENCIDO' ? 'Vencido' : 'No definido' }}
-                            </span>
-                          </div>
-                        </td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="present">
-                        <th mat-header-cell *matHeaderCellDef>Asistencia</th>
-                        <td mat-cell *matCellDef="let student">
-                          <div class="attendance-status">
-                            <mat-slide-toggle
-                              [checked]="getAttendanceStatus(student, currentDate)" 
-                              (change)="toggleAttendance(student, class.id)"
-                              [disabled]="!class.id || savingAttendance"
-                              color="primary"
-                              class="attendance-toggle-transition"
-                              [ngClass]="{'checked': getAttendanceStatus(student, currentDate)}">
-                              <span class="attendance-label" 
-                                  [class.present]="getAttendanceStatus(student, currentDate)"
-                                  [class.absent]="!getAttendanceStatus(student, currentDate)">
-                                {{ getAttendanceStatus(student, currentDate) ? 'Presente' : 'Ausente' }}
-                              </span>
-                            </mat-slide-toggle>
-                          </div>
-                        </td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="actions">
-                        <th mat-header-cell *matHeaderCellDef>Acciones</th>
-                        <td mat-cell *matCellDef="let student">
-                          <button mat-icon-button color="primary" matTooltip="Ver historial de asistencias">
-                            <mat-icon>history</mat-icon>
-                          </button>
-                        </td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="date">
-                        <th mat-header-cell *matHeaderCellDef>Fecha</th>
-                        <td mat-cell *matCellDef="let student">
-                          <div class="date-cell">
-                            <span class="date-value">{{ currentDate | date:'dd/MM/yyyy' }}</span>
-                            <span class="no-payment">Fecha actual</span>
-                          </div>
-                        </td>
-                      </ng-container>
-
-                      <tr mat-header-row *matHeaderRowDef="displayedAttendanceColumns"></tr>
-                      <tr mat-row *matRowDef="let row; columns: displayedAttendanceColumns;"></tr>
-                    </table>
-                  </div>
-                </div>
-              </mat-expansion-panel>
-
-              <!-- Mensaje cuando no hay resultados -->
-              <div *ngIf="classFilterText && filteredClasses.length === 0" class="no-results mat-elevation-z1">
-                No se encontraron clases que coincidan con "{{ classFilterText }}"
-              </div>
-            </mat-accordion>
-          </div>
-        </div>
-      </mat-tab>
-
+      <!-- Tab de pagos -->
       <mat-tab label="Pagos">
         <div class="tab-content">
-          <div class="tab-header">
-            <h3>Gestión de Pagos</h3>
-            <div class="spacer"></div>
-            <button mat-raised-button color="primary">
-              <mat-icon>history</mat-icon> Historial de Pagos
-            </button>
-          </div>
-
-          <div *ngIf="loadingStudents" class="loading-container-small">
-            <mat-spinner diameter="30"></mat-spinner>
+          <h2>Pagos del curso</h2>
+          
+          <div *ngIf="loadingStudents" class="loading-spinner">
+            <mat-spinner diameter="40"></mat-spinner>
             <p>Cargando información de pagos...</p>
           </div>
 
-          <mat-card *ngIf="!loadingStudents && students.length === 0" class="empty-state">
-            <mat-card-content>
-              <mat-icon>payments</mat-icon>
-              <p>No hay alumnos para gestionar pagos</p>
-            </mat-card-content>
-          </mat-card>
+          <div *ngIf="!loadingStudents && students.length === 0" class="no-data-message">
+            <mat-icon>payments</mat-icon>
+            <p>No hay estudiantes con pagos registrados en este curso</p>
+          </div>
 
-          <mat-card *ngIf="!loadingStudents && students.length > 0">
-            <mat-card-content>
-             
-              
-              <table mat-table [dataSource]="students" class="mat-elevation-z0 payment-table">
-                <ng-container matColumnDef="name">
-                  <th mat-header-cell *matHeaderCellDef>Alumno</th>
-                  <td mat-cell *matCellDef="let student">
-                    <div class="student-name-container">
-                      <span class="student-name">{{ student.name }}</span>
-                      <div class="student-condition">
-                        <span class="status-badge" [ngClass]="{
-                          'status-active': student.studentCondition === 'EN_CURSO',
-                          'status-completed': student.studentCondition === 'APROBADO',
-                          'status-suspended': student.studentCondition === 'SUSPENDIDO'
-                        }">
-                          {{ student.studentCondition === 'EN_CURSO' ? 'En curso' : 
-                             student.studentCondition === 'APROBADO' ? 'Aprobado' : 
-                             student.studentCondition === 'SUSPENDIDO' ? 'Suspendido' : 'No definido' }}
-                        </span>
-                      </div>
-                    </div>
-                  </td>
-                </ng-container>
+          <!-- Componente modularizado de pagos con apariencia original -->
+          <app-payment-management 
+            [course]="course" 
+            [students]="students"
+            [loadingStudents]="loadingStudents">
+          </app-payment-management>
+        </div>
+      </mat-tab>
 
-                <ng-container matColumnDef="email">
-                  <th mat-header-cell *matHeaderCellDef>Email</th>
-                  <td mat-cell *matCellDef="let student">{{ student.email }}</td>
-                </ng-container>
+      <!-- Tab de asistencias -->
+      <mat-tab label="Asistencias">
+        <div class="tab-content">
+          <div class="attendance-header">
+            <h2>Gestión de Asistencias</h2>
+            <button mat-raised-button color="primary" (click)="createNewClass()">
+              <mat-icon>add</mat-icon>
+              Nueva Clase
+            </button>
+          </div>
 
-                <ng-container matColumnDef="amount">
-                  <th mat-header-cell *matHeaderCellDef>Monto</th>
-                  <td mat-cell *matCellDef="let student">
-                    <div class="amount-cell">
-                      <span class="amount-value">{{ course.price | currency }}</span>
-                    </div>
-                  </td>
-                </ng-container>
+          <div *ngIf="loadingClasses" class="loading-spinner">
+            <mat-spinner diameter="40"></mat-spinner>
+            <p>Cargando clases...</p>
+          </div>
 
-                <ng-container matColumnDef="date">
-                  <th mat-header-cell *matHeaderCellDef>Fecha</th>
-                  <td mat-cell *matCellDef="let student">
-                    <div class="date-cell">
-                      <span class="date-value">{{ currentDate | date:'dd/MM/yyyy' }}</span>
-                      <span class="no-payment">Fecha actual</span>
-                    </div>
-                  </td>
-                </ng-container>
-
-                <ng-container matColumnDef="status">
-                  <th mat-header-cell *matHeaderCellDef>Estado</th>
-                  <td mat-cell *matCellDef="let student">
-                    <span class="status-badge" 
-                          [ngClass]="{
-                            'status-paid': student.payment_status === 'PAGADO',
-                            'status-pending': student.payment_status === 'PENDIENTE',
-                            'status-overdue': student.payment_status === 'VENCIDO'
-                          }">
-                      {{ student.payment_status === 'PAGADO' ? 'Pagado' : 
-                         student.payment_status === 'PENDIENTE' ? 'Pendiente' : 
-                         student.payment_status === 'VENCIDO' ? 'Vencido' : 'No definido' }}
-                    </span>
-                  </td>
-                </ng-container>
-
-                <ng-container matColumnDef="actions">
-                  <th mat-header-cell *matHeaderCellDef>Acciones</th>
-                  <td mat-cell *matCellDef="let student">
-                    <div class="actions-container">
-                      <button mat-icon-button color="primary" matTooltip="Ver historial de pagos">
-                        <mat-icon>history</mat-icon>
-                      </button>
-                      <button mat-icon-button color="accent" 
-                              [disabled]="student.payment_status === 'PAGADO'"
-                              (click)="registerPayment(student)" 
-                              matTooltip="Registrar pago">
-                        <mat-icon>paid</mat-icon>
-                      </button>
-                    </div>
-                  </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="displayedPaymentColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedPaymentColumns;"></tr>
-              </table>
-            </mat-card-content>
-          </mat-card>
+          <!-- Componente modularizado de asistencias -->
+          <app-attendance-management 
+            [courseId]="courseId!" 
+            [classes]="classes" 
+            [students]="students"
+            *ngIf="!loadingClasses">
+          </app-attendance-management>
         </div>
       </mat-tab>
     </mat-tab-group>
   </div>
 </div> 
+
+<ng-template #loadingTemplate>
+  <div class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Cargando información del curso...</p>
+  </div>
+</ng-template> 

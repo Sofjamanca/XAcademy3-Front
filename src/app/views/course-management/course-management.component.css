@@ -1,4 +1,131 @@
 .course-management-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.loading-container, 
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.error-message {
+  background-color: #ffebee;
+  border-radius: 5px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.error-message mat-icon {
+  color: #f44336;
+  margin-right: 10px;
+  font-size: 24px;
+  height: 24px;
+  width: 24px;
+}
+
+.course-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.course-header h2 {
+  margin: 0 0 0 10px;
+  color: #3f51b5;
+}
+
+
+
+.course-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.course-details {
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.course-details p {
+  margin: 8px 0;
+}
+
+.tab-content {
+  padding: 20px;
+}
+
+.no-data-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.no-data-message mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 10px;
+  color: #9e9e9e;
+}
+
+.payments-table {
+  width: 100%;
+}
+
+.status-paid {
+  color: #4caf50;
+  font-weight: 500;
+}
+
+.status-pending {
+  color: #ff9800;
+  font-weight: 500;
+}
+
+.attendance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.attendance-header h2 {
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .course-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .course-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  
+  .payments-table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+.course-management-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
@@ -48,10 +175,6 @@
 
 .course-content {
   margin-top: 20px;
-}
-
-.tab-content {
-  padding: 20px 0;
 }
 
 .tab-header {
@@ -132,16 +255,6 @@
 .status-suspended {
   background-color: #ffebee;
   color: #c62828;
-}
-
-.status-paid {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-}
-
-.status-pending {
-  background-color: #fff8e1;
-  color: #ff8f00;
 }
 
 .status-overdue {
@@ -226,11 +339,6 @@
   flex-direction: column;
 }
 
-.class-date {
-  font-size: 14px;
-  font-weight: 500;
-  color: #5c6bc0;
-}
 
 .class-topic {
   font-size: 16px;

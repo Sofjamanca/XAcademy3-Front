@@ -13,7 +13,7 @@ export class AssistService {
   constructor(private http: HttpClient) { }
 
   /**
-   * Obtiene todas las asistencias de un estudiante
+   * obtiene todas las asistencias de un estudiante
    */
   getAssistsByStudentId(studentId: number): Observable<Assist[]> {
     return this.http.get<any>(`${this.apiUrl}view/${studentId}`).pipe(
@@ -31,12 +31,11 @@ export class AssistService {
   }
   
   /**
-   * Obtiene todas las asistencias para una clase específica
+   * obtiene todas las asistencias para una clase específica
    */
   getAssistsByClassId(classId: number): Observable<Assist[]> {
     return this.http.get<any>(`${this.apiUrl}class/${classId}`).pipe(
       map(response => {
-        console.log('Respuesta getAssistsByClassId:', response);
         
         // Manejar diferentes formatos de respuesta del backend
         if (response && response.assists && Array.isArray(response.assists)) {

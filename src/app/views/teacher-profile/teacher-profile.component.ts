@@ -64,7 +64,6 @@ export class TeacherProfileComponent implements OnInit {
                         const payload = JSON.parse(atob(tokenParts[1]));
                         if (payload && payload.id) {
                             this.userId = payload.id;
-                            console.log('ID del usuario extraído del token:', this.userId);
                             this.loadTeacherProfile();
                             return;
                         }
@@ -90,30 +89,15 @@ export class TeacherProfileComponent implements OnInit {
             this.loading = true;
             this.teacherService.getTeacherByUserId(this.userId).subscribe({
                 next: (response: any) => {
-                    console.log('Respuesta completa del servidor:', response);
                     
                     // extraer el objeto teacher del response
                     if (response && response.teacher) {
                         this.teacher = response.teacher;
-                        console.log('Perfil de profesor extraído:', this.teacher);
-                        
-                        // logs detallados para depurar - usando operador condicional para evitar errores
-                        const hasCoursesProp = this.teacher ? this.teacher.hasOwnProperty('courses') : false;
-                        console.log('¿Tiene propiedad courses?', hasCoursesProp);
-                        
-                        const courseType = this.teacher && this.teacher.courses ? typeof this.teacher.courses : 'no existe';
-                        console.log('Tipo de la propiedad courses:', courseType);
-                        
-                        const coursesValue = this.teacher && this.teacher.courses ? JSON.stringify(this.teacher.courses, null, 2) : 'null';
-                        console.log('Valor exacto de courses:', coursesValue);
                         
                         // extraer los cursos directamente de la respuesta, no del profesor
                         if (response.courses && Array.isArray(response.courses)) {
                             this.courses = response.courses;
-                            console.log('Cursos extraídos de response.courses:', this.courses);
-                            console.log('Número de cursos:', this.courses.length);
                         } else {
-                            console.log('No hay cursos en la respuesta o no tienen el formato esperado');
                             this.courses = [];
                         }
                     } else {

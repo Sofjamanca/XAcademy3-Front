@@ -76,7 +76,6 @@ export class EditArticleComponent implements OnInit {
           const payload = JSON.parse(atob(tokenParts[1]));
           if (payload && payload.id) {
             this.userId = payload.id;
-            console.log('ID del usuario extraído del token:', this.userId);
             return;
           }
         }
@@ -96,7 +95,6 @@ export class EditArticleComponent implements OnInit {
       next: (data) => {
         if (data && data.user_id) {
           this.userId = data.user_id;
-          console.log('ID del usuario obtenido de la API:', this.userId);
         } else {
           console.error('No se pudo obtener el ID del usuario desde la API');
           this.showError('No se pudo obtener tu ID de usuario');
@@ -190,7 +188,6 @@ export class EditArticleComponent implements OnInit {
       uploadTask.on('state_changed',
         (snapshot) => {
           this.uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(`Progreso: ${this.uploadProgress}%`);
         },
         (error) => {
           console.error('Error al subir la imagen:', error);
@@ -199,7 +196,6 @@ export class EditArticleComponent implements OnInit {
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
             .then((downloadURL) => {
-              console.log('Imagen subida exitosamente:', downloadURL);
               resolve(downloadURL);
             })
             .catch((error) => {

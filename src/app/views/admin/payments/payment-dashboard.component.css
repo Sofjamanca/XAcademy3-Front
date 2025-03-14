@@ -11,6 +11,13 @@
   margin-bottom: 24px;
 }
 
+
+h2 {
+  margin-bottom: 20px;
+  color: #3f51b5;
+}
+
+
 .tab-content {
   padding-top: 24px;
 }

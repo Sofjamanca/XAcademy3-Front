@@ -49,7 +49,6 @@ export class CoursesService {
   }
 
   searchCourses(searchTerm: string): Observable<Course[]> {
-    console.log(`Buscando cursos con término: "${searchTerm}"`);
     return this.http.get<Course[]>(`${this.apiUrl}search/${searchTerm}`).pipe(
       tap(results => console.log(`Resultados de búsqueda para "${searchTerm}":`, results))
     );

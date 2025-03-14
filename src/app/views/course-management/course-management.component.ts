@@ -5,7 +5,6 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoursesService } from '../../services/courses/courses.service';
 import { Course } from '../../core/models/course.model';
-import { FindPendingPaymentPipe } from './find-pending-payment.pipe';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -23,7 +22,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { Class } from '../../core/models/class.model';
 import { ClassService } from '../../services/class/class.service';
 import { AssistService } from '../../services/assist/assist.service';
-import { FindClassPipe } from './find-class.pipe';
 import { CreateClassDialogComponent } from './create-class-dialog.component';
 import { StudentService } from '../../services/student/student.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -31,62 +29,16 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { PaymentsService } from '../../services/payments/payments.service';
 import { PaymentDialogComponent } from './payment-dialog.component';
 import { GradeDialogComponent } from './grade-dialog.component';
-import { forkJoin, Observable, of } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Assist } from '../../core/models/assist.model';
-
-interface User {
-  name: string;
-  lastname: string;
-  dni: number;
-  phone: string;
-  birthday: string;
-  address: string;
-  email: string;
-}
-
-interface StudentData {
-  id: number;
-  user_id: number;
-  course_id: number;
-  qualification: string | null;
-  studentCondition: string;
-  payment_status: string;
-  createdAt: string;
-  updatedAt: string;
-  user: User;
-}
-
-interface Inscription {
-  id: number;
-  course_id: number;
-  student_id: number;
-  regirationDate: string;
-  createdAt: string;
-  updatedAt: string;
-  student: StudentData;
-}
-
-interface Student {
-  id: number;
-  name: string;
-  email: string;
-  inscription_id?: number;
-  user_id?: number;
-  student_id?: number;
-  studentCondition?: string;
-  payment_status?: string;
-  qualification?: string | number | null;
-  attendance?: {
-    present: boolean;
-    date: string;
-  }[];
-  payments?: {
-    amount: number;
-    date: string;
-    status: 'paid' | 'pending' | 'overdue';
-  }[];
-}
+import { Student } from '../../core/models/student.model';
+import { Inscription } from '../../core/models/inscription.model';
+import { DateUtilsService } from '../../services/date-utils/date-utils.service';
+import { NotificationService } from '../../services/notification/notification.service';
+import { AttendanceManagementComponent } from './components/attendance-management/attendance-management.component';
+import { PaymentManagementComponent } from './components/payment-management/payment-management.component';
+import { StudentManagementComponent } from './components/student-management/student-management.component';
 
 @Component({
   selector: 'app-course-management',
@@ -97,8 +49,6 @@ interface Student {
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    FindPendingPaymentPipe,
-    FindClassPipe,
     MatTabsModule,
     MatButtonModule,
     MatCardModule,
@@ -113,10 +63,10 @@ interface Student {
     MatSelectModule,
     MatDialogModule,
     MatExpansionModule,
-    CreateClassDialogComponent,
     MatSlideToggleModule,
-    PaymentDialogComponent,
-    GradeDialogComponent
+    AttendanceManagementComponent,
+    PaymentManagementComponent,
+    StudentManagementComponent
   ],
   templateUrl: './course-management.component.html',
   styleUrls: ['./course-management.component.css']
@@ -131,58 +81,18 @@ export class CourseManagementComponent implements OnInit {
   error: string | null = null;
   selectedTabIndex: number = 0;
   
-  // Datos para la tabla de asistencias
-  displayedAttendanceColumns: string[] = ['name', 'email', 'present', 'actions'];
-  
   // Datos para la tabla de pagos
   displayedPaymentColumns: string[] = ['name', 'email', 'amount', 'date', 'status', 'actions'];
+  
+  // Datos para la tabla de estudiantes
+  displayedStudentColumns: string[] = ['name', 'email', 'condition', 'calification', 'actions'];
   
   // Fecha actual para el registro de asistencia
   currentDate: string = new Date().toISOString().split('T')[0];
 
   // Variables para la pestaña de asistencias
   classes: Class[] = [];
-  expandedClassId: number | null = null;
   loadingClasses: boolean = false;
-  classFilterText: string = '';
-  
-  // Mapa para almacenar cambios temporales de asistencia
-  pendingAttendanceChanges: Map<string, {student: Student, attendance: boolean}> = new Map();
-  savingAttendance: boolean = false;
-  
-  get filteredClasses(): Class[] {
-    // Si no hay clases, retornar un array vacío
-    if (!this.classes || !Array.isArray(this.classes) || this.classes.length === 0) {
-      console.log('No hay clases para filtrar');
-      return [];
-    }
-    
-    // Si no hay texto de filtro, devolver todas las clases
-    if (!this.classFilterText || !this.classFilterText.trim()) {
-      return this.classes;
-    }
-    
-    const filterText = this.classFilterText.toLowerCase().trim();
-    console.log('Filtrando clases con texto:', filterText);
-    
-    return this.classes.filter(c => {
-      if (!c) return false;
-      
-      // Filtrar por tema (si existe)
-      if (c.topic && typeof c.topic === 'string' && c.topic.toLowerCase().includes(filterText)) {
-        return true;
-      }
-      
-      // Filtrar por fecha
-      try {
-        const dateStr = this.formatDate(c.class_date || c.created_at);
-        return dateStr.toLowerCase().includes(filterText);
-      } catch (error) {
-        console.error('Error al formatear fecha para filtrado:', error);
-        return false;
-      }
-    });
-  }
 
   constructor(
     private route: ActivatedRoute,
@@ -194,7 +104,9 @@ export class CourseManagementComponent implements OnInit {
     private paymentsService: PaymentsService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private dateUtils: DateUtilsService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -219,6 +131,10 @@ export class CourseManagementComponent implements OnInit {
     this.coursesService.getCourseById(this.courseId).subscribe({
       next: (course) => {
         this.course = course;
+        // Asegurarse que hours tiene un valor válido
+        if (!this.course.hours) {
+          this.course.hours = 0;
+        }
         this.loading = false;
         
         // Cargar la categoría después de obtener el curso
@@ -238,7 +154,6 @@ export class CourseManagementComponent implements OnInit {
     if (this.course && this.course.category_id) {
       this.coursesService.getCategoryById(this.course.category_id).subscribe({
         next: (category) => { 
-          console.log('Categoría recibida:', category);
           if (category && this.course) {
             this.course.categoryTitle = category.title;
           }
@@ -253,11 +168,9 @@ export class CourseManagementComponent implements OnInit {
     if (!this.courseId) return;
     
     this.loadingStudents = true;
-    console.log('Cargando inscripciones para el curso ID:', this.courseId);
     
     this.studentService.getInscriptionsByCourse(this.courseId).subscribe({
       next: (inscriptions: Inscription[]) => {
-        console.log('Inscripciones recibidas:', inscriptions);
         this.inscriptions = inscriptions;
         
         // Convertir las inscripciones a formato de estudiantes para el componente
@@ -278,7 +191,7 @@ export class CourseManagementComponent implements OnInit {
             payments: []
           };
           
-          // Cargar los pagos reales del estudiante
+          // Cargar los pagos del estudiante
           this.cargarPagosDelEstudiante(student);
           
           // Cargar las asistencias del estudiante
@@ -288,13 +201,10 @@ export class CourseManagementComponent implements OnInit {
         });
         
         this.loadingStudents = false;
-        console.log('Estudiantes procesados:', this.students);
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error al cargar las inscripciones', error);
         this.loadingStudents = false;
-        
-        // En lugar de cargar datos de ejemplo, mostrar un mensaje que no hay estudiantes
         this.noStudentsFound();
       }
     });
@@ -315,14 +225,14 @@ export class CourseManagementComponent implements OnInit {
   cargarPagosDelEstudiante(student: Student): void {
     if (!student.student_id || !this.courseId) return;
     
-    // Usar el método existente en el servicio de pagos
-    // El método acepta studentId y status como parámetros
-    // carga primero todos los pagos independientemente del estado
-    this.paymentsService.getPaymentsByStudent(student.student_id, 'ALL').subscribe({
-      next: (response: any) => {
-        // Filtrar pagos relacionados con este curso si es necesario
-        const pagos = Array.isArray(response) ? response : [];
-        const pagosCurso = pagos.filter((pago: any) => 
+    this.paymentsService.getAllPaymentsWithoutFilter().subscribe({
+      next: (allPayments: any[]) => {
+        // Filtrar pagos por estudiante y curso
+        const pagosEstudiante = allPayments.filter(pago => 
+          pago.student_id === student.student_id
+        );
+        
+        const pagosCurso = pagosEstudiante.filter(pago => 
           pago.course_id === this.courseId || !pago.course_id
         );
         
@@ -336,7 +246,7 @@ export class CourseManagementComponent implements OnInit {
       },
       error: (error: any) => {
         console.error('Error al cargar pagos del estudiante:', student.name, error);
-        // En caso de error, usar el valor por defecto
+        // En caso de error, usar el valor por defecto para no romper ui
         student.payments = [{
           amount: this.course?.price || 5000,
           date: new Date().toISOString().split('T')[0],
@@ -355,13 +265,15 @@ export class CourseManagementComponent implements OnInit {
         if (asistencias && asistencias.length > 0) {
           // Convertir las asistencias al formato esperado por el componente
           student.attendance = asistencias.map(asistencia => {
-            // Determinar la fecha de la asistencia 
+            // Determinar la fecha de la asistencia a partir de la clase
             let fecha = asistencia.created_at;
+            let claseAsociada = null;
+            
             if (asistencia.class_id) {
               // Buscar la fecha de la clase si está disponible
-              const clase = this.classes.find(c => c.id === asistencia.class_id);
-              if (clase && clase.class_date) {
-                fecha = clase.class_date;
+              claseAsociada = this.classes.find(c => c.id === asistencia.class_id);
+              if (claseAsociada && claseAsociada.class_date) {
+                fecha = claseAsociada.class_date;
               }
             }
             
@@ -376,9 +288,14 @@ export class CourseManagementComponent implements OnInit {
               isPresent = attendanceStr === '1' || attendanceStr.toLowerCase() === 'true';
             }
             
+            // Normalizar la fecha para guardar en el formato correcto
+            const fechaNormalizada = this.dateUtils.normalizeDate(fecha instanceof Date ? 
+              fecha.toISOString() : String(fecha));
+            
             return {
               present: isPresent,
-              date: typeof fecha === 'string' ? fecha : new Date(fecha).toISOString().split('T')[0]
+              date: fechaNormalizada,
+              classId: asistencia.class_id // Agregar el ID de la clase
             };
           });
         }
@@ -416,13 +333,6 @@ export class CourseManagementComponent implements OnInit {
         }
         
         this.loadingClasses = false;
-        
-        // Si hay una clase expandida, cargar sus asistencias
-        if (this.expandedClassId && this.expandedClassId > 0) {
-          this.loadClassAttendances(this.expandedClassId);
-        }
-        
-        console.log('Clases cargadas:', this.classes);
       },
       error: (error: any) => {
         console.error('Error cargando clases:', error);
@@ -432,78 +342,14 @@ export class CourseManagementComponent implements OnInit {
     });
   }
 
-  toggleAttendance(student: Student, classId: number): void {
-    if (!classId) {
-      console.error('No se ha seleccionado ninguna clase');
-      this.snackBar.open('No se ha seleccionado ninguna clase', 'Cerrar', {
-        duration: 3000,
-        panelClass: 'error-snackbar'
-      });
-      return;
-    }
-
-    // Verificar que el estudiante tiene un ID válido
-    if (!student.student_id) {
-      console.error('El estudiante no tiene un ID válido', student);
-      this.snackBar.open('Error al identificar al estudiante', 'Cerrar', {
-        duration: 3000,
-        panelClass: 'error-snackbar'
-      });
-      return;
-    }
-
-    // Obtener el estado actual de asistencia y cambiarlo
-    const currentStatus = this.getAttendanceStatus(student, this.currentDate);
-    const newAttendanceStatus = !currentStatus;
-    
-    console.log(`Cambiando asistencia de ${student.name}: ${currentStatus ? 'PRESENTE' : 'AUSENTE'} -> ${newAttendanceStatus ? 'PRESENTE' : 'AUSENTE'}`);
-    
-    // Crear una clave única para identificar este cambio de asistencia
-    const changeKey = `${classId}-${student.student_id}`;
-    
-    // Almacenar el cambio en el mapa de cambios pendientes
-    this.pendingAttendanceChanges.set(changeKey, {
-      student: student,
-      attendance: newAttendanceStatus
-    });
-    
-    // Actualizar la UI inmediatamente (sin enviar al servidor)
-    if (!student.attendance) {
-      student.attendance = [];
-    }
-    
-    const normalizedCurrentDate = this.normalizeDate(this.currentDate);
-    const existingIndex = student.attendance.findIndex(a => this.normalizeDate(a.date) === normalizedCurrentDate);
-    
-    if (existingIndex >= 0) {
-      student.attendance[existingIndex].present = newAttendanceStatus;
-    } else {
-      student.attendance.push({
-        present: newAttendanceStatus,
-        date: normalizedCurrentDate
-      });
-    }
-    
-    // Forzar actualización del modelo
-    setTimeout(() => {
-      const finalStatus = this.getAttendanceStatus(student, this.currentDate);
-      console.log(`Estado final de ${student.name}: ${finalStatus ? 'PRESENTE' : 'AUSENTE'}`);
-    }, 0);
-  }
-
   registerPayment(student: Student): void {
     if (!student || !student.student_id || !this.courseId) {
-      this.snackBar.open('Faltan datos del estudiante o del curso', 'Cerrar', { 
-        duration: 3000,
-        panelClass: 'error-snackbar'
-      });
+      this.notificationService.showError('Faltan datos del estudiante o del curso');
       return;
     }
     
     if (student.payment_status === 'PAGADO') {
-      this.snackBar.open('Este estudiante ya ha realizado el pago', 'Cerrar', { 
-        duration: 3000 
-      });
+      this.notificationService.showInfo('Este estudiante ya ha realizado el pago');
       return;
     }
 
@@ -535,21 +381,13 @@ export class CourseManagementComponent implements OnInit {
         // Actualizar el estado local del pago
         student.payment_status = 'PAGADO';
         
-        this.snackBar.open('Pago registrado con éxito', 'Cerrar', {
-          duration: 3000,
-          panelClass: 'success-snackbar'
-        });
+        this.notificationService.showSuccess('Pago registrado con éxito');
       },
       error: (error) => {
         console.error('Error al registrar el pago:', error);
         
-        this.snackBar.open(
-          error.error?.message || 'Error al registrar el pago', 
-          'Cerrar', 
-          {
-            duration: 5000,
-            panelClass: 'error-snackbar'
-          }
+        this.notificationService.showError(
+          error.error?.message || 'Error al registrar el pago'
         );
       }
     });
@@ -558,10 +396,7 @@ export class CourseManagementComponent implements OnInit {
   // Método para abrir el diálogo de calificación
   gradeStudent(student: Student): void {
     if (!student || !student.student_id || !this.courseId) {
-      this.snackBar.open('No se puede calificar al estudiante. Faltan datos.', 'Cerrar', {
-        duration: 3000,
-        panelClass: 'error-snackbar'
-      });
+      this.notificationService.showError('No se puede calificar al estudiante. Faltan datos.');
       return;
     }
 
@@ -582,73 +417,21 @@ export class CourseManagementComponent implements OnInit {
 
   // Método para guardar la calificación
   private saveStudentGrade(student: Student, gradeData: any): void {
-    // metodo a implementar cuando este listo el backend:
-    /*
-    this.studentService.updateStudentGrade(gradeData).subscribe({
-      next: (response) => {
-        // Actualizar el estado local del estudiante
-        student.qualification = gradeData.qualification;
-        student.studentCondition = gradeData.studentCondition;
-        
-        this.snackBar.open('Calificación guardada con éxito', 'Cerrar', {
-          duration: 3000,
-          panelClass: 'success-snackbar'
-        });
-      },
-      error: (error) => {
-        console.error('Error al guardar la calificación:', error);
-        
-        this.snackBar.open(
-          error.error?.message || 'Error al guardar la calificación', 
-          'Cerrar', 
-          {
-            duration: 5000,
-            panelClass: 'error-snackbar'
-          }
-        );
-      }
-    });
-    */
-    
     // Por ahora, simulamos la respuesta exitosa
     student.qualification = gradeData.qualification;
     student.studentCondition = gradeData.studentCondition;
     
-    this.snackBar.open('Calificación guardada con éxito (simulado)', 'Cerrar', {
-      duration: 3000,
-      panelClass: 'success-snackbar'
-    });
-    
-    console.log('Datos de calificación que se enviarían al backend:', gradeData);
+    this.notificationService.showSuccess('Calificación guardada con éxito (simulado)');
   }
 
   goBack(): void {
-    this.router.navigate(['/teacher-profile']);
+    this.router.navigate(['/profesor']);
   }
 
   editCourseInfo(): void {
     if (this.courseId) {
       this.router.navigate(['/courses/edit', this.courseId]);
     }
-  }
-
-  getAttendanceStatus(student: Student, date: string): boolean {
-    if (!student || !student.attendance || student.attendance.length === 0) {
-      return false;
-    }
-    
-    // Normalizar la fecha de búsqueda
-    const normalizedDate = this.normalizeDate(date);
-    
-    // Buscar una entrada para esta fecha normalizada
-    const record = student.attendance.find(a => this.normalizeDate(a.date) === normalizedDate);
-    
-    if (record) {
-      // Imprimir para depuración
-      console.log(`Estado de asistencia para ${student.name} en fecha ${normalizedDate}: ${record.present ? 'PRESENTE' : 'AUSENTE'}`);
-    }
-    
-    return record ? record.present : false;
   }
 
   createNewClass(): void {
@@ -662,7 +445,7 @@ export class CourseManagementComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const newClass: Class = {
-          id: 0, // El backend generará el ID
+          id: 0,
           topic: result.topic,
           class_date: result.class_date,
           course_id: this.courseId!,
@@ -672,260 +455,14 @@ export class CourseManagementComponent implements OnInit {
 
         this.classService.createClass(newClass).subscribe({
           next: (response: any) => {
-            console.log('Clase creada correctamente', response);
-            
             // Recargar las clases después de crear una nueva
             this.loadClasses();
-            
-            // Si la respuesta tiene la estructura esperada, actualizar el ID seleccionado
-            const createdClass = response.class || response;
-            if (createdClass && createdClass.id) {
-              setTimeout(() => {
-                this.expandedClassId = createdClass.id;
-              }, 500);
-            }
           },
-          error: (error) => {
+          error: (error: any) => {
             console.error('Error al crear la clase', error);
           }
         });
       }
     });
-  }
-
-  toggleClassExpansion(classId: number): void {
-    this.expandedClassId = this.expandedClassId === classId ? null : classId;
-    
-    // Si se está expandiendo una clase, cargar sus asistencias
-    if (this.expandedClassId) {
-      try {
-        this.loadClassAttendances(this.expandedClassId);
-      } catch (error) {
-        console.error('Error al expandir la clase y cargar asistencias:', error);
-        // No mostrar error al usuario aquí para no interrumpir la experiencia
-      }
-    }
-  }
-
-  loadClassAttendances(classId: number): void {
-    if (this.students.length === 0) return;
-    
-    this.savingAttendance = true;
-    
-    try {
-      this.assistService.getAssistsByClassId(classId).subscribe({
-        next: (assists: Assist[]) => {
-          if (!assists || assists.length === 0) {
-            console.log('No hay asistencias registradas para esta clase');
-            this.savingAttendance = false;
-            return;
-          }
-          
-          console.log('Asistencias recibidas:', assists);
-          
-          // Normalizar el formato de la fecha actual
-          const normalizedCurrentDate = this.normalizeDate(this.currentDate);
-          
-          // Actualizar la información de asistencia para cada estudiante
-          this.students.forEach(student => {
-            if (!student.attendance) {
-              student.attendance = [];
-            }
-            
-            // Buscar la asistencia del estudiante para esta clase
-            const studentAssist = assists.find(a => 
-              a.student_id === student.student_id || 
-              a.student_id === student.id
-            );
-            
-            if (studentAssist) {
-              // El valor attendance puede venir como booleano o como 1/0
-              // Convertir a booleano para manejar ambos casos
-              let isPresent = false;
-              
-              // Comprobar todos los posibles valores que indican asistencia positiva
-              if (typeof studentAssist.attendance === 'boolean') {
-                isPresent = studentAssist.attendance;
-              } else if (typeof studentAssist.attendance === 'number') {
-                isPresent = studentAssist.attendance === 1;
-              } else if (typeof studentAssist.attendance === 'string') {
-                const attendanceStr = studentAssist.attendance as string;
-                isPresent = attendanceStr === '1' || attendanceStr.toLowerCase() === 'true';
-              }
-              
-              console.log(`Estudiante ${student.name} (ID: ${student.student_id || student.id}):`, 
-                        `Valor original attendance: ${studentAssist.attendance} (${typeof studentAssist.attendance})`, 
-                        `Interpretado como: ${isPresent ? 'PRESENTE' : 'AUSENTE'}`);
-              
-              // Actualizar o agregar la asistencia para la fecha actual
-              const existingIndex = student.attendance.findIndex(a => 
-                this.normalizeDate(a.date) === normalizedCurrentDate
-              );
-              
-              if (existingIndex >= 0) {
-                student.attendance[existingIndex].present = isPresent;
-              } else {
-                student.attendance.push({
-                  present: isPresent,
-                  date: normalizedCurrentDate
-                });
-              }
-            }
-          });
-          
-          this.savingAttendance = false;
-        },
-        error: (error) => {
-          console.error('Error al cargar asistencias:', error);
-          this.savingAttendance = false;
-          this.snackBar.open('Error al cargar asistencias', 'Cerrar', {
-            duration: 3000,
-            panelClass: 'error-snackbar'
-          });
-        }
-      });
-    } catch (error) {
-      console.error('Error al intentar cargar asistencias:', error);
-      this.savingAttendance = false;
-      this.snackBar.open('No se pudieron cargar las asistencias', 'Cerrar', {
-        duration: 3000,
-        panelClass: 'error-snackbar'
-      });
-    }
-  }
-
-  // Método para normalizar fechas al formato YYYY-MM-DD
-  normalizeDate(dateString: string): string {
-    try {
-      const date = new Date(dateString);
-      return date.toISOString().split('T')[0]; // Retorna YYYY-MM-DD
-    } catch (error) {
-      console.error('Error normalizando fecha:', dateString, error);
-      return dateString; // Si hay error, devolver la fecha original
-    }
-  }
-
-  getClassDate(classObj: any): string {
-    try {
-      // Intentar obtener la fecha desde class_date o createdAt
-      const date = classObj.class_date || classObj.createdAt;
-      if (!date) return 'Fecha no disponible';
-      
-      // Formatear la fecha
-      return new Date(date).toLocaleDateString('es-ES', { 
-        day: '2-digit', 
-        month: 'short', 
-        year: 'numeric' 
-      });
-    } catch (error) {
-      console.error('Error al formatear fecha de clase:', error);
-      return 'Error en fecha';
-    }
-  }
-
-  private formatDate(date: Date | string | undefined): string {
-    if (!date) return '';
-    
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
-    
-    try {
-      return dateObj.toLocaleDateString();
-    } catch (error) {
-      return '';
-    }
-  }
-
-  // Nuevo método para guardar todos los cambios de asistencia
-  saveAttendanceChanges(classId: number): void {
-    if (this.pendingAttendanceChanges.size === 0) {
-      this.snackBar.open('No hay cambios de asistencia para guardar', 'Cerrar', {
-        duration: 3000
-      });
-      return;
-    }
-
-    this.savingAttendance = true;
-    
-    this.snackBar.open(`Guardando cambios de asistencia...`, '', {
-      duration: 2000
-    });
-
-    // Obtener solo los cambios relevantes para esta clase
-    const relevantChanges = Array.from(this.pendingAttendanceChanges.entries())
-      .filter(([key]) => key.startsWith(`${classId}-`));
-    
-    if (relevantChanges.length === 0) {
-      this.savingAttendance = false;
-      this.snackBar.open('No hay cambios de asistencia para esta clase', 'Cerrar', {
-        duration: 3000
-      });
-      return;
-    }
-    
-    // Crear un array de observables para cada cambio
-    const requests = relevantChanges.map(([key, change]) => {
-      const student = change.student;
-      
-      const assistData: Assist = {
-        id: 0, // El backend ignorará este valor si el registro ya existe
-        class_id: classId,
-        student_id: student.student_id!,
-        attendance: Boolean(change.attendance), // Asegurar que se envía como booleano
-        created_at: new Date(),
-        updated_at: new Date()
-      };
-
-      return this.assistService.registerAssist(assistData).pipe(
-        catchError(error => {
-          console.error('Error al registrar asistencia:', error);
-          return of({ error: true, student: student.name });
-        })
-      );
-    });
-
-    forkJoin(requests).subscribe({
-      next: (results) => {
-        // Contar éxitos y errores
-        const errorCount = results.filter(r => r && (r as any).error).length;
-        const savedCount = results.length - errorCount;
-        
-        // Eliminar los cambios guardados del mapa de pendientes
-        relevantChanges.forEach(([key]) => {
-          this.pendingAttendanceChanges.delete(key);
-        });
-        
-        this.showSaveResults(savedCount, errorCount);
-        
-        // Recargar las asistencias para asegurar que la UI refleja el estado actual
-        if (savedCount > 0) {
-          setTimeout(() => this.loadClassAttendances(classId), 500);
-        }
-        
-        this.savingAttendance = false;
-      },
-      error: (error) => {
-        console.error('Error al procesar las asistencias', error);
-        this.savingAttendance = false;
-        this.snackBar.open('Error al guardar las asistencias', 'Cerrar', {
-          duration: 5000,
-          panelClass: 'error-snackbar'
-        });
-      }
-    });
-  }
-
-  // Método para mostrar resultados del guardado
-  private showSaveResults(saved: number, errors: number): void {
-    if (errors === 0) {
-      this.snackBar.open(`¡${saved} asistencias guardadas correctamente!`, 'Cerrar', {
-        duration: 3000,
-        panelClass: 'success-snackbar'
-      });
-    } else {
-      this.snackBar.open(`Guardado con errores: ${saved} exitosas, ${errors} fallidas`, 'Cerrar', {
-        duration: 5000,
-        panelClass: 'error-snackbar'
-      });
-    }
   }
 } 

@@ -1,0 +1,78 @@
+.payment-management-container {
+  margin: 15px 0;
+}
+
+h2 {
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+
+.loading-spinner p {
+  margin-top: 15px;
+  color: #666;
+}
+
+.no-data-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.no-data-message mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 10px;
+  color: #ff9800;
+}
+
+.payments-table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.mat-header-cell {
+  font-weight: 600;
+  color: #333;
+}
+
+.mat-row:hover {
+  background-color: #f5f5f5;
+}
+
+/* Estilos para el estado de pago */
+.status-paid {
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+.status-pending {
+  color: #f57c00;
+  font-weight: 500;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .payments-table {
+    overflow-x: auto;
+    display: block;
+  }
+  
+  .mat-header-cell, .mat-cell {
+    padding: 0 8px;
+  }
+}
