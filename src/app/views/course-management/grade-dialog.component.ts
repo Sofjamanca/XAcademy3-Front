@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { StudentService } from '../../services/student/student.service';
 
 @Component({
   selector: 'app-grade-dialog',
@@ -31,15 +32,28 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
       <div class="student-info">
         <p><strong>Alumno:</strong> {{ data.student.name }}</p>
         <p><strong>Email:</strong> {{ data.student.email }}</p>
+        <p><strong>Asistencia:</strong>
+          <ng-container *ngIf="attendanceDetails; else loadingAttendance">
+            {{ attendanceDetails.percentage }}
+            <span class="attendance-details">
+              ({{ attendanceDetails.attended }} de {{ attendanceDetails.total }} clases)
+            </span>
+          </ng-container>
+          <ng-template #loadingAttendance>
+            <mat-spinner diameter="20" class="inline-spinner"></mat-spinner>
+          </ng-template>
+        </p>
         <p><strong>Condición actual:</strong> 
           <span class="status-badge" 
                 [ngClass]="{
                   'status-active': data.student.studentCondition === 'EN_CURSO',
                   'status-completed': data.student.studentCondition === 'APROBADO',
-                  'status-suspended': data.student.studentCondition === 'SUSPENDIDO'
+                  'status-suspended': data.student.studentCondition === 'SUSPENDIDO',
+                  'status-failed': data.student.studentCondition === 'DESAPROBADO'
                 }">
             {{ data.student.studentCondition === 'EN_CURSO' ? 'En curso' : 
                data.student.studentCondition === 'APROBADO' ? 'Aprobado' : 
+               data.student.studentCondition === 'DESAPROBADO' ? 'Desaprobado' : 
                data.student.studentCondition === 'SUSPENDIDO' ? 'Suspendido' : 'No definido' }}
           </span>
         </p>
@@ -104,6 +118,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
       background-color: #4caf50;
       color: white;
     }
+    .status-failed {
+      background-color: #f44336;
+      color: white;
+    }
     .status-suspended {
       background-color: #f44336;
       color: white;
@@ -112,15 +130,31 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
       display: inline-block;
       margin-right: 8px;
     }
+    .inline-spinner {
+      display: inline-block;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .attendance-details {
+      font-size: 0.9em;
+      color: rgba(0, 0, 0, 0.6);
+      margin-left: 4px;
+    }
   `]
 })
-export class GradeDialogComponent {
+export class GradeDialogComponent implements OnInit {
   gradeForm: FormGroup;
   processing: boolean = false;
+  attendanceDetails: {
+    percentage: string;
+    attended: number;
+    total: number;
+  } | null = null;
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<GradeDialogComponent>,
+    private studentService: StudentService,
     @Inject(MAT_DIALOG_DATA) public data: {
       student: any,
       courseId: number
@@ -131,6 +165,24 @@ export class GradeDialogComponent {
       studentCondition: [data.student.studentCondition || 'EN_CURSO', Validators.required],
       comments: ['']
     });
+    console.log(this.data.student);
+  }
+
+  ngOnInit(): void {
+    if (this.data.student.student_id) {
+      this.studentService.getAttendancePercentage(this.data.student.student_id).subscribe({
+        next: (response) => {
+          this.attendanceDetails = {
+            percentage: response.percentage,
+            attended: response.attended,
+            total: response.total
+          };
+        },
+        error: (error) => {
+          console.error('Error al obtener el porcentaje de asistencia:', error);
+        }
+      });
+    }
   }
 
   submitGrade(): void {

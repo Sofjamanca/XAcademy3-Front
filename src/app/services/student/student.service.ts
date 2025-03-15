@@ -61,4 +61,8 @@ export class StudentService {
     return this.http.get<any>(`${this.studentsUrl}/condition/${studentId}`);
   }
 
+  getAttendancePercentage(studentId: number): Observable<any> {
+    return this.http.get<any>(`${this.studentsUrl}/${studentId}/attendance/`);
+  }
+
 }
