@@ -33,7 +33,7 @@ export class StudentService {
   }
 
   updateStudentData(studentData: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/update`, studentData); 
+    return this.http.put(`${this.baseUrl}/update`, studentData);
   }
 
   getStudentData(): any {

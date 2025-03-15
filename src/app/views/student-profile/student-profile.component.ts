@@ -3,22 +3,22 @@ import { Router } from '@angular/router';
 import { MaterialModule } from '../../material/material.module';
 import { CommonModule, NgIf, NgFor } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ApiService } from '../../services/api.service';
-import { MatInputModule } from '@angular/material/input';
-import { Course } from '../../core/models/course.model';
-import { CardComponent } from '../../shared/components/card/card.component';
+import { EditProfileComponent } from '../../shared/components/edit-profile/edit-profile.component';
 
 @Component({
   selector: 'app-student-profile',
   standalone: true,
-  imports: [NgFor, NgIf, CardComponent, MaterialModule, CommonModule, RouterModule, MatInputModule],
+  imports: [
+    MaterialModule,
+    CommonModule,
+    RouterModule
+  ],
   templateUrl: './student-profile.component.html',
   styleUrl: './student-profile.component.css'
 })
 export class StudentProfileComponent implements OnInit{
   userName: string | null = null;
-  isStudent: boolean = false;
-  cursos: Course[] = [];
+  isCollapsed = false;
 
   constructor( private router: Router, private apiService: ApiService){}
 
@@ -29,8 +29,6 @@ export class StudentProfileComponent implements OnInit{
     this.isStudent = this.apiService.isStudent();
   }
 
-  isCollapsed = false;
-  
   toggleSidenav() {
     this.isCollapsed = !this.isCollapsed;
   }
