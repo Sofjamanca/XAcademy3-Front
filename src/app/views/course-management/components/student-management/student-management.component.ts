@@ -68,16 +68,38 @@ export class StudentManagementComponent implements OnInit {
   private saveStudentGrade(student: Student, gradeData: any): void {
     if (!student.student_id || !this.courseId) return;
     
-    this.studentService.updateStudentGrade({
-      student_id: student.student_id,
-      course_id: this.courseId,
-      qualification: gradeData.grade,
-      studentCondition: student.studentCondition || 'Regular',
-      comments: gradeData.comments
-    }).subscribe({
-      next: () => {
-        // Actualizar calificación localmente
-        student.qualification = gradeData.grade;
+    console.log('Antes de actualizar - student.qualification:', student.qualification);
+    console.log('gradeData recibido:', gradeData);
+    
+    // Convertir la calificación a número entero
+    const qualification = parseInt(gradeData.qualification, 10);
+    
+    this.studentService.updateStudentGrade(student.student_id, qualification).subscribe({
+      next: (response) => {
+        // Actualizar la calificación
+        student.qualification = qualification;
+        
+        // Actualizar la condición del estudiante si el backend la devuelve
+        if (response && response.studentCondition) {
+          student.studentCondition = response.studentCondition;
+          console.log('Condición actualizada desde la respuesta:', student.studentCondition);
+        } else {
+          // Si el backend no devuelve la condición, hacer una consulta adicional
+          if (student.student_id) {
+            this.studentService.getStudentById(student.student_id).subscribe({
+              next: (studentData) => {
+                if (studentData && studentData.studentCondition) {
+                  student.studentCondition = studentData.studentCondition;
+                  console.log('Condición actualizada mediante consulta adicional:', student.studentCondition);
+                }
+              },
+              error: (err) => console.error('Error al obtener la condición actualizada:', err)
+            });
+          }
+        }
+        
+        console.log('Después de actualizar - student.qualification:', student.qualification);
+        console.log('Después de actualizar - student.studentCondition:', student.studentCondition);
         this.notificationService.showSuccess('Calificación guardada correctamente');
       },
       error: (error: any) => {

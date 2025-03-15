@@ -49,15 +49,16 @@ export class StudentService {
     return this.http.get<any>(`${this.studentsUrl}/view/${studentId}`);
   }
 
-  updateStudentGrade(data: {
-    student_id: number;
-    course_id: number;
-    qualification: number;
-    studentCondition: string;
-    comments?: string;
-  }): Observable<any> {
-    // Esta URL deberá actualizarse cuando el endpoint esté disponible en el backend
-    return this.http.post<any>(`${this.baseUrl}/update-grade`, data);
+  updateStudentGrade(studentId: number, qualification: number): Observable<any> {
+    return this.http.put<any>(`${this.studentsUrl}/update-grade/${studentId}`, { qualification });
+  }
+
+  assignFinalGrade(studentId: number, qualification: number): Observable<any> {
+    return this.http.post<any>(`${this.studentsUrl}/qualify/${studentId}`, { qualification });
+  }
+
+  getConditionByStudentId(studentId: number): Observable<any> {
+    return this.http.get<any>(`${this.studentsUrl}/condition/${studentId}`);
   }
 
 }

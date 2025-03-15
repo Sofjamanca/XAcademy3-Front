@@ -9,7 +9,7 @@ export interface Student {
     student_id?: number;
     studentCondition?: string;
     payment_status?: string;
-    qualification?: string | number | null;
+    qualification?: number | null;
     attendance?: {
       present: boolean;
       date: string;

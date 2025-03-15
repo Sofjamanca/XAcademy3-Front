@@ -178,7 +178,15 @@ export class CourseManagementComponent implements OnInit {
           const studentData = inscription.student;
           const userData = studentData.user;
           
-          const student = {
+          // Convertir la calificación a número si existe
+          let qualification: number | undefined = undefined;
+          if (studentData.qualification !== null && studentData.qualification !== undefined) {
+            qualification = typeof studentData.qualification === 'string' 
+              ? parseInt(studentData.qualification, 10) 
+              : Number(studentData.qualification);
+          }
+          
+          const student: Student = {
             id: studentData.id,
             name: `${userData.name} ${userData.lastname}`,
             email: userData.email,
@@ -187,6 +195,7 @@ export class CourseManagementComponent implements OnInit {
             student_id: studentData.id,
             studentCondition: studentData.studentCondition,
             payment_status: studentData.payment_status,
+            qualification: qualification,
             attendance: [],
             payments: []
           };

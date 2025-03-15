@@ -48,25 +48,13 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
       <form [formGroup]="gradeForm" class="grade-form">
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Calificación</mat-label>
-          <input matInput type="number" min="0" max="10" step="0.1" formControlName="qualification" placeholder="Ej: 8.5">
-          <mat-hint>Ingrese un valor entre 0 y 10</mat-hint>
+          <input matInput type="number" min="0" max="10" step="1" formControlName="qualification" placeholder="Ej: 8">
+          <mat-hint>Ingrese un valor entero entre 0 y 10</mat-hint>
           <mat-error *ngIf="gradeForm.get('qualification')?.hasError('required')">
             La calificación es requerida
           </mat-error>
           <mat-error *ngIf="gradeForm.get('qualification')?.hasError('min') || gradeForm.get('qualification')?.hasError('max')">
             La calificación debe estar entre 0 y 10
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Condición del Estudiante</mat-label>
-          <mat-select formControlName="studentCondition">
-            <mat-option value="EN_CURSO">En curso</mat-option>
-            <mat-option value="APROBADO">Aprobado</mat-option>
-            <mat-option value="SUSPENDIDO">Suspendido</mat-option>
-          </mat-select>
-          <mat-error *ngIf="gradeForm.get('studentCondition')?.hasError('required')">
-            La condición es requerida
           </mat-error>
         </mat-form-field>
 
@@ -150,12 +138,16 @@ export class GradeDialogComponent {
     
     this.processing = true;
     
+    // Asegurar que la calificación es un número entero
+    const formValues = this.gradeForm.value;
+    formValues.qualification = parseInt(formValues.qualification, 10);
+    
     // todo: cuando este listo el backend dar funcionalidad a este metodo
     setTimeout(() => {
       const gradeData = {
         student_id: this.data.student.student_id,
         course_id: this.data.courseId,
-        ...this.gradeForm.value
+        ...formValues
       };
       this.dialogRef.close(gradeData);
     }, 1000);
