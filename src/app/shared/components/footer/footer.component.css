@@ -13,44 +13,45 @@
 }
 
 .swiper-container {
-  width: 80%;  
-  max-width: 100%;
-  padding: 30px 0; 
-  background: #f5f5f5;
-  border-radius: 20px;
+  width: 100%; 
+  padding: 20px 0; 
+  background: #fafafa10;
+  backdrop-filter: blur(0.4rem);
+  -webkit-backdrop-filter: blur(0.4rem);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   overflow: hidden; 
+}
+.swiper-pagination{
+  display: none;
+}
+.logo-slide {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; 
 }
 
 .swiper-slide {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  background: #fff;
-  padding: 0;
-  border-radius: 15px;
+  align-items: center;
+  height: auto;
   width: 150px;
-  max-width: 100%;
-  height: 100px;
-  overflow: hidden;
+  background: #8f8e8e10;
+  backdrop-filter: blur(0.4rem);
+  -webkit-backdrop-filter: blur(0.4rem);
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
+  border-radius: 10px;
 
-.logo-slide {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;  
-  border-radius: 15px;
 }
 
 .swiper-button-prev, 
 .swiper-button-next {
-  color: #1C39BB !important;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
+  color: transparent;
+  background: transparent !important;
 }
 
 .title {
@@ -81,22 +82,23 @@
 
 .footer-contact {
   margin-top: 20px;
-  background: #ffffff; 
+  background: #fafafa10;
+  backdrop-filter: blur(0.4rem);
+  -webkit-backdrop-filter: blur(0.4rem); 
   padding: 15px;
   border-radius: 10px;
   width: 90%;
   max-width: 600px;
   text-align: center;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  border: 2px solid #1C39BB;
-  color: #1a1a1a;
+  color: #fff8f8;;
 }
 
 .contact-title {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 10px;
-  color: #1C39BB;
+  color: #fff8f8;
 }
 
 .contact-info p {
@@ -105,7 +107,7 @@
   justify-content: flex-start;
   font-size: 14px;
   margin: 10px 0;
-  color: #333;
+  color: #fff8f8;
 }
 
 .contact-info .icon {
@@ -119,17 +121,22 @@
   justify-content: center;
   gap: 15px;
   margin-top: 10px;
+  
 }
 
 .social-icons img {
   width: 32px;
   height: 32px;
   transition: transform 0.3s, opacity 0.3s;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
 }
 
 .social-icons img:hover {
   transform: scale(1.2);
   opacity: 0.8;
+  border: 1px solid #1C39BB;
+  transition: transform 0.3s, opacity 0.3s;
 }
 
 html, body {
@@ -139,3 +146,11 @@ html, body {
   grid-template-rows: 1fr auto;
 }
 
+
+@media (min-width: 1024px) {
+  .swiper-slide {
+    margin: 0 1rem;
+    height: auto;
+    width: 150px;
+  }
+}

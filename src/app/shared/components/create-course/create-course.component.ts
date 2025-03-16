@@ -89,7 +89,6 @@ export class CreateCourseComponent implements OnInit {
       {label:'Fecha fin',atr:'endDate', type: 'date', getMin:(data: any)=> data.startDate ? new Date(data.startDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]},
       {label:'Precio',atr:'price',  type: 'number'},
       {label:'Cupo',atr:'quota',  type: 'number'},
-      {label:'Status',atr:'status',  options: [{label: 'Activo', value: "ACTIVO"},{label: 'Pendiente', value: "PENDIENTE"}, {label: 'Finalizado', value: "FINALIZADO"}],  type: 'select'},
       {atr:'image_url',  type: 'media', require: false},
     ];
 
@@ -108,7 +107,6 @@ export class CreateCourseComponent implements OnInit {
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       price: ['', Validators.required],
-      status: ['', Validators.required],
       image_url: ['']
     }); 
   }
@@ -143,7 +141,6 @@ export class CreateCourseComponent implements OnInit {
             endDate: curso.endDate ?? '',
             price: curso.price ?? '',
             quota: curso.quota ?? '',
-            status: curso.status ?? '',
             image_url: curso.image_url ?? ''
           });
   
