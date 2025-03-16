@@ -71,7 +71,7 @@ export class CoursesListComponent implements OnInit {
   }
 
   editCourse(course: Course) {
-    this.router.navigate(['/admin/cursos/editar', course.id]);
+    this.router.navigate(['/admin/curso/editar', course.id]);
   }
 
   deleteCourse(course: Course) {
@@ -88,6 +88,9 @@ export class CoursesListComponent implements OnInit {
   }
 
   getEndDate(course: Course): string {
-    return course.endDate ? new Date(course.endDate).toLocaleDateString() : 'Sin fecha de finalización';
+    if (!course.endDate) return 'Sin fecha de finalización';
+  
+    const date = new Date(course.endDate);
+    return date.toISOString().split('T')[0].split('-').reverse().join('/');
   }
 } 

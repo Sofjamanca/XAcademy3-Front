@@ -24,9 +24,10 @@ export class CoursesService {
     return this.http.post<string>(`${this.apiUrl}create`, newCourse);
   }
 
-  updateCourse(course: Course): Observable<string> {
-    return this.http.put<string>(`${this.apiUrl}${course.id}`, course);
+  updateCourse(courseId: number, courseData: any): Observable<any> {
+    return this.http.put<string>(`${this.apiUrl}update/${courseId}`, courseData);
   }
+  
 
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${this.apiUrl}categories`);
@@ -78,6 +79,10 @@ export class CoursesService {
     }
 
     return this.http.get<CourseResponse>(`${this.apiUrl}filter`, { params });
+  }
+
+  getLastestCourses(): Observable<Course[]> {
+    return this.http.get<Course[]>(`${this.apiUrl}lastest`);
   }
 
 }

@@ -22,11 +22,19 @@ html, body {
 }
 
 body {
-    min-height: 100vh;
+    height: 100vh;
     position: relative;
     font-family:  "Roboto", serif;
 }
-
+main{
+    min-height: 100%;
+    width: 100%;
+}
+main::-webkit-scrollbar {
+    width: 0px; 
+    background: transparent; 
+  }
+  
 /*-------------------------  general style   -------------------------*/
 
 

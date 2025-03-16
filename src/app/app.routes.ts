@@ -14,6 +14,8 @@ import { WeComponent } from './shared/components/we/we.component';
 import { ContactComponent } from './shared/components/contact/contact.component';
 import { CreditsComponent } from './shared/components/credits/credits.component';
 
+
+
 export const routes: Routes = [
     {
         path: 'home',
@@ -100,9 +102,9 @@ export const routes: Routes = [
                 canActivate: [adminGuard]
             },
             {
-                path: 'cursos/editar/:id',
-                component: CreateCourseComponent,
-                canActivate: [adminGuard]
+                path: 'curso/editar/:id',
+                component:CreateCourseComponent,
+                canActivate:[adminGuard]
             }
         ]
     },
