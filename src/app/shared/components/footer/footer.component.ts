@@ -21,45 +21,51 @@ export class FooterComponent implements AfterViewInit {
   @ViewChild('swiperContainer', { static: false }) swiperRef!: ElementRef;
 
   logos = [
-    { src: '/assets/images/footer/footer1.png' },
-    { src: '/assets/images/footer/footer2.jpeg' },
-    { src: '/assets/images/footer/footer3.png' },
-    { src: '/assets/images/footer/footer4.jpg'},
-    { src: '/assets/images/footer/footer5.png' },
-    { src: '/assets/images/footer/footer6.png'},
-    { src: '/assets/images/footer/footer7.png'},
-    { src: '/assets/images/footer/footer8.jpg'},
-    { src: '/assets/images/footer/footer9.jpg'},
-    { src: '/assets/images/footer/footer10.png'},
-    { src: '/assets/images/footer/footer11.png'},
+    { src: '/assets/images/footer1.webp' },
+    { src: '/assets/images/footer2.webp' },
+    { src: '/assets/images/footer3.webp' },
+    { src: '/assets/images/footer4.webp'},
+    { src: '/assets/images/footer5.webp' },
+    { src: '/assets/images/footer6.webp'},
+    { src: '/assets/images/footer7.webp'},
+    { src: '/assets/images/footer8.webp'},
+    { src: '/assets/images/footer9.webp'},
+    { src: '/assets/images/footer10.webp'},
+    { src: '/assets/images/footer11.webp'},
   ];
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object,  private ngZone: NgZone) {}
+  swiper: Swiper | undefined;
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
-      this.ngZone.runOutsideAngular(() => {
-      setTimeout(() => { 
-      new Swiper(this.swiperRef.nativeElement, {
-        modules: [EffectCoverflow, Autoplay, Navigation, Pagination],
+      this.swiper = new Swiper(this.swiperRef.nativeElement, {
+        modules: [ Autoplay, Navigation, Pagination],
         effect: 'coverflow',
         grabCursor: true,
         centeredSlides: true,
-        slidesPerView: 4,
+        slidesPerView: 6, // Ajusta según necesidad
+        spaceBetween: 10, // Espaciado entre imágenes
         coverflowEffect: {
           rotate: 0,
           stretch: 0,
           depth: 100,
-          modifier: 1,
-          slideShadows: false
+          slideShadows: false,
+
         },
         autoplay: { delay: 2500, disableOnInteraction: false },
-        loop: true,
+        loop: true, 
+        speed: 500,
         navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-        pagination: { el: '.swiper-pagination', clickable: true }
+        pagination: { el: '.swiper-pagination', clickable: true },
+      
+        breakpoints: {
+          0: { slidesPerView: 2 }, // Para celulares
+          768: { slidesPerView: 6 } // Para pantallas grandes
+        }
       });
-    }, 1000);
-  });
-}
-}
+    }
+  
+  }
 }
