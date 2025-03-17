@@ -1,0 +1,102 @@
+<h2>Historial de Pagos</h2>
+
+<mat-tab-group (selectedTabChange)="onTabChange($event)">
+  <mat-tab label="Pendientes">
+    <mat-table [dataSource]="pendingPayments" *ngIf="pendingPayments.length > 0; else noPendingPayments" class="mat-elevation-z8">
+
+      <!-- Curso -->
+      <ng-container matColumnDef="course">
+        <mat-header-cell *matHeaderCellDef> Curso </mat-header-cell>
+        <mat-cell *matCellDef="let payment"> 
+          <mat-icon>school</mat-icon> 
+          {{ payment.courseTitle }} 
+        </mat-cell>
+      </ng-container>
+
+      <!-- Estado -->
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef> Estado </mat-header-cell>
+        <mat-cell *matCellDef="let payment"> 
+          <mat-chip color="warn">
+            <mat-icon>hourglass_top</mat-icon> Pendiente
+          </mat-chip>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Monto -->
+      <ng-container matColumnDef="amount">
+        <mat-header-cell *matHeaderCellDef> Monto </mat-header-cell>
+        <mat-cell *matCellDef="let payment"> 
+          <strong>{{ payment.coursePrice | currency:'USD' }}</strong>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Acción -->
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
+        <mat-cell *matCellDef="let payment">
+          <button mat-raised-button color="primary" (click)="pagar(payment)">
+            <mat-icon>payment</mat-icon> Pagar
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="['course', 'status', 'amount', 'action']"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: ['course', 'status', 'amount', 'action'];"></mat-row>
+
+    </mat-table>
+
+    <ng-template #noPendingPayments>
+      <p>No hay pagos pendientes.</p>
+    </ng-template>
+  </mat-tab>
+
+  <!-- TAB: Pagos Realizados -->
+  <mat-tab label="Pagados">
+    <mat-table [dataSource]="completedPayments" *ngIf="completedPayments.length > 0; else noCompletedPayments" class="mat-elevation-z8">
+
+      <!-- Curso -->
+      <ng-container matColumnDef="course">
+        <mat-header-cell *matHeaderCellDef> Curso </mat-header-cell>
+        <mat-cell *matCellDef="let payment"> 
+          <mat-icon>school</mat-icon> 
+          {{ payment.courseTitle }} 
+        </mat-cell>
+      </ng-container>
+
+      <!-- Fecha de Pago -->
+      <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef> Fecha de Pago </mat-header-cell>
+        <mat-cell *matCellDef="let payment"> 
+          {{ payment.updatedAt | date:'dd/MM/yyyy' }} 
+        </mat-cell>
+      </ng-container>
+
+      <!-- Pago Aprobado -->
+      <ng-container matColumnDef="approved">
+        <mat-header-cell *matHeaderCellDef> Aprobado </mat-header-cell>
+        <mat-cell *matCellDef="let payment"> 
+          <mat-icon class="aprobado">verified</mat-icon>
+          <ng-template #notApproved><mat-icon>cancel</mat-icon></ng-template>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Monto -->
+      <ng-container matColumnDef="amount">
+        <mat-header-cell *matHeaderCellDef> Monto </mat-header-cell>
+        <mat-cell *matCellDef="let payment"> 
+          <strong>{{ payment.coursePrice | currency:'$' }}</strong>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="['course', 'date', 'approved', 'amount']"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: ['course', 'date', 'approved', 'amount'];"></mat-row>
+
+    </mat-table>
+
+    <ng-template #noCompletedPayments>
+      <p>No hay pagos realizados.</p>
+    </ng-template>
+  </mat-tab>
+
+</mat-tab-group>

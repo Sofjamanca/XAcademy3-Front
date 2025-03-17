@@ -1,0 +1,682 @@
+.course-management-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.loading-container, 
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.error-message {
+  background-color: #ffebee;
+  border-radius: 5px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.error-message mat-icon {
+  color: #f44336;
+  margin-right: 10px;
+  font-size: 24px;
+  height: 24px;
+  width: 24px;
+}
+
+.course-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.course-header h2 {
+  margin: 0 0 0 10px;
+  color: #3f51b5;
+}
+
+
+
+.course-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.course-details {
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.course-details p {
+  margin: 8px 0;
+}
+
+.tab-content {
+  padding: 20px;
+}
+
+.no-data-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.no-data-message mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 10px;
+  color: #9e9e9e;
+}
+
+.payments-table {
+  width: 100%;
+}
+
+.status-paid {
+  color: #4caf50;
+  font-weight: 500;
+}
+
+.status-pending {
+  color: #ff9800;
+  font-weight: 500;
+}
+
+.attendance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.attendance-header h2 {
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .course-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .course-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  
+  .payments-table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+.course-management-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.course-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.back-button {
+  margin-right: 16px;
+}
+
+.course-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.course-title h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.course-category {
+  font-size: 14px;
+  color: #666;
+}
+
+.loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 50px 0;
+  gap: 20px;
+  text-align: center;
+}
+
+.error-container mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+}
+
+.course-content {
+  margin-top: 20px;
+}
+
+.tab-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.tab-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.course-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detail-row {
+  display: flex;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-row strong {
+  width: 120px;
+  font-weight: 500;
+}
+
+.student-table, .attendance-table, .payment-table {
+  width: 100%;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+}
+
+.empty-state mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+  margin-bottom: 16px;
+  color: #ccc;
+}
+
+.date-picker {
+  width: 180px;
+}
+
+.status-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  display: inline-block;
+  font-weight: 500;
+}
+
+.status-active {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-completed {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.status-suspended {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.status-overdue {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .course-management-container {
+    padding: 10px;
+  }
+
+  .tab-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .spacer {
+    display: none;
+  }
+
+  .detail-row {
+    flex-direction: column;
+  }
+
+  .detail-row strong {
+    width: 100%;
+    margin-bottom: 4px;
+  }
+}
+
+/* Estilos para la sección de clases */
+.loading-container-small {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+  gap: 10px;
+}
+
+.classes-container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.classes-card {
+  height: fit-content;
+}
+
+.classes-list {
+  max-height: 500px;
+  overflow-y: auto;
+  padding: 10px 0;
+}
+
+.class-item {
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+  background-color: #f5f5f5;
+}
+
+.class-item:hover {
+  background-color: #e0e0e0;
+}
+
+.class-item.selected {
+  background-color: #e3f2fd;
+  border-left-color: #1976d2;
+}
+
+.class-info {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.class-topic {
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.attendance-card {
+  width: 100%;
+}
+
+.attendance-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.attendance-label {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.attendance-label.present {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.attendance-label.absent {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+/* Media queries para diseño responsive */
+@media (max-width: 768px) {
+  .classes-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .classes-list {
+    max-height: 200px;
+  }
+}
+
+.class-search {
+  margin-bottom: 15px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.no-results {
+  padding: 20px;
+  text-align: center;
+  color: #757575;
+  font-style: italic;
+}
+
+/* Estilos para el acordeón de clases */
+.classes-accordion-container {
+  margin-top: 20px;
+}
+
+.classes-accordion {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.class-header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.class-date {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3f51b5;
+  margin-bottom: 5px;
+}
+
+.class-title {
+  font-size: 16px;
+  color: #333;
+}
+
+.attendance-content {
+  padding: 15px 0;
+}
+
+.mat-expansion-panel {
+  margin-bottom: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.mat-expansion-panel-header {
+  padding: 16px 20px;
+  height: auto !important;
+  min-height: 64px;
+}
+
+.mat-expansion-panel-header.mat-expanded {
+  background-color: #e3f2fd;
+}
+
+.mat-expansion-panel-header:hover {
+  background-color: #f5f5f5;
+}
+
+.mat-expansion-panel-header.mat-expanded:hover {
+  background-color: #e3f2fd;
+}
+
+.no-results.mat-elevation-z1 {
+  padding: 15px;
+  text-align: center;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  margin-top: 10px;
+  color: #757575;
+}
+
+/* Media queries para diseño responsive */
+@media (max-width: 768px) {
+  .mat-expansion-panel-header {
+    padding: 12px 16px;
+  }
+  
+  .attendance-table {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+  }
+}
+
+/* Estilos para la condición del estudiante y estado de pago */
+.student-condition, .payment-status {
+  margin-top: 5px;
+  font-size: 12px;
+}
+
+/* Estilos para notificaciones de asistencia */
+::ng-deep .success-snackbar {
+  background-color: #4caf50;
+  color: white;
+}
+
+::ng-deep .error-snackbar {
+  background-color: #f44336;
+  color: white;
+}
+
+::ng-deep .mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  border-radius: 8px !important;
+}
+
+::ng-deep .mat-mdc-snack-bar-container .mat-mdc-button {
+  color: white !important;
+  font-weight: bold;
+}
+
+/* Animación para el registro de asistencia */
+.attendance-checkbox-transition {
+  transition: all 0.3s ease-in-out;
+}
+
+.attendance-checkbox-transition.checked {
+  transform: scale(1.1);
+}
+
+/* Ajuste responsivo para móviles */
+@media (max-width: 768px) {
+  /* Mantener los estilos responsivos existentes */
+}
+
+/* Estilos para la sección de asistencias */
+
+.save-attendance-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.save-spinner {
+  margin-left: 8px;
+}
+
+.pending-badge {
+  background-color: #ff4081;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+.attendance-status {
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.attendance-toggle-transition {
+  transition: all 0.3s ease-in-out;
+}
+
+.attendance-toggle-transition.checked {
+  transform: scale(1.05);
+}
+
+/* Personalización del slide toggle */
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  background-color: rgba(76, 175, 80, 0.5) !important;
+}
+
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background-color: #4caf50 !important;
+}
+
+/* Estilos para etiquetas de presencia */
+.attendance-label {
+  margin-left: 8px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.attendance-label.present {
+  color: #4caf50;
+}
+
+.attendance-label.absent {
+  color: #f44336;
+}
+
+/* Estilos para la sección de pagos */
+.payment-info-header {
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  padding: 8px 16px;
+  margin-bottom: 16px;
+}
+
+.payment-info-text {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  color: #666;
+}
+
+.payment-info-text mat-icon {
+  margin-right: 8px;
+  color: #2196f3;
+}
+
+.student-name-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.student-name {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.amount-cell, .date-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.amount-value, .date-value {
+  font-weight: 500;
+}
+
+.no-payment {
+  color: #999;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.actions-container {
+  display: flex;
+  gap: 8px;
+}
+
+/* Animaciones para botones de pago */
+.mat-icon-button {
+  transition: transform 0.2s ease;
+}
+
+.mat-icon-button:hover:not([disabled]) {
+  transform: scale(1.1);
+}
+
+button[color="accent"]:not([disabled]) {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(156, 39, 176, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(156, 39, 176, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(156, 39, 176, 0);
+  }
+}
+
+/* Estilos para calificaciones */
+.qualification-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.qualification-value {
+  font-weight: 600;
+  font-size: 16px;
+  color: #2196f3;
+}
+
+.no-qualification {
+  color: #999;
+  font-style: italic;
+  font-size: 12px;
+}
+
+/* Animación para botón de calificar */
+button[matTooltip="Calificar alumno"] {
+  transition: all 0.2s ease;
+}
+
+button[matTooltip="Calificar alumno"]:hover {
+  transform: scale(1.15);
+  color: #ff9800;
+} 

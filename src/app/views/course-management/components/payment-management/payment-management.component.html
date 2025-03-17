@@ -1,0 +1,68 @@
+<div class="payment-management-container">
+  
+  <div *ngIf="loadingStudents" class="loading-spinner">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Cargando información de pagos...</p>
+  </div>
+  
+  <div *ngIf="!loadingStudents && students.length === 0" class="no-data-message">
+    <mat-icon>payments</mat-icon>
+    <p>No hay estudiantes con pagos registrados en este curso</p>
+  </div>
+  
+  <table *ngIf="!loadingStudents && students.length > 0" mat-table [dataSource]="students" class="mat-elevation-z4 payments-table">
+    <!-- Columna de nombre -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Nombre</th>
+      <td mat-cell *matCellDef="let student">{{ student.name }}</td>
+    </ng-container>
+    
+    <!-- Columna de email -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let student">{{ student.email }}</td>
+    </ng-container>
+    
+    <!-- Columna de monto de pago -->
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef>Monto</th>
+      <td mat-cell *matCellDef="let student">
+        ${{ student.payments && student.payments.length > 0 ? student.payments[0].amount : course?.price || 0 }}
+      </td>
+    </ng-container>
+    
+    <!-- Columna de fecha de pago -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>Fecha de pago</th>
+      <td mat-cell *matCellDef="let student">
+        {{ student.payments && student.payments.length > 0 ? (student.payments[0].date | date:'dd/MM/yyyy') : 'No pagado' }}
+      </td>
+    </ng-container>
+    
+    <!-- Columna de estado de pago -->
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Estado</th>
+      <td mat-cell *matCellDef="let student" 
+          [ngClass]="{'status-paid': student.payment_status === 'PAGADO', 'status-pending': student.payment_status === 'PENDIENTE'}">
+        {{ student.payment_status === 'PAGADO' ? 'Pagado' : 'Pendiente' }}
+      </td>
+    </ng-container>
+    
+    <!-- Columna de acciones -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let student">
+        <button mat-icon-button color="primary" 
+                [disabled]="student.payment_status === 'PAGADO'"
+                matTooltip="Registrar pago"
+                (click)="registerPayment(student)">
+          <mat-icon>payments</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    
+    <!-- Definición de filas -->
+    <tr mat-header-row *matHeaderRowDef="displayedPaymentColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedPaymentColumns;"></tr>
+  </table>
+</div>

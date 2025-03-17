@@ -13,6 +13,7 @@ id?: number;
   isActive?: boolean;
   teacher_id?: number;
   category_id?: number;
+  categoryTitle?: string;
   createdAt?: string;
   updatedAt?: string;
 }

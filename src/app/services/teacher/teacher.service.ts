@@ -18,6 +18,10 @@ export class TeacherService {
   getTeacherById(id: number) {
     return this.http.get<Teacher>(`${this.baseUrl}view/${id}`);
   }
+
+  getTeacherByUserId(userId: number) {
+    return this.http.get<Teacher>(`${this.baseUrl}user/${userId}`);
+  }
   
   createTeacher(teacher: Teacher) {
     return this.http.post<Teacher>(`${this.baseUrl}create`, teacher);

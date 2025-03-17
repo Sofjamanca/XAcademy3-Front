@@ -139,8 +139,6 @@ export class CreateTeacherComponent implements OnInit {
         if (this.createTeacherForm.valid) {
             const teacherData = this.createTeacherForm.value;
             const isRegistered = teacherData.isRegistered;
-            console.log(teacherData);
-            // Eliminar campos que no son necesarios para la petición
             delete teacherData.isRegistered;
             
             // Si el usuario ya está registrado, no enviar contraseñas
