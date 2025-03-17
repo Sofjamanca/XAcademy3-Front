@@ -4,6 +4,7 @@ import { MaterialModule } from '../../material/material.module';
 import { CommonModule, NgIf, NgFor } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { EditProfileComponent } from '../../shared/components/edit-profile/edit-profile.component';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-student-profile',
@@ -19,6 +20,7 @@ import { EditProfileComponent } from '../../shared/components/edit-profile/edit-
 export class StudentProfileComponent implements OnInit{
   userName: string | null = null;
   isCollapsed = false;
+  isStudent: boolean = false;
 
   constructor( private router: Router, private apiService: ApiService){}
 

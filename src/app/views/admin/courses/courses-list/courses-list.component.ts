@@ -74,6 +74,10 @@ export class CoursesListComponent implements OnInit {
     this.router.navigate(['/admin/cursos/crear']);
   }
 
+  viewCourse(course: Course) {
+    this.router.navigate(['/admin/cursos/ver', course.id]);
+  }
+
   editCourse(course: Course) {
     this.router.navigate(['/admin/cursos/editar', course.id]);
   }

@@ -67,6 +67,14 @@ export const routes: Routes = [
           ),
     },
     {
+      path: 'noticias',
+      component: NewsListComponent
+    },
+    {
+      path: 'noticias/:id',
+      component: NewsDetailComponent
+    },
+    {
         path: 'course/:id',
         loadComponent: () =>
           import('./shared/components/course/course.component').then(
@@ -166,6 +174,18 @@ export const routes: Routes = [
             pathMatch: 'full'
           }
         ]
+    },
+    {
+      path: 'profesor',
+      component: TeacherProfileComponent,
+      canActivate: [teacherGuard],
+      children: [
+        {
+          path: 'editar',
+          loadComponent: () => import('./shared/components/edit-profile/edit-profile.component')
+            .then(m => m.EditProfileComponent)
+        },
+      ]
     },
     {
         path: '',

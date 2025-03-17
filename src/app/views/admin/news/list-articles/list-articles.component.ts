@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Article } from '../../../../core/models/article.model';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-list-articles',
   standalone: true,
@@ -39,7 +39,8 @@ export class ListArticlesComponent implements OnInit {
   constructor(
     private newsService: NewsService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -69,8 +70,7 @@ export class ListArticlesComponent implements OnInit {
   }
 
   viewArticle(article: Article) {
-    // Lógica para ver el detalle del artículo (puede redirigir o mostrar un diálogo)
-    window.open(`/noticias/${article.id}`, '_blank');
+    this.router.navigate(['/noticias/', article.id]);
   }
 
   editArticle(article: Article) {
@@ -82,6 +82,9 @@ export class ListArticlesComponent implements OnInit {
       this.newsService.deleteNews(article.id).subscribe({
         next: () => {
           this.loadArticles();
+          this.snackBar.open('Artículo eliminado correctamente', 'Cerrar', {
+            duration: 3000
+          });
         },
         error: (error) => {
           console.error('Error eliminando artículo:', error);

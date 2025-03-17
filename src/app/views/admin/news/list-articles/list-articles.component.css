@@ -1,5 +1,7 @@
 .articles-container {
-  padding: 20px;
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .header {
@@ -81,7 +83,6 @@ th.mat-header-cell {
   margin: 0 5px;
 }
 
-/* Aseguramos que el contenido no desborde y se muestre correctamente */
 td.mat-cell {
   padding: 8px 16px;
   word-break: break-word;

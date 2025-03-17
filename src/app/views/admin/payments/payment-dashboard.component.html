@@ -78,10 +78,6 @@
         <p *ngIf="!isLoading">No hay pagos pendientes.</p>
       </ng-template>
 
-      <!-- Paginador para pagos pendientes -->
-      <mat-paginator #pendingPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-                   *ngIf="!isLoading && pendingDataSource.data.length > 0">
-      </mat-paginator>
     </mat-tab>
 
     <mat-tab label="Pagados">
@@ -166,10 +162,6 @@
         <p *ngIf="!isLoading">No hay pagos aprobados.</p>
       </ng-template>
 
-      <!-- Paginador para pagos aprobados -->
-      <mat-paginator #approvedPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-                   *ngIf="!isLoading && approvedDataSource.data.length > 0">
-      </mat-paginator>
     </mat-tab>
   </mat-tab-group>
 
