@@ -74,7 +74,7 @@
   line-height: 1.6;
   opacity: 0;
   transform: translateY(20px);
-  /* animation: fadeInUp 0.8s ease-out forwards; */
+  animation: fadeInUp 0.8s ease-out forwards;
 }
 
 
