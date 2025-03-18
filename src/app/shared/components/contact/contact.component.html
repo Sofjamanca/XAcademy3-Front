@@ -1,4 +1,4 @@
-<div class="contact-container">
+<div class="contact-container" [ngClass]="{ 'mobile-layout': isMobile }">
     <div class="contact-content">
         <div class="contact-form">
             <h2>Contáctanos</h2>
@@ -6,23 +6,39 @@
             <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)">
                 <div class="form-group">
                     <label for="name">Nombre <span class="required">*</span></label>
-                    <input type="text" id="name" name="name" ngModel required class="form-control" />
+                    <input type="text" id="name" name="name" ngModel #name="ngModel" required class="form-control"
+                           [ngClass]="{'is-invalid': name.invalid && name.touched}" />
+                    <div *ngIf="name.invalid && name.touched" class="invalid-feedback">
+                        El nombre es obligatorio.
+                    </div>
                 </div>
-
+                
                 <div class="form-group">
                     <label for="email">Correo electrónico <span class="required">*</span></label>
-                    <input type="email" id="email" name="email" ngModel required class="form-control" />
+                    <input type="email" id="email" name="email" ngModel #email="ngModel" required email class="form-control"
+                           [ngClass]="{'is-invalid': email.invalid && email.touched}" />
+                    <div *ngIf="email.invalid && email.touched" class="invalid-feedback">
+                        El correo electrónico no es válido.
+                    </div>
                 </div>
-
+                
                 <div class="form-group">
                     <label for="phone">Número de teléfono <span class="required">*</span></label>
-                    <input type="tel" id="phone" name="phone" ngModel required class="form-control" />
+                    <input type="tel" id="phone" name="phone" ngModel #phone="ngModel" required class="form-control"
+                           pattern="^[0-9]{10,}$" [ngClass]="{'is-invalid': phone.invalid && phone.touched}" />
+                    <div *ngIf="phone.invalid && phone.touched" class="invalid-feedback">
+                        El número debe tener al menos 10 dígitos.
+                    </div>
                 </div>
-
+                
                 <div class="form-group">
                     <label for="message">Mensaje <span class="required">*</span></label>
-                    <textarea id="message" name="message" ngModel required class="form-control"></textarea>
-                </div>
+                    <textarea id="message" name="message" ngModel #message="ngModel" required class="form-control"
+                              [ngClass]="{'is-invalid': message.invalid && message.touched}"></textarea>
+                    <div *ngIf="message.invalid && message.touched" class="invalid-feedback">
+                        El mensaje es obligatorio.
+                    </div>
+                </div>                
 
                 <button type="submit" [disabled]="!contactForm.valid" class="btn-submit">
                     <i class="fas fa-paper-plane"></i> Enviar
@@ -50,24 +66,34 @@
                     <p><mat-icon class="icon">place</mat-icon> Dirección: Mitre 757, Cruz del Eje</p>
                 </div>
             </div>
-
-            <div class="social-links">
-                <h3>Síguenos</h3>
-                <a href="https://web.facebook.com/p/Incubadora-del-NOC-100063640024874/" target="_blank" class="social-item">
-                    <img src="/assets/images/Fcontact.jpg" alt="facebook" class="social-icon">
-                </a>
-                <a href="https://www.instagram.com/incubadoradelnoc/" target="_blank" class="social-item">
-                    <img src="/assets/images/Icontact.jpg" alt="Instagram" class="social-icon">
+          
+            <div class="whatsapp-container">
+                <a href="https://wa.me/3515336600" target="_blank">
+                    <img src="/assets/images/wsp.png" alt="WhatsApp" class="whatsapp-icon">
+                    <span>Chatea con nosotros en WhatsApp</span>
                 </a>
             </div>
-
+          
             <div class="map-container">
+                <h3>Nos encontramos acá, ¡visitanos!</h3>
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3430.011497468521!2d-64.80805402379832!3d-30.718077174591368!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x942dc3635df2046b%3A0x25b35b9f08155ae8!2sGral.%20Mitre%20757%2C%20X5280%20Cruz%20del%20Eje%2C%20C%C3%B3rdoba!5e0!3m2!1ses-419!2sar!4v1741699038354!5m2!1ses-419!2sar" 
                     width="600" height="450" 
                     style="border:0;" allowfullscreen="" 
                     loading="lazy" referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
             </div>
+          
+            <div class="social-links">
+                <h3>¡Síguenos en nuestras redes sociales!</h3>
+                <div class="social-icons">
+                    <a href="https://web.facebook.com/p/Incubadora-del-NOC-100063640024874/" target="_blank" class="social-item">
+                        <img src="/assets/images/Fcontact.jpg" alt="Facebook" class="social-icon">
+                    </a>
+                    <a href="https://www.instagram.com/incubadoradelnoc/" target="_blank" class="social-item">
+                        <img src="/assets/images/Icontact.jpg" alt="Instagram" class="social-icon">
+                    </a>
+                </div>
+            </div>            
         </div>
     </div>
 

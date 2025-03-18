@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Teacher } from '../../core/models/teacher.model';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,10 @@ export class TeacherService {
     return this.http.get<Teacher[]>(`${this.baseUrl}all`);
   }
 
-  getTeacherById(id: number) {
-    return this.http.get<Teacher>(`${this.baseUrl}view/${id}`);
+  getTeacherById(id: number): Observable<Teacher> {
+    return this.http.get<{ teacher: Teacher }>(`${this.baseUrl}view/${id}`).pipe(
+      map(response => response.teacher)
+    );
   }
 
   getTeacherByUserId(userId: number) {

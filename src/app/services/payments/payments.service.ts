@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -50,4 +51,9 @@ export class PaymentsService {
   getAllPaymentsWithoutFilter(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/`);
   }
+  
+  getPagoEstado(studentId: number, courseId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/statusgeneral/${studentId}/${courseId}`);
+  }
+
 }

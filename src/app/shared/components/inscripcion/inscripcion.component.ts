@@ -54,9 +54,7 @@ export class InscripcionComponent implements OnInit {
     this.apiService.getMe().subscribe(
       data => {
         this.studentData = data;
-        
-        if (this.studentData) {
-          // Verificar si el estudiante tiene datos y luego chequear el estado de inscripción
+        if (courseId && this.studentData) {
           this.checkEnrollmentStatus(courseId);
         } else {
           console.warn("No hay datos del estudiante disponibles.");

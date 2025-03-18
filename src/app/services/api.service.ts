@@ -1,7 +1,6 @@
-import { inject, Injectable } from '@angular/core';
-
+import { Inject, inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import { isPlatformBrowser } from '@angular/common';
 import { Observable, tap, from, map, mergeMap, catchError, throwError, switchMap } from 'rxjs';
 import { AuthStateServiceService } from './state/auth-state-service.service';
 import { Auth, getAuth, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signOut } from '@angular/fire/auth';
@@ -18,8 +17,9 @@ export class ApiService {
 
   constructor(private http: HttpClient,
     private authStateService: AuthStateServiceService,
-    private localStorageService: LocalStorageService
-  ) { }
+    private localStorageService: LocalStorageService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   //abstraigo la logica
   private storeUserSession(response: { token: string, refreshToken: string, role: string, name: string }) {
@@ -186,15 +186,14 @@ export class ApiService {
   }
 
   getMe(): Observable<any> {
-    const token = this.localStorageService.getItem('token');
-
+    let token: string | null = null;
+    if (isPlatformBrowser(this.platformId)) {
+      token = this.localStorageService.getItem('token') || localStorage.getItem('token');
+    }
     if (!token) {
-      console.error('Token no encontrado');
       return throwError(() => new Error('Token no proporcionado'));
     }
-
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
     return this.http.get<any>(`${this.apiUrl}/me`, { headers }).pipe(
       map(data => ({
         user_id: data.id,
@@ -204,12 +203,11 @@ export class ApiService {
         address: data.address
       })),
       catchError(error => {
-        console.error("Error en getMe:", error);
         return throwError(() => new Error(error));
       })
     );
   }
-
+  
   updateUserProfile(userData: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/update-profile`, userData);
   }

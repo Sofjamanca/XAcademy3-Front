@@ -8,19 +8,20 @@ import { adminGuard } from './guards/admin.guard';
 import { loginGuard } from './guards/login.guards';
 import { InscripcionComponent } from './shared/components/inscripcion/inscripcion.component';
 import { StudentProfileComponent } from './views/student-profile/student-profile.component';
+import { WeComponent } from './shared/components/we/we.component';
+import { ContactComponent } from './shared/components/contact/contact.component';
+import { CreditsComponent } from './shared/components/credits/credits.component';
+import { CertificatesDowComponent } from './views/student-profile/certificates-dow/certificates-dow.component';
 import { MisCursosComponent } from './views/student-profile/mis-cursos/mis-cursos.component';
 import { PendingComponent } from './views/student-profile/pending/pending.component';
 import { WeComponent } from './shared/components/we/we.component';
 import { ContactComponent } from './shared/components/contact/contact.component';
 import { CreditsComponent } from './shared/components/credits/credits.component';
-
-
 import { TeacherProfileComponent } from './views/teacher-profile/teacher-profile.component';
 import { TeachersListComponent } from './views/admin/teachers/teachers-list/teachers-list.component';
 import { TeacherDetailComponent } from './views/admin/teachers/teacher-detail/teacher-detail.component';
 import { CreateTeacherComponent } from './views/admin/teachers/create-teacher/create-teacher.component';
 import { CourseManagementComponent } from './views/course-management/course-management.component';
-
 import { HomeStudentComponent } from './views/student-profile/homeStu/homestudent.component';
 import { ListArticlesComponent } from './views/admin/news/list-articles/list-articles.component';
 import { CreateArticleComponent } from './views/admin/news/create-article/create-article.component';
@@ -172,26 +173,32 @@ export const routes: Routes = [
         ]
     },
     {
-        path: 'perfil',
-        loadComponent: () =>
-          import('./views/student-profile/student-profile.component').then(
-            (m) => m.StudentProfileComponent
-          ),
-        // canActivateChild: [loginGuard],
-        // canActivate: [admiGuard],
-        children: [
-          {
-            path: 'editar',
-            loadComponent: () => import('./shared/components/edit-profile/edit-profile.component')
-              .then(m => m.EditProfileComponent)
-          },
-          {
-            path: '',
-            component: HomeComponent,
-            pathMatch: 'full'
-          }
-        ]
-    },
+      path: 'perfil',
+      loadComponent: () =>
+        import('./views/student-profile/student-profile.component').then(
+          (m) => m.StudentProfileComponent
+        ),
+      // canActivateChild: [loginGuard],
+      children: [
+        {
+          path: '',
+          component: MisCursosComponent
+        },
+        { path: 'mis-cursos', 
+          component: MisCursosComponent
+        },
+        { path: 'pagos',
+          component: PendingComponent
+        },
+        {
+          path: 'editar',
+          loadComponent: () => import('./shared/components/edit-profile/edit-profile.component')
+            .then(m => m.EditProfileComponent)
+        },
+        { path: 'certificates/:id',
+          component: CertificatesDowComponent
+        },
+      ]},
     {
       path: 'profesor',
       component: TeacherProfileComponent,

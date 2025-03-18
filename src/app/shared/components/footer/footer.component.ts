@@ -66,6 +66,5 @@ export class FooterComponent implements AfterViewInit {
         }
       });
     }
-  
   }
 }

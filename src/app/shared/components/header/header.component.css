@@ -26,6 +26,7 @@
 .logo {
   width: 3em;
   margin-right: 10px;
+  margin-left: 20px;
 }
 
 .search-bar {
@@ -63,7 +64,14 @@
 
 .user_name{
   font-size: 0.8rem;
-  padding: 15px;
+}
+
+.dropdown-content button {
+  width: fit-content;
+  height: 2em;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 

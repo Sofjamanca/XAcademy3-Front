@@ -1,14 +1,15 @@
 <div class="main-container">
 
-  <div class="course-header" style="background-image: url('/assets/images/portada.png')">
+  <div class="course-header" [ngClass]="{ 'unavailable': isQuotaZero }" style="background-image: url('/assets/images/portada.png')">
     <div class="info-portada">
     <h2 class="title">{{ course?.title }}</h2>
       <span class="tag">Nuevo</span>
-      <span class="students">👥 32</span>
+      <span class="students">👥 {{ inscriptionCount }}</span>
       <span class="teacher">👨‍🏫 Profesor: {{ course?.teacherName || 'No asignado' }}</span>
-
     </div>
-    <div class="course-status">Disponible</div>
+    <div class="course-status"[ngClass]="{ 'unavailable': isQuotaZero }">
+      {{ isQuotaZero ? 'Sin cupos' : 'Disponible' }}
+    </div>
   </div>
 
 
@@ -21,13 +22,34 @@
       <p class="info"><strong>🎯 Modalidad:</strong> {{ course?.modalidad }}</p>
       <p class="info"><strong>📖 Categoría:</strong> {{ course?.categoryTitle || 'Sin categoría' }}</p>
 
-      <p class="price"><strong>💰 Precio:</strong> ${{ course?.price }}</p>
+      <div class="price-container">
+        <p class="price">
+          <strong>💰 Precio:</strong> ${{ course?.price }}
+        </p>
+      </div>
       
-      <div class="payment-methods">
-        <img src="assets/images/mercado_pago.png" alt="Mercado Pago">
-        <img src="assets/images/visa.png" alt="Visa">
-        <img src="assets/images/mastercard.png" alt="Mastercard">
-        <img src="assets/images/rapipago.png" alt="Rapipago">
+      <div class="payment-methods-section">
+        <h3 class="payment-title">Medios de Pago</h3>
+        <div class="payment-methods">
+          <div class="payment-icon">
+            <img src="assets/images/mp/MP1.jpg" alt="Mercado Pago">
+          </div>
+          <div class="payment-icon">
+            <img src="assets/images/mp/MP2.png" alt="Visa">
+          </div>
+          <div class="payment-icon">
+            <img src="assets/images/mp/MP3.png" alt="Mastercard">
+          </div>
+          <div class="payment-icon">
+            <img src="assets/images/mp/MP4.png" alt="Rapipago">
+          </div>
+          <div class="payment-icon">
+            <img src="assets/images/mp/MP5.png" alt="Efectivo">
+          </div>
+          <div class="payment-icon">
+            <img src="assets/images/mp/MP6.webp" alt="Otro método">
+          </div>
+        </div>
       </div>
       <button mat-button color="accent" class="home-button animate-scale" (click)="goHome()">Volver al Home</button>
     </div>
@@ -35,7 +57,16 @@
 
     <mat-card class="floating-card">
       <img [src]="course?.image_url" alt="Imagen del curso" class="course-thumbnail">
-      <button mat-raised-button color="primary" class="start-button" (click)="inscribirse()">Empezar curso</button>
+      <button mat-raised-button [ngClass]="{ 'warning': isLowQuota }" 
+      class="start-button" (click)="isQuotaZero ? goCourses() : verificarInscripcion()">
+        {{ isQuotaZero ? 'Ver otros cursos' : 'Empezar curso' }}
+      </button>
+
+
+      <div *ngIf="isLowQuota" class="last-places-warning">
+        🔥 ¡Quedan los últimos lugares de inscripción!
+      </div>
+
       <div class="course-includes">
         <p>✅ Certificado de finalización</p>
         <p>📥 Material descargable</p>

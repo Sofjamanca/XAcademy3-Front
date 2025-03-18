@@ -1,0 +1,26 @@
+<div class="certificates-container">
+  <h1>🎓 Mis Certificados</h1>
+
+  <div *ngIf="certificados.length > 0; else noCertificates">
+    <div *ngFor="let cert of certificados" class="certificate-card">
+      <div class="certificate-header">
+        <img src="/assets/images/cert.jpg" alt="Certificado" class="cert-icon" />
+        <h2>{{ cert.course.title }}</h2>
+        <span>📅 Fecha de emisión: {{ cert.issue_date | date }}</span>
+      </div>
+      
+      <div class="certificate-footer">
+        <button (click)="descargarCertificado(cert.student_id, cert.course_id)" class="btn">
+          <span class="material-icons">cloud_download</span> Descargar Certificado
+        </button>        
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noCertificates>
+    <div class="no-certificates">
+      <img src="/assets/images/noCert.jpg" alt="Sin Certificados" class="no-cert-img" />
+      <p>No tienes certificados disponibles aún.</p>
+    </div>
+  </ng-template>
+</div>

@@ -1,20 +1,27 @@
-import { Component } from '@angular/core';
+
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgForOf } from '@angular/common';
+import { NgIf, NgForOf, NgClass } from '@angular/common';
 import { MaterialModule } from '../../../material/material.module';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DeviceHelper } from '../../../core/models/helpers/device-helper';
+import emailjs from 'emailjs-com'
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [FormsModule, NgForOf, NgIf, MaterialModule],
+  imports: [FormsModule, NgForOf, NgIf, MaterialModule, NgClass],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.css'
 })
 
-export class ContactComponent {
-  constructor(private snackBar: MatSnackBar) {}
+
+export class ContactComponent implements OnInit{
+  isMobile: boolean = false;
+  
+  constructor(private deviceHelper: DeviceHelper, private snackBar: MatSnackBar) {}
+
 
    faqs = [
     { 
@@ -65,17 +72,43 @@ export class ContactComponent {
   ];
   
 
+  ngOnInit(): void {
+    this.deviceHelper.watchDeviceChange((isMobile) => {
+      this.isMobile = isMobile;
+    });
+  }
+
+
   toggleAnswer(item: any) {
     item.showAnswer = !item.showAnswer; 
   }
 
   onSubmit(form: NgForm) {
     if (form.valid) {
-      this.snackBar.open('✅ Gracias por tu mensaje. Nos pondremos en contacto pronto.', 'Cerrar', {
-        duration: 3000, 
-        panelClass: ['success-snackbar']
-      });
-      form.reset();
+      const formData = {
+        name: form.value.name,
+        email: form.value.email,
+        phone: form.value.phone,
+        message: form.value.message,
+        time: new Date().toLocaleString(), 
+      };
+
+      emailjs.send('service_vf7d7lk', 'template_y2qfuzc', formData, 'gERchL2IHqJiGIhkj')
+        .then(response => {
+          console.log('Mensaje enviado con éxito!', response);
+          this.snackBar.open('✅ Gracias por tu mensaje. Nos pondremos en contacto pronto.', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['success-snackbar']
+          });
+          form.reset();
+        })
+        .catch(error => {
+          console.error('Error al enviar el mensaje', error);
+          this.snackBar.open('⚠️ Ocurrió un error al enviar el mensaje. Intenta nuevamente.', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['error-snackbar']
+          });
+        });
     } else {
       this.snackBar.open('⚠️ Por favor, completa todos los campos.', 'Cerrar', {
         duration: 3000,

@@ -27,5 +27,15 @@
       </section>
     </div>
   </div>
+  <div class="values-container">
+    <h2>¿Cómo somos?</h2>
+    <div class="values-grid">
+      <div class="value" *ngFor="let value of values">
+        <img [src]="value.icon" alt="{{ value.title }}">
+        <h3>{{ value.title }}</h3>
+        <p>{{ value.content }}</p>
+      </div>
+    </div>
+  </div>
 </div>
 
