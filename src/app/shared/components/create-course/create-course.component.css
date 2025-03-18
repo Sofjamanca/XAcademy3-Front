@@ -1,18 +1,47 @@
 .crear-curso-container {
   display: flex;
-  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  flex-direction: column;
   align-items: center;
-  height: 150vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: auto;
+  z-index: 0;
+ 
   background: linear-gradient(to bottom, #ff7e5f, #feb47b);
 }
 
 .crear-curso-card {
-  width: 600px;
-  padding: 16px;
+  width: 310px;
+  margin: 2rem 0;
+  height: 100%;
 }
+
+
+
 
 mat-card-title {
   font-size: 20px;
   font-weight: bold;
   text-align: center;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .crear-curso-container {
+    width: 100%;
+  }
+  .crear-curso-card {
+    width: 600px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .crear-curso-container {
+    width: 100%;
+  }
+  .crear-curso-card {
+    width: 800px;
+  }
+  
 }

@@ -24,7 +24,7 @@ export class InscripcionComponent implements OnInit {
     {label:'DNI', atr:'dni', type: 'number'},
     {label:'Telefono',atr:'phone', type: 'number'},
     {label:'Email', atr:'email', type: 'text'},
-    {label:'Fecha de nacimiento',atr:'birthday',  type: 'date'},
+    {label:'Fecha de nacimiento',atr:'birthday',  type: 'date', max:new Date()},
     { label: 'Dirección', atr: 'address', type: 'text' }
   ];
   studentData: any = null;
@@ -44,6 +44,13 @@ export class InscripcionComponent implements OnInit {
   ngOnInit(): void {
     const courseId = Number(this.route.snapshot.paramMap.get('id'));
   
+    // Verificar que el courseId sea válido
+    if (!courseId) {
+      console.error('ID de curso no válido');
+      return;
+    }
+  
+    // Obtener los datos del estudiante y realizar la lógica de enrolamiento
     this.apiService.getMe().subscribe(
       data => {
         this.studentData = data;
@@ -56,26 +63,31 @@ export class InscripcionComponent implements OnInit {
       error => {
         console.error("Error al obtener los datos del estudiante:", error);
       }
-    ); 
+    );
   
-    if (courseId) {
-      this.coursesService.getCourseById(courseId).subscribe((data) => {
-        this.curso = data;
+    // Obtener los detalles del curso
+    this.coursesService.getCourseById(courseId).subscribe(
+      (courseData) => {
+        this.curso = courseData;
   
-        if (this.curso.category_id) {
+        if (this.curso?.category_id) {
+          // Obtener la categoría del curso
           this.coursesService.getCategoryById(this.curso.category_id).subscribe({
             next: (category) => {
               if (category) {
-                this.category = category; 
+                this.category = category;
               }
-              this.cdr.detectChanges(); 
             },
             error: (err) => console.error('Error obteniendo la categoría:', err),
           });
         }
-      });
-    }
+      },
+      (error) => {
+        console.error('Error obteniendo los datos del curso:', error);
+      }
+    );
   }
+  
   
 
   checkEnrollmentStatus(courseId: number) {

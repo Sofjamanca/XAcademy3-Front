@@ -61,12 +61,16 @@ export class HeaderComponent implements OnInit {
     {text: "Contacto", route: "/contact"},
     {text: "Créditos", route: "/credits"},
   ]
-
+  activeMenuItem: string = 'Inicio';
   menuOpen: boolean = false;
+  
 
  
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
+  }
+  closeMenu():void{
+    this.menuOpen = false;
   }
   openLogin() {
     this.modalService.openModal(LoginComponent, { title: 'Explora, Aprende, Crece' });
