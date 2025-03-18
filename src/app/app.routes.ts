@@ -9,9 +9,6 @@ import { adminGuard } from './guards/admin.guard';
 import { loginGuard } from './guards/login.guards';
 import { InscripcionComponent } from './shared/components/inscripcion/inscripcion.component';
 import { StudentProfileComponent } from './views/student-profile/student-profile.component';
-import { WeComponent } from './shared/components/we/we.component';
-import { ContactComponent } from './shared/components/contact/contact.component';
-import { CreditsComponent } from './shared/components/credits/credits.component';
 import { CertificatesDowComponent } from './views/student-profile/certificates-dow/certificates-dow.component';
 import { TeacherProfileComponent } from './views/teacher-profile/teacher-profile.component';
 import { TeachersListComponent } from './views/admin/teachers/teachers-list/teachers-list.component';
@@ -27,7 +24,10 @@ import { EditArticleComponent } from './views/admin/news/edit-article/edit-artic
 import { NewsListComponent } from './views/news/news-list/news-list.component';
 import { NewsDetailComponent } from './views/news/news-detail/news-detail.component';
 import { PaymentDashboardComponent } from './views/admin/payments/payment-dashboard.component';
+import { WeComponent } from './shared/components/we/we.component';
 import { teacherGuard } from './guards/teacher.guard';
+import { CreditsComponent } from './shared/components/credits/credits.component';
+import { ContactComponent } from './shared/components/contact/contact.component';
 
 export const routes: Routes = [
     {
