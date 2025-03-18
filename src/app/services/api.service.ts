@@ -29,7 +29,7 @@ export class ApiService {
     this.localStorageService.setItem('role', response.role);
     this.authStateService.setAuthState(true);
   }
-  
+
   login(credentials: { email: string, password: string }): Observable<any> {
     return this.http.post<{ message: string, user: { name: string, role: string }, accessToken: string, refreshToken: string }>(
       `${this.apiUrl}/login`,
@@ -51,7 +51,7 @@ export class ApiService {
       })
     );
   }
-  
+
   logout(): Observable<void> {
     return new Observable(observer => {
       this.authStateService.setAuthState(false);
@@ -75,7 +75,7 @@ export class ApiService {
       });
     });
   }
-  
+
 
   register(name: string, lastname: string, email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, { name, lastname, email, password });
@@ -90,7 +90,7 @@ export class ApiService {
   }
 
   getAuthToken(): string | null{
-    return this.localStorageService.getItem('token'); 
+    return this.localStorageService.getItem('token');
   }
 
   getRefreshToken(): string | null{
@@ -120,6 +120,9 @@ export class ApiService {
   isStudent(): boolean {
     return this.localStorageService.getItem('role') === 'STUDENT';
   }
+  isTeacher(): boolean {
+    return this.localStorageService.getItem('role') === 'TEACHER';
+  }
 
   getUsersCount(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/users/count`);
@@ -131,7 +134,7 @@ export class ApiService {
       switchMap((result) => {
         const user = result.user;
         return this.http.post<{ token: string, refreshToken: string, role: string, name: string }>(
-          `${this.apiUrl}/login-social`, 
+          `${this.apiUrl}/login-social`,
           {
             email: user.email,
             name: user.displayName,
@@ -155,7 +158,7 @@ export class ApiService {
       })
     );
   }
-  
+
 
   signInWithFacebook(): Observable<any> {
     const provider = new FacebookAuthProvider();
@@ -183,30 +186,23 @@ export class ApiService {
   }
 
   getMe(): Observable<any> {
-    let token = this.localStorageService.getItem('token');
-  
+    const token = this.localStorageService.getItem('token');
+
     if (!token) {
       console.error('Token no encontrado');
       return throwError(() => new Error('Token no proporcionado'));
     }
-  
-    if (this.isTokenExpired(token)) {
-      console.log('Token expirado, intentando refrescar...');
-      return this.refreshToken().pipe(
-        switchMap(newToken => {
-          this.localStorageService.setItem('token', newToken);
-          return this.getMe(); // Llamar de nuevo con el nuevo token
-        }),
-        catchError(error => {
-          console.error('Error al refrescar token:', error);
-          return throwError(() => new Error('Error al refrescar token'));
-        })
-      );
-    }
-  
+
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  
+
     return this.http.get<any>(`${this.apiUrl}/me`, { headers }).pipe(
+      map(data => ({
+        user_id: data.id,
+        dni: data.dni,
+        phone: data.phone,
+        birthday: data.birthday,
+        address: data.address
+      })),
       catchError(error => {
         console.error("Error en getMe:", error);
         return throwError(() => new Error(error));
@@ -214,9 +210,8 @@ export class ApiService {
     );
   }
 
-  isTokenExpired(token: string): boolean {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const expiration = payload.exp * 1000;
-    return Date.now() >= expiration;
+  updateUserProfile(userData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/update-profile`, userData);
   }
-}  
+
+  }

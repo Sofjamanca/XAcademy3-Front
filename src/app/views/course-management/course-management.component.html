@@ -1,0 +1,100 @@
+<div class="course-management-container" *ngIf="!loading; else loadingTemplate">
+  <div *ngIf="error" class="error-message">
+    <mat-icon>error</mat-icon>
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="!error && course" class="course-info">
+  <div class="course-header">
+        <button mat-icon-button color="primary" (click)="goBack()" aria-label="Volver">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+      <h2>{{ course.title }}</h2>
+    </div>
+
+
+    <!-- Tabs para organizar la información -->
+    <mat-tab-group [(selectedIndex)]="selectedTabIndex" animationDuration="300ms">
+      <!-- Tab de estudiantes -->
+      <mat-tab label="Estudiantes">
+        <div class="tab-content">
+          <h2>Estudiantes inscritos</h2>
+          
+          <div *ngIf="loadingStudents" class="loading-spinner">
+            <mat-spinner diameter="40"></mat-spinner>
+            <p>Cargando estudiantes...</p>
+  </div>
+
+          <div *ngIf="!loadingStudents && students.length === 0" class="no-data-message">
+            <mat-icon>people_outline</mat-icon>
+            <p>No hay estudiantes inscritos en este curso</p>
+  </div>
+
+          <!-- Componente modularizado de estudiantes con apariencia original -->
+          <app-student-management 
+            [courseId]="courseId" 
+            [students]="students"
+            [loadingStudents]="loadingStudents">
+          </app-student-management>
+        </div>
+      </mat-tab>
+
+      <!-- Tab de pagos -->
+      <mat-tab label="Pagos">
+        <div class="tab-content">
+          <h2>Pagos del curso</h2>
+          
+          <div *ngIf="loadingStudents" class="loading-spinner">
+            <mat-spinner diameter="40"></mat-spinner>
+            <p>Cargando información de pagos...</p>
+          </div>
+
+          <div *ngIf="!loadingStudents && students.length === 0" class="no-data-message">
+            <mat-icon>payments</mat-icon>
+            <p>No hay estudiantes con pagos registrados en este curso</p>
+          </div>
+
+          <!-- Componente modularizado de pagos con apariencia original -->
+          <app-payment-management 
+            [course]="course" 
+            [students]="students"
+            [loadingStudents]="loadingStudents">
+          </app-payment-management>
+        </div>
+      </mat-tab>
+
+      <!-- Tab de asistencias -->
+      <mat-tab label="Asistencias">
+        <div class="tab-content">
+          <div class="attendance-header">
+            <h2>Gestión de Asistencias</h2>
+            <button mat-raised-button color="primary" (click)="createNewClass()">
+              <mat-icon>add</mat-icon>
+              Nueva Clase
+            </button>
+          </div>
+
+          <div *ngIf="loadingClasses" class="loading-spinner">
+            <mat-spinner diameter="40"></mat-spinner>
+            <p>Cargando clases...</p>
+          </div>
+
+          <!-- Componente modularizado de asistencias -->
+          <app-attendance-management 
+            [courseId]="courseId!" 
+            [classes]="classes" 
+            [students]="students"
+            *ngIf="!loadingClasses">
+          </app-attendance-management>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div> 
+
+<ng-template #loadingTemplate>
+  <div class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Cargando información del curso...</p>
+  </div>
+</ng-template> 

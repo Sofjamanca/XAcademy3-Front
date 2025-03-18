@@ -56,6 +56,10 @@ export class CoursesService {
     );
   }
 
+  enableDisableCourse(id: number, active: boolean): Observable<string> {
+    return this.http.put<string>(`${this.apiUrl}active/${id}`, { active });
+   }
+
   getFilteredCourses(
     categories: number[] = [],
     price: string = '',

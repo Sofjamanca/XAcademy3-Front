@@ -1,0 +1,169 @@
+<div class="payments-dashboard-container">
+  <h2 >Administración de Pagos</h2>
+
+  <mat-tab-group (selectedTabChange)="onTabChange($event)">
+    <mat-tab label="Pendientes">
+      <!-- Estado de carga -->
+      <div *ngIf="isLoading" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p class="loading-text">Cargando pagos pendientes...</p>
+      </div>
+
+      <!-- Tabla de pagos pendientes -->
+      <mat-table [dataSource]="pendingDataSource" matSort #pendingSort="matSort" 
+                *ngIf="!isLoading && pendingDataSource.data.length > 0; else noPendingPayments" 
+                class="mat-elevation-z8">
+        
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+          <mat-cell *matCellDef="let payment"> {{payment.id}} </mat-cell>
+        </ng-container>
+
+        <!-- Estudiante Column -->
+        <ng-container matColumnDef="student">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Estudiante </mat-header-cell>
+          <mat-cell *matCellDef="let payment"> 
+            <mat-icon>person</mat-icon>
+            {{payment.student?.name || 'N/A'}} {{payment.student?.lastname || ''}}
+          </mat-cell>
+        </ng-container>
+
+        <!-- Curso Column -->
+        <ng-container matColumnDef="course">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Curso </mat-header-cell>
+          <mat-cell *matCellDef="let payment"> 
+            <div class="course-container">
+              <div class="course-info">
+                <mat-icon>school</mat-icon>
+                {{payment.course?.name || 'N/A'}}
+              </div>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Estado Column -->
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Estado </mat-header-cell>
+          <mat-cell *matCellDef="let payment"> 
+            <span class="status-chip pending-chip">
+              <mat-icon>hourglass_top</mat-icon> Pendiente
+            </span>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Monto Column -->
+        <ng-container matColumnDef="amount">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Monto </mat-header-cell>
+          <mat-cell *matCellDef="let payment"> 
+            <strong>$ {{payment.course?.price || 0}}</strong>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Acción Column -->
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
+          <mat-cell *matCellDef="let payment">
+            <button mat-raised-button color="primary" (click)="openStatusDialog(payment)">
+              <mat-icon>payment</mat-icon> Cambiar estado
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="pendingDisplayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: pendingDisplayedColumns;"></mat-row>
+      </mat-table>
+
+      <ng-template #noPendingPayments>
+        <p *ngIf="!isLoading">No hay pagos pendientes.</p>
+      </ng-template>
+
+    </mat-tab>
+
+    <mat-tab label="Pagados">
+      <!-- Estado de carga -->
+      <div *ngIf="isLoading" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p class="loading-text">Cargando pagos aprobados...</p>
+      </div>
+
+      <!-- Tabla de pagos aprobados -->
+      <mat-table [dataSource]="approvedDataSource" matSort #approvedSort="matSort" 
+                *ngIf="!isLoading && approvedDataSource.data.length > 0; else noApprovedPayments" 
+                class="mat-elevation-z8">
+        
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+          <mat-cell *matCellDef="let payment"> {{payment.id}} </mat-cell>
+        </ng-container>
+
+        <!-- Estudiante Column -->
+        <ng-container matColumnDef="student">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Estudiante </mat-header-cell>
+          <mat-cell *matCellDef="let payment"> 
+            <mat-icon>person</mat-icon>
+            {{payment.student?.name || 'N/A'}} {{payment.student?.lastname || ''}}
+          </mat-cell>
+        </ng-container>
+
+        <!-- Curso Column -->
+        <ng-container matColumnDef="course">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Curso </mat-header-cell>
+          <mat-cell *matCellDef="let payment"> 
+            <div class="course-container">
+              <div class="course-info">
+                <mat-icon>school</mat-icon>
+                {{payment.course?.name || 'N/A'}}
+              </div>
+            </div>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Fecha Column -->
+        <ng-container matColumnDef="date">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Pago </mat-header-cell>
+          <mat-cell *matCellDef="let payment"> 
+            {{formatDate(payment.updatedAt || payment.created_at)}} 
+          </mat-cell>
+        </ng-container>
+
+        <!-- Aprobado Column -->
+        <ng-container matColumnDef="approved">
+          <mat-header-cell *matHeaderCellDef> Aprobado </mat-header-cell>
+          <mat-cell *matCellDef="let payment"> 
+            <mat-icon class="aprobado">verified</mat-icon>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Monto Column -->
+        <ng-container matColumnDef="amount">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Monto </mat-header-cell>
+          <mat-cell *matCellDef="let payment"> 
+            <strong>$ {{payment.course?.price || 0}}</strong>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Acción Column -->
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
+          <mat-cell *matCellDef="let payment">
+            <button mat-raised-button color="primary" (click)="openStatusDialog(payment)">
+              <mat-icon>edit</mat-icon> Cambiar estado
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="approvedDisplayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: approvedDisplayedColumns;"></mat-row>
+      </mat-table>
+
+      <ng-template #noApprovedPayments>
+        <p *ngIf="!isLoading">No hay pagos aprobados.</p>
+      </ng-template>
+
+    </mat-tab>
+  </mat-tab-group>
+
+ 
+</div> 

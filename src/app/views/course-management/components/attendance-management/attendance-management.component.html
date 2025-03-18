@@ -1,0 +1,101 @@
+<div class="attendance-container">
+  <!-- Filtro de clases -->
+  <div class="filter-container">
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Filtrar clases</mat-label>
+      <input matInput [(ngModel)]="classFilterText" placeholder="Buscar por tema o fecha">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <!-- Lista de clases -->
+  <div class="classes-list">
+    <mat-accordion *ngIf="filteredClasses.length > 0; else noClasses" class="classes-accordion">
+      <mat-expansion-panel *ngFor="let class of filteredClasses" 
+                         [expanded]="class.id === expandedClassId"
+                         (opened)="toggleClassExpansion(class.id)">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div class="class-header">
+              <span class="class-topic">{{ class.topic || 'Clase sin tema' }}</span>
+            </div>
+          </mat-panel-title>
+          <mat-panel-description>
+            <span class="class-date">{{ getClassDate(class) }}</span>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        
+        <!-- Tabla de asistencias -->
+        <div class="attendance-table-container">
+          <div *ngIf="savingAttendance" class="loading-overlay">
+            <mat-spinner diameter="50"></mat-spinner>
+            <p>Cargando asistencias...</p>
+          </div>
+
+          <table mat-table [dataSource]="students" class="mat-elevation-z2 attendance-table">
+            <!-- Columna de nombre -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Nombre</th>
+              <td mat-cell *matCellDef="let student">{{ student.name }}</td>
+            </ng-container>
+
+            <!-- Columna de email -->
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>Email</th>
+              <td mat-cell *matCellDef="let student">{{ student.email }}</td>
+            </ng-container>
+
+            <!-- Columna de presente -->
+            <ng-container matColumnDef="present">
+              <th mat-header-cell *matHeaderCellDef>Presente</th>
+              <td mat-cell *matCellDef="let student">
+                <mat-slide-toggle
+                  [checked]="getAttendanceStatus(student, class.id)"
+                  (change)="toggleAttendance(student, class.id)"
+                  [disabled]="savingAttendance"
+                  color="primary"
+                  class="attendance-toggle-transition"
+                  [class.checked]="getAttendanceStatus(student, class.id)">
+                </mat-slide-toggle>
+              </td>
+            </ng-container>
+
+            <!-- Columna de acciones -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Asistencia</th>
+              <td mat-cell *matCellDef="let student">
+                <!-- Acciones específicas del estudiante si las hubiera -->
+                <span class="attendance-label" [class.present]="getAttendanceStatus(student, class.id)" [class.absent]="!getAttendanceStatus(student, class.id)">
+                  {{ getAttendanceStatus(student, class.id) ? 'Presente' : 'Ausente' }}
+                </span>
+              </td>
+            </ng-container>
+
+            <!-- Cabecera y filas -->
+            <tr mat-header-row *matHeaderRowDef="displayedAttendanceColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedAttendanceColumns;" class="student-row"></tr>
+          </table>
+
+          <!-- Botón para guardar cambios -->
+          <div class="action-buttons">
+            <button mat-raised-button color="primary" 
+                    (click)="saveAttendanceChanges(class.id)"
+                    [disabled]="savingAttendance || pendingAttendanceChanges.size === 0">
+              Guardar cambios
+              <span *ngIf="pendingAttendanceChanges.size > 0" class="pending-badge">
+                {{ pendingAttendanceChanges.size }}
+              </span>
+            </button>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <ng-template #noClasses>
+      <div class="no-classes-message">
+        <mat-icon>warning</mat-icon>
+        <p>No hay clases para mostrar</p>
+      </div>
+    </ng-template>
+  </div>
+</div> 

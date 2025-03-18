@@ -1,0 +1,61 @@
+<div class="article-detail-container">
+
+  <!-- Estado de carga -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p class="loading-message">Cargando artículo...</p>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div class="error-container" *ngIf="!isLoading && error">
+    <mat-icon color="warn" style="font-size: 48px; width: 48px; height: 48px;">error_outline</mat-icon>
+    <p class="error-message">{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="goBack()">Volver a noticias</button>
+  </div>
+
+  <!-- Contenido del artículo -->
+  <ng-container *ngIf="!isLoading && !error && article">
+    <!-- Cabecera del artículo -->
+    <header class="article-header">
+      <h1 class="article-title">{{ article.title }}</h1>
+      <div class="article-meta">
+        <div class="article-author" *ngIf="article.author">
+          <mat-icon>person</mat-icon>
+          <span>{{ article.author.name }} {{ article.author.lastname || '' }}</span>
+        </div>
+        <div class="article-date" *ngIf="article.createdAt">
+          <mat-icon>schedule</mat-icon>
+          <span>{{ getFormattedDate(article.createdAt) }}</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Imagen del artículo -->
+    <div class="article-image-container" *ngIf="getImageUrl()">
+      <img class="article-image" [src]="getImageUrl()" alt="{{ article.title }}">
+    </div>
+
+    <!-- Cuerpo del artículo -->
+    <div class="article-body">
+      <!-- Descripción/Resumen -->
+      <div class="article-description" *ngIf="article.description">
+        <div [innerHTML]="formattedDescription"></div>
+      </div>
+
+      <!-- Contenido principal -->
+      <div class="article-content" *ngIf="article.content">
+        <div [innerHTML]="getFormattedContent(article.content)"></div>
+      </div>
+    </div>
+
+    <!-- Pie del artículo -->
+    <div class="article-footer">
+      
+      <button class="back-button" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Volver a noticias
+      </button>
+    </div>
+
+  </ng-container>
+</div>

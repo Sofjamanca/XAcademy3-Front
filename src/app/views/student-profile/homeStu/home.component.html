@@ -1,0 +1,44 @@
+<div class="dashboard">
+    <!-- Total Cursos -->
+    <mat-card class="mat-elevation-z4" style="margin-top: 16px;">
+      <mat-card-header>
+        <mat-card-title>Total Cursos Inscritos</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <h3>{{ totalCourses }}</h3>
+      </mat-card-content>
+    </mat-card>
+  
+    <!-- Progreso de Cursos -->
+    <mat-card class="mat-elevation-z4" style="margin-top: 16px;">
+      <mat-card-header>
+        <mat-card-title>Progreso en Cursos</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-progress-bar mode="determinate" [value]="(totalCompletedCourses / totalCourses) * 100"></mat-progress-bar>
+      </mat-card-content>
+    </mat-card>
+  
+    <!-- Pagos Pendientes -->
+    <mat-card *ngIf="totalPaymentsPending > 0" class="mat-elevation-z4" style="margin-top: 16px;">
+      <mat-card-header>
+        <mat-card-title>Pagos Pendientes</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>¡Tienes {{ totalPaymentsPending }} pagos pendientes!</p>
+      </mat-card-content>
+    </mat-card>
+  
+    <!-- Fechas Importantes -->
+    <mat-card class="mat-elevation-z4" style="margin-top: 16px;">
+      <mat-card-header>
+        <mat-card-title>Fechas Importantes</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ul>
+          <li *ngFor="let exam of upcomingExams">{{ exam }}</li>
+        </ul>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  

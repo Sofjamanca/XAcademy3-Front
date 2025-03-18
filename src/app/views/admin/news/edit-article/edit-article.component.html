@@ -1,0 +1,73 @@
+<div class="article-form-container">
+  <div class="header">
+    <h1>Editar Artículo</h1>
+    <button mat-raised-button color="primary" (click)="cancel()">Volver a la lista</button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <p class="loading-text">Cargando datos del artículo...</p>
+  </div>
+
+  <form *ngIf="!isLoading" [formGroup]="articleForm" (ngSubmit)="onSubmit()">
+    <mat-card>
+      <mat-card-content>
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Título</mat-label>
+            <input matInput formControlName="title" placeholder="Ingrese el título del artículo">
+            <mat-error *ngIf="articleForm.get('title')?.hasError('required')">El título es obligatorio</mat-error>
+            <mat-error *ngIf="articleForm.get('title')?.hasError('maxlength')">El título debe tener como máximo 150 caracteres</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Contenido</mat-label>
+            <textarea matInput formControlName="description" rows="10" placeholder="Escriba el contenido del artículo"></textarea>
+            <mat-error *ngIf="articleForm.get('description')?.hasError('required')">El contenido es obligatorio</mat-error>
+            <mat-error *ngIf="articleForm.get('description')?.hasError('minlength')">El contenido debe tener al menos 20 caracteres</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <input type="hidden" formControlName="image">
+          <label class="image-label">Imagen del artículo</label>
+          <div class="image-upload">
+            <div class="upload-container">
+              <button type="button" mat-stroked-button (click)="fileInput.click()">
+                <mat-icon>cloud_upload</mat-icon>
+                {{ imagePreview ? 'Cambiar Imagen' : 'Subir Imagen' }}
+              </button>
+              <input hidden (change)="onFileSelected($event)" #fileInput type="file" accept="image/*">
+            </div>
+
+            <div *ngIf="imagePreview" class="image-preview-container">
+              <div class="image-preview">
+                <img [src]="imagePreview" alt="Vista previa">
+                <button type="button" mat-mini-fab color="warn" (click)="removeImage()" class="remove-image">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div *ngIf="uploadProgress > 0 && uploadProgress < 100" class="upload-progress">
+            <mat-progress-bar mode="determinate" [value]="uploadProgress"></mat-progress-bar>
+            <span class="progress-text">Subiendo imagen: {{uploadProgress | number:'1.0-0'}}%</span>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <button type="button" mat-button (click)="cancel()">Cancelar</button>
+        <button type="submit" mat-raised-button color="primary" [disabled]="articleForm.invalid || isSubmitting">
+          <span *ngIf="isSubmitting">Guardando...</span>
+          <span *ngIf="!isSubmitting">Actualizar</span>
+        </button>
+      </mat-card-actions>
+
+      <mat-progress-bar *ngIf="isSubmitting" mode="indeterminate"></mat-progress-bar>
+    </mat-card>
+  </form>
+</div>

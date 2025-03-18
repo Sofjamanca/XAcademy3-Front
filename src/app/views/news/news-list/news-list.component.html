@@ -1,0 +1,32 @@
+<div class="news-container">
+  <div class="header">
+    <h1>Noticias y Artículos</h1>
+  </div>
+  
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p class="loading-text">Cargando artículos...</p>
+  </div>
+
+  <div *ngIf="!isLoading && articles.length === 0" class="empty-state">
+    <mat-icon>article</mat-icon>
+    <p>No hay artículos disponibles en este momento</p>
+  </div>
+
+  <div *ngIf="!isLoading && articles.length > 0" class="articles-grid">
+    <app-article 
+      *ngFor="let article of filteredArticles" 
+      [article]="article"
+      class="article-item">
+    </app-article>
+  </div>
+
+  <mat-paginator *ngIf="articles.length > 0"
+    [length]="totalArticles"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    [pageIndex]="currentPage"
+    (page)="handlePageEvent($event)"
+    aria-label="Seleccionar página de artículos">
+  </mat-paginator>
+</div>

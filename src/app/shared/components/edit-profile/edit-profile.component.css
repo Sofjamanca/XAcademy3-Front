@@ -1,0 +1,38 @@
+mat-card-header {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+mat-card-title {
+  font-size: 1.5em;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.edit-profile-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 1.5em;
+}
+
+.user-name, .personal-info, .contact {
+  display: flex;
+  gap: 1em;
+  justify-content: space-between;
+  width: 100%;
+}
