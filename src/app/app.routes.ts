@@ -8,9 +8,6 @@ import { adminGuard } from './guards/admin.guard';
 import { loginGuard } from './guards/login.guards';
 import { InscripcionComponent } from './shared/components/inscripcion/inscripcion.component';
 import { StudentProfileComponent } from './views/student-profile/student-profile.component';
-import { WeComponent } from './shared/components/we/we.component';
-import { ContactComponent } from './shared/components/contact/contact.component';
-import { CreditsComponent } from './shared/components/credits/credits.component';
 import { CertificatesDowComponent } from './views/student-profile/certificates-dow/certificates-dow.component';
 import { MisCursosComponent } from './views/student-profile/mis-cursos/mis-cursos.component';
 import { PendingComponent } from './views/student-profile/pending/pending.component';
@@ -30,7 +27,6 @@ import { NewsListComponent } from './views/news/news-list/news-list.component';
 import { NewsDetailComponent } from './views/news/news-detail/news-detail.component';
 import { PaymentDashboardComponent } from './views/admin/payments/payment-dashboard.component';
 import { teacherGuard } from './guards/teacher.guard';
-
 export const routes: Routes = [
     {
         path: 'home',
