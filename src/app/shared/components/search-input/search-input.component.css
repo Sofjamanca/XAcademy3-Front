@@ -9,3 +9,8 @@
     max-width: 200px;
   }
 }
+@media (min-width: 768px) {
+  .input-group{
+    width: 80%;
+  }
+}
