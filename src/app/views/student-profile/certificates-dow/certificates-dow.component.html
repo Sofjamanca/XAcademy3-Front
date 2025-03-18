@@ -10,9 +10,9 @@
       </div>
       
       <div class="certificate-footer">
-        <a [href]="cert.path" download class="btn">
+        <button (click)="descargarCertificado(cert.student_id, cert.course_id)" class="btn">
           <span class="material-icons">cloud_download</span> Descargar Certificado
-        </a>
+        </button>        
       </div>
     </div>
   </div>

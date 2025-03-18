@@ -14,7 +14,7 @@ export class CertificateService {
     return this.http.get<any[]>(`${this.apiUrl}view/${studentId}`);
   }
 
-  generarCertificado(studentId: number, courseId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}generar-certificado`, { student_id: studentId, course_id: courseId });
-  }
+  generarCertificado(studentId: number, courseId: number): Observable<Blob> {
+    return this.http.post(`${this.apiUrl}generar-certificado`, { student_id: studentId, course_id: courseId }, { responseType: 'blob' });
+  }  
 }

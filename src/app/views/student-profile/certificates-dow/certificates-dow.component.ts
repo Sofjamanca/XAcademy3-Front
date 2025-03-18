@@ -3,6 +3,7 @@ import { CertificateService } from '../../../services/certificates-dow/certifica
 import { ActivatedRoute } from '@angular/router';
 import { MaterialModule } from '../../../material/material.module';
 import { NgIf, NgFor, CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-certificates-dow',
@@ -15,7 +16,7 @@ export class CertificatesDowComponent implements OnInit {
   certificados: any[] = [];
   studentId: number = 0;
 
-  constructor( private route: ActivatedRoute, private certificadoService: CertificateService) { }
+  constructor(private snackBar: MatSnackBar, private route: ActivatedRoute, private certificadoService: CertificateService) { }
 
   ngOnInit(): void {
     this.studentId = Number(this.route.snapshot.paramMap.get('id'));
@@ -44,17 +45,28 @@ export class CertificatesDowComponent implements OnInit {
     });
   }
 
-  // Función para generar un nuevo certificado
-  generarCertificado(courseId: number): void {
-    this.certificadoService.generarCertificado(this.studentId, courseId).subscribe({
-      next: (data) => {
-        console.log('Certificado generado:', data);
-        this.cargarCertificados();  // Recargar los certificados
+  descargarCertificado(studentId: number, courseId: number): void {
+    this.certificadoService.generarCertificado(studentId, courseId).subscribe(
+      (response) => {
+        const blob = new Blob([response], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        const url = window.URL.createObjectURL(blob);
+        
+        link.href = url;
+        link.download = `Certificado_${studentId}_${courseId}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
       },
-      error: (err) => {
-        console.error('Error al generar el certificado:', err);
+      (error) => {
+        console.error('Error al descargar el certificado:', error);
+        this.snackBar.open('No se pudo descargar el certificado', 'Cerrar', { duration: 3000 });
       }
-    });
+    );
   }
+  
+  
 
 }
