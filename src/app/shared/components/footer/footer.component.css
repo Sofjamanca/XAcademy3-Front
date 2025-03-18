@@ -158,4 +158,7 @@ html, body {
     height: auto;
     width: 150px;
   }
+  .swiper-slide {
+    height: 80px;
+  }
 }
