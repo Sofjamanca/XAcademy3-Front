@@ -9,13 +9,25 @@ import { adminGuard } from './guards/admin.guard';
 import { loginGuard } from './guards/login.guards';
 import { InscripcionComponent } from './shared/components/inscripcion/inscripcion.component';
 import { StudentProfileComponent } from './views/student-profile/student-profile.component';
-import { MisCursosComponent } from './views/student-profile/mis-cursos/mis-cursos.component';
-import { PendingComponent } from './views/student-profile/pending/pending.component';
 import { WeComponent } from './shared/components/we/we.component';
 import { ContactComponent } from './shared/components/contact/contact.component';
 import { CreditsComponent } from './shared/components/credits/credits.component';
 import { CertificatesDowComponent } from './views/student-profile/certificates-dow/certificates-dow.component';
-
+import { TeacherProfileComponent } from './views/teacher-profile/teacher-profile.component';
+import { TeachersListComponent } from './views/admin/teachers/teachers-list/teachers-list.component';
+import { TeacherDetailComponent } from './views/admin/teachers/teacher-detail/teacher-detail.component';
+import { CreateTeacherComponent } from './views/admin/teachers/create-teacher/create-teacher.component';
+import { CourseManagementComponent } from './views/course-management/course-management.component';
+import { PendingComponent } from './views/student-profile/pending/pending.component';
+import { MisCursosComponent } from './views/student-profile/mis-cursos/mis-cursos.component';
+import { HomeStudentComponent } from './views/student-profile/homeStu/homestudent.component';
+import { ListArticlesComponent } from './views/admin/news/list-articles/list-articles.component';
+import { CreateArticleComponent } from './views/admin/news/create-article/create-article.component';
+import { EditArticleComponent } from './views/admin/news/edit-article/edit-article.component';
+import { NewsListComponent } from './views/news/news-list/news-list.component';
+import { NewsDetailComponent } from './views/news/news-detail/news-detail.component';
+import { PaymentDashboardComponent } from './views/admin/payments/payment-dashboard.component';
+import { teacherGuard } from './guards/teacher.guard';
 
 export const routes: Routes = [
     {
@@ -71,6 +83,14 @@ export const routes: Routes = [
           ),
     },
     {
+      path: 'noticias',
+      component: NewsListComponent
+    },
+    {
+      path: 'noticias/:id',
+      component: NewsDetailComponent
+    },
+    {
         path: 'course/:id',
         loadComponent: () =>
           import('./shared/components/course/course.component').then(
@@ -80,6 +100,11 @@ export const routes: Routes = [
     {   path: 'inscribir/:id',
         component: InscripcionComponent,
         canActivate: [loginGuard]
+    },
+    {
+        path: 'course-management/:id',
+        component: CourseManagementComponent,
+        canActivate: [teacherGuard]
     },
     {
         path: 'admin',
@@ -106,6 +131,42 @@ export const routes: Routes = [
                 path: 'cursos/editar/:id',
                 component: CreateCourseComponent,
                 canActivate: [adminGuard]
+            },
+            {
+                path: 'profesores',
+                component: TeachersListComponent,
+                canActivate: [loginGuard]
+            },
+            {
+                path: 'profesores/view/:id',
+                component: TeacherDetailComponent,
+                canActivate: [loginGuard]
+            },
+            {
+                path: 'profesores/editar/:id',
+                component: CreateTeacherComponent,
+                canActivate: [loginGuard]
+            },
+            {
+                path: 'profesores/new',
+                component: CreateTeacherComponent,
+                canActivate: [loginGuard]
+            },
+            {
+                path: 'noticias',
+                component: ListArticlesComponent
+            },
+            {
+                path: 'noticias/crear',
+                component: CreateArticleComponent
+            },
+            {
+                path: 'noticias/editar/:id',
+                component: EditArticleComponent
+            },
+            {
+                path: 'pagos',
+                component: PaymentDashboardComponent
             }
         ]
     },
@@ -136,6 +197,18 @@ export const routes: Routes = [
           component: CertificatesDowComponent
         },
       ]},
+    {
+      path: 'profesor',
+      component: TeacherProfileComponent,
+      canActivate: [teacherGuard],
+      children: [
+        {
+          path: 'editar',
+          loadComponent: () => import('./shared/components/edit-profile/edit-profile.component')
+            .then(m => m.EditProfileComponent)
+        },
+      ]
+    },
     {
         path: '',
         redirectTo: '/home',

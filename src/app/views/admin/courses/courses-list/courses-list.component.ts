@@ -12,8 +12,9 @@ import { Teacher } from '../../../../core/models/teacher.model';
 import { forkJoin } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateCourseComponent } from '../../../../shared/components/create-course/create-course.component';
-
-
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'admin-courses-list',
   standalone: true,
@@ -22,7 +23,9 @@ import { CreateCourseComponent } from '../../../../shared/components/create-cour
     MatTableModule,
     MatButtonModule,
     MatIconModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSlideToggleModule,
+    MatTooltipModule
   ],
   templateUrl: './courses-list.component.html',
   styleUrls: ['./courses-list.component.css']
@@ -37,7 +40,8 @@ export class CoursesListComponent implements OnInit {
     private coursesService: CoursesService,
     private router: Router,
     private teacherService: TeacherService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -70,6 +74,10 @@ export class CoursesListComponent implements OnInit {
     this.router.navigate(['/admin/cursos/crear']);
   }
 
+  viewCourse(course: Course) {
+    this.router.navigate(['/admin/cursos/ver', course.id]);
+  }
+
   editCourse(course: Course) {
     this.router.navigate(['/admin/cursos/editar', course.id]);
   }
@@ -90,4 +98,25 @@ export class CoursesListComponent implements OnInit {
   getEndDate(course: Course): string {
     return course.endDate ? new Date(course.endDate).toLocaleDateString() : 'Sin fecha de finalización';
   }
+
+  toggleStatus(course: Course) {
+    const newStatus = !course.isActive;
+    if (course.id) {
+      this.coursesService.enableDisableCourse(course.id, newStatus).subscribe({
+        next: () => {
+          this.snackBar.open('Estado del curso actualizado', 'Cerrar', {
+            duration: 3000,
+            panelClass: 'success-snackbar'
+          });
+          course.isActive = newStatus;
+        },
+      error: (error) => {
+        console.error('Error al cambiar el estado del curso:', error);
+      }
+    });
+    console.log(course.isActive, newStatus);
+  
+  }
+}
+
 } 

@@ -1,0 +1,89 @@
+.article-card {
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.article-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+  }
+
+
+.article-image-container {
+  position: relative;
+  overflow: hidden;
+  max-height: 200px;
+}
+
+.article-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.article-meta {
+  display: flex;
+  color: #a3a3a3;
+  font-size: 12px;
+  padding: 10px;
+}
+
+.article-date, .article-author {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.article-date mat-icon, .article-author mat-icon {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  line-height: 16px;
+}
+
+.article-title {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.article-description {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+
+.article-content {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.article-content h3 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.article-content p {
+  color: #555;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+mat-card-actions {
+  padding: 0 16px 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .article-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+}

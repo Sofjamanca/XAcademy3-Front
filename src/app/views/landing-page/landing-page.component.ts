@@ -6,6 +6,9 @@ import { CardComponent } from '../../shared/components/card/card.component';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { ArticleComponent } from '../../shared/components/article/article.component';
+import { NewsService } from '../../services/news/news.service';
+import { Article } from '../../core/models/article.model';
 
 @Component({
   selector: 'views-landing-page',
@@ -14,7 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
     HeroComponent,
     CardComponent,
     CommonModule,
-    MatButtonModule
+    MatButtonModule,
+    ArticleComponent
 ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css'
@@ -25,7 +29,9 @@ export class LandingPageComponent {
   courses?: Course[];
   categories?: Category[];
   btnContent: string = 'Ver curso';
+  articles: Article[] = [];
 
+<<<<<<< HEAD
   values = [
     { icon: 'assets/images/we/Innovadores.png', title: 'Innovadores', content: 'Somos curiosos, nos gustan los desafíos y siempre estamos buscando cómo mejorar nuestro trabajo.' },
     { icon: 'assets/images/we/Proactivos.png', title: 'Proactivos', content: 'Buscamos que las cosas sucedan en vez de quedarnos esperando.' },
@@ -36,11 +42,19 @@ export class LandingPageComponent {
   ];
 
   constructor(private coursesSvc: CoursesService, private router: Router) { }
+=======
+  constructor(private coursesSvc: CoursesService, private router: Router, private newsService: NewsService) { }
+>>>>>>> feature/Develop
 
   ngOnInit() {
     this.coursesSvc.getCourses().subscribe(courses => {
-      this.courses = courses;
+      this.courses = courses.filter(course => course.isActive === true);
     });
+
+    this.newsService.getNews().subscribe(articles => {
+      this.articles = articles;
+    });
+
 
     this.coursesSvc.getCategories().subscribe(categories => {
       this.categories = categories;
@@ -61,6 +75,20 @@ export class LandingPageComponent {
 
   goToAllCourses() {
     this.router.navigate(['/courses']);
+  }
+
+  goToArticle(articleId?: number) {
+    if (!articleId) {
+      console.error("El ID del artículo es inválido:", articleId);
+      return;
+    }
+    this.router.navigate(['/noticias', articleId]);
+  }
+
+  getArticles() {
+    this.newsService.getNews().subscribe(articles => {
+      this.articles = articles;
+    });
   }
 
   // onActionClick(): {

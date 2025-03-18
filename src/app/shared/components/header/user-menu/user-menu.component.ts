@@ -15,12 +15,14 @@ export class UserMenuComponent implements OnInit{
   apiService = inject(ApiService);
   isAdminUser: boolean = false;
   isStudentUser: boolean = false;
+  isTeacher: boolean = false;
 
   constructor(private router: Router){}
 
   ngOnInit(): void {
     this.isAdminUser = this.apiService.isAdmin();
     this.isStudentUser =this.apiService.isStudent();
+    this.isTeacher = this.apiService.isTeacher();
   }
 
   logout() {
@@ -45,6 +47,9 @@ export class UserMenuComponent implements OnInit{
 
   goToAdmin() {
     this.router.navigate(['/admin']);
+  }
+  goToTeacher() {
+    this.router.navigate(['/profesor']);
   }
 
   goToStudent(){

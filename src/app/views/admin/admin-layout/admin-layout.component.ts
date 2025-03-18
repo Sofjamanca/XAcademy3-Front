@@ -23,10 +23,11 @@ export class AdminLayoutComponent implements OnInit {
   isMobile = false;
   
   menuItems = [
-    { icon: 'dashboard', label: 'Dashboard', route: '/admin' },
+    { icon: 'dashboard', label: 'Panel', route: '/admin' },
     { icon: 'school', label: 'Cursos', route: '/admin/cursos' },
     { icon: 'people', label: 'Profesores', route: '/admin/profesores' },
-    { icon: 'group', label: 'Alumnos', route: '/admin/usuarios' },
+    { icon: 'payments', label: 'Pagos', route: '/admin/pagos' },
+    { icon: 'newspaper', label: 'Noticias', route: '/admin/noticias' },
     { icon: 'settings', label: 'Configuracion', route: '/admin/ajustes' },
 
   ];

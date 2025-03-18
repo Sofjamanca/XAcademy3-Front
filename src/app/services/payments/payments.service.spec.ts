@@ -13,4 +13,8 @@ describe('PaymentsService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> feature/Develop

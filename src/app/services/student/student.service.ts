@@ -8,6 +8,7 @@ import { LocalStorageService } from '../localstorage/local-storage.service';
 })
 export class StudentService {
   private baseUrl: string = 'http://localhost:3001/api/inscriptions';
+  private studentsUrl: string = 'http://localhost:3001/api/students';
 
   constructor(private http: HttpClient, private localStorageService: LocalStorageService) { }
 
@@ -39,9 +40,34 @@ export class StudentService {
     const data = this.localStorageService.getItem('studentData');
     return data ? JSON.parse(data) : null;
   }
-
+  
   getStudentByUserId(userId: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/student/${userId}`);
+  }
+
+<<<<<<< HEAD
+  getStudentByUserId(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/student/${userId}`);
+=======
+  getStudentById(studentId: number): Observable<any> {
+    return this.http.get<any>(`${this.studentsUrl}/view/${studentId}`);
+>>>>>>> feature/Develop
+  }
+
+  updateStudentGrade(studentId: number, qualification: number): Observable<any> {
+    return this.http.put<any>(`${this.studentsUrl}/update-grade/${studentId}`, { qualification });
+  }
+
+  assignFinalGrade(studentId: number, qualification: number): Observable<any> {
+    return this.http.post<any>(`${this.studentsUrl}/qualify/${studentId}`, { qualification });
+  }
+
+  getConditionByStudentId(studentId: number): Observable<any> {
+    return this.http.get<any>(`${this.studentsUrl}/condition/${studentId}`);
+  }
+
+  getAttendancePercentage(studentId: number): Observable<any> {
+    return this.http.get<any>(`${this.studentsUrl}/${studentId}/attendance/`);
   }
 
 }

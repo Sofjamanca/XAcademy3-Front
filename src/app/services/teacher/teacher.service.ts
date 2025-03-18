@@ -21,6 +21,10 @@ export class TeacherService {
       map(response => response.teacher)
     );
   }
+
+  getTeacherByUserId(userId: number) {
+    return this.http.get<Teacher>(`${this.baseUrl}user/${userId}`);
+  }
   
   createTeacher(teacher: Teacher) {
     return this.http.post<Teacher>(`${this.baseUrl}create`, teacher);

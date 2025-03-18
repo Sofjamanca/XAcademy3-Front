@@ -13,7 +13,6 @@
         </mat-cell>
       </ng-container>
 
-
       <ng-container matColumnDef="status">
         <mat-header-cell *matHeaderCellDef> Estado </mat-header-cell>
         <mat-cell *matCellDef="let payment" data-label="Estado"> 
@@ -22,15 +21,12 @@
           </mat-chip>
         </mat-cell>
       </ng-container>
-
-
       <ng-container matColumnDef="amount">
         <mat-header-cell *matHeaderCellDef> Monto </mat-header-cell>
         <mat-cell *matCellDef="let payment" data-label="Monto"> 
           <strong>{{ payment.coursePrice | currency:'USD' }}</strong>
         </mat-cell>
       </ng-container>
-
 
       <ng-container matColumnDef="action">
         <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
@@ -51,7 +47,6 @@
     </ng-template>
   </mat-tab>
 
-
   <mat-tab label="Pagados">
     <mat-table [dataSource]="completedPayments" *ngIf="completedPayments.length > 0; else noCompletedPayments" class="mat-elevation-z8">
 
@@ -63,7 +58,6 @@
           {{ payment.courseTitle }} 
         </mat-cell>
       </ng-container>
-
  
       <ng-container matColumnDef="date">
         <mat-header-cell *matHeaderCellDef> Fecha de Pago </mat-header-cell>
@@ -72,7 +66,6 @@
         </mat-cell>
       </ng-container>
 
-  
       <ng-container matColumnDef="approved">
         <mat-header-cell *matHeaderCellDef> Aprobado </mat-header-cell>
         <mat-cell *matCellDef="let payment" data-label="Aprobado"> 
@@ -80,7 +73,6 @@
           <ng-template #notApproved><mat-icon>cancel</mat-icon></ng-template>
         </mat-cell>
       </ng-container>
-
 
       <ng-container matColumnDef="amount">
         <mat-header-cell *matHeaderCellDef> Monto </mat-header-cell>
@@ -100,3 +92,4 @@
   </mat-tab>
 
 </mat-tab-group>
+

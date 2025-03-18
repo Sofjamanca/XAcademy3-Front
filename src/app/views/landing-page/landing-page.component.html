@@ -16,6 +16,16 @@
         Ver todos los cursos
       </button>
     </div>
+
+    <div class="news-container">
+      <h2 class="section-title">Noticias destacadas</h2>
+      <section class="news-grid">
+        <app-article *ngFor="let article of articles | slice:0:3; let i=index"
+          [article]="article"
+          (actionClick)="goToArticle(article.id)">
+        </app-article>
+      </section>
+    </div>
   </div>
   <div class="values-container">
     <h2>¿Cómo somos?</h2>
