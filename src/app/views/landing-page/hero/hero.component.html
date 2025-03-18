@@ -3,12 +3,12 @@
     <div class="carousel-inner">
       <div *ngFor= "let course of courses; let i = index" class="carousel-item" [ngClass]="{'active':i ===0}">
         <img 
-          [src]="course.image_url" 
-          class="d-block w-100" 
-          [alt]="course.title || 'Imagen del curso'" 
-          [title]="course.title || 'Curso'"
-          (click)="goToCourseDetail(course.id)"
-          style="cursor: pointer;"
+        [src]="course.safe_image_url" 
+        class="d-block w-100" 
+        [alt]="course.title || 'Imagen del curso'" 
+        [title]="course.title || 'Curso'"
+        (click)="goToCourseDetail(course.id)"
+        style="cursor: pointer;"
         >
         <div class="carousel-caption">
           <h1>{{ course.title }}</h1>

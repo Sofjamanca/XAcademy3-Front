@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CoursesService } from '../../../services/courses/courses.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -16,17 +17,24 @@ export class HeroComponent implements OnInit{
 
   constructor(
     private coursesServices:CoursesService,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ){}
 
   ngOnInit(): void {
     this.loadLatestCourses();
   }
   loadLatestCourses() {
-      this.coursesServices.getLastestCourses().subscribe({
-        next:(data)=>this.courses=data,
-        error:(error)=>console.log(error)
-      });
+    this.coursesServices.getLastestCourses().subscribe({
+      next: (data) => {
+        // Process the courses to add sanitized image URLs
+        this.courses = data.map(course => ({
+          ...course,
+          safe_image_url: this.sanitizer.bypassSecurityTrustUrl(course.image_url || ''),
+        }));
+      },
+      error: (error) => console.log(error)
+    });
   }
 
   goToCourseDetail(courseId: number, event?: Event) {
