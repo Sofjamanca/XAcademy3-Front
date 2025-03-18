@@ -1,0 +1,21 @@
+<div div class="container">
+  <section #sectionElement *ngFor="let section of sections" class="section">
+    <img [src]="section.image" alt="{{ section.title }}" class="section-image">
+    <div class="section-text">
+      <h2>{{ section.title }}</h2>
+      <p>{{ section.content }}</p>
+    </div>
+  </section>
+
+
+  <div class="values-container">
+    <h2>¿Cómo somos?</h2>
+    <div class="values-grid">
+      <div class="value" *ngFor="let value of values">
+        <img [src]="value.icon" alt="{{ value.title }}">
+        <h3>{{ value.title }}</h3>
+        <p>{{ value.content }}</p>
+      </div>
+    </div>
+  </div>
+</div>

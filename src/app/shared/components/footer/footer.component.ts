@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, Inject } from '@angular/core';
+import { NgZone, Component, AfterViewInit, ViewChild, ElementRef, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -21,42 +21,51 @@ export class FooterComponent implements AfterViewInit {
   @ViewChild('swiperContainer', { static: false }) swiperRef!: ElementRef;
 
   logos = [
-    { src: '/assets/images/footer1.png' },
-    { src: '/assets/images/footer2.jpeg' },
-    { src: '/assets/images/footer3.png' },
-    { src: '/assets/images/footer4.jpg'},
-    { src: '/assets/images/footer5.png' },
-    { src: '/assets/images/footer6.png'},
-    { src: '/assets/images/footer7.png'},
-    { src: '/assets/images/footer8.jpg'},
-    { src: '/assets/images/footer9.jpeg'},
-    { src: '/assets/images/footer10.png'},
-    { src: '/assets/images/footer11.png'},
+    { src: '/assets/images/footer1.webp' },
+    { src: '/assets/images/footer2.webp' },
+    { src: '/assets/images/footer3.webp' },
+    { src: '/assets/images/footer4.webp'},
+    { src: '/assets/images/footer5.webp' },
+    { src: '/assets/images/footer6.webp'},
+    { src: '/assets/images/footer7.webp'},
+    { src: '/assets/images/footer8.webp'},
+    { src: '/assets/images/footer9.webp'},
+    { src: '/assets/images/footer10.webp'},
+    { src: '/assets/images/footer11.webp'},
   ];
+
+  swiper: Swiper | undefined;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
   ngAfterViewInit() {
-    // Inicializa Swiper solo si estamos en el navegador
     if (isPlatformBrowser(this.platformId)) {
-      new Swiper(this.swiperRef.nativeElement, {
-        modules: [EffectCoverflow, Autoplay, Navigation, Pagination],
+      this.swiper = new Swiper(this.swiperRef.nativeElement, {
+        modules: [ Autoplay, Navigation, Pagination],
         effect: 'coverflow',
         grabCursor: true,
         centeredSlides: true,
-        slidesPerView: 4,
+        slidesPerView: 6, // Ajusta según necesidad
+        spaceBetween: 10, // Espaciado entre imágenes
         coverflowEffect: {
           rotate: 0,
           stretch: 0,
           depth: 100,
-          modifier: 1,
-          slideShadows: false
+          slideShadows: false,
+
         },
         autoplay: { delay: 2500, disableOnInteraction: false },
-        loop: true,
+        loop: true, 
+        speed: 500,
         navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-        pagination: { el: '.swiper-pagination', clickable: true }
+        pagination: { el: '.swiper-pagination', clickable: true },
+      
+        breakpoints: {
+          0: { slidesPerView: 2 }, // Para celulares
+          768: { slidesPerView: 6 } // Para pantallas grandes
+        }
       });
     }
+  
   }
 }

@@ -10,6 +10,12 @@
       }
     ],
     "button-type": "off",
-    "axe/name-role-value": "off"
+    "axe/name-role-value": "off",
+    "axe/text-alternatives": [
+      "default",
+      {
+        "image-alt": "off"
+      }
+    ]
   }
 }

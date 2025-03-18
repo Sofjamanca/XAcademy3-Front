@@ -44,8 +44,8 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.authStateService.isAuthenticated$.subscribe(isAuthenticated => {
-      const studentData = this.apiService.getMe();
-      this.studentService.saveStudentData(studentData);
+      // const studentData = this.apiService.getMe();
+      // this.studentService.saveStudentData(studentData);
     });
 
     this.userService.userName$.subscribe(userName => {
@@ -57,15 +57,20 @@ export class HeaderComponent implements OnInit {
   menuItems: MenuItem[] = [
     {text: "Inicio", route: "/home"},
     {text: "Cursos", route: "/courses"},
-    {text: "Nosotros", route: ""},
-    {text: "Contacto", route: ""},
+    {text: "Nosotros", route: "/we"},
+    {text: "Contacto", route: "/contact"},
+    {text: "Créditos", route: "/credits"},
   ]
-
+  activeMenuItem: string = 'Inicio';
   menuOpen: boolean = false;
+  
 
  
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
+  }
+  closeMenu():void{
+    this.menuOpen = false;
   }
   openLogin() {
     this.modalService.openModal(LoginComponent, { title: 'Explora, Aprende, Crece' });

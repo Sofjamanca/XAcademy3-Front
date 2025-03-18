@@ -1,0 +1,86 @@
+<div class="contact-container">
+    <div class="contact-content">
+        <div class="contact-form">
+            <h2>Contáctanos</h2>
+            <p>Si tenes alguna consulta o recomendación, completa el formulario a continuación y nos pondremos en contacto lo antes posible.</p>
+            <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)">
+                <div class="form-group">
+                    <label for="name">Nombre <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" ngModel required class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Correo electrónico <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" ngModel required class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Número de teléfono <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" ngModel required class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Mensaje <span class="required">*</span></label>
+                    <textarea id="message" name="message" ngModel required class="form-control"></textarea>
+                </div>
+
+                <button type="submit" [disabled]="!contactForm.valid" class="btn-submit">
+                    <i class="fas fa-paper-plane"></i> Enviar
+                </button>
+            </form>
+        </div>
+
+        <div class="image-container">
+             <img src="/assets/images/contact.jpg" alt="Descripción de la imagen" class="contact-image" />
+       </div>
+
+        <div class="contact-sidebar">
+            <div class="contact-info">
+                <h3>Información de Contacto</h3>
+                <div class="contact-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <p><mat-icon class="icon">call</mat-icon> Teléfono: +3549-636800</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <p><mat-icon class="icon">mail</mat-icon> Email: incubadoradelnoc&#64;gmail.com</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p><mat-icon class="icon">place</mat-icon> Dirección: Mitre 757, Cruz del Eje</p>
+                </div>
+            </div>
+
+            <div class="social-links">
+                <h3>Síguenos</h3>
+                <a href="https://web.facebook.com/p/Incubadora-del-NOC-100063640024874/" target="_blank" class="social-item">
+                    <img src="/assets/images/Fcontact.jpg" alt="facebook" class="social-icon">
+                </a>
+                <a href="https://www.instagram.com/incubadoradelnoc/" target="_blank" class="social-item">
+                    <img src="/assets/images/Icontact.jpg" alt="Instagram" class="social-icon">
+                </a>
+            </div>
+
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3430.011497468521!2d-64.80805402379832!3d-30.718077174591368!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x942dc3635df2046b%3A0x25b35b9f08155ae8!2sGral.%20Mitre%20757%2C%20X5280%20Cruz%20del%20Eje%2C%20C%C3%B3rdoba!5e0!3m2!1ses-419!2sar!4v1741699038354!5m2!1ses-419!2sar" 
+                    width="600" height="450" 
+                    style="border:0;" allowfullscreen="" 
+                    loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="faq-section">
+         <h3>Preguntas Frecuentes</h3>
+            <div *ngFor="let item of faqs" class="faq-item">
+                <h4 class="faq-question" (click)="toggleAnswer(item)">
+                    {{ item.question }}
+                </h4>
+            <div class="faq-answer" *ngIf="item.showAnswer">
+                <p>{{ item.answer }}</p>
+           </div>
+    </div>
+ </div>
+
+
