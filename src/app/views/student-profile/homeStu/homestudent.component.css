@@ -1,107 +1,285 @@
-.dashboard {
-    display: flex;
+/* Estilos generales del dashboard */
+.dashboard-container {
+  padding: 24px;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+}
+
+.dashboard-header {
+  margin-bottom: 24px;
+}
+
+.dashboard-header h1 {
+  font-size: 2rem;
+  font-weight: 300;
+  margin-bottom: 16px;
+  color: #3f51b5;
+}
+
+.dashboard-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 992px) {
+  .dashboard-content {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.dashboard-secondary-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+/* Tarjeta de resumen */
+.summary-card {
+  background: linear-gradient(90deg, #3f51b5 0%, #5c6bc0 100%);
+  color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 16px rgba(63, 81, 181, 0.2);
+}
+
+.summary-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 16px 0;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+}
+
+.stat-item mat-icon {
+  font-size: 2.5rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  margin-right: 16px;
+}
+
+.stat-data {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+
+/* Tarjeta del calendario */
+.calendar-card {
+  grid-column: 1 / -1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.calendar-container {
+  height: 500px;
+  padding: 8px;
+}
+
+/* Tarjeta de asistencia */
+.attendance-card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.attendance-chart-container {
+  max-width: 250px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.attendance-details {
+  padding: 16px;
+}
+
+.attendance-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.attendance-stat {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background-color: #f5f7fa;
+  border-radius: 8px;
+}
+
+.attendance-value {
+  font-weight: 500;
+}
+
+/* Tarjeta de pagos */
+.payments-card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.payments-table {
+  width: 100%;
+}
+
+.no-data-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0;
+  color: #3f51b5;
+}
+
+.no-data-message mat-icon {
+  font-size: 3rem;
+  height: 3rem;
+  width: 3rem;
+  margin-bottom: 16px;
+}
+
+/* Tarjeta de actividades */
+.activities-card {
+  grid-column: 1 / -1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.activity-timeline {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.activity-item {
+  display: flex;
+  padding: 16px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.activity-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.activity-date {
+  margin-right: 24px;
+}
+
+.date-bubble {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background-color: #f2f4f8;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.date-day {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.date-month {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.activity-content {
+  flex: 1;
+}
+
+.activity-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.activity-tag.clase {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.activity-tag.examen {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.activity-tag.taller {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+.activity-details {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.activity-details mat-icon {
+  font-size: 1rem;
+  height: 1rem;
+  width: 1rem;
+  margin-right: 4px;
+  margin-left: 16px;
+}
+
+.activity-details mat-icon:first-child {
+  margin-left: 0;
+}
+
+/* Títulos de cards con íconos */
+.card-title-with-icon {
+  display: flex;
+  align-items: center;
+}
+
+.card-title-with-icon mat-icon {
+  margin-right: 8px;
+}
+
+/* Estilos para hacer responsive */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 16px;
+  }
+  
+  .summary-stats {
     flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    background-color: #f4f4f4;
-    border-radius: 10px;
   }
   
-  
-  mat-card {
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  .calendar-container {
+    height: 400px;
   }
-  
-  
-  mat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  }
-  
-  
-  mat-card-header {
-    background-color: #3f51b5;
-    color: #fff;
-    font-size: 1.25rem;
-    padding: 16px;
-    border-bottom: 2px solid #e0e0e0;
-  }
-  
-  
-  mat-card-content {
-    padding: 16px;
-    font-size: 1rem;
-    color: #333;
-  }
-  
-  
-  mat-progress-bar {
-    margin-top: 10px;
-    background-color: #e0e0e0;
-  }
-  
-  mat-progress-bar.mat-primary {
-    background-color: #4caf50;
-  }
-  
-  
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  ul li {
-    background-color: #e3f2fd;
-    padding: 12px;
-    margin: 8px 0;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    color: #1e88e5;
-  }
-  
-  ul li:hover {
-    background-color: #bbdefb;
-    cursor: pointer;
-  }
-  
-  
-  button {
-    margin-top: 10px;
-    background-color: #4caf50;
-    color: white;
-    font-weight: bold;
-    border-radius: 8px;
-    padding: 10px 16px;
-    transition: background-color 0.3s ease;
-    width: 100%;
-  }
-  
-  button:hover {
-    background-color: #388e3c;
-  }
-  
-  
-  button:focus, button:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  
-  mat-card h3 {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #3f51b5;
-  }
-  
-  mat-card mat-chip {
-    background-color: #4caf50;
-    color: white;
-    font-size: 1rem;
-  }
+}

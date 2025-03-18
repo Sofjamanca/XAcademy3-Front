@@ -180,7 +180,7 @@ export const routes: Routes = [
       children: [
         {
           path: '',
-          component: MisCursosComponent
+          component: HomeStudentComponent
         },
         { path: 'mis-cursos', 
           component: MisCursosComponent

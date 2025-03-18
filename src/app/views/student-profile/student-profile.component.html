@@ -11,6 +11,11 @@
     </div>
 
     <nav class="sidebar-nav">
+      <a routerLink="/perfil" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item" (click)="closeSidenavOnMobile()">
+      <mat-icon>home</mat-icon>
+      <span *ngIf="!isCollapsed">Home</span>
+      </a>
+
       <a routerLink="/perfil/mis-cursos" routerLinkActive="active" class="nav-item" (click)="closeSidenavOnMobile()">
         <mat-icon>school</mat-icon>
         <span *ngIf="!isCollapsed">Mis cursos</span>

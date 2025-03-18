@@ -1,44 +1,173 @@
-<div class="dashboard">
-    <!-- Total Cursos -->
-    <mat-card class="mat-elevation-z4" style="margin-top: 16px;">
-      <mat-card-header>
-        <mat-card-title>Total Cursos Inscritos</mat-card-title>
-      </mat-card-header>
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Bienvenido, {{nombreAlumno}}</h1>
+    <mat-card class="summary-card">
       <mat-card-content>
-        <h3>{{ totalCourses }}</h3>
-      </mat-card-content>
-    </mat-card>
-  
-    <!-- Progreso de Cursos -->
-    <mat-card class="mat-elevation-z4" style="margin-top: 16px;">
-      <mat-card-header>
-        <mat-card-title>Progreso en Cursos</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <mat-progress-bar mode="determinate" [value]="(totalCompletedCourses / totalCourses) * 100"></mat-progress-bar>
-      </mat-card-content>
-    </mat-card>
-  
-    <!-- Pagos Pendientes -->
-    <mat-card *ngIf="totalPaymentsPending > 0" class="mat-elevation-z4" style="margin-top: 16px;">
-      <mat-card-header>
-        <mat-card-title>Pagos Pendientes</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p>¡Tienes {{ totalPaymentsPending }} pagos pendientes!</p>
-      </mat-card-content>
-    </mat-card>
-  
-    <!-- Fechas Importantes -->
-    <mat-card class="mat-elevation-z4" style="margin-top: 16px;">
-      <mat-card-header>
-        <mat-card-title>Fechas Importantes</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <ul>
-          <li *ngFor="let exam of upcomingExams">{{ exam }}</li>
-        </ul>
+        <div class="summary-stats">
+          <div class="stat-item">
+            <mat-icon color="primary">school</mat-icon>
+            <div class="stat-data">
+              <span class="stat-value">{{totalCursosInscritos}}</span>
+              <span class="stat-label">Cursos Inscritos</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <mat-icon color="accent">payments</mat-icon>
+            <div class="stat-data">
+              <span class="stat-value">{{pagosPendientes}}</span>
+              <span class="stat-label">Pagos Pendientes</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <mat-icon color="warn">event_available</mat-icon>
+            <div class="stat-data">
+              <span class="stat-value">{{proximasClases}}</span>
+              <span class="stat-label">Clases Próximas</span>
+            </div>
+          </div>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>
-  
+
+  <div class="dashboard-content">
+
+    <mat-card class="calendar-card">
+      <mat-card-header>
+        <mat-card-title>
+          <div class="card-title-with-icon">
+            <mat-icon color="primary">calendar_today</mat-icon>
+            Calendario de Clases
+          </div>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="calendar-container">
+          <full-calendar [options]="calendarOptions"></full-calendar>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="dashboard-secondary-content">
+
+      <mat-card class="attendance-card">
+        <mat-card-header>
+          <mat-card-title>
+            <div class="card-title-with-icon">
+              <mat-icon color="primary">insights</mat-icon>
+              Porcentaje de Asistencia
+            </div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="attendance-chart-container">
+            <canvas #chartCanvas></canvas>
+          </div>
+          <div class="attendance-details">
+            <mat-form-field appearance="fill">
+              <mat-label>Seleccionar Curso</mat-label>
+              <mat-select [(value)]="cursoSeleccionado" (selectionChange)="actualizarGraficoAsistencia()">
+                <mat-option *ngFor="let curso of cursosInscritos" [value]="curso.id">
+                  {{curso.nombre}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="attendance-summary">
+              <div class="attendance-stat">
+                <span class="attendance-label">Asistencia:</span>
+                <span class="attendance-value">{{porcentajeAsistencia}}%</span>
+              </div>
+              <div class="attendance-stat">
+                <span class="attendance-label">Clases asistidas:</span>
+                <span class="attendance-value">{{clasesAsistidas}} de {{totalClases}}</span>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+
+      <mat-card class="payments-card">
+        <mat-card-header>
+          <mat-card-title>
+            <div class="card-title-with-icon">
+              <mat-icon color="warn">payment</mat-icon>
+              Pagos Pendientes
+            </div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div *ngIf="pagosPendientesList.length > 0; else noPagos">
+            <table mat-table [dataSource]="pagosPendientesList" class="payments-table">
+              <ng-container matColumnDef="curso">
+                <th mat-header-cell *matHeaderCellDef> Curso </th>
+                <td mat-cell *matCellDef="let pago"> {{pago.curso}} </td>
+              </ng-container>
+              <ng-container matColumnDef="monto">
+                <th mat-header-cell *matHeaderCellDef> Monto </th>
+                <td mat-cell *matCellDef="let pago"> {{pago.monto | currency}} </td>
+              </ng-container>
+              <ng-container matColumnDef="fechaVencimiento">
+                <th mat-header-cell *matHeaderCellDef> Vencimiento </th>
+                <td mat-cell *matCellDef="let pago"> {{pago.fechaVencimiento | date}} </td>
+              </ng-container>
+              <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <td mat-cell *matCellDef="let pago">
+                  <button mat-icon-button color="primary" (click)="verDetallesPago(pago)">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                  <button mat-icon-button color="accent" (click)="pagarCuota(pago)">
+                    <mat-icon>credit_card</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+              
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+          <ng-template #noPagos>
+            <div class="no-data-message">
+              <mat-icon color="primary">check_circle</mat-icon>
+              <p>No tienes pagos pendientes</p>
+            </div>
+          </ng-template>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+
+    <mat-card class="activities-card">
+      <mat-card-header>
+        <mat-card-title>
+          <div class="card-title-with-icon">
+            <mat-icon color="primary">event_note</mat-icon>
+            Próximas Actividades
+          </div>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="activity-timeline">
+          <div *ngFor="let actividad of proximasActividades" class="activity-item">
+            <div class="activity-date">
+              <div class="date-bubble">
+                <span class="date-day">{{actividad.fecha | date:'d'}}</span>
+                <span class="date-month">{{actividad.fecha | date:'MMM'}}</span>
+              </div>
+            </div>
+            <div class="activity-content">
+              <div [ngClass]="'activity-tag ' + actividad.tipo">{{actividad.tipo}}</div>
+              <h3>{{actividad.titulo}}</h3>
+              <p>{{actividad.descripcion}}</p>
+              <p class="activity-details">
+                <mat-icon>schedule</mat-icon> {{actividad.fecha | date:'HH:mm'}}
+                <mat-icon>room</mat-icon> {{actividad.ubicacion}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
