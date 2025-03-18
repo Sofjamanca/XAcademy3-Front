@@ -45,13 +45,8 @@ export class StudentService {
     return this.http.get<any>(`${this.baseUrl}/student/${userId}`);
   }
 
-<<<<<<< HEAD
-  getStudentByUserId(userId: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/student/${userId}`);
-=======
   getStudentById(studentId: number): Observable<any> {
     return this.http.get<any>(`${this.studentsUrl}/view/${studentId}`);
->>>>>>> feature/Develop
   }
 
   updateStudentGrade(studentId: number, qualification: number): Observable<any> {

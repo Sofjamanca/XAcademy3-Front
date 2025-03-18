@@ -31,7 +31,6 @@ export class LandingPageComponent {
   btnContent: string = 'Ver curso';
   articles: Article[] = [];
 
-<<<<<<< HEAD
   values = [
     { icon: 'assets/images/we/Innovadores.png', title: 'Innovadores', content: 'Somos curiosos, nos gustan los desafíos y siempre estamos buscando cómo mejorar nuestro trabajo.' },
     { icon: 'assets/images/we/Proactivos.png', title: 'Proactivos', content: 'Buscamos que las cosas sucedan en vez de quedarnos esperando.' },
@@ -40,11 +39,8 @@ export class LandingPageComponent {
     { icon: 'assets/images/we/Globales.png', title: 'Globales', content: 'Perseguimos un pensamiento más allá de nuestras comunidades.' },
     { icon: 'assets/images/we/Perseverantes.png', title: 'Perseverantes', content: 'No nos conformamos con un "no se puede", buscamos que las cosas pasen.' }
   ];
-
-  constructor(private coursesSvc: CoursesService, private router: Router) { }
-=======
   constructor(private coursesSvc: CoursesService, private router: Router, private newsService: NewsService) { }
->>>>>>> feature/Develop
+
 
   ngOnInit() {
     this.coursesSvc.getCourses().subscribe(courses => {
