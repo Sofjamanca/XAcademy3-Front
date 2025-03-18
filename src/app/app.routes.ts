@@ -26,11 +26,7 @@ import { EditArticleComponent } from './views/admin/news/edit-article/edit-artic
 import { NewsListComponent } from './views/news/news-list/news-list.component';
 import { NewsDetailComponent } from './views/news/news-detail/news-detail.component';
 import { PaymentDashboardComponent } from './views/admin/payments/payment-dashboard.component';
-import { WeComponent } from './shared/components/we/we.component';
 import { teacherGuard } from './guards/teacher.guard';
-import { CreditsComponent } from './shared/components/credits/credits.component';
-import { ContactComponent } from './shared/components/contact/contact.component';
-
 export const routes: Routes = [
     {
         path: 'home',
