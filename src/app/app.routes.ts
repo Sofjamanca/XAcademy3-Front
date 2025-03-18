@@ -14,6 +14,8 @@ import { PendingComponent } from './views/student-profile/pending/pending.compon
 import { WeComponent } from './shared/components/we/we.component';
 import { ContactComponent } from './shared/components/contact/contact.component';
 import { CreditsComponent } from './shared/components/credits/credits.component';
+import { CertificatesDowComponent } from './views/student-profile/certificates-dow/certificates-dow.component';
+
 
 export const routes: Routes = [
     {
@@ -129,6 +131,9 @@ export const routes: Routes = [
           path: 'editar',
           loadComponent: () => import('./shared/components/edit-profile/edit-profile.component')
             .then(m => m.EditProfileComponent)
+        },
+        { path: 'certificates/:id',
+          component: CertificatesDowComponent
         },
       ]},
     {

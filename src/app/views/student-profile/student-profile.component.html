@@ -19,6 +19,14 @@
         <mat-icon>paid</mat-icon>
         <span *ngIf="!isCollapsed">Pagos</span>
       </a>
+      <a [routerLink]="['/perfil/certificates', studentId]" routerLinkActive="active" class="nav-item">
+        <mat-icon>workspace_premium</mat-icon>
+        <span *ngIf="!isCollapsed">Certificados</span>
+      </a>
+      <a routerLink="/perfil/editar" routerLinkActive="active" class="nav-item">
+        <mat-icon>edit</mat-icon>
+        <span *ngIf="!isCollapsed">Editar perfil</span>
+      </a>
     </nav>
   </aside>
 
