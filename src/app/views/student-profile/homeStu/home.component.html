@@ -1,6 +1,6 @@
 <div class="dashboard-container">
   <div class="dashboard-header">
-    <h1>Bienvenido, {{nombreAlumno}}</h1>
+    <h1 *ngIf="(userService?.userName$ | async) as userName">¡Embarquemonos en un camino de aventuras, {{userName}}!</h1>
     <mat-card class="summary-card">
       <mat-card-content>
         <div class="summary-stats">

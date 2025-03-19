@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild  } from '@angular/core';
+import { inject, Component, OnInit, ElementRef, ViewChild  } from '@angular/core';
 import { MaterialModule } from '../../../material/material.module';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,7 +8,7 @@ import esLocale from '@fullcalendar/core/locales/es';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { Chart, ChartConfiguration, ChartData } from 'chart.js';
-
+import { UserService } from '../../../services/user/user.service';
 
 interface Curso {
   id: number;
@@ -48,10 +48,11 @@ interface Actividad {
   styleUrls: ['./homestudent.component.css'] 
 })
 export class HomeStudentComponent implements OnInit {
+  userService = inject(UserService);
   @ViewChild('chartCanvas') chartCanvas: ElementRef<HTMLCanvasElement> | undefined;
   chart: Chart<'doughnut'> | undefined;
   // Datos del alumno
-  nombreAlumno: string = 'María González';
+  nombreAlumno: string = '';
   totalCursosInscritos: number = 0;
   pagosPendientes: number = 0;
   proximasClases: number = 0;
@@ -119,6 +120,7 @@ export class HomeStudentComponent implements OnInit {
 
   ngOnInit(): void {
     // Cargar datos simulados (en un escenario real, estos datos vendrían de servicios)
+    this.userService.userName$.subscribe(userName => {});
     this.cargarDatosCursos();
     this.cargarEventosCalendario();
     this.cargarPagosPendientes();

@@ -1,8 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MaterialModule } from '../../../../material/material.module';
 import { ApiService } from '../../../../services/api.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../../../services/user/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-menu',
@@ -13,16 +15,23 @@ import { CommonModule } from '@angular/common';
 })
 export class UserMenuComponent implements OnInit{
   apiService = inject(ApiService);
+  userService = inject(UserService)
   isAdminUser: boolean = false;
   isStudentUser: boolean = false;
   isTeacher: boolean = false;
+  showStudentPanel: boolean = false;
+  private studentIdSubscription: Subscription | null = null;
 
-  constructor(private router: Router){}
+  constructor(private cdr: ChangeDetectorRef, private router: Router){}
 
   ngOnInit(): void {
     this.isAdminUser = this.apiService.isAdmin();
     this.isStudentUser =this.apiService.isStudent();
     this.isTeacher = this.apiService.isTeacher();
+  
+    this.userService.studentId$.subscribe((studentId) => {
+      this.showStudentPanel = !!studentId;
+    });
   }
 
   logout() {
@@ -41,10 +50,6 @@ export class UserMenuComponent implements OnInit{
     });
   }
   
-  
-  
-  
-
   goToAdmin() {
     this.router.navigate(['/admin']);
   }
@@ -56,4 +61,5 @@ export class UserMenuComponent implements OnInit{
     this.router.navigate(['/perfil']);
   }
 
+  
 }

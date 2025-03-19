@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Inject, Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoursesService } from '../../../services/courses/courses.service';
 import { Course, Category } from '../../../core/models/course.model';
@@ -9,6 +9,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { StudentService } from '../../../services/student/student.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../../../services/api.service';
+import { UserService } from '../../../services/user/user.service';
 
 @Component({
   selector: 'app-inscripcion',
@@ -38,7 +39,8 @@ export class InscripcionComponent implements OnInit {
     private coursesService: CoursesService,
     private studentService: StudentService,
     private cdr: ChangeDetectorRef,
-    private snackBar: MatSnackBar, private apiService: ApiService
+    private snackBar: MatSnackBar, private apiService: ApiService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -117,7 +119,6 @@ export class InscripcionComponent implements OnInit {
       (response) => {
         this.isEnrolled = true;
         this.snackBar.open('Inscripción exitosa. Redirigiendo a tu panel...', 'Cerrar', { duration: 3000 });
-  
         setTimeout(() => {
           this.router.navigate(['/perfil/mis-cursos']);
         }, 3000);
@@ -138,6 +139,7 @@ export class InscripcionComponent implements OnInit {
       (response) => {
         this.snackBar.open('Inscripción exitosa. Redirigiendo a tu panel...', 'Cerrar', { duration: 3000 });
         this.studentData = { ...this.studentData, ...formData };  
+        this.userService.loadStudentId(); 
       },
       (error) => {
         console.error('Error al actualizar los datos:', error);
@@ -179,7 +181,7 @@ export class InscripcionComponent implements OnInit {
           address: formData.address
         });
       }
-
+      this.userService.loadStudentId(); 
       this.router.navigate(['/perfil/mis-cursos']);
     },
     (error) => {
