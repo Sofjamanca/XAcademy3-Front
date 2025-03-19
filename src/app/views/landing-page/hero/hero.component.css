@@ -1,54 +1,108 @@
-.hero-container {
+.hero-container{
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  max-width: 1200px;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  margin: 0 auto;
-  max-height: 60vh;
+  width: 100vw;
+  min-height:100vh;
+  overflow:hidden;
   position: relative;
-}
-
-.carousel-inner {
+} 
+.carousel-item:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
-  border-radius: 8px;
+  background-image: linear-gradient(to bottom, rgba(245, 104, 13, .2), rgba(0, 59, 117,1) 80%);
+  z-index: 1;
+}
+.carousel-inner {
+  min-width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
   overflow: hidden;
 }
 
 .carousel-inner img {
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
   object-fit: cover;
   transition: opacity 0.8s ease-in-out;
 }
 
 .carousel-item {
+  height: 100vh;
   transition: transform 0.6s ease-in-out;
 }
+.carousel-caption{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  text-align: center;
+  color: white;
+}
+.carousel-caption > h1{
+  color:white;
+  font-size: 1.2rem;
+  text-align: center;
+  font-weight: bold;
+}
+.carousel-caption > p{
+  color:white;
+  font-size: .6rem;
+  text-align: center;
+  font-weight: bold;
+}
+.custon_btn{
+  background: transparent;
+  width:100px;
+  color:white;
+  border:1px solid white;
 
-@media (max-width: 1024px) {
-  .hero-container {
-    aspect-ratio: 4 / 3;
-    max-height: 50vh;
+}
+
+
+@media (min-width: 1024px) {
+  .hero-container{
+    height:60%;
+  }
+  .carousel-caption{
+    width: 50%;
+    bottom: 40%;
+  }
+  .carousel-caption > h1{
+    font-size: 2.5rem;
+  }
+  .carousel-caption > p{
+    font-size: 1rem;
   }
 }
 
-@media (max-width: 768px) {
-  .hero-container {
-    aspect-ratio: 1 / 1;
-    max-height: 40vh;
+@media only screen and (min-width : 1824px) {
+  .hero-container{
+    height:100%;
   }
-}
+  .carousel-caption{
+    width: 50%;
+    bottom: 40%;
+  }
+  .carousel-caption > h1{
+    font-size: 2.5rem;
+  }
+  .carousel-caption > p{
+    font-size: 1rem;
+  }
 
-@media (max-width: 480px) {
-  .hero-container {
-    aspect-ratio: 3 / 4;
-    max-height: 35vh;
-  }
-
-  .carousel-inner img {
-    max-height: 300px;
-  }
 }

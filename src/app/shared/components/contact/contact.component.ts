@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
@@ -15,10 +16,12 @@ import emailjs from 'emailjs-com'
   styleUrl: './contact.component.css'
 })
 
+
 export class ContactComponent implements OnInit{
   isMobile: boolean = false;
   
   constructor(private deviceHelper: DeviceHelper, private snackBar: MatSnackBar) {}
+
 
    faqs = [
     { 
@@ -68,18 +71,19 @@ export class ContactComponent implements OnInit{
     }
   ];
   
+
   ngOnInit(): void {
     this.deviceHelper.watchDeviceChange((isMobile) => {
       this.isMobile = isMobile;
     });
   }
 
+
   toggleAnswer(item: any) {
     item.showAnswer = !item.showAnswer; 
   }
 
   onSubmit(form: NgForm) {
-    console.log(form);
     if (form.valid) {
       const formData = {
         name: form.value.name,
@@ -88,7 +92,6 @@ export class ContactComponent implements OnInit{
         message: form.value.message,
         time: new Date().toLocaleString(), 
       };
-
 
       emailjs.send('service_vf7d7lk', 'template_y2qfuzc', formData, 'gERchL2IHqJiGIhkj')
         .then(response => {

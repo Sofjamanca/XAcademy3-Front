@@ -53,8 +53,8 @@ export class AuthModalComponent implements OnInit {
 
   @Output() footerLinClicked = new EventEmitter<void>();
 
-  imageUrl = 'img/364257859_998131068038033_4290420701209662657_n.jpg';
-  iconUrl = 'img/logo_noc.png';
+  imageUrl = 'img/364257859_998131068038033_4290420701209662657_n.webp';
+  iconUrl = 'img/logo_noc.webp';
   iconSocialG = 'img/googlechrome_103832.webp';
   iconSocialF = 'img/facebook_logo_icon_147291.webp';
   iconSocialA = 'img/mac_os_application_apple_3783.webp';

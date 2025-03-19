@@ -1,73 +1,75 @@
 <div class="curso-form-container">
-  <form *ngIf="cursoForm" [formGroup]="cursoForm" (ngSubmit)="onSubmit()" class="curso-form">
+  <app-loader *ngIf="isLoading"></app-loader>
+  <form *ngIf="cursoForm && cursoForm.controls" [formGroup]="cursoForm" (ngSubmit)="onSubmit()" class="curso-form">
     <div class="titulo">{{ title }}</div>
 
     <ng-container *ngFor="let input of inputs">
-      <mat-form-field *ngIf="input.type !== 'media'" appearance="outline">
-        <mat-label>{{ input.label }}</mat-label>
-    
-        <input matInput *ngIf="input.type === 'text'" [formControlName]="input.atr" type="text">
-    
-        <input matInput *ngIf="input.type === 'number'" [formControlName]="input.atr" type="number">
-    
-        <mat-select *ngIf="input.type === 'select'" [formControlName]="input.atr">
-          <mat-option *ngFor="let option of input.options" [value]="option.value || option.label">
-            {{ option.label }}
-          </mat-option>
-        </mat-select>
+        <mat-form-field *ngIf="input.type !== 'media'" appearance="outline">
+          <mat-label>{{ input.label }}</mat-label>
 
-        <div *ngIf="input.type === 'date'" >
-          <div class="conteiner-date">
-          <input matInput  [formControlName]="input.atr" [matDatepicker]="picker" [max]="maxFechaNacimiento" [min]="input.atr === 'startDate' ? minFechaInicio : (input.atr === 'endDate' ? minFechaFin : null) ">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-               <mat-datepicker #picker></mat-datepicker>
+          <input matInput *ngIf="input.type === 'text'" [formControlName]="input.atr" type="text">
+
+          <input matInput *ngIf="input.type === 'number'" [formControlName]="input.atr" type="number">
+
+          <mat-select *ngIf="input.type === 'select'" [formControlName]="input.atr">
+            <mat-option *ngFor="let option of input.options" [value]="option.value || option.label">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
+
+          <div *ngIf="input.type === 'date'">
+            <div class="conteiner-date">
+              <input matInput [formControlName]="input.atr" [matDatepicker]="picker" formControlName="startDate"
+                [min]="minDate">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </div>
           </div>
-        </div>
 
-        <textarea matInput *ngIf="input.type === 'textarea'" [formControlName]="input.atr"></textarea>
-        
-        <mat-error *ngIf="cursoForm.get(input.atr)?.invalid && cursoForm.get(input.atr)?.touched">
-          <span *ngIf="cursoForm.get(input.atr)?.hasError('required')">El campo es obligatorio.</span>
-          <span *ngIf="cursoForm.get(input.atr)?.hasError('email')">El email no es válido.</span>
-          <span *ngIf="cursoForm.get(input.atr)?.hasError('minlength')">Debe tener al menos 7 caracteres.</span>
-          <span *ngIf="cursoForm.get(input.atr)?.hasError('maxlength')">No puede tener más de 8 caracteres.</span>
-          <span *ngIf="cursoForm.get(input.atr)?.hasError('pattern') && input.atr !== 'dni' && input.atr !== 'phone'">
-            Formato incorrecto.
-          </span>
-        
-          <span *ngIf="cursoForm.get(input.atr)?.hasError('edadInvalida')">Debe tener al menos 18 años.</span>
+          <textarea matInput *ngIf="input.type === 'textarea'" [formControlName]="input.atr"></textarea>
 
-          <span *ngIf="input.atr === 'dni' && cursoForm.get('dni')?.hasError('pattern')">
-            Debe tener entre 7 y 8 dígitos.
-          </span>
-        
+          <mat-error *ngIf="cursoForm.get(input.atr)?.invalid && cursoForm.get(input.atr)?.touched">
+            <span *ngIf="cursoForm.get(input.atr)?.hasError('required')">El campo es obligatorio.</span>
+            <span *ngIf="cursoForm.get(input.atr)?.hasError('email')">El email no es válido.</span>
+            <span *ngIf="cursoForm.get(input.atr)?.hasError('minlength')">Debe tener al menos 7 caracteres.</span>
+            <span *ngIf="cursoForm.get(input.atr)?.hasError('maxlength')">No puede tener más de 8 caracteres.</span>
+            <span *ngIf="cursoForm.get(input.atr)?.hasError('pattern') && input.atr !== 'dni' && input.atr !== 'phone'">
+              Formato incorrecto.
+            </span>
 
-          <span *ngIf="input.atr === 'phone' && cursoForm.get('phone')?.hasError('pattern')">
-            El teléfono debe tener 10 dígitos.
-          </span>
-        </mat-error>
-      </mat-form-field>
+            <span *ngIf="cursoForm.get(input.atr)?.hasError('edadInvalida')">Debe tener al menos 18 años.</span>
+
+            <span *ngIf="input.atr === 'dni' && cursoForm.get('dni')?.hasError('pattern')">
+              Debe tener entre 7 y 8 dígitos.
+            </span>
+
+
+            <span *ngIf="input.atr === 'phone' && cursoForm.get('phone')?.hasError('pattern')">
+              El teléfono debe tener 10 dígitos.
+            </span>
+          </mat-error>
+        </mat-form-field>
+
 
         <div *ngIf="input.type === 'media'" class="file-upload-container">
-            <label for="fileInput" class="file-upload" *ngIf="!imagePreview">
-              <img src="assets/images/upload-icon.png" alt="Subir imagen" class="upload-icon" />
-            </label>
-            <input type="file" id="fileInput" (change)="onFileSelected($event)" hidden />
-            
-          
-            <div *ngIf="imagePreview" class="preview-container">
-              <p class="preview-text">Vista previa</p>
-              <img [src]="imagePreview" alt="Vista previa" class="preview-image" />
-              <button class="delete-button" (click)="removeImage()">✖</button>
+          <label for="fileInput" class="file-upload" *ngIf="!imagePreview">
+            <img src="assets/images/upload-icon.webp" alt="Subir imagen" class="upload-icon" />
+          </label>
+          <input type="file" id="fileInput" (change)="onFileSelected($event)" hidden />
+
+          <div *ngIf="imagePreview" class="preview-container">
+            <p class="preview-text">Vista previa</p>
+            <img [src]="imagePreview" alt="Vista previa" class="preview-image" />
+            <button class="delete-button" (click)="removeImage()">✖</button>
           </div>
         </div>
     </ng-container>
-    
+
 
     <div class="botones-container">
-      <button mat-raised-button class="boton-crear" type="submit" [disabled]="cursoForm.invalid">
-        {{ tipo === 'crear' ? 'Crear curso' : 'Inscribirse' }}
-      </button>      
+      <button mat-raised-button class="boton-crear" type="submit" [disabled]="isLoading || cursoForm.invalid">
+        {{ tipo === 'crear' ? 'Crear curso' : (tipo === 'editar' ? 'Guardar cambios' : 'Inscribirse') }}
+      </button>
       <button mat-raised-button class="boton-cancelar" type="button" (click)="onCancel()">
         Cancelar
       </button>

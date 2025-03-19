@@ -21,4 +21,3 @@ describe('PendingComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-

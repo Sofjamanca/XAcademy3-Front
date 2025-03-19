@@ -52,7 +52,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  imgLogo: string = "/assets/images/logo.png";
+  imgLogo: string = "/assets/images/logo.webp";
 
   menuItems: MenuItem[] = [
     {text: "Inicio", route: "/home"},
@@ -61,12 +61,16 @@ export class HeaderComponent implements OnInit {
     {text: "Contacto", route: "/contact"},
     {text: "Créditos", route: "/credits"},
   ]
-
+  activeMenuItem: string = 'Inicio';
   menuOpen: boolean = false;
+  
 
  
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
+  }
+  closeMenu():void{
+    this.menuOpen = false;
   }
   openLogin() {
     this.modalService.openModal(LoginComponent, { title: 'Explora, Aprende, Crece' });

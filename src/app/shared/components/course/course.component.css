@@ -264,7 +264,7 @@
   .info-portada .tag,
   .info-portada .students,
   .info-portada .teacher {
-    font-size: 12px; /* Ajustado para pantallas pequeñas */
+    font-size: 12px; 
     display: block;
     text-align: center;
     margin: 5px 0;
