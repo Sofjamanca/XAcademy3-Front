@@ -52,7 +52,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  imgLogo: string = "/assets/images/logo.png";
+  imgLogo: string = "/assets/images/logo.webp";
 
   menuItems: MenuItem[] = [
     {text: "Inicio", route: "/home"},

@@ -11,9 +11,6 @@ import { StudentProfileComponent } from './views/student-profile/student-profile
 import { CertificatesDowComponent } from './views/student-profile/certificates-dow/certificates-dow.component';
 import { MisCursosComponent } from './views/student-profile/mis-cursos/mis-cursos.component';
 import { PendingComponent } from './views/student-profile/pending/pending.component';
-import { WeComponent } from './shared/components/we/we.component';
-import { ContactComponent } from './shared/components/contact/contact.component';
-import { CreditsComponent } from './shared/components/credits/credits.component';
 import { TeacherProfileComponent } from './views/teacher-profile/teacher-profile.component';
 import { TeachersListComponent } from './views/admin/teachers/teachers-list/teachers-list.component';
 import { TeacherDetailComponent } from './views/admin/teachers/teacher-detail/teacher-detail.component';

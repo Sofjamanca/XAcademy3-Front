@@ -93,7 +93,7 @@ export class NewsDetailComponent implements OnInit {
 
   getImageUrl(): string {
     if (!this.article) return '';
-    return this.article.image_url || this.article.image || 'assets/images/placeholder-image.jpg';
+    return this.article.image_url || this.article.image || 'assets/images/placeholder-image.webp';
   }
 
   // Método específico para formatear texto con saltos de línea

@@ -1,21 +1,36 @@
 <section class="hero-container" aria-label="Hero Section">
   <div id="hero-carousel" class="carousel slide" data-bs-ride="carousel" aria-label="Hero Carousel">
     <div class="carousel-inner">
-      <div *ngFor= "let course of courses; let i = index" class="carousel-item" [ngClass]="{'active':i ===0}">
+      
+      <!-- Imagen local primero -->
+      <div class="carousel-item active">
         <img 
-        [src]="course.safe_image_url" 
-        class="d-block w-100" 
-        [alt]="course.title || 'Imagen del curso'" 
-        [title]="course.title || 'Curso'"
-        (click)="goToCourseDetail(course.id)"
-        style="cursor: pointer;"
+          [src]="imgInfo"
+          class="d-block w-100" 
+          alt="Imagen local"
+        >
+      </div>
+
+      <!-- Luego los cursos -->
+      <div *ngFor="let course of courses; let i = index" class="carousel-item">
+        <img 
+          [src]="course.safe_image_url" 
+          class="d-block w-100" 
+          [alt]="course.title || 'Imagen del curso'" 
+          [title]="course.title || 'Curso'"
+          (click)="goToCourseDetail(course.id)"
+          style="cursor: pointer;"
         >
         <div class="carousel-caption">
           <h1>{{ course.title }}</h1>
+          <p>{{ course.description }}</p>
           <button class="btn btn-primary custon_btn" (click)="goToCourseDetail(course.id, $event)">Ver curso</button>
         </div>
       </div>
+
     </div>
+    
+    <!-- Controles de navegación -->
     <button class="carousel-control-prev" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev" aria-label="Previous">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
@@ -24,5 +39,6 @@
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
     </button>
+
   </div>
 </section>

@@ -44,7 +44,7 @@ export class ArticleComponent {
   }
 
   getImageUrl(): string {
-    return this.article.image_url || this.article.image || 'assets/images/placeholder-image.jpg';
+    return this.article.image_url || this.article.image || 'assets/images/placeholder-image.webp';
   }
 
   getContentPreview(content: string | undefined): string {
