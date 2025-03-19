@@ -21,7 +21,7 @@ export class WeComponent {
       A lo largo de los años, hemos crecido y escalado posiciones en el ecosistema regional, 
       consolidándonos como un pilar clave en el desarrollo económico y social del noroeste 
       de Córdoba.`,
-      image: 'assets/images/we/historia.png'
+      image: 'assets/images/we/historia.webp'
     },
     {
       title: 'Nuestra Misión',
@@ -30,21 +30,21 @@ export class WeComponent {
       
       Nuestra misión es acompañar a emprendedores en su crecimiento, conectándolos con 
       oportunidades y redes estratégicas que potencien sus proyectos.`,
-      image: 'assets/images/we/mision.png'
+      image: 'assets/images/we/mision.webp'
     },
     {
       title: 'Nuestra Visión',
       content: `Ser un referente en incubación de startups y proyectos innovadores en el 
       noroeste de Córdoba, creando un ecosistema dinámico y conectado que fomente la 
       innovación y el crecimiento de los emprendedores.`,
-      image: 'assets/images/we/vision.png'
+      image: 'assets/images/we/vision.webp'
     },
     {
       title: '¿Qué Hacemos?',
       content: `Capacitamos, asesoramos y vinculamos a emprendedores con inversores y mentores.
       Brindamos programas de incubación que incluyen formación, acceso a financiamiento y 
       oportunidades de networking.`,
-      image: 'assets/images/we/que-hacemos.png'
+      image: 'assets/images/we/que-hacemos.webp'
     },
     {
       title: 'Nuestro Compromiso',
@@ -53,7 +53,7 @@ export class WeComponent {
 
       Creemos en el talento local y en la capacidad de los emprendedores para generar impacto 
       positivo en la comunidad.`,
-      image: 'assets/images/we/compromiso.png'
+      image: 'assets/images/we/compromiso.webp'
     }
   ];
   

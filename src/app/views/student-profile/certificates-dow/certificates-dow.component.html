@@ -4,7 +4,7 @@
   <div *ngIf="certificados.length > 0; else noCertificates">
     <div *ngFor="let cert of certificados" class="certificate-card">
       <div class="certificate-header">
-        <img src="/assets/images/cert.jpg" alt="Certificado" class="cert-icon" />
+        <img src="/assets/images/cert.webp" alt="Certificado" class="cert-icon" />
         <h2>{{ cert.course.title }}</h2>
         <span>📅 Fecha de emisión: {{ cert.issue_date | date }}</span>
       </div>
@@ -19,7 +19,7 @@
 
   <ng-template #noCertificates>
     <div class="no-certificates">
-      <img src="/assets/images/noCert.jpg" alt="Sin Certificados" class="no-cert-img" />
+    <img src="/assets/images/noCert.webp" alt="Sin Certificados" class="no-cert-img" />
       <p>No tienes certificados disponibles aún.</p>
     </div>
   </ng-template>

@@ -14,7 +14,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class HeroComponent implements OnInit{
   courses: any[]=[];
-
+  imgInfo="assets/images/img1.webp";
+  
   constructor(
     private coursesServices:CoursesService,
     private router: Router,
