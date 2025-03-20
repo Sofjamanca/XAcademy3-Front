@@ -3,16 +3,24 @@
   <div class="courses-container">
     <h2 class="section-title">Cursos destacados</h2>
     <section class="courses-grid">
-      <app-card *ngFor="let course of courses | slice:0:3; let i=index"
+      <app-card
+        *ngFor="let course of courses | slice : 0 : 3; let i = index"
         [title]="course.title"
         [category]="getCategoryTitle(course.category_id)"
         [description]="course.description"
         [image]="course.image_url!"
-        (actionClick)="goToCourse(course.id ?? 0)">
+        [loading]="loading"
+        (actionClick)="goToCourse(course.id ?? 0)"
+      >
       </app-card>
     </section>
     <div class="view-all-container">
-      <button mat-raised-button color="primary" class="view-all-button" (click)="goToAllCourses()">
+      <button
+        mat-raised-button
+        color="primary"
+        class="view-all-button"
+        (click)="goToAllCourses()"
+      >
         Ver todos los cursos
       </button>
     </div>
@@ -20,9 +28,11 @@
     <div class="news-container">
       <h2 class="section-title">Noticias destacadas</h2>
       <section class="news-grid">
-        <app-article *ngFor="let article of articles | slice:0:3; let i=index"
+        <app-article
+          *ngFor="let article of articles | slice : 0 : 3; let i = index"
           [article]="article"
-          (actionClick)="goToArticle(article.id)">
+          (actionClick)="goToArticle(article.id)"
+        >
         </app-article>
       </section>
     </div>
@@ -31,11 +41,10 @@
     <h2>¿Cómo somos?</h2>
     <div class="values-grid">
       <div class="value" *ngFor="let value of values">
-        <img [src]="value.icon" alt="{{ value.title }}">
+        <img [src]="value.icon" alt="{{ value.title }}" />
         <h3>{{ value.title }}</h3>
         <p>{{ value.content }}</p>
       </div>
     </div>
   </div>
 </div>
-

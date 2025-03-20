@@ -4,7 +4,12 @@
     <h2 *ngIf="!isSearching">Encuentra nuevos cursos</h2>
     <div *ngIf="isSearching">
       <h2>Resultados para: "{{ searchTerm }}"</h2>
-      <button mat-button color="primary" [routerLink]="['/courses']" [queryParams]="{search: null}">
+      <button
+        mat-button
+        color="primary"
+        [routerLink]="['/courses']"
+        [queryParams]="{ search: null }"
+      >
         <mat-icon>clear</mat-icon> Limpiar búsqueda
       </button>
     </div>
@@ -12,33 +17,52 @@
 
   <mat-divider></mat-divider>
 
-  <button class="filters-btn" mat-button color="primary" (click)="toggleFilters()">
+  <button
+    class="filters-btn"
+    mat-button
+    color="primary"
+    (click)="toggleFilters()"
+  >
     <mat-icon>filter_list</mat-icon> Filtrar
   </button>
 
   <div class="content">
     <!-- Filtros -->
-    <div class="filter" [ngClass]="{'show-filters': showFilters}" >
+    <div class="filter" [ngClass]="{ 'show-filters': showFilters }">
       <h5>Ordenar por:</h5>
       <shared-filter
         (priceSelected)="onPriceSelected($event)"
-        (orderSelected)="onOrderSelected($event)">
+        (orderSelected)="onOrderSelected($event)"
+      >
       </shared-filter>
     </div>
     <!-- Categorías -->
     <shared-categories
       class="categories"
-      (categorySelected)="onCategorySelected($event)">
+      (categorySelected)="onCategorySelected($event)"
+    >
     </shared-categories>
     <!-- Lista de cursos -->
     <shared-courses-list
       class="courses"
-      [courses]="courses">
+      [courses]="courses"
+      [loading]="loading"
+    >
     </shared-courses-list>
     <!-- Mensaje sin resultados -->
-    <div *ngIf="isSearching && courses.length === 0" class="no-results">
+    <div
+      *ngIf="isSearching && courses.length === 0 && !loading"
+      class="no-results"
+    >
       <p>No se encontraron cursos para "{{ searchTerm }}"</p>
-      <button mat-raised-button color="primary" [routerLink]="['/courses']" [queryParams]="{search: null}">Ver todos los cursos</button>
+      <button
+        mat-raised-button
+        color="primary"
+        [routerLink]="['/courses']"
+        [queryParams]="{ search: null }"
+      >
+        Ver todos los cursos
+      </button>
     </div>
   </div>
   <!-- Paginación -->
@@ -49,7 +73,8 @@
     [pageIndex]="currentPage - 1"
     [pageSizeOptions]="isMobile ? [5, 10] : [5, 10, 20]"
     (page)="onPageChange($event)"
-    aria-label="Seleccionar página">
+    aria-label="Seleccionar página"
+  >
   </shared-pagination>
 </section>
 
@@ -62,15 +87,19 @@
     [selectedPrice]="selectedPrice"
     [selectedOrder]="selectedOrder"
     (priceSelected)="onPriceSelected($event)"
-    (orderSelected)="onOrderSelected($event)">
+    (orderSelected)="onOrderSelected($event)"
+  >
   </shared-filter>
 
   <shared-categories
     [selectedCategories]="selectedCategories"
-    (categorySelected)="onCategorySelected($event)"></shared-categories>
+    (categorySelected)="onCategorySelected($event)"
+  ></shared-categories>
 
   <div class="modal-actions">
     <button mat-button (click)="closeFilterModal()">Cancelar</button>
-    <button mat-raised-button color="primary" (click)="applyFilters()">Aplicar</button>
+    <button mat-raised-button color="primary" (click)="applyFilters()">
+      Aplicar
+    </button>
   </div>
 </ng-template>
