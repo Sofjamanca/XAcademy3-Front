@@ -73,13 +73,11 @@ export class LandingPageComponent {
 
   ngOnInit() {
     this.loading = true;
-    console.log('Landing page init - loading state:', this.loading);
 
     this.coursesSvc.getCourses().subscribe({
       next: (courses) => {
         this.courses = courses.filter((course) => course.isActive === true);
         this.loading = false;
-        console.log('Courses loaded - loading state:', this.loading);
       },
       error: (error) => {
         console.error('Error loading courses:', error);

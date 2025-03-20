@@ -17,7 +17,8 @@ import { Router } from '@angular/router';
 export class CoursesListComponent {
   @Input() courses: Course[] = [];
   @Input() categories: Category[] = [];
-  @Input() loading: boolean = false;
+  @Input() loading: boolean = true;
+
   btnContent: string = 'Ver curso';
   selectedCourseId: number | null = null;
 
@@ -26,8 +27,10 @@ export class CoursesListComponent {
   ngOnInit() {
     // Si no se proporcionan cursos como entrada, cargarlos desde el servicio
     if (this.courses.length === 0) {
+      this.loading = true;
       this.coursesSvc.getCourses().subscribe((courses) => {
         this.courses = courses;
+        this.loading = false;
       });
     }
 
