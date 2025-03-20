@@ -83,7 +83,7 @@ export class LandingPageComponent {
       },
       error: (error) => {
         console.error('Error loading courses:', error);
-        this.loading = false; // También cambiar a false en caso de error
+        this.loading = false;
         this.courses = [];
       },
     });
@@ -129,7 +129,4 @@ export class LandingPageComponent {
       this.articles = articles;
     });
   }
-
-  // onActionClick(): {
-  // }
 }
