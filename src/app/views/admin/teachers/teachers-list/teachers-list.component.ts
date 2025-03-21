@@ -10,6 +10,7 @@ import { Router, RouterModule } from '@angular/router';
 import { TeacherService } from '../../../../services/teacher/teacher.service';
 import { Teacher } from '../../../../core/models/teacher.model';
 import { forkJoin } from 'rxjs';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'admin-teachers-list',
@@ -20,34 +21,43 @@ import { forkJoin } from 'rxjs';
     MatButtonModule,
     MatIconModule,
     MatPaginatorModule,
-    RouterModule
+    RouterModule,
+    NgxSkeletonLoaderModule,
   ],
   templateUrl: './teachers-list.component.html',
-  styleUrls: ['./teachers-list.component.css']
+  styleUrls: ['./teachers-list.component.css'],
 })
 export class TeachersListComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'email', 'courses', 'actions'];
   teachers: Teacher[] = [];
   teachersMap: Map<number, string> = new Map();
+  loading: boolean = true;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(
-    private teacherService: TeacherService,
-    private router: Router
-  ) {}
+  constructor(private teacherService: TeacherService, private router: Router) {}
 
   ngOnInit() {
     this.loadTeachers();
   }
 
   loadTeachers() {
-    this.teacherService.getTeachers().subscribe((teachers) => {
-      this.teachers = teachers;
-      this.teachers.forEach((teacher) => {
-        this.teachersMap.set(teacher.id, teacher.user.name);
-      });
-    });
+    this.loading = true;
+
+    this.teacherService.getTeachers().subscribe(
+      (teachers) => {
+        this.teachers = teachers;
+        this.teachers.forEach((teacher) => {
+          this.teachersMap.set(teacher.id, teacher.user.name);
+        });
+        this.loading = false;
+        console.log('Loading state after data loaded:', this.loading);
+      },
+      (error) => {
+        console.error('Error loading teachers:', error);
+        this.loading = false;
+      }
+    );
   }
 
   deleteTeacher(teacher: Teacher) {
@@ -66,5 +76,4 @@ export class TeachersListComponent implements OnInit {
     }
     return teacher.courses.map((course) => course.title).join(', ');
   }
-  
 }
