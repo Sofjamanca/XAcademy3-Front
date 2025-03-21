@@ -55,6 +55,42 @@ mat-icon {
   min-height: 300px;
 }
 
+.skeleton-card {
+  border-left: 4px solid #e0e0e0;
+}
+
+.chart-skeleton {
+  padding: 16px;
+}
+
+.stats-grid-skeleton {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 16px;
+}
+
+.stat-item-skeleton {
+  display: flex;
+  flex-direction: column;
+}
+
+::ng-deep .skeleton-loader {
+  animation: pulse 1.5s infinite ease-in-out !important;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.4;
+  }
+}
+
 @media (max-width: 768px) {
   .dashboard-charts {
     grid-template-columns: 1fr;

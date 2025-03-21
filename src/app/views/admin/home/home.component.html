@@ -1,18 +1,58 @@
 <div class="dashboard-container" id="home">
-
-  <div class="dashboard-cards">
-    <mat-card *ngFor="let card of dashboardCards" class="dashboard-card" [style.border-color]="card.color">
-      <mat-card-content>
-        <div class="card-content">
-          <div class="card-info">
-            <h2>{{card.title}}</h2>
-            <p class="card-value">{{card.value}}</p>
+  <!-- Skeleton mientras carga -->
+  <ng-container *ngIf="loading; else content">
+    <div class="dashboard-cards">
+      <mat-card
+        *ngFor="let i of [1, 2, 3, 4]"
+        class="dashboard-card skeleton-card"
+      >
+        <mat-card-content>
+          <div class="card-content">
+            <div class="card-info">
+              <ngx-skeleton-loader
+                [theme]="{
+                  height: '24px',
+                  width: '120px',
+                  margin: '0 0 12px 0'
+                }"
+              ></ngx-skeleton-loader>
+              <ngx-skeleton-loader
+                [theme]="{ height: '32px', width: '80px', margin: '0' }"
+              ></ngx-skeleton-loader>
+            </div>
+            <ngx-skeleton-loader
+              [theme]="{
+                height: '40px',
+                width: '40px',
+                margin: '0',
+                'border-radius': '50%'
+              }"
+            ></ngx-skeleton-loader>
           </div>
-          <mat-icon [style.color]="card.color">{{card.icon}}</mat-icon>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </ng-container>
+  <!-- Contenido real -->
+  <ng-template #content>
+    <div class="dashboard-cards">
+      <mat-card
+        *ngFor="let card of dashboardCards"
+        class="dashboard-card"
+        [style.border-color]="card.color"
+      >
+        <mat-card-content>
+          <div class="card-content">
+            <div class="card-info">
+              <h2>{{ card.title }}</h2>
+              <p class="card-value">{{ card.value }}</p>
+            </div>
+            <mat-icon [style.color]="card.color">{{ card.icon }}</mat-icon>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </ng-template>
 
   <div class="dashboard-charts">
     <mat-card class="chart-card">

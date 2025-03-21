@@ -24,200 +24,203 @@ import { NewsListComponent } from './views/news/news-list/news-list.component';
 import { NewsDetailComponent } from './views/news/news-detail/news-detail.component';
 import { PaymentDashboardComponent } from './views/admin/payments/payment-dashboard.component';
 import { teacherGuard } from './guards/teacher.guard';
+import { ContactComponent } from './shared/components/contact/contact.component';
+import { CreditsComponent } from './shared/components/credits/credits.component';
+import { WeComponent } from './shared/components/we/we.component';
 export const routes: Routes = [
-    {
-        path: 'home',
-        component: LandingPageComponent
-    },
-    {
-      path: 'we',
-      component: WeComponent
-    },
-    {
-      path: 'contact',
-      component: ContactComponent
-    },
-    {
-      path: 'credits',
-      component: CreditsComponent
-    },
-    {
-        path:'auth/login',
-        loadComponent: () =>
-          import('./views/auth/login/login.component').then(
-            (m) => m.LoginComponent
-          ),
-    },
-    {
-        path:'auth/register',
-        loadComponent: () =>
-          import('./views/auth/register/register.component').then(
-            (m) => m.RegisterComponent
-          ),
-    },
-    {
-        path:'auth/reset-password',
-        loadComponent: () =>
-          import('./views/auth/recover-password/recover-password.component').then(
-            (m) => m.RecoverPasswordComponent
-          ),
-    },
-    {
-        path:'create-course',
-        loadComponent: () =>
-          import('./shared/components/create-course/create-course.component').then(
-            (m) => m.CreateCourseComponent
-          ),
-        canActivate: [adminGuard]
-    },
-    {
-        path: 'courses',
-        loadComponent: () =>
-          import('./views/courses/courses-page/courses-page.component').then(
-            (m) => m.CoursesPageComponent
-          ),
-    },
-    {
-      path: 'noticias',
-      component: NewsListComponent
-    },
-    {
-      path: 'noticias/:id',
-      component: NewsDetailComponent
-    },
-    {
-        path: 'course/:id',
-        loadComponent: () =>
-          import('./shared/components/course/course.component').then(
-            (m) => m.CourseComponent
-          ),
-    },
-    {   path: 'inscribir/:id',
-        component: InscripcionComponent,
-        canActivate: [loginGuard]
-    },
-    {
-        path: 'course-management/:id',
-        component: CourseManagementComponent,
-        canActivate: [teacherGuard]
-    },
-    {
-        path: 'admin',
-        loadComponent: () =>
-          import('./views/admin/admin-layout/admin-layout.component').then(
-            (m) => m.AdminLayoutComponent
-          ),
-        canActivateChild: [adminGuard],
-        children: [
-            {
-                path: '',
-                component: HomeComponent
-            },
-            {
-                path: 'cursos',
-                component: CoursesListComponent
-            },
-            {
-                path: 'cursos/crear',
-                component: CreateCourseComponent,
-                canActivate: [adminGuard]
-            },
-            {
-                path: 'cursos/editar/:id',
-                component: CreateCourseComponent,
-                canActivate: [adminGuard]
-            },
-            {
-                path: 'profesores',
-                component: TeachersListComponent,
-                canActivate: [loginGuard]
-            },
-            {
-                path: 'profesores/view/:id',
-                component: TeacherDetailComponent,
-                canActivate: [loginGuard]
-            },
-            {
-                path: 'profesores/editar/:id',
-                component: CreateTeacherComponent,
-                canActivate: [loginGuard]
-            },
-            {
-                path: 'profesores/new',
-                component: CreateTeacherComponent,
-                canActivate: [loginGuard]
-            },
-            {
-                path: 'noticias',
-                component: ListArticlesComponent
-            },
-            {
-                path: 'noticias/crear',
-                component: CreateArticleComponent
-            },
-            {
-                path: 'noticias/editar/:id',
-                component: EditArticleComponent
-            },
-            {
-                path: 'pagos',
-                component: PaymentDashboardComponent
-            }
-        ]
-    },
-    {
-      path: 'perfil',
-      loadComponent: () =>
-        import('./views/student-profile/student-profile.component').then(
-          (m) => m.StudentProfileComponent
-        ),
-      // canActivateChild: [loginGuard],
-      children: [
-        {
-          path: '',
-          component: MisCursosComponent
-        },
-        { path: 'mis-cursos', 
-          component: MisCursosComponent
-        },
-        { path: 'pagos',
-          component: PendingComponent
-        },
-        {
-          path: 'editar',
-          loadComponent: () => import('./shared/components/edit-profile/edit-profile.component')
-            .then(m => m.EditProfileComponent)
-        },
-        { path: 'certificates/:id',
-          component: CertificatesDowComponent
-        },
-      ]},
-    {
-      path: 'profesor',
-      component: TeacherProfileComponent,
-      canActivate: [teacherGuard],
-      children: [
-        {
-          path: 'editar',
-          loadComponent: () => import('./shared/components/edit-profile/edit-profile.component')
-            .then(m => m.EditProfileComponent)
-        },
-      ]
-    },
-    {
+  {
+    path: 'home',
+    component: LandingPageComponent,
+  },
+  {
+    path: 'we',
+    component: WeComponent,
+  },
+  {
+    path: 'contact',
+    component: ContactComponent,
+  },
+  {
+    path: 'credits',
+    component: CreditsComponent,
+  },
+  {
+    path: 'auth/login',
+    loadComponent: () =>
+      import('./views/auth/login/login.component').then(
+        (m) => m.LoginComponent
+      ),
+  },
+  {
+    path: 'auth/register',
+    loadComponent: () =>
+      import('./views/auth/register/register.component').then(
+        (m) => m.RegisterComponent
+      ),
+  },
+  {
+    path: 'auth/reset-password',
+    loadComponent: () =>
+      import('./views/auth/recover-password/recover-password.component').then(
+        (m) => m.RecoverPasswordComponent
+      ),
+  },
+  {
+    path: 'create-course',
+    loadComponent: () =>
+      import('./shared/components/create-course/create-course.component').then(
+        (m) => m.CreateCourseComponent
+      ),
+    canActivate: [adminGuard],
+  },
+  {
+    path: 'courses',
+    loadComponent: () =>
+      import('./views/courses/courses-page/courses-page.component').then(
+        (m) => m.CoursesPageComponent
+      ),
+  },
+  {
+    path: 'noticias',
+    component: NewsListComponent,
+  },
+  {
+    path: 'noticias/:id',
+    component: NewsDetailComponent,
+  },
+  {
+    path: 'course/:id',
+    loadComponent: () =>
+      import('./shared/components/course/course.component').then(
+        (m) => m.CourseComponent
+      ),
+  },
+  {
+    path: 'inscribir/:id',
+    component: InscripcionComponent,
+    canActivate: [loginGuard],
+  },
+  {
+    path: 'course-management/:id',
+    component: CourseManagementComponent,
+    canActivate: [teacherGuard],
+  },
+  {
+    path: 'admin',
+    loadComponent: () =>
+      import('./views/admin/admin-layout/admin-layout.component').then(
+        (m) => m.AdminLayoutComponent
+      ),
+    canActivateChild: [adminGuard],
+    children: [
+      {
         path: '',
-        redirectTo: '/home',
-        pathMatch: 'full'
-    },
-    {
-        path: '**',
-        redirectTo: 'home',
-        pathMatch: 'full'
-    }
+        component: HomeComponent,
+      },
+      {
+        path: 'cursos',
+        component: CoursesListComponent,
+      },
+      {
+        path: 'cursos/crear',
+        component: CreateCourseComponent,
+        canActivate: [adminGuard],
+      },
+      {
+        path: 'cursos/editar/:id',
+        component: CreateCourseComponent,
+        canActivate: [adminGuard],
+      },
+      {
+        path: 'profesores',
+        component: TeachersListComponent,
+        canActivate: [loginGuard],
+      },
+      {
+        path: 'profesores/view/:id',
+        component: TeacherDetailComponent,
+        canActivate: [loginGuard],
+      },
+      {
+        path: 'profesores/editar/:id',
+        component: CreateTeacherComponent,
+        canActivate: [loginGuard],
+      },
+      {
+        path: 'profesores/new',
+        component: CreateTeacherComponent,
+        canActivate: [loginGuard],
+      },
+      {
+        path: 'noticias',
+        component: ListArticlesComponent,
+      },
+      {
+        path: 'noticias/crear',
+        component: CreateArticleComponent,
+      },
+      {
+        path: 'noticias/editar/:id',
+        component: EditArticleComponent,
+      },
+      {
+        path: 'pagos',
+        component: PaymentDashboardComponent,
+      },
+    ],
+  },
+  {
+    path: 'perfil',
+    loadComponent: () =>
+      import('./views/student-profile/student-profile.component').then(
+        (m) => m.StudentProfileComponent
+      ),
+    // canActivateChild: [loginGuard],
+    children: [
+      {
+        path: '',
+        component: MisCursosComponent,
+      },
+      { path: 'mis-cursos', component: MisCursosComponent },
+      { path: 'pagos', component: PendingComponent },
+      {
+        path: 'editar',
+        loadComponent: () =>
+          import(
+            './shared/components/edit-profile/edit-profile.component'
+          ).then((m) => m.EditProfileComponent),
+      },
+      { path: 'certificates/:id', component: CertificatesDowComponent },
+    ],
+  },
+  {
+    path: 'profesor',
+    component: TeacherProfileComponent,
+    canActivate: [teacherGuard],
+    children: [
+      {
+        path: 'editar',
+        loadComponent: () =>
+          import(
+            './shared/components/edit-profile/edit-profile.component'
+          ).then((m) => m.EditProfileComponent),
+      },
+    ],
+  },
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full',
+  },
+  {
+    path: '**',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

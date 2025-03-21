@@ -1,35 +1,105 @@
 <mat-card class="card">
-  <img *ngIf="image" mat-card-image [src]="image" [alt]="title">
+  <!-- Imagen -->
+  <ng-container *ngIf="!loading; else imageSkeletonTemplate">
+    <img *ngIf="image" mat-card-image [src]="image" [alt]="title" />
+  </ng-container>
+  <ng-template #imageSkeletonTemplate>
+    <ngx-skeleton-loader
+      [theme]="{
+        height: '150px',
+        width: '100%',
+        margin: '0'
+      }"
+    ></ngx-skeleton-loader>
+  </ng-template>
 
   <mat-card-header>
-    <mat-card-title class="card-title">{{title}}</mat-card-title>
+    <!-- Título -->
+    <mat-card-title class="card-title">
+      <ng-container *ngIf="!loading; else titleSkeletonTemplate">
+        {{ title }}
+      </ng-container>
+      <ng-template #titleSkeletonTemplate>
+        <ngx-skeleton-loader
+          [theme]="{ height: '24px', width: '80%', margin: '0' }"
+        ></ngx-skeleton-loader>
+      </ng-template>
+    </mat-card-title>
+
+    <!-- Subtítulo -->
     <mat-card-subtitle>
-      <ng-container *ngIf="modalidad">
-        <span [class]="getModalidadClass(modalidad)" class="modalidad-chip">
-          {{ modalidad }}
-        </span>
+      <ng-container *ngIf="!loading; else subtitleSkeletonTemplate">
+        <ng-container *ngIf="modalidad">
+          <span [class]="getModalidadClass(modalidad)" class="modalidad-chip">
+            {{ modalidad }}
+          </span>
+        </ng-container>
+        <ng-container *ngIf="!modalidad && category">
+          {{ category }}
+        </ng-container>
       </ng-container>
-      <ng-container *ngIf="!modalidad && category">
-        {{category}}
-      </ng-container>
+      <ng-template #subtitleSkeletonTemplate>
+        <ngx-skeleton-loader
+          [theme]="{ height: '16px', width: '40%', margin: '0' }"
+        ></ngx-skeleton-loader>
+      </ng-template>
     </mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content>
-    <p class="course-description">{{description}}</p>
-    
+    <!-- Descripción -->
+    <ng-container *ngIf="!loading; else descriptionSkeletonTemplate">
+      <p class="course-description">{{ description }}</p>
+    </ng-container>
+    <ng-template #descriptionSkeletonTemplate>
+      <ngx-skeleton-loader
+        [theme]="{ height: '16px', width: '40%', margin: '0' }"
+        [count]="3"
+      ></ngx-skeleton-loader>
+    </ng-template>
+
+    <!-- Detalles -->
     <div *ngIf="showDetails" class="course-details">
-      <p *ngIf="price"><strong>Precio:</strong> ${{ price }}</p>
-      <p *ngIf="quota"><strong>Cupos:</strong> {{ quota }}</p>
-      <p *ngIf="hours"><strong>Horas:</strong> {{ hours }}</p>
-      <p *ngIf="startDate && endDate">
-        <strong>Fechas:</strong> {{ startDate | date:'dd/MM/yyyy' }} - {{ endDate | date:'dd/MM/yyyy' }}
-      </p>
+      <ng-container *ngIf="!loading; else detailsSkeletonTemplate">
+        <p *ngIf="price"><strong>Precio:</strong> ${{ price }}</p>
+        <p *ngIf="quota"><strong>Cupos:</strong> {{ quota }}</p>
+        <p *ngIf="hours"><strong>Horas:</strong> {{ hours }}</p>
+        <p *ngIf="startDate && endDate">
+          <strong>Fechas:</strong> {{ startDate | date : "dd/MM/yyyy" }} -
+          {{ endDate | date : "dd/MM/yyyy" }}
+        </p>
+      </ng-container>
+      <ng-template #detailsSkeletonTemplate>
+        <ngx-skeleton-loader
+          [theme]="{ height: '16px', width: '60%', margin: '0' }"
+          [count]="4"
+        ></ngx-skeleton-loader>
+      </ng-template>
     </div>
   </mat-card-content>
 
-  <mat-card-actions  *ngIf="showActions" class="card-actions">
-    <button mat-raised-button color="primary" (click)="onActionClick()">{{action}}</button>
-    <mat-icon *ngIf="showFavoriteIcon" aria-hidden="false" aria-label="Añadir a favoritos" fontIcon="favorite_border"></mat-icon>
+  <!-- Acciones -->
+  <mat-card-actions *ngIf="showActions" class="card-actions">
+    <ng-container *ngIf="!loading; else actionsSkeletonTemplate">
+      <button mat-raised-button color="primary" (click)="onActionClick()">
+        {{ action }}
+      </button>
+      <mat-icon
+        *ngIf="showFavoriteIcon"
+        aria-hidden="false"
+        aria-label="Añadir a favoritos"
+        fontIcon="favorite_border"
+      ></mat-icon>
+    </ng-container>
+    <ng-template #actionsSkeletonTemplate>
+      <ngx-skeleton-loader
+        [theme]="{
+          height: '40px',
+          width: '110px',
+          'border-radius': '20px',
+          margin: '0'
+        }"
+      ></ngx-skeleton-loader>
+    </ng-template>
   </mat-card-actions>
 </mat-card>
