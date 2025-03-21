@@ -35,13 +35,13 @@
 }
 
 .info-portada {
-  position: absolute; 
-  left: 10%; 
-  top: 50%; 
+  position: absolute;
+  left: 10%;
+  top: 50%;
   margin-left: 40px;
-  transform: translateY(-50%); 
-  color: white; 
-  text-align: left; 
+  transform: translateY(-50%);
+  color: white;
+  text-align: left;
 }
 
 .info-portada .title {
@@ -62,21 +62,19 @@
 .info-portada .teacher {
   font-size: 16px;
   margin-left: 10px;
-  color: white; 
+  color: white;
 }
 
-
 .course-info {
-  width: 100%; 
+  width: 100%;
   padding: 20px;
-  font-size: 18px; 
+  font-size: 18px;
   color: #333;
   line-height: 1.6;
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.8s ease-out forwards;
 }
-
 
 .course-info .title {
   font-size: 36px;
@@ -85,7 +83,6 @@
   color: #222;
 }
 
-
 .course-info .info {
   font-size: 20px;
   font-weight: 500;
@@ -93,9 +90,6 @@
   align-items: center;
   gap: 10px;
 }
-
-
-
 
 @keyframes fadeInUp {
   from {
@@ -108,7 +102,6 @@
   }
 }
 
-
 .floating-card {
   width: 30%;
   height: 30%;
@@ -118,9 +111,8 @@
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 
 .course-thumbnail {
   width: 100%;
@@ -131,7 +123,7 @@
 
 .start-button {
   width: 100%;
-  background: #635BFF;
+  background: #635bff;
   color: white;
   font-size: 18px;
   padding: 10px;
@@ -142,7 +134,6 @@
   font-size: 16px;
   margin: 5px 0;
 }
-
 
 .course-status.unavailable {
   background-color: red;
@@ -169,21 +160,21 @@
 }
 
 .price {
-  font-size: 28px;            
-  font-weight: bold;          
-  color: #fff;                
-  background: #005cbb;        
-  padding: 12px 24px;         
-  border-radius: 8px;         
-  display: list-item;      
-  margin-top: 20px;           
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+  background: #005cbb;
+  padding: 12px 24px;
+  border-radius: 8px;
+  display: list-item;
+  margin-top: 20px;
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }
 
 .price:hover {
-  transform: scale(1.05);     
+  transform: scale(1.05);
 }
 
 .payment-methods-section {
@@ -226,6 +217,32 @@
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
+.title-skeleton ::ng-deep .skeleton-loader {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.subtitle-skeleton {
+  display: flex;
+  gap: 8px;
+}
+
+::ng-deep .skeleton-loader {
+  border-radius: 4px !important;
+  animation: pulse 1.5s infinite ease-in-out !important;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .page-container {
     flex-direction: column;
@@ -242,21 +259,21 @@
   }
 
   .info-portada {
-    position: relative; 
+    position: relative;
     width: 90%;
     max-width: 90%;
-    margin: 0 auto; 
+    margin: 0 auto;
     text-align: center;
     overflow: hidden;
     word-wrap: break-word;
     display: flex;
     flex-direction: column;
-    align-items: baseline; 
+    align-items: baseline;
     padding: 10px;
   }
 
   .info-portada .title {
-    font-size: 20px; 
+    font-size: 20px;
     line-height: 1.2;
     max-width: 100%;
   }
@@ -264,7 +281,7 @@
   .info-portada .tag,
   .info-portada .students,
   .info-portada .teacher {
-    font-size: 12px; 
+    font-size: 12px;
     display: block;
     text-align: center;
     margin: 5px 0;
@@ -294,7 +311,6 @@
     padding: 8px;
     width: 100%;
   }
-
 
   .course-status {
     margin-top: 120px;
