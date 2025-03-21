@@ -51,7 +51,6 @@ export class TeachersListComponent implements OnInit {
           this.teachersMap.set(teacher.id, teacher.user.name);
         });
         this.loading = false;
-        console.log('Loading state after data loaded:', this.loading);
       },
       (error) => {
         console.error('Error loading teachers:', error);
