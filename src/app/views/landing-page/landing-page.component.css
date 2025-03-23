@@ -16,6 +16,7 @@
   flex-direction: column;
   align-items: center;
   padding: 20px 0;
+  margin: 30px auto;
 }
 
 .section-title {
@@ -59,7 +60,7 @@
   gap: 20px;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin: 30px auto;
 }
 
 .value {
@@ -72,22 +73,34 @@
   height: 50px;
   margin-bottom: 10px;
 }
- 
+
+.testimonials-container,
+.news-container {
+  background-color: #f8f9fa;
+}
 
 @media (max-width: 768px) {
   .courses-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .section-title {
     font-size: 1.5rem;
   }
 }
 
-.news-container {
-  max-width: 80%;
+.news-container,
+.values-container {
+  /* max-width: 80%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 20px; */
+}
+
+.testimonials-container > *,
+.news-container > * {
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .news-grid {
@@ -96,6 +109,3 @@
   gap: 20px;
   padding: 20px;
 }
-
-
-

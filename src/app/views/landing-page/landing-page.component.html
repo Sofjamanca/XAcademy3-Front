@@ -1,8 +1,8 @@
 <div class="content">
   <landing-page-hero></landing-page-hero>
   <div class="courses-container">
+    <!-- Courses -->
     <h2 class="section-title">Cursos destacados</h2>
-
     <section class="courses-grid">
       <!-- Skeletons cuando carga -->
       <ng-container *ngIf="loading; else loadedContent">
@@ -31,21 +31,22 @@
         Ver todos los cursos
       </button>
     </div>
-
-    <div class="news-container">
-      <h2 class="section-title">Noticias destacadas</h2>
-      <section class="news-grid">
-        <app-article
-          *ngFor="let article of articles | slice : 0 : 3; let i = index"
-          [article]="article"
-          (actionClick)="goToArticle(article.id)"
-        >
-        </app-article>
-      </section>
-    </div>
   </div>
+  <!-- News -->
+  <div class="news-container">
+    <h2 class="section-title">Noticias destacadas</h2>
+    <section class="news-grid">
+      <app-article
+        *ngFor="let article of articles | slice : 0 : 3; let i = index"
+        [article]="article"
+        (actionClick)="goToArticle(article.id)"
+      >
+      </app-article>
+    </section>
+  </div>
+  <!-- Values -->
   <div class="values-container">
-    <h2>¿Cómo somos?</h2>
+    <h2 class="section-title">¿Cómo somos?</h2>
     <div class="values-grid">
       <div class="value" *ngFor="let value of values">
         <img [src]="value.icon" alt="{{ value.title }}" />
@@ -53,5 +54,11 @@
         <p>{{ value.content }}</p>
       </div>
     </div>
+  </div>
+  <!-- Testimonials -->
+  <div class="testimonials-container">
+    <section class="testimonials-grid">
+      <app-testimonials></app-testimonials>
+    </section>
   </div>
 </div>
