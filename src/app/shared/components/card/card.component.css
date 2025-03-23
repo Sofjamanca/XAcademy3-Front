@@ -89,6 +89,19 @@ img[mat-card-image] {
   color: #ff8f00;
 }
 
+.btn_card{
+  background-color: var(--color_btn_accent)!important;
+  border: 0;
+  padding: 0 1.2em;
+  color: #fff;
+  font-size: 0.8rem;
+  width: fit-content;
+  
+  height: 35px;
+  border-radius: 4px;
+  
+}
+
 @media (max-width: 1200px) {
   .card {
     max-width: 100%;
