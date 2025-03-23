@@ -23,6 +23,10 @@
   color: #3f51b5;
   margin-bottom: 1rem;
   text-align: center;
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .courses-grid {
@@ -33,6 +37,7 @@
   gap: 20px;
   padding: 20px;
   margin-bottom: 20px;
+  justify-content: center;
 }
 
 .view-all-container {
@@ -42,29 +47,49 @@
 }
 
 .view-all-button {
-  padding: 0.6rem 2rem;
-  font-size: 1rem;
-  font-weight: 500;
-  letter-spacing: 0.5px;
+  background-color: #FFF;
+  /* width: 7.5em; */
+  padding: 0 0.7em;
+  width: fit-content;
+  border-radius: 4px;
+  border-color: var(--color_btn_primary)!important;
+  color: var(--color_btn_primary)!important;
 }
 
 .values-container {
   text-align: center;
   margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .values-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  margin: 20px auto;
+  width: 80%;
+  max-width: 1200px;
+}
+
+/* Centrar los dos elementos inferiores */
+.values-grid .value:nth-child(5) {
+  grid-column: 2;
+}
+
+.values-grid .value:nth-child(6) {
+  grid-column: 3;
 }
 
 .value {
   text-align: center;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
 }
 
 .value img {
@@ -72,7 +97,14 @@
   height: 50px;
   margin-bottom: 10px;
 }
- 
+
+.value h3 {
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+}
 
 @media (max-width: 768px) {
   .courses-grid {
@@ -81,6 +113,24 @@
   
   .section-title {
     font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .values-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto auto;
+  }
+  
+  .values-grid .value:nth-child(5),
+  .values-grid .value:nth-child(6) {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 576px) {
+  .values-grid {
+    grid-template-columns: 1fr;
   }
 }
 

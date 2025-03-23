@@ -4,6 +4,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { CoursesService } from '../../../../services/courses/courses.service';
 import { Course } from '../../../../core/models/course.model';
 import { Router, RouterModule } from '@angular/router';
@@ -21,6 +22,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     MatButtonModule,
     MatIconModule,
     MatPaginatorModule,
+    MatTooltipModule,
     RouterModule,
     NgxSkeletonLoaderModule,
   ],
@@ -73,6 +75,20 @@ export class TeachersListComponent implements OnInit {
     if (!teacher.courses || teacher.courses.length === 0) {
       return 'Ningún curso asignado';
     }
-    return teacher.courses.map((course) => course.title).join(', ');
+    
+    if (teacher.courses.length === 1) {
+      return teacher.courses[0].title;
+    }
+    
+    // Si hay más de un curso, mostrar el primero + indicador de más
+    return `${teacher.courses[0].title} + ${teacher.courses.length - 1} más`;
+  }
+  
+  getCursosTooltip(teacher: Teacher): string {
+    if (!teacher.courses || teacher.courses.length <= 1) {
+      return '';
+    }
+    
+    return teacher.courses.map(course => course.title).join(', ');
   }
 }

@@ -81,7 +81,7 @@
   <!-- Acciones -->
   <mat-card-actions *ngIf="showActions" class="card-actions">
     <ng-container *ngIf="!loading; else actionsSkeletonTemplate">
-      <button mat-raised-button color="primary" (click)="onActionClick()">
+      <button mat-raised-button color="primary" class="btn_card" (click)="onActionClick()">
         {{ action }}
       </button>
       <mat-icon
