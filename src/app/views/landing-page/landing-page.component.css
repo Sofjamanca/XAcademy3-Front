@@ -107,14 +107,35 @@
   margin: 10px 0;
 }
 
-@media (max-width: 768px) {
-  .courses-grid {
-    grid-template-columns: 1fr;
-  }
+.news-container {
+  max-width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+}
 
-  .section-title {
-    font-size: 1.5rem;
-  }
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.testimonials-container {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding: 20px 0;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.testimonials-container > * {
+  width: 80%;
+  max-width: 1200px;
 }
 
 @media (max-width: 992px) {
@@ -129,28 +150,18 @@
   }
 }
 
+@media (max-width: 768px) {
+  .courses-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+}
+
 @media (max-width: 576px) {
   .values-grid {
     grid-template-columns: 1fr;
   }
-}
-
-.news-container {
-  max-width: 80%;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.testimonials-container > *,
-.news-container > * {
-  max-width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.news-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-  padding: 20px;
 }

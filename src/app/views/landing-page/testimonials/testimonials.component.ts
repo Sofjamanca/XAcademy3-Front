@@ -14,27 +14,27 @@ export class TestimonialsComponent {
   testimonials = [
     {
       name: 'Carolina Méndez',
-      profileImage: 'https://randomuser.me/api/portraits/women/44.jpg',
+      profileImage: 'https://randomuser.me/api/portraits/women/57.jpg',
       course: 'Maquillaje para eventos',
       rating: 5,
       quote:
-        'El curso cambió mi vida profesional por completo. En menos de 6 meses conseguí mi primer trabajo como maquilladora.',
+        'Este curso no solo me enseñó técnicas de maquillaje, sino a entender diferentes tipos de piel y necesidades.',
     },
     {
       name: 'Martín Rodríguez',
       profileImage: 'https://randomuser.me/api/portraits/men/32.jpg',
-      course: 'Electricidad del hogar',
+      course: 'Carpintería',
       rating: 5,
       quote:
-        'La metodología práctica y el apoyo de los profesores fue clave para entender conceptos complejos. Muy recomendable.',
+        'El curso me dio las herramientas para iniciar mi propio emprendimiento de carpintería. En menos de un año, pasé de principiante a tener mi taller con clientes regulares. Inversión que cambió mi vida.',
     },
     {
       name: 'Sofía Peralta',
-      profileImage: 'https://randomuser.me/api/portraits/women/68.jpg',
+      profileImage: 'https://randomuser.me/api/portraits/women/47.jpg',
       course: 'Electricidad',
       rating: 4,
       quote:
-        'La metodología práctica y el apoyo de los profesores fue clave para entender conceptos complejos. Muy recomendable.',
+        'Aprendí a hacer instalaciones seguras y a detectar problemas eléctricos que antes hubieran requerido contratar a un profesional. Muy agradecida por lo aprendido',
     },
     {
       name: 'Lucas González',
@@ -42,7 +42,7 @@ export class TestimonialsComponent {
       course: 'Plomería',
       rating: 5,
       quote:
-        'El contenido actualizado y la comunidad de estudiantes hacen que valga cada centavo. ¡Ya publiqué mi primera app!',
+        'Ahora puedo solucionar cualquier problema de cañerías en mi hogar y ayudar a mis vecinos. Las técnicas enseñadas son prácticas y fáciles de aplicar.',
     },
   ];
 }
