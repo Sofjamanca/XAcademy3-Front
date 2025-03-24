@@ -56,4 +56,8 @@ export class PaymentsService {
     return this.http.get(`${this.baseUrl}/statusgeneral/${studentId}/${courseId}`);
   }
 
+  getTotalPendingPayments(studentId: number): Observable<{ total: number }> {
+    return this.http.get<{ total: number }>(`${this.baseUrl}/countPending/${studentId}`);
+  }
+
 }

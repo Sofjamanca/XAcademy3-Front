@@ -56,4 +56,8 @@ export class UserService {
       this.studentIdSubject.next(studentId);
     });
   }
+
+  getStudentId(): Observable<number | null> {
+    return this.studentIdSubject.asObservable();
+  }
 }  

@@ -1,173 +1,89 @@
 <div class="dashboard-container">
-  <div class="dashboard-header">
-    <h1 *ngIf="(userService?.userName$ | async) as userName">¡Embarquemonos en un camino de aventuras, {{userName}}!</h1>
-    <mat-card class="summary-card">
+  <h1 *ngIf="(userService?.userName$ | async) as userName">¡Embarquémonos en un camino de aventura, {{userName}}!</h1>
+  <div class="dashboard-cards">
+    <mat-card *ngFor="let card of dashboardCards" class="dashboard-card" [style.border-color]="card.color">
       <mat-card-content>
-        <div class="summary-stats">
-          <div class="stat-item">
-            <mat-icon color="primary">school</mat-icon>
-            <div class="stat-data">
-              <span class="stat-value">{{totalCursosInscritos}}</span>
-              <span class="stat-label">Cursos Inscritos</span>
-            </div>
+        <div class="card-content">
+          <div class="card-info">
+            <h2>{{card.title}}</h2>
+            <p class="card-value">{{card.value}}</p>
           </div>
-          <div class="stat-item">
-            <mat-icon color="accent">payments</mat-icon>
-            <div class="stat-data">
-              <span class="stat-value">{{pagosPendientes}}</span>
-              <span class="stat-label">Pagos Pendientes</span>
-            </div>
-          </div>
-          <div class="stat-item">
-            <mat-icon color="warn">event_available</mat-icon>
-            <div class="stat-data">
-              <span class="stat-value">{{proximasClases}}</span>
-              <span class="stat-label">Clases Próximas</span>
-            </div>
-          </div>
+          <mat-icon [style.color]="card.color" class="icon">{{card.icon}}</mat-icon>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
 
-  <div class="dashboard-content">
 
-    <mat-card class="calendar-card">
-      <mat-card-header>
-        <mat-card-title>
-          <div class="card-title-with-icon">
-            <mat-icon color="primary">calendar_today</mat-icon>
-            Calendario de Clases
-          </div>
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="calendar-container">
+  <div class="calendar-attendance-container">
+    <div class="feature-card calendar-card">
+      <div class="card-header">
+        <div class="header-icon">
+          <mat-icon>event</mat-icon>
+        </div>
+        <h2>Calendario de Clases</h2>
+      </div>
+      <div class="card-body">
+        <div class="calendar-container animated-container">
           <full-calendar [options]="calendarOptions"></full-calendar>
         </div>
-      </mat-card-content>
-    </mat-card>
-
-    <div class="dashboard-secondary-content">
-
-      <mat-card class="attendance-card">
-        <mat-card-header>
-          <mat-card-title>
-            <div class="card-title-with-icon">
-              <mat-icon color="primary">insights</mat-icon>
-              Porcentaje de Asistencia
-            </div>
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="attendance-chart-container">
-            <canvas #chartCanvas></canvas>
-          </div>
-          <div class="attendance-details">
-            <mat-form-field appearance="fill">
-              <mat-label>Seleccionar Curso</mat-label>
-              <mat-select [(value)]="cursoSeleccionado" (selectionChange)="actualizarGraficoAsistencia()">
-                <mat-option *ngFor="let curso of cursosInscritos" [value]="curso.id">
-                  {{curso.nombre}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <div class="attendance-summary">
-              <div class="attendance-stat">
-                <span class="attendance-label">Asistencia:</span>
-                <span class="attendance-value">{{porcentajeAsistencia}}%</span>
-              </div>
-              <div class="attendance-stat">
-                <span class="attendance-label">Clases asistidas:</span>
-                <span class="attendance-value">{{clasesAsistidas}} de {{totalClases}}</span>
-              </div>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
-
-      <mat-card class="payments-card">
-        <mat-card-header>
-          <mat-card-title>
-            <div class="card-title-with-icon">
-              <mat-icon color="warn">payment</mat-icon>
-              Pagos Pendientes
-            </div>
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div *ngIf="pagosPendientesList.length > 0; else noPagos">
-            <table mat-table [dataSource]="pagosPendientesList" class="payments-table">
-              <ng-container matColumnDef="curso">
-                <th mat-header-cell *matHeaderCellDef> Curso </th>
-                <td mat-cell *matCellDef="let pago"> {{pago.curso}} </td>
-              </ng-container>
-              <ng-container matColumnDef="monto">
-                <th mat-header-cell *matHeaderCellDef> Monto </th>
-                <td mat-cell *matCellDef="let pago"> {{pago.monto | currency}} </td>
-              </ng-container>
-              <ng-container matColumnDef="fechaVencimiento">
-                <th mat-header-cell *matHeaderCellDef> Vencimiento </th>
-                <td mat-cell *matCellDef="let pago"> {{pago.fechaVencimiento | date}} </td>
-              </ng-container>
-              <ng-container matColumnDef="acciones">
-                <th mat-header-cell *matHeaderCellDef> Acciones </th>
-                <td mat-cell *matCellDef="let pago">
-                  <button mat-icon-button color="primary" (click)="verDetallesPago(pago)">
-                    <mat-icon>visibility</mat-icon>
-                  </button>
-                  <button mat-icon-button color="accent" (click)="pagarCuota(pago)">
-                    <mat-icon>credit_card</mat-icon>
-                  </button>
-                </td>
-              </ng-container>
-              
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-          </div>
-          <ng-template #noPagos>
-            <div class="no-data-message">
-              <mat-icon color="primary">check_circle</mat-icon>
-              <p>No tienes pagos pendientes</p>
-            </div>
-          </ng-template>
-        </mat-card-content>
-      </mat-card>
+      </div>
     </div>
 
-
-    <mat-card class="activities-card">
-      <mat-card-header>
-        <mat-card-title>
-          <div class="card-title-with-icon">
-            <mat-icon color="primary">event_note</mat-icon>
-            Próximas Actividades
+    <div class="feature-card attendance-card">
+      <div class="card-header">
+        <div class="header-icon">
+          <mat-icon>insights</mat-icon>
+        </div>
+        <h2>Asistencia</h2>
+        <div class="header-actions">
+          <button mat-icon-button color="primary" (click)="actualizarGraficoAsistencia()">
+            <mat-icon>refresh</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="select-course">
+          <label for="courseSelect">Selecciona un curso:</label>
+          <select (change)="cambiarCurso($event)">
+            <option *ngFor="let curso of cursosInscritos" [value]="curso.id">
+              {{ curso.title }}
+            </option>
+          </select>                
+        </div>
+        <div class="attendance-content">
+          <div class="attendance-chart-container animated-container">
+            <canvas #chartCanvas></canvas>
           </div>
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="activity-timeline">
-          <div *ngFor="let actividad of proximasActividades" class="activity-item">
-            <div class="activity-date">
-              <div class="date-bubble">
-                <span class="date-day">{{actividad.fecha | date:'d'}}</span>
-                <span class="date-month">{{actividad.fecha | date:'MMM'}}</span>
+          <div class="attendance-summary">
+            <div class="stat-circle">
+              <div class="stat-circle-inner">
+                <span class="stat-value">{{porcentajeAsistencia}}%</span>
+                <span class="stat-label">Asistencia</span>
               </div>
             </div>
-            <div class="activity-content">
-              <div [ngClass]="'activity-tag ' + actividad.tipo">{{actividad.tipo}}</div>
-              <h3>{{actividad.titulo}}</h3>
-              <p>{{actividad.descripcion}}</p>
-              <p class="activity-details">
-                <mat-icon>schedule</mat-icon> {{actividad.fecha | date:'HH:mm'}}
-                <mat-icon>room</mat-icon> {{actividad.ubicacion}}
-              </p>
+            <div class="attendance-detail">
+              <div class="attendance-detail-item">
+                <mat-icon>check_circle</mat-icon>
+                <div class="detail-text">
+                  <span class="detail-value">{{clasesAsistidas}}</span>
+                  <span class="detail-label">Clases asistidas</span>
+                </div>
+              </div>
+              <div class="attendance-detail-item">
+                <mat-icon>lightbulb_circle</mat-icon>
+                <div class="detail-text">
+                  <span class="detail-value">{{totalClases}}</span>
+                  <span class="detail-label">Clases totales</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </mat-card-content>
-    </mat-card>
+      </div>
+      <div class="card-footer">
+        <button mat-button color="primary" (click)="goAssist()">Ver detalles completos</button>
+      </div>
+    </div>
   </div>
 </div>

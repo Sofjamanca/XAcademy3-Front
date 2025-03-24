@@ -24,6 +24,10 @@
         <mat-icon>paid</mat-icon>
         <span *ngIf="!isCollapsed">Pagos</span>
       </a>
+      <a routerLink="/perfil/asistencias" routerLinkActive="active" class="nav-item" (click)="closeSidenavOnMobile()">
+        <mat-icon>info</mat-icon>
+        <span *ngIf="!isCollapsed">Asistencia</span>
+      </a>
       <a [routerLink]="['/perfil/certificates', studentId]" routerLinkActive="active" class="nav-item">
         <mat-icon>workspace_premium</mat-icon>
         <span *ngIf="!isCollapsed">Certificados</span>

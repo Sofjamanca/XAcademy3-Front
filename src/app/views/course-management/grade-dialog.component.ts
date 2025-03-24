@@ -170,7 +170,7 @@ export class GradeDialogComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.student.student_id) {
-      this.studentService.getAttendancePercentage(this.data.student.student_id).subscribe({
+      this.studentService.getAttendancePercentageByCourse(this.data.student.student_id, this.data.courseId).subscribe({
         next: (response) => {
           this.attendanceDetails = {
             percentage: response.percentage,

@@ -27,6 +27,8 @@ import { teacherGuard } from './guards/teacher.guard';
 import { WeComponent } from './shared/components/we/we.component';
 import { ContactComponent } from './shared/components/contact/contact.component';
 import { CreditsComponent } from './shared/components/credits/credits.component';
+import { AttendanceManagementComponent } from './views/course-management/components/attendance-management/attendance-management.component';
+import { AttendanceStudentComponent } from './views/student-profile/attendance-student/attendance-student.component';
 
 export const routes: Routes = [
     {
@@ -186,6 +188,9 @@ export const routes: Routes = [
         },
         { path: 'pagos',
           component: PendingComponent
+        },
+        { path: 'asistencias',
+          component: AttendanceStudentComponent
         },
         {
           path: 'editar',

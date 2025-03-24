@@ -61,9 +61,19 @@ export class StudentService {
     return this.http.get<any>(`${this.studentsUrl}/condition/${studentId}`);
   }
 
-  getAttendancePercentage(studentId: number): Observable<any> {
+  getAttendancePercentageGeneral(studentId: number): Observable<any> {
     return this.http.get<any>(`${this.studentsUrl}/${studentId}/attendance/`);
   }
+
+  getAttendancePercentageByCourse(studentId: number, courseId: number): Observable<any> {
+    return this.http.get<any>(`${this.studentsUrl}/attendance/${studentId}/${courseId}`);
+  }
+
+  
+  getInscriptionsCount(): Observable<{ total: number }> {
+    return this.http.get<{ total: number }>(`${this.baseUrl}/countInscriptions`);
+  }
+  
 
   
   

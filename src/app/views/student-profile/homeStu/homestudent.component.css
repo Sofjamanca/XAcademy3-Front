@@ -1,285 +1,362 @@
-/* Estilos generales del dashboard */
 .dashboard-container {
   padding: 24px;
   background-color: #f5f7fa;
   min-height: 100vh;
 }
 
-.dashboard-header {
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
   margin-bottom: 24px;
 }
 
-.dashboard-header h1 {
-  font-size: 2rem;
-  font-weight: 300;
-  margin-bottom: 16px;
-  color: #3f51b5;
+.dashboard-card {
+  border-left: 4px solid;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
 }
 
-.dashboard-content {
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-info h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.card-value {
+  margin: 8px 0 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.calendar-attendance-container {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 24px;
+  margin-bottom: 24px;
 }
 
-@media (min-width: 992px) {
-  .dashboard-content {
-    grid-template-columns: 1fr 1fr;
+@media (max-width: 992px) {
+  .calendar-attendance-container {
+    grid-template-columns: 1fr;
   }
 }
 
-.dashboard-secondary-content {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-}
 
-/* Tarjeta de resumen */
-.summary-card {
-  background: linear-gradient(90deg, #3f51b5 0%, #5c6bc0 100%);
-  color: white;
-  border-radius: 12px;
+.feature-card {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   overflow: hidden;
-  box-shadow: 0 8px 16px rgba(63, 81, 181, 0.2);
-}
-
-.summary-stats {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  padding: 16px 0;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.stat-item {
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+
+.card-header {
   display: flex;
   align-items: center;
-  padding: 12px 24px;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  background: #f7863e;
+  color: white;
 }
 
-.stat-item mat-icon {
-  font-size: 2.5rem;
-  height: 2.5rem;
-  width: 2.5rem;
+.header-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-right: 16px;
 }
 
-.stat-data {
-  display: flex;
-  flex-direction: column;
+.header-icon mat-icon {
+  color: white;
 }
 
-.stat-value {
-  font-size: 2rem;
+.card-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
   font-weight: 500;
+  flex: 1;
 }
 
-.stat-label {
-  font-size: 0.875rem;
-  opacity: 0.8;
+.header-actions {
+  display: flex;
+  gap: 8px;
 }
 
-/* Tarjeta del calendario */
-.calendar-card {
-  grid-column: 1 / -1;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
+.header-actions button {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+.card-body {
+  padding: 24px;
+  flex: 1;
   overflow: hidden;
 }
+
+
+.card-footer {
+  padding: 12px 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  background-color: rgba(63, 81, 181, 0.05);
+  display: flex;
+  justify-content: center;
+}
+
 
 .calendar-container {
-  height: 500px;
-  padding: 8px;
+  height: 400px;
 }
 
-/* Tarjeta de asistencia */
-.attendance-card {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  overflow: hidden;
+
+.attendance-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .attendance-chart-container {
-  max-width: 250px;
-  margin: 0 auto;
-  padding: 16px;
-}
-
-.attendance-details {
-  padding: 16px;
-}
-
-.attendance-summary {
+  height: 200px;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 16px;
-}
-
-.attendance-stat {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 16px;
-  background-color: #f5f7fa;
-  border-radius: 8px;
-}
-
-.attendance-value {
-  font-weight: 500;
-}
-
-/* Tarjeta de pagos */
-.payments-card {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.payments-table {
-  width: 100%;
-}
-
-.no-data-message {
-  display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 48px 0;
-  color: #3f51b5;
+  margin-bottom: 24px;
 }
 
-.no-data-message mat-icon {
-  font-size: 3rem;
-  height: 3rem;
-  width: 3rem;
-  margin-bottom: 16px;
-}
-
-/* Tarjeta de actividades */
-.activities-card {
-  grid-column: 1 / -1;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.activity-timeline {
-  padding: 16px;
+.attendance-stats {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.activity-item {
+.select-course {
+  margin-bottom: 16px;
   display: flex;
-  padding: 16px;
-  background-color: white;
+  flex-direction: column;
+}
+
+.select-course label {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.select-course select {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  border: 2px solid #3f51b5;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease;
+  font-size: 1rem;
+  background-color: white;
+  color: #333;
+  outline: none;
+  transition: all 0.3s ease-in-out;
 }
 
-.activity-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.select-course select:hover {
+  border-color: #303f9f;
 }
 
-.activity-date {
-  margin-right: 24px;
+.select-course select:focus {
+  box-shadow: 0 0 8px rgba(63, 81, 181, 0.5);
 }
 
-.date-bubble {
+.attendance-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.stat-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: conic-gradient(#3f51b5 0% calc(var(--percentage, 75) * 1%), #e0e0e0 calc(var(--percentage, 75) * 1%) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  position: relative;
+}
+
+.stat-circle-inner {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
-  background-color: #f2f4f8;
-  border-radius: 50%;
-  text-align: center;
 }
 
-.date-day {
-  font-size: 1.5rem;
+.stat-value {
+  font-size: 2rem;
   font-weight: 600;
-  line-height: 1;
+  color: #000000;
 }
 
-.date-month {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-}
-
-.activity-content {
-  flex: 1;
-}
-
-.activity-tag {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 16px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-
-.activity-tag.clase {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-}
-
-.activity-tag.examen {
-  background-color: #ffebee;
-  color: #c62828;
-}
-
-.activity-tag.taller {
-  background-color: #e3f2fd;
-  color: #1565c0;
-}
-
-.activity-details {
-  display: flex;
-  align-items: center;
-  margin-top: 8px;
-  color: #666;
+.stat-label {
   font-size: 0.875rem;
+  color: #666;
 }
 
-.activity-details mat-icon {
-  font-size: 1rem;
-  height: 1rem;
-  width: 1rem;
-  margin-right: 4px;
-  margin-left: 16px;
+.attendance-detail {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 16px;
 }
 
-.activity-details mat-icon:first-child {
-  margin-left: 0;
-}
-
-/* Títulos de cards con íconos */
-.card-title-with-icon {
+.attendance-detail-item {
   display: flex;
   align-items: center;
+  gap: 12px;
 }
 
-.card-title-with-icon mat-icon {
-  margin-right: 8px;
+
+.attendance-detail-item mat-icon {
+  color: white;
+  background-color: #030303;
+  padding: 12px;  
+  border-radius: 50%;
+  font-size: 1.5rem; 
+  line-height: 1; 
+  display: inline-flex; 
+  align-items: center;  
+  justify-content: center; 
+  transition: background-color 0.3s ease, transform 0.2s ease-in-out;
 }
 
-/* Estilos para hacer responsive */
+.attendance-detail-item mat-icon:hover {
+  background-color: #f9a201;
+  transform: scale(1.1);
+}
+
+
+.header-actions button mat-icon {
+  color: white;
+}
+
+.header-actions button {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.header-actions button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.detail-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-value {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.animated-container {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+::ng-deep .full-calendar {
+  --fc-border-color: rgba(0, 0, 0, 0.1);
+  --fc-button-bg-color: #3f51b5;
+  --fc-button-border-color: #3f51b5;
+  --fc-button-hover-bg-color: #303f9f;
+  --fc-button-hover-border-color: #303f9f;
+  --fc-today-bg-color: rgba(63, 81, 181, 0.1);
+  --fc-event-border-color: #3f51b5;
+  --fc-event-bg-color: #3f51b5;
+}
+
+::ng-deep .fc .fc-button-primary {
+  background-color: #f7863e !important;
+  border-color: #f7863e !important;
+  color: white !important;
+  margin-top: 5px;
+}
+
+
+::ng-deep canvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+
+.stat-circle {
+  --percentage: attr(data-percentage);
+}
+
+.icon{
+  overflow: initial;
+}
+
 @media (max-width: 768px) {
-  .dashboard-container {
-    padding: 16px;
+  .fc-header-toolbar .fc-button-group {
+    display: none; 
+    margin-top: 5px;
   }
-  
-  .summary-stats {
-    flex-direction: column;
+
+
+  .fc-prev-button, .fc-next-button {
+    position: absolute;
+    top: 10px;
+    right: 10px; 
   }
-  
+
   .calendar-container {
-    height: 400px;
+    height: auto; 
   }
 }
