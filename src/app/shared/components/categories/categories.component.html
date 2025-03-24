@@ -2,10 +2,28 @@
   <h4>Categorías</h4>
 
   <mat-selection-list (selectionChange)="onCategoryChange($event)">
-    @for (category of categories; track category) {
-      <mat-list-option [value]="category.id" [selected]="isSelected(category.id)">{{category.title}}</mat-list-option>
-    }
+    <ng-container *ngIf="!loading; else categorySkeleton">
+      @for (category of categories; track category) {
+      <mat-list-option
+        [value]="category.id"
+        [selected]="isSelected(category.id)"
+        >{{ category.title }}</mat-list-option
+      >
+      }
+    </ng-container>
+    <!-- Skeleton template -->
+    <ng-template #categorySkeleton>
+      <div *ngFor="let i of [1, 2, 3, 4, 5]" class="category-skeleton-item">
+        <ngx-skeleton-loader
+          [theme]="{
+            height: '20px',
+            width: '80%',
+            'margin-bottom': '16px',
+            'border-radius': '4px'
+          }"
+        ></ngx-skeleton-loader>
+        <div class="checkbox-skeleton"></div>
+      </div>
+    </ng-template>
   </mat-selection-list>
 </section>
-
-

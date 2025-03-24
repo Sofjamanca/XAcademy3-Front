@@ -1,41 +1,47 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { MaterialModule } from '../../../material/material.module';
 import { CoursesService } from '../../../services/courses/courses.service';
+import { CommonModule } from '@angular/common';
 import { MatSelectionListChange } from '@angular/material/list';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'shared-categories',
   standalone: true,
-  imports: [
-    MaterialModule
-  ],
+  imports: [MaterialModule, CommonModule, NgxSkeletonLoaderModule],
   templateUrl: './categories.component.html',
-  styleUrl: './categories.component.css'
+  styleUrl: './categories.component.css',
 })
 export class CategoriesComponent {
   @Input() selectedCategories: number[] = [];
-  @Output() categorySelected = new EventEmitter<{ categoryId: number; selected: boolean }>();
+  @Input() loading: boolean = true;
+  @Output() categorySelected = new EventEmitter<{
+    categoryId: number;
+    selected: boolean;
+  }>();
   categories: { id: number; title: string }[] = [];
 
-  constructor(private coursesSvc: CoursesService) { }
+  constructor(private coursesSvc: CoursesService) {}
 
   ngOnInit() {
-    this.coursesSvc.getCategories().subscribe(categories => {
-      this.categories = categories.map(category => ({
+    this.loading = true;
+    this.coursesSvc.getCategories().subscribe((categories) => {
+      this.categories = categories.map((category) => ({
         id: category.id ?? 0,
-        title: category.title
+        title: category.title,
       }));
+      this.loading = false;
     });
   }
 
   onCategoryChange(event: MatSelectionListChange) {
-    event.options.forEach(option => {
+    event.options.forEach((option) => {
       const categoryId = option.value;
       const selected = option.selected;
 
       this.categorySelected.emit({
         categoryId,
-        selected
+        selected,
       });
 
       if (selected) {
@@ -43,7 +49,9 @@ export class CategoriesComponent {
           this.selectedCategories = [...this.selectedCategories, categoryId];
         }
       } else {
-        this.selectedCategories = this.selectedCategories.filter(id => id !== categoryId);
+        this.selectedCategories = this.selectedCategories.filter(
+          (id) => id !== categoryId
+        );
       }
     });
   }

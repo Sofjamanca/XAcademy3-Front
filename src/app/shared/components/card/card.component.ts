@@ -1,17 +1,14 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RegisterBtnComponent } from '../buttons/register-btn/register-btn.component';
 import { MaterialModule } from '../../../material/material.module';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-card',
   standalone: true,
-  imports: [
-    CommonModule,
-    MaterialModule
-  ],
+  imports: [CommonModule, MaterialModule, NgxSkeletonLoaderModule],
   templateUrl: './card.component.html',
-  styleUrl: './card.component.css'
+  styleUrl: './card.component.css',
 })
 export class CardComponent {
   @Input() title: string = '';
@@ -28,6 +25,7 @@ export class CardComponent {
   @Input() showFavoriteIcon: boolean = true;
   @Input() showDetails: boolean = false;
   @Input() showActions: boolean = true;
+  @Input() loading: boolean = false;
   @Output() actionClick = new EventEmitter<void>();
 
   onActionClick() {
@@ -38,7 +36,7 @@ export class CardComponent {
     if (!modalidad) {
       return '';
     }
-    
+
     switch (modalidad) {
       case 'VIRTUAL':
         return 'virtual-chip';
