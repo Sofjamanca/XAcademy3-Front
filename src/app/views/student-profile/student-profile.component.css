@@ -25,7 +25,7 @@
   height: 64px;
   display: flex;
   align-items: center;
-  background: #ff8017;
+  background: #f7863e;
   padding: 0 16px;
 }
 
@@ -82,6 +82,7 @@
   padding: 10px;
   overflow-y: auto;
   transition: margin-left 0.3s ease; 
+  min-height: 100vh;
 }
 
 .main-content.collapsed {

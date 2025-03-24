@@ -24,9 +24,12 @@ import { NewsListComponent } from './views/news/news-list/news-list.component';
 import { NewsDetailComponent } from './views/news/news-detail/news-detail.component';
 import { PaymentDashboardComponent } from './views/admin/payments/payment-dashboard.component';
 import { teacherGuard } from './guards/teacher.guard';
+import { WeComponent } from './shared/components/we/we.component';
 import { ContactComponent } from './shared/components/contact/contact.component';
 import { CreditsComponent } from './shared/components/credits/credits.component';
-import { WeComponent } from './shared/components/we/we.component';
+import { AttendanceManagementComponent } from './views/course-management/components/attendance-management/attendance-management.component';
+import { AttendanceStudentComponent } from './views/student-profile/attendance-student/attendance-student.component';
+
 export const routes: Routes = [
   {
     path: 'home',
@@ -201,22 +204,119 @@ export const routes: Routes = [
       {
         path: 'editar',
         loadComponent: () =>
-          import(
-            './shared/components/edit-profile/edit-profile.component'
-          ).then((m) => m.EditProfileComponent),
-      },
-    ],
-  },
-  {
-    path: '',
-    redirectTo: '/home',
-    pathMatch: 'full',
-  },
-  {
-    path: '**',
-    redirectTo: 'home',
-    pathMatch: 'full',
-  },
+          import('./views/admin/admin-layout/admin-layout.component').then(
+            (m) => m.AdminLayoutComponent
+          ),
+        canActivateChild: [adminGuard],
+        children: [
+            {
+                path: '',
+                component: HomeComponent
+            },
+            {
+                path: 'cursos',
+                component: CoursesListComponent
+            },
+            {
+                path: 'cursos/crear',
+                component: CreateCourseComponent,
+                canActivate: [adminGuard]
+            },
+            {
+                path: 'cursos/editar/:id',
+                component: CreateCourseComponent,
+                canActivate: [adminGuard]
+            },
+            {
+                path: 'profesores',
+                component: TeachersListComponent,
+                canActivate: [loginGuard]
+            },
+            {
+                path: 'profesores/view/:id',
+                component: TeacherDetailComponent,
+                canActivate: [loginGuard]
+            },
+            {
+                path: 'profesores/editar/:id',
+                component: CreateTeacherComponent,
+                canActivate: [loginGuard]
+            },
+            {
+                path: 'profesores/new',
+                component: CreateTeacherComponent,
+                canActivate: [loginGuard]
+            },
+            {
+                path: 'noticias',
+                component: ListArticlesComponent
+            },
+            {
+                path: 'noticias/crear',
+                component: CreateArticleComponent
+            },
+            {
+                path: 'noticias/editar/:id',
+                component: EditArticleComponent
+            },
+            {
+                path: 'pagos',
+                component: PaymentDashboardComponent
+            }
+        ]
+    },
+    {
+      path: 'perfil',
+      loadComponent: () =>
+        import('./views/student-profile/student-profile.component').then(
+          (m) => m.StudentProfileComponent
+        ),
+      // canActivateChild: [loginGuard],
+      children: [
+        {
+          path: '',
+          component: HomeStudentComponent
+        },
+        { path: 'mis-cursos', 
+          component: MisCursosComponent
+        },
+        { path: 'pagos',
+          component: PendingComponent
+        },
+        { path: 'asistencias',
+          component: AttendanceStudentComponent
+        },
+        {
+          path: 'editar',
+          loadComponent: () => import('./shared/components/edit-profile/edit-profile.component')
+            .then(m => m.EditProfileComponent)
+        },
+        { path: 'certificates/:id',
+          component: CertificatesDowComponent
+        },
+      ]},
+    {
+      path: 'profesor',
+      component: TeacherProfileComponent,
+      canActivate: [teacherGuard],
+      children: [
+        {
+          path: 'editar',
+          loadComponent: () => import('./shared/components/edit-profile/edit-profile.component')
+            .then(m => m.EditProfileComponent)
+        },
+      ]
+    },
+    {
+        path: '',
+        redirectTo: '/home',
+        pathMatch: 'full'
+    },
+    {
+        path: '**',
+        redirectTo: 'home',
+        pathMatch: 'full'
+    }
 ];
 
 @NgModule({
