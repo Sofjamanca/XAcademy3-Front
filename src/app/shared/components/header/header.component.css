@@ -1,229 +1,119 @@
+/* Estilos base */
 .header {
-  width: 100%; 
-  background: #faf9fd; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 0; 
-  height: 76px;
-}
-
-.toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 100%; 
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  padding: 10px 0;
+  background-color: #faf9fd;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+.mat-menu-panel {
+  position: fixed !important;
+  right: 10px !important;
+  top: auto !important;
+  bottom: 60px !important; /* Ajusta según la altura de tu bottom nav */
+  left: auto !important;
+  min-width: 200px !important;
+}
+.scroll-header {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.logo-container {
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  height: 60px;
+}
+
+/* Logo */
+.nav__logo {
   display: flex;
   align-items: center;
-  flex-grow: 1;
 }
 
 .logo {
-  width: 3em;
-  margin-right: 10px;
-  margin-left: 20px;
+  height: 40px;
+  width: auto;
 }
 
-.search-bar {
-  flex-grow: 1;
-  min-width: 200px;
-}
-
-
-.auth-buttons {
+/* Menú Desktop */
+.desktop-menu {
   display: flex;
-  gap: 15px;
-  flex-grow: 1;
-  justify-content: flex-end;
-}
-
-.menu-toggle {
-  display: none; 
-  background: none;
-  border: none;
-  color: grey;
-  font-size: 1.8em;
-  cursor: pointer;
-  padding: 5px 10px; 
-  margin-left: auto; 
-}
-.option_user{
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-/*-------- Nombre usuario ------*/
-
-.user_name{
-  font-size: 0.8rem;
+  gap: 1.5rem;
 }
 
-.dropdown-content button {
-  width: fit-content;
-  height: 2em;
-  background: none;
-  border: none;
-  cursor: pointer;
+/* Menú Mobile */
+.mobile-user-icon {
+  display: flex;
+  align-items: center;
 }
 
-
-.user-menu:hover .dropdown-content {
-  display: block;
+.mobile-user-icon button {
+  margin-left: 1rem;
 }
 
+/* Bottom Navigation (Mobile) */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 8px 0;
+  display: flex;
+  justify-content: space-around;
+   border: 1px solid red;
+}
+button mat-icon{
+  color: var(--color_btn_primary);
+} 
+
+/* Asegura que el contenido no quede oculto */
+.main-content {
+  padding-bottom: 60px;
+}
+/* Para dispositivos muy pequeños */
+@media (max-width: 400px) {
+  .mat-menu-panel {
+    right: 5px !important;
+    bottom: 50px !important;
+  }
+}
+
+/* Asegura que el icono sea accesible */
+.mobile-user-icon {
+  position: relative;
+  z-index: 1001;
+  border: 1px solid red;
+}
+
+/* Estilo para los ítems del menú en móvil */
+.mat-menu-item {
+  height: 48px;
+  line-height: 48px;
+}
+
+/* Media Queries */
 @media (max-width: 768px) {
-  .toolbar {
-    padding: 0; 
-  }
-
-  .menu-container {
-    display: none; /* Inicialmente oculta el menú */
-    flex-direction: column;
-    justify-content: start;
-    align-content: center;
-    background-color: rgb(255, 255, 255); 
-    position: absolute;
-    top: 76px;
-    right: 0;
-    z-index: 1000;
-    padding: 2rem 0;
-    width: 50%;
-    transition: .4s;
-    z-index: 1000;
-    height:100%;
-    transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-  }
-  .menu-container.active {
-    transform: translateX(0);
-  }
-
-  .overlay {
-    position: fixed; 
-    top: 76px;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, .5);
-    display: none; 
-    z-index: 1;
-}
-
-.overlay.active {
-    display: block; 
-}
-  .user-menu{
-    display: flex;
-    width:150px;
-  }
-  .container_user-menu{
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-.option_user{
-  display: flex;
-  flex-direction: column;
-  justify-content: right;
-  align-items: start;
-  margin: 1rem;
-}
-
-  .menu-container.active {
-    display: flex; 
-    color: var(--color_btn_primary);
-  }
-
-  .menu-toggle {
-    display: block;
-    background: none;
-    border: none;
-    font-size: 30px;
-    color: #333;
-    cursor: pointer; 
-    position: relative;
-    z-index: 4;
-  }
-
-  .auth-buttons {
-    display: flex;
-    gap: 10px; 
-    justify-content: center;
-    margin-top: 10px; 
-  }
-
-
-}
-
-@media (max-width: 370px) {
-  .search-bar {
-    display: flex;
-    align-items: center;
-    gap: 5px; 
-  }
-
-  .search-bar input {
-    flex-grow: 1; 
-    min-width: 80px; 
-    height: 32px; 
-  }
-
-  .search-bar button {
-    height: 32px; 
-    width: 32px; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0; 
-  }
-
-  .logo {
-    padding-left: 5px; 
-  }
-}
-
-@media (min-width: 768px) {
-  .logo-container {
-    margin-left:1rem;
-  }
-  .menu-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
-    width: 800px;
-    height: 100%;
-  }
-  .toolbar {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-  .option_user{
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-    justify-content: space-between;
-    height: 100%;
-    margin-top: 0%;
+  .desktop-menu {
+    display: none;
   }
   
-
-  .menu-toggle {
-    display: none; /* Oculta el menú hamburguesa en pantallas grandes */
+  .mobile-bottom-nav {
+    display: flex;
+    justify-content: space-around;
   }
-  .search-bar input{
-    width:60%;
-  } 
 }
 
+@media (min-width: 769px) {
+  .mobile-user-icon,
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+}

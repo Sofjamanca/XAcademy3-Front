@@ -11,6 +11,25 @@
     --color_btn_primary_hover: rgb(0, 59, 117);
     --color_btn_accent: rgb(245, 104, 13);
     --color_btn_accent_hover: rgb(185, 79, 8);
+    
+
+    --header-height: 4rem;
+    /*========== Colors ==========*/
+    --hue: 174;
+    --sat: 63%;
+    --first-color: hsl(var(--hue), var(--sat), 40%);
+    --first-color-alt: hsl(var(--hue), var(--sat), 36%);
+    --title-color: hsl(var(--hue), 12%, 15%);
+    --text-color: hsl(var(--hue), 8%, 35%);
+    --body-color: #faf9fd;
+    --container-color: #FFF;
+    --h1-font-size: 1.5rem;
+    --normal-font-size: .938rem;
+    --tiny-font-size: .625rem;
+
+    /*========== z index ==========*/
+    --z-tooltip: 10;
+    --z-fixed: 100;
 
 }
 html, body {
@@ -27,7 +46,8 @@ body {
     font-family:  "Roboto", serif;
 }
 main{
-    min-height: 100%;
+    height: calc(100% - var(--header-height));
+    margin-top: var(--header-height);
     width: 100%;
 }
 main::-webkit-scrollbar {

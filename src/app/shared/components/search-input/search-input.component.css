@@ -1,14 +1,11 @@
 .form-control {
   flex: 1;
-  max-width: 400px;
+  width: 100px;
   min-width: 150px;
+  border: 1px solid red;
 }
 
-@media (max-width: 600px) {
-  .form-control {
-    max-width: 200px;
-  }
-}
+
 @media (min-width: 768px) {
   .input-group{
     width: 80%;

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { MaterialModule } from '../../../../material/material.module';
 import { ApiService } from '../../../../services/api.service';
 import { Router } from '@angular/router';
@@ -16,7 +16,8 @@ export class UserMenuComponent implements OnInit{
   isAdminUser: boolean = false;
   isStudentUser: boolean = false;
   isTeacher: boolean = false;
-
+  @Output() onLogout = new EventEmitter<void>(); 
+  
   constructor(private router: Router){}
 
   ngOnInit(): void {

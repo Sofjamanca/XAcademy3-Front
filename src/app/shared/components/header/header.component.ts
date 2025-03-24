@@ -1,10 +1,9 @@
-import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef, Input, HostListener, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
 import { LogBtnComponent } from '../buttons/log-btn/log-btn.component';
 import { RegisterBtnComponent } from '../buttons/register-btn/register-btn.component';
 import { HeaderMenuComponent } from './header-menu/header-menu.component';
-import { MenuItem } from '../../../core/models/menu-item.model';
 import { SearchInputComponent } from '../search-input/search-input.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ModalService } from '../../../services/modal/modal.service';
 import { LoginComponent } from '../../../views/auth/login/login.component';
 import { RegisterComponent } from '../../../views/auth/register/register.component';
@@ -13,10 +12,9 @@ import { MaterialModule } from '../../../material/material.module';
 import { ApiService } from '../../../services/api.service';
 import { AuthStateServiceService } from '../../../services/state/auth-state-service.service';
 import { UserMenuComponent } from "./user-menu/user-menu.component";
-import { LocalStorageService } from '../../../services/localstorage/local-storage.service';
-import { User } from 'firebase/auth';
 import { UserService } from '../../../services/user/user.service';
 import { StudentService } from '../../../services/student/student.service';
+import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 
 
 @Component({
@@ -35,12 +33,26 @@ import { StudentService } from '../../../services/student/student.service';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit {
+  menu: any;
   apiService = inject(ApiService);
   authStateService = inject(AuthStateServiceService);
-  userService = inject(UserService);
   studentService = inject (StudentService);
+  userService = inject(UserService); 
 
-  constructor(private modalService: ModalService) {}
+  @ViewChild('userMenu') userMenu!: MatMenu;
+  @ViewChild('mobileUserMenu') mobileUserMenu!: MatMenu;
+  @ViewChild('userMenuTrigger', { static: false }) userMenuTrigger!: MatMenuTrigger;
+  @ViewChild('mobileUserMenuTrigger', { static: false }) mobileUserMenuTrigger!: MatMenuTrigger;
+  @ViewChild('mobileMenuTrigger') mobileMenuTrigger!: MatMenuTrigger;
+
+  @Input() imgLogo: string = 'assets/images/logo.webp';
+  menuOpen = false;
+  isMobile = false;
+  isScrolled = false;
+
+  constructor(private modalService: ModalService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit(): void {
     this.authStateService.isAuthenticated$.subscribe(isAuthenticated => {
@@ -50,26 +62,56 @@ export class HeaderComponent implements OnInit {
 
     this.userService.userName$.subscribe(userName => {
     });
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.checkScreenSize();
+    }
   }
 
-  imgLogo: string = "/assets/images/logo.webp";
-
-  menuItems: MenuItem[] = [
-    {text: "Inicio", route: "/home"},
-    {text: "Cursos", route: "/courses"},
-    {text: "Nosotros", route: "/we"},
-    {text: "Contacto", route: "/contact"},
-    {text: "Créditos", route: "/credits"},
-  ]
-  activeMenuItem: string = 'Inicio';
-  menuOpen: boolean = false;
   
 
- 
-  toggleMenu(): void {
+  menuItems = [
+    { text: 'Inicio', route: '/home', icon: 'home' },
+    { text: 'Cursos', route: '/courses', icon: 'library_books' },
+    { text: 'Nosotros', route: '/we', icon: 'groups' },
+    {text: 'Créditos', route: '/contact', icon: 'paid'},
+  ];
+  activeMenuItem: string = 'Inicio';
+  // menuOpen: boolean = false;
+  
+  @HostListener('window:resize')
+  onResize(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.checkScreenSize();
+    }
+  }
+  handleLogout() {
+    if (this.isMobile && this.mobileMenuTrigger) {
+      this.mobileMenuTrigger.closeMenu();
+    }
+    // Redirige o realiza otras acciones necesarias
+  }
+  @HostListener('window:scroll')
+  onWindowScroll(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isScrolled = window.scrollY > 50;
+    }
+  }
+
+  private checkScreenSize(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth <= 768;
+    } else {
+      this.isMobile = false; // Valor por defecto para SSR
+    }
+  }
+  
+
+  toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
-  closeMenu():void{
+
+  closeMenu() {
     this.menuOpen = false;
   }
   openLogin() {

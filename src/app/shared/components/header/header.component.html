@@ -1,33 +1,31 @@
-<header class="header">
-    <mat-toolbar class="toolbar">
-        <div class="logo-container">
+<header class="header" [class.scroll-header]="isScrolled">
+    <nav class="nav container">
+        <a href="#" class="nav__logo">
             <img [src]="imgLogo" class="logo" alt="Logo">
-            <shared-search-input class="search-bar"></shared-search-input>
-        </div>
+        </a>
+        <shared-search-input class="search-bar"></shared-search-input>
 
-        <div class="menu-container" [ngClass]="{'active': menuOpen}">
+        <!-- Desktop Menu -->
+        <div class="desktop-menu" *ngIf="!isMobile">
             <shared-header-menu [menuItems]="menuItems" (itemClick)="closeMenu()"></shared-header-menu>
 
             <div *ngIf="(authStateService.isAuthenticated$ | async) === true; else showLoginButtons" class="user-menu">
-                <span class="user_name" *ngIf="(userService?.userName$ | async) as userName">¡Hola, {{ userName
-                    }}!</span>
-                <button mat-button [matMenuTriggerFor]="userMenu">
+                <span class="user_name" *ngIf="(userService.userName$ | async) as userName">¡Hola, {{ userName }}!</span>
+                <button mat-button [matMenuTriggerFor]="userMenu" #userMenuTrigger="matMenuTrigger">
                     <mat-icon>arrow_drop_down</mat-icon>
                 </button>
             </div>
 
             <div class="box">
                 <ng-template #showLoginButtons>
-                    <div class="option_user">
+                    <div class="auth-buttons">
                         <shared-log-btn (click)="openLogin()">
                             Iniciar Sesión
                         </shared-log-btn>
                         <shared-register-btn (click)="openRegister()">
                             Registrarse
                         </shared-register-btn>
-    
                     </div>
-    
                 </ng-template>
                 <div class="container_user-menu">
                     <mat-menu #userMenu="matMenu">
@@ -35,13 +33,34 @@
                     </mat-menu>
                 </div>
             </div>
-
         </div>
 
-        <button class="menu-toggle" (click)="toggleMenu()">
-            <i class="bi bi-list"></i>
-        </button>
-    </mat-toolbar>
-</header>
+        <!-- Mobile User Icon -->
+        <div *ngIf="isMobile" class="mobile-user-icon">
+            <div *ngIf="(authStateService.isAuthenticated$ | async) === true; else mobileLoginButton">
+                <button mat-icon-button [matMenuTriggerFor]="userMenu" #mobileMenuTrigger="matMenuTrigger">
+                    <mat-icon>account_circle</mat-icon>
+                </button>
+            </div>
+            <ng-template #mobileLoginButton>
+                <button mat-icon-button (click)="openLogin()">
+                    <mat-icon>login</mat-icon>
+                </button>
+            </ng-template>
+        </div>
+    </nav>
 
-<div class="overlay" [ngClass]="{'active': menuOpen}" (click)="toggleMenu()"></div>
+    <!-- Mobile Bottom Navigation -->
+    <div *ngIf="isMobile" class="mobile-bottom-nav">
+        <shared-header-menu 
+            [menuItems]="menuItems" 
+            (itemClick)="closeMenu()"
+            [isMobile]="true">
+        </shared-header-menu>
+    </div>
+
+    <!-- Menú de usuario (compartido para ambas versiones) -->
+    <mat-menu #userMenu="matMenu">
+        <app-user-menu (onLogout)="handleLogout()"></app-user-menu>
+    </mat-menu>
+</header>

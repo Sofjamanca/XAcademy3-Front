@@ -3,6 +3,8 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  height: 100%;
+
 }
 
 .course-header {
@@ -74,6 +76,7 @@
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.8s ease-out forwards;
+  border:1px solid red;
 }
 
 .course-info .title {
@@ -90,7 +93,11 @@
   align-items: center;
   gap: 10px;
 }
-
+.description{
+  width:70%;
+  text-align: justify;
+  border:1px solid red;
+}
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -277,7 +284,20 @@
     line-height: 1.2;
     max-width: 100%;
   }
-
+.info_descripcion{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.description{
+  width:100%;
+  line-height: 100%;
+}
+.info_details{
+  width:100%;
+  display: flex;  
+  flex-direction: row;
+}
   .info-portada .tag,
   .info-portada .students,
   .info-portada .teacher {

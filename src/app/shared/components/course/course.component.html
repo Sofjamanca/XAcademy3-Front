@@ -57,23 +57,33 @@
     <!-- Skeleton para info del curso -->
     <div class="course-info">
       <ng-container *ngIf="!loading; else descriptionSkeleton">
-        <p class="info">
-          <strong>📖 Descripción:</strong> {{ course?.description }}
-        </p>
-        <p class="info">
-          <strong>⏳ Duración:</strong> {{ course?.hours }} horas
-        </p>
-        <p class="info">
-          <strong>📅 Fecha inicio:</strong> {{ course?.startDate }}
-        </p>
-        <p class="info"><strong>📅 Fecha fin:</strong> {{ course?.endDate }}</p>
-        <p class="info">
-          <strong>🎯 Modalidad:</strong> {{ course?.modalidad }}
-        </p>
-        <p class="info">
-          <strong>📖 Categoría:</strong>
-          {{ course?.categoryTitle || "Sin categoría" }}
-        </p>
+        <span class="info_descripcion">
+          <p class="info"><strong>📖 Descripción:</strong></p> 
+          <p class="description">{{ course?.description }}</p>
+        </span>
+        <span class="info_details">
+          <p><strong>⏳ Duración:</strong></p>
+          <p class="info">{{ course?.hours }} horas</p> 
+        </span>
+        <span class="info_descripcion">
+          <p><strong>📅 Fecha inicio:</strong></p>
+          <p class="info">{{ course?.startDate }}</p>
+           
+        </span>
+        <span class="info">
+          <p><strong>📅 Fecha fin:</strong></p>
+          <p class="info">{{ course?.endDate }}</p>
+          </span>
+           
+        <span class="info">
+          <p><strong>🎯 Modalidad:</strong> </p>
+          <p class="info">{{ course?.modalidad }}</p>          
+        </span>
+        <span class="info">
+          <p><strong>📖 Categoría:</strong></p>
+          <p class="info">{{ course?.categoryTitle || "Sin categoría" }}</p>
+          
+        </span>
       </ng-container>
 
       <ng-template #descriptionSkeleton>
