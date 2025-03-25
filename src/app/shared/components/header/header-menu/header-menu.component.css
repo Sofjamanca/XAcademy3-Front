@@ -1,18 +1,18 @@
-
-nav{
+nav {
   width: 100%;
 }
+
 .mobile-version ul {
   display: flex;
   justify-content: space-between;
   list-style: none;
   padding: 0;
-  margin: 0;  
-  width:300px;
+  margin: 0;
+  width: 300px;
 }
 
 .mobile-version li {
-  width:80%;
+  width: 80%;
   flex: 1;
   text-align: center;
   margin: 0 .5rem;
@@ -37,10 +37,12 @@ nav{
   font-size: 24px;
   margin-bottom: 4px;
 }
+
 .mobile-version span {
   font-size: .8rem;
   font-weight: 700;
 }
+
 .hide-on-mobile {
   display: none;
 }
@@ -53,18 +55,75 @@ a.active {
 a.active mat-icon {
   color: var(--color_btn_primary);
 }
-a.active span{
+
+a.active span {
   color: var(--color_btn_primary);
 }
 
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  nav {
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Versión Tablet (769px - 1024px) */
+  .tablet-version ul {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 280px;
+    list-style: none;
+    padding-top: .5rem;
+  }
+
+  .tablet-version li {
+    flex: 1;
+    text-align: center;
+    margin: 0 0.3rem;
+  }
+
+  .tablet-version a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: #9a9a9a;
+    font-size: 0.8rem;
+    
+    padding: .5rem 0;
+  }
+
+  .tablet-version mat-icon {
+    display: none;
+  }
+
+  .tablet-version span {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  /* Estado activo para tablet */
+  a.active {
+    color: var(--color_btn_primary);
+    border-bottom: 2px solid var(--color_btn_accent);
+  }
+
+}
+
 @media (min-width: 1024px) {
-  nav{
-    width:100%;
-    height:100%;
+  nav {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
   }
-  .nav-menu{
+
+  .nav-menu {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -73,14 +132,16 @@ a.active span{
     width: 480px;
     height: 100%;
   }
-  
-  nav ul{
+
+  nav ul {
     padding-top: 1.5rem;
   }
-  ul.nav-menu li{
-    width:100px;
+
+  ul.nav-menu li {
+    width: 100px;
   }
-  ul.nav-menu li a{
+
+  ul.nav-menu li a {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -89,8 +150,8 @@ a.active span{
     font-size: 12px;
     padding: 8px 0;
   }
-  a.active{
+
+  a.active {
     border-bottom: 1px solid var(--color_btn_accent);
   }
 }
-

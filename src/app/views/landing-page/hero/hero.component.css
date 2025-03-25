@@ -65,7 +65,7 @@
 .carousel-control-next {
   color:white;
   position: absolute;
-  z-index: 1000; 
+  z-index: 900; 
 }
 
 .carousel-control-next[_ngcontent-ng-c1062828629]{
@@ -88,6 +88,10 @@
   .carousel-control-prev[_ngcontent-ng-c1062828629], 
 .carousel-control-next[_ngcontent-ng-c1062828629] {
   top: 80%;
+}
+.carousel-item:not(:first-child)::before {
+  height:500px;
+  width: 100%;
 }
 
 

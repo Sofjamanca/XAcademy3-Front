@@ -7,7 +7,12 @@
 
         <!-- Desktop Menu -->
         <div class="desktop-menu" *ngIf="!isMobile">
-            <shared-header-menu [menuItems]="menuItems" (itemClick)="closeMenu()"></shared-header-menu>
+            <shared-header-menu 
+                [menuItems]="menuItems" 
+                (itemClick)="closeMenu()"
+                [isTablet]="isTablet"
+                >
+            </shared-header-menu>
 
             <div *ngIf="(authStateService.isAuthenticated$ | async) === true; else showLoginButtons" class="user-menu">
                 <span class="user_name" *ngIf="(userService.userName$ | async) as userName">¡Hola, {{ userName }}!</span>

@@ -1,10 +1,11 @@
-<nav [class.mobile-version]="isMobile" class="menu">
-  <ul class="nav-menu">
+<!-- header-menu.component.html -->
+<nav [class.mobile-version]="isMobile" [class.tablet-version]="isTablet">
+    <ul class="nav-menu">
       <li *ngFor="let item of menuItems" (click)="itemClick.emit()">
-          <a [routerLink]="item.route" routerLinkActive="active">
-              <mat-icon *ngIf="isMobile">{{item.icon}}</mat-icon>
-              <span [class.mobile-version]="isMobile">{{item.text}}</span>
-          </a>
+        <a [routerLink]="item.route" routerLinkActive="active">
+          <mat-icon *ngIf="isMobile || isTablet">{{item.icon}}</mat-icon>
+          <span>{{item.text}}</span>
+        </a>
       </li>
-  </ul>
-</nav>
+    </ul>
+  </nav>

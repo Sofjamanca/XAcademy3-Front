@@ -82,6 +82,7 @@ button mat-icon{
 }
 /* Para dispositivos muy pequeños */
 @media (max-width: 400px) {
+
   .mat-menu-panel {
     right: 5px !important;
     bottom: 50px !important;
@@ -100,9 +101,35 @@ button mat-icon{
   height: 48px;
   line-height: 48px;
 }
-
-/* Media Queries */
-@media (min-width: 1024px) {
+@media (min-width: 769px) and (max-width: 1024px) {
+  .mobile-user-icon {
+    display: flex;
+    align-items: center;
+  }
+  .header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  .search-bar{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 200px;
+    padding-bottom: .5rem;
+  }
+}
+  /* Media Queries */
+@media (min-width: 1025px) {
   .nav{
     display: flex;
     flex-direction: column;

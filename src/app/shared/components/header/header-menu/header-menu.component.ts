@@ -19,10 +19,14 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class HeaderMenuComponent {
   @Input() menuItems: any[] = [];
   @Input() isMobile = false;
+  @Input() isTablet = false;
   @Output() itemClick = new EventEmitter<void>();
 
-  itemClicked() {
-    this.itemClick.emit();
+  handleClick() {
+    if (this.isMobile) {
+      this.itemClick.emit();
+    }
   }
+  
   
 }
