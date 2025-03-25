@@ -12,10 +12,10 @@ import { Route } from '@angular/router';
 export class RegisterComponent{
   footerAction = '/auth/login';
   registerFields = [
-    { label: 'Nombre', controlName: 'name', type: 'text', icon: '', errorMessage: 'Please enter a valid' },
-    { label: 'Apellido', controlName: 'lastname', type: 'tex', icon: '', errorMessage: 'Please enter a valid password' },
-    { label: 'Email', controlName: 'email', type: 'email', icon: '', errorMessage: 'Please enter a valid email' },
-    { label: 'Contraseña', controlName: 'password', type: 'password', icon: '', errorMessage: 'Please confirm your password' }
+    { label: 'Nombre', controlName: 'name', type: 'text', icon: '', errorMessage: 'Por favor ingrese un nombre válido' },
+    { label: 'Apellido', controlName: 'lastname', type: 'tex', icon: '', errorMessage: 'Por favor ingrese un apellido válido' },
+    { label: 'Email', controlName: 'email', type: 'email', icon: '', errorMessage: 'Por favor ingrese un email válido' },
+    { label: 'Contraseña', controlName: 'password', type: 'password', icon: '', errorMessage: 'Por favor confirme su contraseña' }
   ];
 
 

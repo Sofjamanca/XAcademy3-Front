@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TeacherService } from '../../../../services/teacher/teacher.service';
 import { Teacher } from '../../../../core/models/teacher.model';
 import { Course } from '../../../../core/models/course.model';
@@ -22,6 +23,7 @@ import { CardComponent } from '../../../../shared/components/card/card.component
     MatIconModule,
     MatDividerModule,
     MatChipsModule,
+    MatProgressSpinnerModule,
     CardComponent
   ],
   templateUrl: './teacher-detail.component.html',
@@ -55,14 +57,25 @@ export class TeacherDetailComponent implements OnInit {
 
   loadTeacherDetails(): void {
     this.isLoading = true;
+    this.error = undefined; // Resetear el error
+    
+    
     this.teacherService.getTeacherById(this.teacherId).subscribe({
       next: (response: any) => {
-        this.teacher = response.teacher;
-        this.courses = response.courses;
-        this.isLoading = false;
+        
+        if (response && response.teacher && response.courses) {
+          this.teacher = response.teacher;
+          this.courses = response.courses;
+          this.isLoading = false;
+        } else {
+          this.error = 'Formato de respuesta incorrecto';
+          console.error('Datos de profesor no encontrados en la respuesta');
+          this.isLoading = false;
+        }
       },
       error: (err) => {
-        this.error = 'Error al cargar los datos del profesor: ' + err.message;
+        console.error('Error al cargar los datos del profesor:', err);
+        this.error = 'Error al cargar los datos del profesor: ' + (err.message || 'Contacte al administrador');
         this.isLoading = false;
       }
     });
@@ -78,7 +91,7 @@ export class TeacherDetailComponent implements OnInit {
 
   goToCourse(courseId: number): void {
     if (courseId) {
-      this.router.navigate(['/admin/cursos', courseId]);
+      this.router.navigate(['/course', courseId]);
     }
   }
 

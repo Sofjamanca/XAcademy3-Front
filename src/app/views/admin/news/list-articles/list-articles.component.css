@@ -2,19 +2,42 @@
   padding: 24px;
   max-width: 1200px;
   margin: 0 auto;
+  background-color: #F8F9FA;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .header h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #3f51b5;
+}
+
+.header button {
+  background-color: #3f51b5;
+  color: white !important;
   font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: none !important;
+}
+
+.header button:hover {
+  background-color: #303f9f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.header button mat-icon {
+  margin-right: 8px;
 }
 
 .loading-container {
@@ -23,6 +46,11 @@
   align-items: center;
   justify-content: center;
   padding: 50px 0;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  margin-top: 20px;
 }
 
 .loading-text {
@@ -32,41 +60,80 @@
 }
 
 .empty-state {
-  text-align: center;
-  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 250px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  font-size: 18px;
+  color: #666;
+  margin-top: 20px;
+  padding: 30px;
+}
+
+.empty-state mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+  color: #3f51b5;
+  margin-bottom: 16px;
 }
 
 .empty-state p {
   margin-bottom: 20px;
-  color: #666;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .table-container {
-  overflow-x: auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.full-width-table {
+  width: 100%;
 }
 
 table {
   width: 100%;
-  table-layout: fixed;
 }
 
 th.mat-header-cell {
-  font-weight: 500;
-  color: #333;
+  font-weight: 600;
+  text-transform: uppercase;
   background-color: #f5f5f5;
+  color: #333;
+  padding: 16px;
+  font-size: 14px;
+}
+
+td.mat-cell {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #444;
+  word-break: break-word;
+  white-space: normal;
+}
+
+tr.mat-row:hover {
+  background-color: #f8f9fa;
+  transition: background 0.3s ease-in-out;
 }
 
 /* Ajustes de ancho de columnas para que coincidan con el HTML */
 .mat-column-id {
-  width: 10%;
-  min-width: 60px;
+  width: 80px;
 }
 
 .mat-column-title {
-  width: 45%;
+  max-width: 45%;
 }
 
 .mat-column-createdAt {
@@ -74,54 +141,143 @@ th.mat-header-cell {
 }
 
 .mat-column-actions {
-  width: 20%;
+  width: 160px;
   text-align: center;
 }
 
-.action-icon {
-  cursor: pointer;
-  margin: 0 5px;
+.ellipsis-text {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
 }
 
-td.mat-cell {
-  padding: 8px 16px;
-  word-break: break-word;
-  white-space: normal;
+.actions-container-cell {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
 }
 
-/* Estilos responsivos */
+.actions-cell {
+  padding: 6px 8px !important;
+}
+
+button[mat-icon-button] {
+  transition: all 0.3s ease;
+}
+
+button[mat-icon-button]:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button[color="primary"] {
+  color: #3f51b5;
+}
+
+button[color="accent"] {
+  color: #ff4081;
+}
+
+button[color="warn"] {
+  color: #f44336;
+}
+
+/* Estilos responsive para tablas */
 @media (max-width: 768px) {
+  .articles-container {
+    padding: 16px;
+  }
+  
   .header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    margin-bottom: 20px;
+  }
+  
+  .header h1 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    text-align: center;
   }
   
   .header button {
-    margin-top: 10px;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 300px;
   }
   
+  /* Ajustes de tabla para móvil */
   .table-container {
     overflow-x: auto;
   }
   
-  table {
-    table-layout: auto;
-  }
-  
   .mat-column-id {
-    width: 60px;
-    min-width: 60px;
+    display: none !important;
   }
   
   .mat-column-title {
-    min-width: 120px;
+    min-width: 150px;
+    max-width: 50%;
   }
   
   .mat-column-createdAt {
-    min-width: 120px;
+    min-width: 110px;
   }
   
   .mat-column-actions {
     min-width: 120px;
+  }
+  
+  th.mat-header-cell, 
+  td.mat-cell {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+  
+  /* Botones de acción más compactos */
+  button[mat-icon-button] {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+  }
+  
+  button[mat-icon-button] mat-icon {
+    font-size: 18px;
+    line-height: 18px;
+    height: 18px;
+    width: 18px;
+  }
+}
+
+/* Para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  /* Ocultar columnas menos importantes */
+  .mat-column-createdAt {
+    display: none !important;
+  }
+  
+  /* Ajustar tamaño de columnas restantes */
+  .mat-column-title {
+    min-width: 140px;
+    max-width: 140px;
+  }
+  
+  .mat-column-actions {
+    min-width: 110px;
+  }
+  
+  /* Reducir espacio entre botones */
+  td.mat-cell:last-of-type {
+    padding-right: 5px;
+  }
+  
+  /* Botones de acción más compactos */
+  button[mat-icon-button] {
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    margin: 0 2px;
   }
 }

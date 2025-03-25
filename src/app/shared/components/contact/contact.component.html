@@ -1,7 +1,10 @@
 <div class="contact-container" [ngClass]="{ 'mobile-layout': isMobile }">
+
     <div class="contact-content">
+
         <div class="contact-form">
             <h2>Contáctanos</h2>
+
             <p>Si tenes alguna consulta o recomendación, completa el formulario a continuación y nos pondremos en contacto lo antes posible.</p>
             <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)">
                 <div class="form-group">
@@ -46,41 +49,42 @@
             </form>
         </div>
 
-        <div class="image-container">
-             <img src="/assets/images/contact.webp" alt="Descripción de la imagen" class="contact-image" />
-       </div>
-
+    
         <div class="contact-sidebar">
             <div class="contact-info">
                 <h3>Información de Contacto</h3>
                 <div class="contact-item">
                     <i class="fas fa-phone-alt"></i>
-                    <p><mat-icon class="icon">call</mat-icon> Teléfono: +3549-636800</p>
+                    <p><mat-icon class="icon">call</mat-icon>  +3549-636800</p>
                 </div>
                 <div class="contact-item">
                     <i class="fas fa-envelope"></i>
-                    <p><mat-icon class="icon">mail</mat-icon> Email: incubadoradelnoc&#64;gmail.com</p>
+                    <p><mat-icon class="icon">mail</mat-icon>  incubadoradelnoc&#64;gmail.com</p>
                 </div>
                 <div class="contact-item">
                     <i class="fas fa-map-marker-alt"></i>
-                    <p><mat-icon class="icon">place</mat-icon> Dirección: Mitre 757, Cruz del Eje</p>
+                    <p><mat-icon class="icon">place</mat-icon>  Mitre 757, Cruz del Eje</p>
+                </div>
+
+                <div class="whatsapp-container">
+                    <a href="https://wa.me/3515336600" target="_blank" rel="noopener">
+                        <img src="/assets/images/whatsapp.svg" alt="WhatsApp" class="whatsapp-icon" width="20" height="20" >
+                        <span>Chatea con nosotros en WhatsApp</span>
+                    </a>
                 </div>
             </div>
           
-            <div class="whatsapp-container">
-                <a href="https://wa.me/3515336600" target="_blank" rel="noopener">
-                    <img src="/assets/images/wsp.webp" alt="WhatsApp" class="whatsapp-icon">
-                    <span>Chatea con nosotros en WhatsApp</span>
-                </a>
-            </div>
+           
           
             <div class="map-container">
+                <div class="map-content">
                 <h3>Nos encontramos acá, ¡visitanos!</h3>
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3430.011497468521!2d-64.80805402379832!3d-30.718077174591368!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x942dc3635df2046b%3A0x25b35b9f08155ae8!2sGral.%20Mitre%20757%2C%20X5280%20Cruz%20del%20Eje%2C%20C%C3%B3rdoba!5e0!3m2!1ses-419!2sar!4v1741699038354!5m2!1ses-419!2sar" 
                     width="600" height="450" 
                     class="iframe-map" allowfullscreen="" 
                     title="Ubicación en el mapa">
                 </iframe>
+            </div>
             </div>
           
             <div class="social-links">

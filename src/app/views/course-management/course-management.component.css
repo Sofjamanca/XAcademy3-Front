@@ -1,7 +1,11 @@
 .course-management-container {
   padding: 20px;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 3 auto;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .loading-container, 

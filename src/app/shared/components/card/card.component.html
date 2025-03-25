@@ -1,4 +1,4 @@
-<mat-card class="card">
+<mat-card class="card" (click)="onActionClick()">
   <!-- Imagen -->
   <ng-container *ngIf="!loading; else imageSkeletonTemplate">
     <img *ngIf="image" mat-card-image [src]="image" [alt]="title" />
@@ -12,6 +12,13 @@
       }"
     ></ngx-skeleton-loader>
   </ng-template>
+
+  <!-- Chip de modalidad -->
+  <div *ngIf="modalidad" class="modalidad-container">
+    <span [class]="getModalidadClass(modalidad)" class="modalidad-chip">
+      {{ modalidad }}
+    </span>
+  </div>
 
   <mat-card-header>
     <!-- Título -->
@@ -29,12 +36,7 @@
     <!-- Subtítulo -->
     <mat-card-subtitle>
       <ng-container *ngIf="!loading; else subtitleSkeletonTemplate">
-        <ng-container *ngIf="modalidad">
-          <span [class]="getModalidadClass(modalidad)" class="modalidad-chip">
-            {{ modalidad }}
-          </span>
-        </ng-container>
-        <ng-container *ngIf="!modalidad && category">
+        <ng-container *ngIf="category" class="category">
           {{ category }}
         </ng-container>
       </ng-container>
@@ -48,15 +50,7 @@
 
   <mat-card-content>
     <!-- Descripción -->
-    <ng-container *ngIf="!loading; else descriptionSkeletonTemplate">
-      <p class="course-description">{{ description }}</p>
-    </ng-container>
-    <ng-template #descriptionSkeletonTemplate>
-      <ngx-skeleton-loader
-        [theme]="{ height: '16px', width: '40%', margin: '0' }"
-        [count]="3"
-      ></ngx-skeleton-loader>
-    </ng-template>
+    
 
     <!-- Detalles -->
     <div *ngIf="showDetails" class="course-details">
@@ -81,7 +75,7 @@
   <!-- Acciones -->
   <mat-card-actions *ngIf="showActions" class="card-actions">
     <ng-container *ngIf="!loading; else actionsSkeletonTemplate">
-      <button mat-raised-button color="primary" (click)="onActionClick()">
+      <button mat-raised-button color="primary" class="btn_card" (click)="onActionClick()">
         {{ action }}
       </button>
       <mat-icon
