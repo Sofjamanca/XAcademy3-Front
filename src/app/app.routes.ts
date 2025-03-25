@@ -182,10 +182,11 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: MisCursosComponent,
+        component: HomeStudentComponent,
       },
       { path: 'mis-cursos', component: MisCursosComponent },
       { path: 'pagos', component: PendingComponent },
+      { path: 'asistencias', component: AttendanceStudentComponent },
       {
         path: 'editar',
         loadComponent: () =>
@@ -204,119 +205,22 @@ export const routes: Routes = [
       {
         path: 'editar',
         loadComponent: () =>
-          import('./views/admin/admin-layout/admin-layout.component').then(
-            (m) => m.AdminLayoutComponent
-          ),
-        canActivateChild: [adminGuard],
-        children: [
-            {
-                path: '',
-                component: HomeComponent
-            },
-            {
-                path: 'cursos',
-                component: CoursesListComponent
-            },
-            {
-                path: 'cursos/crear',
-                component: CreateCourseComponent,
-                canActivate: [adminGuard]
-            },
-            {
-                path: 'cursos/editar/:id',
-                component: CreateCourseComponent,
-                canActivate: [adminGuard]
-            },
-            {
-                path: 'profesores',
-                component: TeachersListComponent,
-                canActivate: [loginGuard]
-            },
-            {
-                path: 'profesores/view/:id',
-                component: TeacherDetailComponent,
-                canActivate: [loginGuard]
-            },
-            {
-                path: 'profesores/editar/:id',
-                component: CreateTeacherComponent,
-                canActivate: [loginGuard]
-            },
-            {
-                path: 'profesores/new',
-                component: CreateTeacherComponent,
-                canActivate: [loginGuard]
-            },
-            {
-                path: 'noticias',
-                component: ListArticlesComponent
-            },
-            {
-                path: 'noticias/crear',
-                component: CreateArticleComponent
-            },
-            {
-                path: 'noticias/editar/:id',
-                component: EditArticleComponent
-            },
-            {
-                path: 'pagos',
-                component: PaymentDashboardComponent
-            }
-        ]
-    },
-    {
-      path: 'perfil',
-      loadComponent: () =>
-        import('./views/student-profile/student-profile.component').then(
-          (m) => m.StudentProfileComponent
-        ),
-      // canActivateChild: [loginGuard],
-      children: [
-        {
-          path: '',
-          component: HomeStudentComponent
-        },
-        { path: 'mis-cursos', 
-          component: MisCursosComponent
-        },
-        { path: 'pagos',
-          component: PendingComponent
-        },
-        { path: 'asistencias',
-          component: AttendanceStudentComponent
-        },
-        {
-          path: 'editar',
-          loadComponent: () => import('./shared/components/edit-profile/edit-profile.component')
-            .then(m => m.EditProfileComponent)
-        },
-        { path: 'certificates/:id',
-          component: CertificatesDowComponent
-        },
-      ]},
-    {
-      path: 'profesor',
-      component: TeacherProfileComponent,
-      canActivate: [teacherGuard],
-      children: [
-        {
-          path: 'editar',
-          loadComponent: () => import('./shared/components/edit-profile/edit-profile.component')
-            .then(m => m.EditProfileComponent)
-        },
-      ]
-    },
-    {
-        path: '',
-        redirectTo: '/home',
-        pathMatch: 'full'
-    },
-    {
-        path: '**',
-        redirectTo: 'home',
-        pathMatch: 'full'
-    }
+          import(
+            './shared/components/edit-profile/edit-profile.component'
+          ).then((m) => m.EditProfileComponent),
+      },
+    ],
+  },
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full',
+  },
+  {
+    path: '**',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({
