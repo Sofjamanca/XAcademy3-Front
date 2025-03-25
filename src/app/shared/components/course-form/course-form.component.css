@@ -169,7 +169,7 @@ input[type="number"] {
 
 
   .botones-container{
-    width: 300px;
+    width: -webkit-fill-available;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

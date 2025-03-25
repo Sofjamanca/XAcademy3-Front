@@ -64,6 +64,37 @@
 
 .user_name{
   font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 0;
+  line-height: 36px;
+  vertical-align: middle;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  height: 46px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  background-color: #F8F9FA;
+  border-radius: 8px;
+  border: 1px var(--bs-border-width) solid var(--bs-border-color);
+}
+
+.user-menu button {
+  padding: 0;
+  min-width: 36px;
+  line-height: 36px;
+  height: 36px;
+}
+
+.user-menu button mat-icon {
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
 }
 
 .dropdown-content button {
@@ -208,6 +239,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 80%;
   }
   .option_user{
     display: flex;
@@ -220,8 +252,9 @@
   
 
   .menu-toggle {
-    display: none;
+    display: none; 
   }
+  
   .search-bar input{
     width:60%;
   } 

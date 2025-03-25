@@ -55,14 +55,11 @@
                   </mat-dialog-actions>
 
                   <div *ngIf="showSocialButtons" class="buttom_group">
-                    <button mat-button class="btn_social" title="Google" (click)="signInWithGoogle()">
-                      <img [src]="iconSocialG" alt="google">
-                    </button>
-                    <button mat-button class="btn_social" title="Facebook" (click)="signInWithFacebook()">
-                      <img [src]="iconSocialF" alt="Facebook">
-                    </button>
-                    <button mat-button class="btn_social" title="Apple">
-                      <img [src]="iconSocialA" alt="Apple">
+                    <button mat-button class="btn_social" title="Iniciar sesión con Google" (click)="signInWithGoogle()">
+                      <img [src]="iconSocialG" alt="Google">
+                      <span class="text_social">
+                        Continuar con Google
+                      </span>
                     </button>
                   </div>
 

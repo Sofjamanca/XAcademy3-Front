@@ -78,7 +78,7 @@ export class CourseComponent implements OnInit {
 
           if (this.course.teacher_id) {
             this.teacherService
-              .getTeacherById(this.course.teacher_id)
+              .getTeacherByIdCourse(this.course.teacher_id)
               .subscribe({
                 next: (teacher) => {
                   this.course.teacherName = teacher.user?.name || 'Desconocido';
@@ -132,6 +132,14 @@ export class CourseComponent implements OnInit {
 
   getClassDate(classItem: Class): string {
     return new Date(classItem.class_date).toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+
+  formatDate(date: string): string {
+    return new Date(date).toLocaleDateString('es-ES', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'

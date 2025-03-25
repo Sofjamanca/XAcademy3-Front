@@ -16,10 +16,14 @@ export class TeacherService {
     return this.http.get<Teacher[]>(`${this.baseUrl}all`);
   }
 
-  getTeacherById(id: number): Observable<Teacher> {
-    return this.http.get<{ teacher: Teacher }>(`${this.baseUrl}view/${id}`).pipe(
-      map(response => response.teacher)
-    );
+  getTeacherById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}view/${id}`);
+  }
+
+  getTeacherByIdCourse(id: number): Observable<Teacher> {
+    return this.http.get<{teacher: Teacher}>(`${this.baseUrl}view/${id}`).pipe(
+    map(response => response.teacher)
+  );
   }
 
   getTeacherByUserId(userId: number) {

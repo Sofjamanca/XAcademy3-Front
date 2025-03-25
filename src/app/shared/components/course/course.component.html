@@ -61,58 +61,45 @@
     <!-- Skeleton para info del curso -->
     <div class="course-info">
       <ng-container *ngIf="!loading; else descriptionSkeleton">
-<<<<<<< Updated upstream
-        <p class="info">
-          <strong>📖 Descripción:</strong> {{ course?.description }}
-        </p>
-        <p class="info">
-          <strong>⏳ Duración:</strong> {{ course?.hours }} horas
-        </p>
-        <p class="info">
-          <strong>📅 Fecha inicio:</strong> {{ course?.startDate }}
-        </p>
-        <p class="info"><strong>📅 Fecha fin:</strong> {{ course?.endDate }}</p>
-        <p class="info">
-          <strong>🎯 Modalidad:</strong> {{ course?.modalidad }}
-        </p>
-        <p class="info">
-          <strong>📖 Categoría:</strong>
-          {{ course?.categoryTitle || "Sin categoría" }}
-        </p>
-=======
-        <span class="info_descripcion">
+        <div class="info-descripcion">
           <p class="info">
             <mat-icon>description</mat-icon>
             <strong>Descripción</strong> 
+          </p>
           <p class="description">{{ course?.description }}</p>
-        </span>
-        <span class="info_details">
-          <p class="info">
+        </div>
+        
+        <div class="curso-datos">
+          <div class="info-descripcion">
+            <p class="info">
+            <mat-icon>calendar_month</mat-icon>
+              <strong>Comienza</strong>
+              <span>{{ formatDate(course?.startDate) }}</span>
+            </p>
+          </div>
+          <div class="info-descripcion">
+            <p class="info">
+            <mat-icon>calendar_month</mat-icon>
+              <strong>Finaliza</strong>
+              <span>{{ formatDate(course?.endDate) }}</span>
+            </p>
+          </div>
+          <div class="info-descripcion">
+            <p class="info">
             <mat-icon>schedule</mat-icon>
-            <strong>Duración</strong></p>
-          <p class="info">{{ course?.hours }} horas</p> 
-        </span>
-        <span class="info_descripcion">
-          <p class="info">
-            <mat-icon>calendar_month</mat-icon>
-            <strong>Comienza</strong></p>
-          <p class="info">{{ course?.startDate }}</p>
-           
-        </span>
-        <span class="info_descripcion">
-          <p class="info">
-            <mat-icon>calendar_month</mat-icon>
-            <strong>Finaliza</strong></p>
-          <p class="info">{{ course?.endDate }}</p>
-          </span>
-           
-          <span class="info_descripcion">
+              <strong>Duración</strong>
+              <span>{{ course?.hours }} horas</span>
+            </p>
+          </div>
+          <div class="info-descripcion">
             <p class="info">
             <mat-icon>school</mat-icon>
-            <strong>Modalidad</strong> </p>
-          <p class="info">{{ course?.modalidad }}</p>          
-        </span>
->>>>>>> Stashed changes
+              <strong>Modalidad</strong>
+              <span>{{ course?.modalidad }}</span>
+            </p>
+          </div>
+        </div>
+        
       </ng-container>
 
       <ng-template #descriptionSkeleton>
@@ -127,14 +114,14 @@
       <div class="info_clases">
         <p class="info">
           <mat-icon>school</mat-icon>
-          <strong>Clases:</strong>
+          <strong>Clases</strong>
         </p>
         <div class="classes-list">
           <ng-container *ngIf="!loading; else classesSkeleton">
             <mat-accordion *ngIf="classes && classes.length > 0; else noClasses" class="classes-accordion">
               <mat-expansion-panel *ngFor="let class of classes" 
                                  [expanded]="class.id === expandedClassId"
-                                 (opened)="toggleClassExpansion(class.id)">
+                                 (opened)="toggleClassExpansion(class.id)" class="class-panel">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
                     <div class="class-header">
