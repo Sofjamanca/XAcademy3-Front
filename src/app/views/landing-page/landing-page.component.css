@@ -16,6 +16,7 @@
   flex-direction: column;
   align-items: center;
   padding: 20px 0;
+  margin: 30px auto;
 }
 
 .section-title {
@@ -28,11 +29,9 @@
   align-items: center;
   justify-content: center;
   margin-top: 20px;
-    font-size: 2.1rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-
-
+  font-size: 2.1rem;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
 .courses-grid {
@@ -53,13 +52,13 @@
 }
 
 .view-all-button {
-  background-color: #FFF;
+  background-color: #fff;
   /* width: 7.5em; */
   padding: 0 0.7em;
   width: fit-content;
   border-radius: 4px;
-  border-color: var(--color_btn_primary)!important;
-  color: var(--color_btn_primary)!important;
+  border-color: var(--color_btn_primary) !important;
+  color: var(--color_btn_primary) !important;
 }
 
 .values-container {
@@ -116,12 +115,12 @@
   .courses-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .values-grid {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: auto auto auto;
   }
-  
+
   .values-grid .value:nth-child(5),
   .values-grid .value:nth-child(6) {
     grid-column: span 1;
@@ -132,7 +131,7 @@
   .courses-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .section-title {
     font-size: 1.5rem;
   }
@@ -157,5 +156,48 @@
   padding: 20px;
 }
 
+.testimonials-container {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding: 20px 0;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+}
 
+.testimonials-container > * {
+  width: 80%;
+  max-width: 1200px;
+}
 
+@media (max-width: 992px) {
+  .values-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto auto;
+  }
+
+  .values-grid .value:nth-child(5),
+  .values-grid .value:nth-child(6) {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .courses-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .values-grid {
+    grid-template-columns: 1fr;
+  }
+}
