@@ -85,7 +85,7 @@
   }
 
   .menu-container {
-    display: none; /* Inicialmente oculta el menú */
+    display: none; 
     flex-direction: column;
     justify-content: start;
     align-content: center;
@@ -220,7 +220,7 @@
   
 
   .menu-toggle {
-    display: none; /* Oculta el menú hamburguesa en pantallas grandes */
+    display: none;
   }
   .search-bar input{
     width:60%;

@@ -15,8 +15,8 @@
 
 .course-status {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 25px;
+  right: 25px;
   background: #38d82f;
   color: white;
   padding: 5px 10px;
@@ -45,7 +45,7 @@
 }
 
 .info-portada .title {
-  font-size: 32px;
+  font-size: 42px;
   font-weight: bold;
 }
 
@@ -63,6 +63,15 @@
   font-size: 16px;
   margin-left: 10px;
   color: white;
+  padding-top: 20px;
+}
+
+.icon-students{
+  padding-top: 3px;
+}
+
+.icon-teacher{
+  padding-top: 3px;
 }
 
 .course-info {
@@ -80,7 +89,7 @@
   font-size: 36px;
   font-weight: bold;
   margin-bottom: 15px;
-  color: #222;
+  color: #505050;
 }
 
 .course-info .info {
@@ -90,6 +99,13 @@
   align-items: center;
   gap: 10px;
 }
+<<<<<<< Updated upstream
+=======
+.description{
+  width:70%;
+  text-align: justify;
+}
+>>>>>>> Stashed changes
 
 @keyframes fadeInUp {
   from {
@@ -123,11 +139,16 @@
 
 .start-button {
   width: 100%;
-  background: #635bff;
+  height: 35px;
+  padding: 20px;
+  border-radius: 8px;
+  justify-content: center;
+  align-items: center;
+  background: var(--color_btn_primary);
   color: white;
   font-size: 18px;
-  padding: 10px;
   margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 .course-includes p {
@@ -273,7 +294,7 @@
   }
 
   .info-portada .title {
-    font-size: 20px;
+    font-size: 25px;
     line-height: 1.2;
     max-width: 100%;
   }
@@ -315,4 +336,77 @@
   .course-status {
     margin-top: 120px;
   }
+}
+
+.classes-list {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 1rem;
+}
+
+.classes-accordion {
+  width: 100%;
+}
+
+.class-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.class-topic {
+  font-weight: 500;
+  color: #333;
+}
+
+.class-date {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.class-content {
+  padding: 1rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+
+.class-description {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  color: #666;
+}
+
+.class-description mat-icon {
+  color: #1976d2;
+}
+
+.info-title{
+  font-size: 0.2rem;
+}
+
+.no-classes-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  color: #666;
+}
+
+.no-classes-message mat-icon {
+  font-size: 2rem;
+  color: #ff9800;
+}
+
+.no-classes-message p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.skeleton-classes {
+  padding: 1rem;
 }
