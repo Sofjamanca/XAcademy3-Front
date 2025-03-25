@@ -1,107 +1,362 @@
-.dashboard {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    background-color: #f4f4f4;
-    border-radius: 10px;
+.dashboard-container {
+  padding: 24px;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+}
+
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.dashboard-card {
+  border-left: 4px solid;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-info h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.card-value {
+  margin: 8px 0 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.calendar-attendance-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 992px) {
+  .calendar-attendance-container {
+    grid-template-columns: 1fr;
   }
-  
-  
-  mat-card {
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.feature-card {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+
+.card-header {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  background: #f7863e;
+  color: white;
+}
+
+.header-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+
+.header-icon mat-icon {
+  color: white;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+  flex: 1;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.header-actions button {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+.card-body {
+  padding: 24px;
+  flex: 1;
+  overflow: hidden;
+}
+
+
+.card-footer {
+  padding: 12px 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  background-color: rgba(63, 81, 181, 0.05);
+  display: flex;
+  justify-content: center;
+}
+
+
+.calendar-container {
+  height: 400px;
+}
+
+
+.attendance-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.attendance-chart-container {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.attendance-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.select-course {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.select-course label {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.select-course select {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  border: 2px solid #3f51b5;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: white;
+  color: #333;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.select-course select:hover {
+  border-color: #303f9f;
+}
+
+.select-course select:focus {
+  box-shadow: 0 0 8px rgba(63, 81, 181, 0.5);
+}
+
+.attendance-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.stat-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: conic-gradient(#3f51b5 0% calc(var(--percentage, 75) * 1%), #e0e0e0 calc(var(--percentage, 75) * 1%) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  position: relative;
+}
+
+.stat-circle-inner {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #000000;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.attendance-detail {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 16px;
+}
+
+.attendance-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+
+.attendance-detail-item mat-icon {
+  color: white;
+  background-color: #030303;
+  padding: 12px;  
+  border-radius: 50%;
+  font-size: 1.5rem; 
+  line-height: 1; 
+  display: inline-flex; 
+  align-items: center;  
+  justify-content: center; 
+  transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+}
+
+.attendance-detail-item mat-icon:hover {
+  background-color: #f9a201;
+  transform: scale(1.1);
+}
+
+
+.header-actions button mat-icon {
+  color: white;
+}
+
+.header-actions button {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.header-actions button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.detail-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-value {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.animated-container {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-  
-  
-  mat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  
-  mat-card-header {
-    background-color: #3f51b5;
-    color: #fff;
-    font-size: 1.25rem;
-    padding: 16px;
-    border-bottom: 2px solid #e0e0e0;
+}
+
+::ng-deep .full-calendar {
+  --fc-border-color: rgba(0, 0, 0, 0.1);
+  --fc-button-bg-color: #3f51b5;
+  --fc-button-border-color: #3f51b5;
+  --fc-button-hover-bg-color: #303f9f;
+  --fc-button-hover-border-color: #303f9f;
+  --fc-today-bg-color: rgba(63, 81, 181, 0.1);
+  --fc-event-border-color: #3f51b5;
+  --fc-event-bg-color: #3f51b5;
+}
+
+::ng-deep .fc .fc-button-primary {
+  background-color: #f7863e !important;
+  border-color: #f7863e !important;
+  color: white !important;
+  margin-top: 5px;
+}
+
+
+::ng-deep canvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+
+.stat-circle {
+  --percentage: attr(data-percentage);
+}
+
+.icon{
+  overflow: initial;
+}
+
+@media (max-width: 768px) {
+  .fc-header-toolbar .fc-button-group {
+    display: none; 
+    margin-top: 5px;
   }
-  
-  
-  mat-card-content {
-    padding: 16px;
-    font-size: 1rem;
-    color: #333;
+
+
+  .fc-prev-button, .fc-next-button {
+    position: absolute;
+    top: 10px;
+    right: 10px; 
   }
-  
-  
-  mat-progress-bar {
-    margin-top: 10px;
-    background-color: #e0e0e0;
+
+  .calendar-container {
+    height: auto; 
   }
-  
-  mat-progress-bar.mat-primary {
-    background-color: #4caf50;
-  }
-  
-  
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  ul li {
-    background-color: #e3f2fd;
-    padding: 12px;
-    margin: 8px 0;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    color: #1e88e5;
-  }
-  
-  ul li:hover {
-    background-color: #bbdefb;
-    cursor: pointer;
-  }
-  
-  
-  button {
-    margin-top: 10px;
-    background-color: #4caf50;
-    color: white;
-    font-weight: bold;
-    border-radius: 8px;
-    padding: 10px 16px;
-    transition: background-color 0.3s ease;
-    width: 100%;
-  }
-  
-  button:hover {
-    background-color: #388e3c;
-  }
-  
-  
-  button:focus, button:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  
-  mat-card h3 {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #3f51b5;
-  }
-  
-  mat-card mat-chip {
-    background-color: #4caf50;
-    color: white;
-    font-size: 1rem;
-  }
+}

@@ -24,9 +24,12 @@ import { NewsListComponent } from './views/news/news-list/news-list.component';
 import { NewsDetailComponent } from './views/news/news-detail/news-detail.component';
 import { PaymentDashboardComponent } from './views/admin/payments/payment-dashboard.component';
 import { teacherGuard } from './guards/teacher.guard';
+import { WeComponent } from './shared/components/we/we.component';
 import { ContactComponent } from './shared/components/contact/contact.component';
 import { CreditsComponent } from './shared/components/credits/credits.component';
-import { WeComponent } from './shared/components/we/we.component';
+import { AttendanceManagementComponent } from './views/course-management/components/attendance-management/attendance-management.component';
+import { AttendanceStudentComponent } from './views/student-profile/attendance-student/attendance-student.component';
+
 export const routes: Routes = [
   {
     path: 'home',
@@ -179,10 +182,11 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: MisCursosComponent,
+        component: HomeStudentComponent,
       },
       { path: 'mis-cursos', component: MisCursosComponent },
       { path: 'pagos', component: PendingComponent },
+      { path: 'asistencias', component: AttendanceStudentComponent },
       {
         path: 'editar',
         loadComponent: () =>

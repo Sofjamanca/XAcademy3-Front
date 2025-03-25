@@ -1,107 +1,257 @@
+:root {
+  --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  --secondary-gradient: linear-gradient(45deg, #ff6b6b 0%, #4ecdc4 100%);
+  --text-color-light: #f4f4f4;
+  --text-color-dark: #333;
+  --border-radius: 16px;
+  --box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
 .inscripcion-container {
-    display: flex;
-    gap: 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  align-items: stretch;
+  padding: 4rem 2rem;
+  margin: 0 auto;
+  background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+}
+
+.curso-info {
+  background: var(--primary-gradient);
+  color: var(--text-color-light);
+  padding: 2.5rem;
+  border-radius: var(--border-radius);
+  width: 380px;
+  box-shadow: var(--box-shadow);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.curso-info:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.curso-info::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(-45deg);
+  z-index: 1;
+  animation: shine 3s infinite linear;
+}
+
+@keyframes shine {
+  0% {
+    transform: rotate(-45deg) translateX(-100%);
+  }
+  100% {
+    transform: rotate(-45deg) translateX(100%);
+  }
+}
+
+.curso-imagen {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.curso-info:hover .curso-imagen {
+  transform: scale(1.05);
+}
+
+.curso-detalles h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background: var(--secondary-gradient);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.curso-detalles p {
+  margin-bottom: 0.5rem;
+  opacity: 0.9;
+}
+
+.form-container {
+  background: white;
+  padding: 3.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  width: 550px;
+  position: relative;
+  transition: all 0.4s ease;
+  overflow-x: hidden !important;
+  width: 100%;
+  max-width: 100%;
+}
+
+.form-container::after {
+  display: none;
+}
+
+.form-container h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: var(--text-color-dark);
+  position: relative;
+}
+
+.form-container h3::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: var(--primary-gradient);
+}
+
+button {
+  background: var(--primary-gradient);
+  color: var(--text-color-light);
+  font-size: 1.1rem;
+  padding: 1rem 1.8rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.5px;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: all 0.3s ease;
+}
+
+
+button:hover::before {
+  left: 100%;
+}
+
+button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1);
+}
+
+button:disabled {
+  background: #a9a9a9;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.alert {
+  max-width: 300px; 
+  height: 200px;
+  width: 100%;
+  padding: 1.5rem;
+  font-size: 1.4rem; 
+  font-weight: bold;
+  text-align: center;
+  background: #81a2d529;
+  color: #000000;
+  border: 2px solid #005cbbbd;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  margin-top: 230px;
+}
+
+.alert p {
+  margin: 0 0 1rem 0;
+}
+
+.alert button {
+  font-size: 1.2rem;
+  padding: 0.8rem 1.5rem;
+  background: var(--primary-gradient);
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.alert button:hover {
+  background-color:#005cbbbd;
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (max-width: 1024px) {
+  .inscripcion-container {
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 3rem;
-    max-width: 1300px;
-    margin: auto;
   }
-  
- 
-  .curso-info {
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
-    color: white;
-    padding: 2rem;
-    border-radius: 12px;
-    width: 380px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    animation: fadeInLeft 0.8s ease-in-out;
-    text-align: left;
-  }
-  
-  .curso-imagen {
+
+  .curso-info, .form-container {
     width: 100%;
-    border-radius: 10px;
-    margin-bottom: 1rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    max-width: 700px;
   }
-  
 
-  h2 {
-    font-size: 2rem;
+  .curso-info::after {
+    content: "⬇ Desliza ⬇";
+    display: block;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #070b2e;
     font-weight: bold;
-    margin-bottom: 0.8rem;
+    margin-top: 1rem;
+    animation: fadeInOut 2s infinite;
   }
-  
 
-  .curso-descripcion {
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    line-height: 1.5;
+  @keyframes fadeInOut {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
   }
-  
- 
-  .form-container {
-    flex: 1;
-    background: white;
-    padding: 2.5rem;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    animation: fadeInRight 0.8s ease-in-out;
-    min-width: 400px;
-  }
-  
 
-  .form-container h3 {
+.alert{
+  margin-top: 0;
+}
+
+}
+
+@media screen and (max-width: 600px) {
+  .inscripcion-container {
+    padding: 2rem 1rem;
+  }
+
+  .curso-imagen {
+    height: 200px;
+  }
+
+  .curso-detalles h2 {
     font-size: 1.8rem;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-    color: #333;
   }
-  
 
-  button {
-    background: #6a11cb;
-    color: white;
-    font-size: 1rem;
-    padding: 0.8rem 1.5rem;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  .form-container {
+    padding: 2.5rem;
   }
-  
-  button:hover {
-    background: #511da8;
-    transform: scale(1.05);
-  }
-  
-  button:disabled {
-    background: gray;
-    cursor: not-allowed;
-  }
-  
 
-  @keyframes fadeInLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-50px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
+  .alert{
+    margin-top: 0;
   }
-  
-  @keyframes fadeInRight {
-    from {
-      opacity: 0;
-      transform: translateX(50px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  
+}

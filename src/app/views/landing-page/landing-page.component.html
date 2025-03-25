@@ -16,7 +16,9 @@
           [category]="getCategoryTitle(course.category_id)"
           [description]="course.description"
           [image]="course.image_url!"
+          [modalidad]="course.modalidad!"
           (actionClick)="goToCourse(course.id ?? 0)"
+          [showFavoriteIcon]="false"
         >
         </app-card>
       </ng-template>

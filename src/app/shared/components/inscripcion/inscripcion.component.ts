@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Inject, Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoursesService } from '../../../services/courses/courses.service';
 import { Course, Category } from '../../../core/models/course.model';
@@ -9,6 +9,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { StudentService } from '../../../services/student/student.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../../../services/api.service';
+import { UserService } from '../../../services/user/user.service';
 
 @Component({
   selector: 'app-inscripcion',
@@ -38,56 +39,45 @@ export class InscripcionComponent implements OnInit {
     private coursesService: CoursesService,
     private studentService: StudentService,
     private cdr: ChangeDetectorRef,
-    private snackBar: MatSnackBar, private apiService: ApiService
+    private snackBar: MatSnackBar, private apiService: ApiService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     const courseId = Number(this.route.snapshot.paramMap.get('id'));
-  
-    // Verificar que el courseId sea válido
+
     if (!courseId) {
-      console.error('ID de curso no válido');
       return;
     }
   
-    // Obtener los datos del estudiante y realizar la lógica de enrolamiento
     this.apiService.getMe().subscribe(
       data => {
         this.studentData = data;
         if (courseId && this.studentData) {
           this.checkEnrollmentStatus(courseId);
-        } else {
-          console.warn("No hay datos del estudiante disponibles.");
         }
       },
       error => {
-        console.error("Error al obtener los datos del estudiante:", error);
-      }
+        if (error?.error?.message !== 'Token no proporcionado') {
+          this.snackBar.open('No se pudo obtener la información del estudiante.', 'Cerrar', { duration: 3000 });
+        }     
+       }
     );
   
-    // Obtener los detalles del curso
     this.coursesService.getCourseById(courseId).subscribe(
       (courseData) => {
         this.curso = courseData;
   
         if (this.curso?.category_id) {
-          // Obtener la categoría del curso
           this.coursesService.getCategoryById(this.curso.category_id).subscribe({
-            next: (category) => {
-              if (category) {
-                this.category = category;
-              }
-            },
-            error: (err) => console.error('Error obteniendo la categoría:', err),
-          });
+            next: (category) => this.category = category,
+            error: () => {}         
+           });
         }
       },
-      (error) => {
-        console.error('Error obteniendo los datos del curso:', error);
-      }
+      () => {}
     );
   }
-  
   
 
   checkEnrollmentStatus(courseId: number) {
@@ -102,8 +92,6 @@ export class InscripcionComponent implements OnInit {
   
         if (!this.isEnrolled && hasValidData) {
           this.autoEnrollStudent(courseId);
-        } else if (!hasValidData) {
-          console.warn("Datos del estudiante incompletos, no se puede inscribir automáticamente.");
         }
       },
       (error) => {
@@ -129,7 +117,6 @@ export class InscripcionComponent implements OnInit {
       (response) => {
         this.isEnrolled = true;
         this.snackBar.open('Inscripción exitosa. Redirigiendo a tu panel...', 'Cerrar', { duration: 3000 });
-  
         setTimeout(() => {
           this.router.navigate(['/perfil/mis-cursos']);
         }, 3000);
@@ -150,6 +137,7 @@ export class InscripcionComponent implements OnInit {
       (response) => {
         this.snackBar.open('Inscripción exitosa. Redirigiendo a tu panel...', 'Cerrar', { duration: 3000 });
         this.studentData = { ...this.studentData, ...formData };  
+        this.userService.loadStudentId(); 
       },
       (error) => {
         console.error('Error al actualizar los datos:', error);
@@ -191,7 +179,7 @@ export class InscripcionComponent implements OnInit {
           address: formData.address
         });
       }
-
+      this.userService.loadStudentId(); 
       this.router.navigate(['/perfil/mis-cursos']);
     },
     (error) => {

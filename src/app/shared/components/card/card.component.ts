@@ -36,12 +36,14 @@ export class CardComponent {
     if (!modalidad) {
       return '';
     }
-
-    switch (modalidad) {
+    
+    const modalidadUpper = modalidad.toUpperCase().trim();
+    switch (modalidadUpper) {
       case 'VIRTUAL':
         return 'virtual-chip';
       case 'PRESENCIAL':
         return 'presencial-chip';
+      case 'HIBRIDO':
       case 'HÍBRIDO':
         return 'hibrido-chip';
       default:

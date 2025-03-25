@@ -1,0 +1,235 @@
+.attendance-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f4f6f9;
+    min-height: 100vh;
+  }
+  
+  .header-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .section-title {
+    display: flex;
+    align-items: center;
+    color: #2c3e50;
+    font-size: 24px;
+    font-weight: 600;
+  }
+  
+  .section-title mat-icon {
+    margin-right: 10px;
+    color: #000000;
+  }
+  
+  .loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+  }
+  
+  .no-data-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    color: #757575;
+  }
+  
+  .no-data-message mat-icon {
+    font-size: 64px;
+    color: #000000;
+    margin-bottom: 15px;
+  }
+  
+  .attendance-summary {
+    margin-bottom: 20px;
+  }
+  
+  .summary-card {
+    background-color: white;
+  }
+  
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    text-align: center;
+  }
+  
+  .summary-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+  }
+  
+  .summary-item mat-icon {
+    font-size: 25px;
+    color: #000000;
+    margin-bottom: 10px;
+  }
+  
+  .summary-label {
+    color: #6c757d;
+    margin-bottom: 5px;
+  }
+  
+  .summary-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  
+  .course-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .course-name {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  .attendance-percentage {
+    font-weight: bold;
+  }
+  
+  .approved {
+    color: #4caf50;
+  }
+  
+  .not-approved {
+    color: #f44336;
+  }
+  
+  .course-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .course-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .stat-label {
+    color: #6c757d;
+    margin-bottom: 5px;
+  }
+  
+  .stat-value {
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  
+  .class-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  
+  .class-details-table th {
+    background-color: #f7863e;
+    color: white;
+    padding: 12px;
+    text-align: center;
+  }
+  
+  .class-details-table td {
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .attendance-status {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px;
+  }
+  
+  .attended {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
+  
+  .not-attended {
+    background-color: #ffebee;
+    color: #d32f2f;
+  }
+  
+  .no-attendance {
+    background-color: #f5f5f5;
+    color: #757575;
+  }
+
+  /* ✅ Media Query única para pantallas más pequeñas */
+@media (max-width: 900px) {
+    .attendance-container {
+      padding: 10px;
+    }
+  
+    .header-section {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .section-title {
+      font-size: 20px;
+    }
+  
+    .summary-grid {
+      grid-template-columns: 1fr; /* Se apilan los elementos */
+      gap: 15px;
+    }
+  
+    .summary-item {
+      padding: 10px;
+    }
+  
+    .course-panel-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .course-stats {
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px;
+    }
+  
+    .stat-item {
+      align-items: flex-start;
+    }
+  
+    .class-details-table {
+      font-size: 14px;
+    }
+  
+    .class-details-table th,
+    .class-details-table td {
+      padding: 8px;
+    }
+  }
+  

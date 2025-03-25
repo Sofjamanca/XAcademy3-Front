@@ -1,0 +1,119 @@
+<div class="attendance-container">
+    <div *ngIf="isLoading" class="loading-spinner">
+      <mat-spinner></mat-spinner>
+      <p>Cargando asistencias...</p>
+    </div>
+  
+    <ng-container *ngIf="!isLoading">
+      <div class="header-section">
+        <h2 class="section-title">
+          <mat-icon>event_note</mat-icon>
+          Mis Asistencias
+        </h2>
+      </div>
+  
+      <div *ngIf="coursesAttendanceDetails.length === 0" class="no-data-message">
+        <mat-icon>info_outline</mat-icon>
+        <p>No se encontraron registros de asistencia</p>
+      </div>
+  
+      <ng-container *ngIf="coursesAttendanceDetails.length > 0">
+        <div class="attendance-summary">
+          <mat-card class="summary-card mat-elevation-z4">
+            <mat-card-content>
+              <div class="summary-grid">
+                <div class="summary-item">
+                  <mat-icon>school</mat-icon>
+                  <span class="summary-label">Total Cursos</span>
+                  <span class="summary-value">{{ coursesAttendanceDetails.length }}</span>
+                </div>
+                <div class="summary-item">
+                  <mat-icon>check_circle</mat-icon>
+                  <span class="summary-label">Cursos Aprobados</span>
+                  <span class="summary-value">
+                    {{ approvedCoursesCount }}
+                  </span>                  
+                </div>
+                <div class="summary-item">
+                  <mat-icon>trending_up</mat-icon>
+                  <span class="summary-label">Promedio Asistencia</span>
+                  <span class="summary-value">
+                    {{ getAverageAttendancePercentage() | number:'1.2-2' }}%
+                  </span>                  
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+  
+        <mat-accordion class="course-details-accordion">
+          <mat-expansion-panel *ngFor="let courseAttendance of coursesAttendanceDetails">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <div class="course-panel-header">
+                <span class="course-name">{{ courseAttendance.courseName }}</span>
+                <span class="attendance-percentage" 
+                    [ngClass]="{
+                     'approved': courseAttendance.condition === 'Aprobado',
+                     'not-approved': courseAttendance.condition === 'No Aprobado'
+                    }">
+                     {{ courseAttendance.attendancePercentage || 0 | number:'1.2-2' }}%
+                </span>
+
+                </div>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+  
+            <div class="course-details">
+              <div class="course-stats">
+                <div class="stat-item">
+                  <span class="stat-label">Total Clases:</span>
+                  <span class="stat-value">{{ courseAttendance.totalClasses }}</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Clases Asistidas:</span>
+                  <span class="stat-value">{{ courseAttendance.attendedClasses }}</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-label">Condición:</span>
+                  <span class="stat-value" 
+                        [ngClass]="{
+                          'approved': courseAttendance.condition === 'Aprobado',
+                          'not-approved': courseAttendance.condition === 'No Aprobado'
+                        }">
+                    {{ courseAttendance.condition }}
+                  </span>
+                </div>
+              </div>
+  
+              <table class="class-details-table">
+                <thead>
+                  <tr>
+                    <th>Nombre de Clase</th>
+                    <th>Fecha</th>
+                    <th>Estado de Asistencia</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let classAttendance of courseAttendance.classes">
+                    <td>{{ classAttendance.title }}</td>
+                    <td>{{ classAttendance.date | date:'dd/MM/yyyy' }}</td>
+                    <td>
+                      <span class="attendance-status" 
+                            [ngClass]="{
+                              'attended': classAttendance.attendanceStatus === 'Asistió',
+                              'not-attended': classAttendance.attendanceStatus === 'No Asistió',
+                              'no-attendance': classAttendance.attendanceStatus === 'Sin Asistencia'
+                            }">
+                        {{ classAttendance.attendanceStatus }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </ng-container>
+    </ng-container>
+  </div>

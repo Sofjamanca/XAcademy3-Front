@@ -30,7 +30,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
   styleUrls: ['./teachers-list.component.css'],
 })
 export class TeachersListComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'email', 'courses', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'email', 'actions'];
   teachers: Teacher[] = [];
   teachersMap: Map<number, string> = new Map();
   loading: boolean = true;

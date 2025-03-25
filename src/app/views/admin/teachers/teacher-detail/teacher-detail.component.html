@@ -6,29 +6,50 @@
     <h1>Detalles del Profesor</h1>
   </div>
 
-  <div *ngIf="isLoading" class="loading">
-    <p>Cargando información...</p>
+  <!-- Estado de carga -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p class="loading-text">Cargando información del profesor...</p>
   </div>
 
-  <div *ngIf="error" class="error-message">
+  <!-- Estado de error -->
+  <div *ngIf="!isLoading && error" class="error-message">
+    <mat-icon>error</mat-icon>
     <p>{{ error }}</p>
     <button mat-raised-button color="primary" (click)="goBack()">Volver a la lista</button>
   </div>
 
+  <!-- Contenido del profesor -->
   <div *ngIf="!isLoading && !error && teacher" class="content">
     <!-- Información del profesor -->
     <mat-card class="teacher-card">
       <mat-card-header>
-        <mat-card-title>{{ teacher.user.name }} {{ teacher.user.lastname }}</mat-card-title>
-        <mat-card-subtitle>{{ teacher.specialty }}</mat-card-subtitle>
+        <div mat-card-avatar class="teacher-avatar">
+          <mat-icon>person</mat-icon>
+        </div>
+        <mat-card-title>{{ teacher.user.name || '' }} {{ teacher.user.lastname || '' }}</mat-card-title>
+        <mat-card-subtitle>{{ teacher.specialty || 'Sin especialidad' }}</mat-card-subtitle>
       </mat-card-header>
+      
       <mat-card-content>
         <div class="teacher-info">
-          <p><strong>Email:</strong> {{ teacher.user.email }}</p>
-          <p><strong>Teléfono:</strong> {{ teacher.user.phone || 'No disponible' }}</p>
-          <p><strong>Dirección:</strong> {{ teacher.user.address || 'No disponible' }}</p>
+          <div class="info-item">
+            <mat-icon>email</mat-icon>
+            <span><strong>Email:</strong> {{ teacher.user.email || 'No disponible' }}</span>
+          </div>
+          
+          <div class="info-item">
+            <mat-icon>phone</mat-icon>
+            <span><strong>Teléfono:</strong> {{ teacher.user.phone || 'No disponible' }}</span>
+          </div>
+          
+          <div class="info-item">
+            <mat-icon>home</mat-icon>
+            <span><strong>Dirección:</strong> {{ teacher.user.address || 'No disponible' }}</span>
+          </div>
         </div>
       </mat-card-content>
+      
       <mat-card-actions align="end">
         <button mat-button color="primary" (click)="editTeacher()">
           <mat-icon>edit</mat-icon> Editar Profesor
@@ -38,17 +59,19 @@
 
     <!-- Listado de cursos -->
     <div class="courses-section">
-      <h2>Cursos a cargo ({{ courses.length }})</h2>
+      <h2>Cursos a cargo <span class="courses-count">({{ courses.length }})</span></h2>
       
       <div *ngIf="courses.length === 0" class="no-courses">
+        <mat-icon>school</mat-icon>
         <p>Este profesor no tiene cursos asignados</p>
       </div>
 
-      <div class="courses-grid">
+      <div *ngIf="courses.length > 0" class="courses-grid">
         <app-card 
           *ngFor="let course of courses" 
           class="course-card"
-          [title]="course.title"
+          [title]="course.title || 'Sin título'"
+          [description]="course.description || 'Sin descripción'"
           [image]="course.image_url || ''"
           [modalidad]="course.modalidad || ''"
           [showDetails]="true"
@@ -58,5 +81,13 @@
         </app-card>
       </div>
     </div>
+  </div>
+  
+  <!-- Depuración -->
+  <div *ngIf="!isLoading && !error && !teacher" class="error-message">
+    <mat-icon>warning</mat-icon>
+    <p>No se pudo cargar la información del profesor (ID: {{teacherId}})</p>
+    <button mat-raised-button color="primary" (click)="loadTeacherDetails()">Reintentar</button>
+    <button mat-raised-button color="accent" (click)="goBack()">Volver a la lista</button>
   </div>
 </div> 

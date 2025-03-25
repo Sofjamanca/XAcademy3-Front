@@ -64,6 +64,31 @@ export class CourseFormComponent implements OnInit, OnChanges {
       this.minFechaFin = startDate; 
     });
     }
+
+    ngOnChanges(changes: SimpleChanges): void {
+      if (changes['curso'] && this.curso && this.cursoForm) {
+        // Función para parsear fechas correctamente
+        const parseDate = (dateString: string | undefined): Date | null => {
+          if (!dateString) return null;
+          if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+            return new Date(`${dateString}T12:00:00`);
+          }
+          return new Date(dateString);
+        };
+    
+        // Aplicamos valores al formulario
+        this.cursoForm.patchValue({
+          ...this.curso,
+          startDate: parseDate(this.curso.startDate),
+          endDate: parseDate(this.curso.endDate)
+        });
+    
+        // Si el curso tiene una imagen guardada, mostrarla
+        if (!this.imageFile) {
+          this.imagePreview = this.curso.image_url ?? null;
+        }
+      }
+    }
   
     private validarFechas(form: FormGroup) {
       const inicio = form.get('startDate')?.value;
@@ -76,23 +101,6 @@ export class CourseFormComponent implements OnInit, OnChanges {
     
       return finDate < inicioDate ? { fechaInvalida: true } : null;
     }
-  
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['curso'] && this.curso && this.cursoForm) {
-      // Asegúrate de que el formulario esté inicializado antes de intentar aplicar patchValue
-      this.cursoForm.patchValue({
-        ...this.curso,
-        fechaInicio: this.curso.startDate 
-        ? new Date(this.curso.startDate).toISOString().split('T')[0]
-        : null,
-      });  
-
-      // Si el curso tiene una imagen guardada, mostrarla
-      if (!this.imageFile) {
-        this.imagePreview = this.curso.image_url ?? null;
-      }
-    }
-  }
 
   private initForm() {
     const group: { [key: string]: any } = {};
@@ -180,7 +188,7 @@ export class CourseFormComponent implements OnInit, OnChanges {
   // Nueva función para emitir el evento correcto
   private emitFormEvent(formValues: any) {
     if (this.tipo === 'editar' && this.curso) {
-      formValues.id = this.curso.id; // Asegurar que conserve el ID
+      formValues.id = this.curso.id; 
     }
     this.formSubmit.emit(formValues);
   }
