@@ -1,28 +1,44 @@
-.create-course-button {
-  margin-bottom: 10px;
-  margin-left: 10px;
-  margin-top: 10px;
-  float: right;
-  background-color: #fff;
-  /* width: 7.5em; */
-  border-radius: 4px;
-  border-color: var(--color_btn_primary) !important;
-  color: var(--color_btn_primary) !important;
-}
-
 .container {
-  padding: 20px;
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .header-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 30px;
 }
 
 h2 {
-  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: 600;
   color: #3f51b5;
+  margin: 0;
+}
+
+.create-course-button {
+  background-color: #3f51b5;
+  color: white !important;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: none !important;
+  margin: 0;
+  float: none;
+}
+
+.create-course-button:hover {
+  background-color: #303f9f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.create-course-button mat-icon {
+  margin-right: 8px;
 }
 
 .full-width-table {
@@ -31,8 +47,37 @@ h2 {
 
 .mat-elevation-z8 {
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: 12px;
   margin-bottom: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+table {
+  width: 100%;
+}
+
+th.mat-header-cell {
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: white;
+  color: #333;
+  padding: 16px;
+  font-size: 14px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
+td.mat-cell {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #444;
+}
+
+tr.mat-row:hover {
+  background-color: #f8f9fa;
+  transition: background 0.3s ease-in-out;
 }
 
 .actions-container {
@@ -41,25 +86,227 @@ h2 {
   justify-content: flex-end;
 }
 
-tr.mat-row:hover {
-  background-color: #f5f5f5;
-}
-
 .mat-column-actions {
   width: 160px;
+  text-align: center;
 }
 
 .mat-column-id {
   width: 80px;
 }
 
-.mat-column-courses {
+.mat-column-title,
+.mat-column-teacher {
   max-width: 300px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-td.mat-cell {
-  padding: 8px 16px;
+button[mat-icon-button] {
+  transition: all 0.3s ease;
+}
+
+button[mat-icon-button]:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button[color="primary"] {
+  color: #3f51b5;
+}
+
+button[color="warn"] {
+  color: #f44336;
+}
+
+.attendance-toggle-transition {
+  transition: all 0.3s ease;
+}
+
+.attendance-label {
+  margin-left: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.active {
+  color: #4caf50;
+}
+
+.inactive {
+  color: #f44336;
+}
+
+.no-courses {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 250px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  font-size: 18px;
+  color: #666;
+  margin-top: 20px;
+  padding: 30px;
+}
+
+.no-courses mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+  color: #3f51b5;
+  margin-bottom: 16px;
+}
+
+.no-courses p {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.skeleton-loader {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  margin-top: 20px;
+}
+
+/* Estilos responsive para tablas */
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+  
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 20px;
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  .create-course-button {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  /* Ajustes de tabla para móvil */
+  .mat-elevation-z8 {
+    overflow-x: auto;
+  }
+  
+  .mat-column-id,
+  .mat-column-quota {
+    display: none !important;
+  }
+  
+  .mat-column-title {
+    min-width: 120px;
+  }
+  
+  .mat-column-teacher {
+    min-width: 100px;
+  }
+  
+  .mat-column-status {
+    min-width: 140px;
+  }
+  
+  .mat-column-endDate {
+    min-width: 100px;
+  }
+  
+  .mat-column-actions {
+    min-width: 120px;
+  }
+  
+  th.mat-header-cell, 
+  td.mat-cell {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+  
+  /* Mejorar visualización de toggle */
+  .attendance-label {
+    font-size: 11px;
+    margin-left: 4px;
+  }
+  
+  /* Botones de acción más compactos */
+  button[mat-icon-button] {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+  }
+  
+  button[mat-icon-button] mat-icon {
+    font-size: 18px;
+    line-height: 18px;
+    height: 18px;
+    width: 18px;
+  }
+}
+
+/* Para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  /* Ocultar más columnas */
+  .mat-column-teacher,
+  .mat-column-endDate {
+    display: none !important;
+  }
+  
+  /* Ajustar tamaño de columnas restantes */
+  .mat-column-title {
+    min-width: 140px;
+    max-width: 140px;
+  }
+  
+  .mat-column-status {
+    min-width: 110px;
+  }
+  
+  .mat-column-actions {
+    min-width: 90px;
+  }
+  
+  /* Reducir espacio entre botones */
+  td.mat-cell:last-of-type {
+    padding-right: 5px;
+  }
+  
+  /* Botones de acción más compactos */
+  button[mat-icon-button] {
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    margin: 0 2px;
+  }
+}
+
+.ellipsis-text {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
+}
+
+.actions-container-cell {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.actions-cell {
+  padding: 6px 8px !important;
 }

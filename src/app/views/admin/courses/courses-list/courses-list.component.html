@@ -12,104 +12,122 @@
     </button>
   </div>
 
-  <table
-    mat-table
-    [dataSource]="courses"
-    class="full-width-table mat-elevation-z8"
-  >
-    <!-- ID Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let course">{{ course.id }}</td>
-    </ng-container>
+  <!-- Skeleton loader -->
+  <ng-container *ngIf="loading">
+    <div class="skeleton-loader">
+      <ngx-skeleton-loader
+        count="8"
+        appearance="line"
+        [theme]="{ height: '30px', 'margin-bottom': '10px' }"
+      ></ngx-skeleton-loader>
+    </div>
+  </ng-container>
 
-    <!-- Title Column -->
-    <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef>Título</th>
-      <td mat-cell *matCellDef="let course">{{ course.title }}</td>
-    </ng-container>
+  <!-- Contenido real -->
+  <ng-container *ngIf="!loading">
+    <!-- Sin cursos -->
+    <div *ngIf="courses.length === 0" class="no-courses">
+      <mat-icon>school</mat-icon>
+      <p>No hay cursos disponibles</p>
+      <button
+        mat-raised-button
+        color="primary"
+        class="create-course-button"
+        (click)="createCourse()"
+      >
+        <mat-icon>add</mat-icon> Agregar primer curso
+      </button>
+    </div>
 
-    <!-- Cuota Column -->
-    <ng-container matColumnDef="quota">
-      <th mat-header-cell *matHeaderCellDef>Cupos</th>
-      <td mat-cell *matCellDef="let course">{{ course.quota }}</td>
-    </ng-container>
+    <!-- Tabla de cursos -->
+    <div class="mat-elevation-z8" *ngIf="courses.length > 0">
+      <table mat-table [dataSource]="courses" class="full-width-table">
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let course">{{ course.id }}</td>
+        </ng-container>
 
-    <!-- Estado Column -->
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef>Estado</th>
-      <td mat-cell *matCellDef="let course">
-        <mat-slide-toggle
-          [checked]="course.isActive"
-          (change)="toggleStatus(course)"
-          [disabled]="!course.id"
-          color="primary"
-          class="attendance-toggle-transition"
-          [ngClass]="{ checked: course.isActive }"
-        >
-          <span
-            class="attendance-label"
-            [class.active]="course.isActive"
-            [class.inactive]="!course.isActive"
-          >
-            {{ course.isActive ? "Activo" : "Inactivo" }}
-          </span>
-        </mat-slide-toggle>
-      </td>
-    </ng-container>
+        <!-- Title Column -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Título</th>
+          <td mat-cell *matCellDef="let course">
+            <span [matTooltip]="course.title" class="ellipsis-text">{{ course.title }}</span>
+          </td>
+        </ng-container>
 
-    <!-- Fecha de finalización Column -->
-    <ng-container matColumnDef="endDate">
-      <th mat-header-cell *matHeaderCellDef>Finaliza el</th>
-      <td mat-cell *matCellDef="let course">{{ getEndDate(course) }}</td>
-    </ng-container>
+        <!-- Cuota Column -->
+        <ng-container matColumnDef="quota">
+          <th mat-header-cell *matHeaderCellDef>Cupos</th>
+          <td mat-cell *matCellDef="let course">{{ course.quota }}</td>
+        </ng-container>
 
-    <!-- Profesor Column -->
-    <ng-container matColumnDef="teacher">
-      <th mat-header-cell *matHeaderCellDef>Profesor</th>
-      <td mat-cell *matCellDef="let course">{{ getTeacherName(course) }}</td>
-    </ng-container>
+        <!-- Estado Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let course">
+            <mat-slide-toggle
+              [checked]="course.isActive"
+              (change)="toggleStatus(course)"
+              [disabled]="!course.id"
+              color="primary"
+              class="attendance-toggle-transition"
+              [ngClass]="{ checked: course.isActive }"
+            >
+              <span
+                class="attendance-label"
+                [class.active]="course.isActive"
+                [class.inactive]="!course.isActive"
+              >
+                {{ course.isActive ? "Activo" : "Inactivo" }}
+              </span>
+            </mat-slide-toggle>
+          </td>
+        </ng-container>
 
-    <!-- Actions Column -->
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Acciones</th>
-      <td mat-cell *matCellDef="let course">
-        <button
-          mat-icon-button
-          color="primary"
-          (click)="viewCourse(course)"
-          matTooltip="Ver curso"
-        >
-          <mat-icon>visibility</mat-icon>
-        </button>
-        <button
-          mat-icon-button
-          color="primary"
-          (click)="editCourse(course)"
-          matTooltip="Editar curso"
-        >
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button
-          mat-icon-button
-          color="warn"
-          (click)="deleteCourse(course)"
-          matTooltip="Eliminar curso"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+        <!-- Fecha de finalización Column -->
+        <ng-container matColumnDef="endDate">
+          <th mat-header-cell *matHeaderCellDef>Finaliza</th>
+          <td mat-cell *matCellDef="let course">{{ getEndDate(course) }}</td>
+        </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
+        <!-- Profesor Column -->
+        <ng-container matColumnDef="teacher">
+          <th mat-header-cell *matHeaderCellDef>Profesor</th>
+          <td mat-cell *matCellDef="let course">
+            <span [matTooltip]="getTeacherName(course)" class="ellipsis-text">{{ getTeacherName(course) }}</span>
+          </td>
+        </ng-container>
 
-  <!-- Skeleton tables -->
-  <ngx-skeleton-loader
-    count="15"
-    appearance="line"
-    *ngIf="loading"
-    [theme]="{ height: '30px' }"
-  />
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let course" class="actions-cell">
+            <div class="actions-container-cell">
+              <button
+                mat-icon-button
+                color="primary"
+                (click)="viewCourse(course)"
+                matTooltip="Ver curso"
+              >
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="primary"
+                (click)="editCourse(course)"
+                matTooltip="Editar"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+           
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  </ng-container>
 </div>

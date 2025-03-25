@@ -146,31 +146,62 @@ mat-error{
     align-items: center;
 }
 .buttom_group{
-    width: 60%;
+    width: 80%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
 }
 .btn_social{
-    width: 50px;
-    height:50px;
-    border-radius: 50%;
+    width: 100%;
+    max-width: 280px;
+    height: 44px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 4px 16px;
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    background: transparent;
-    border: none;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    gap: 12px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    color: #333;
+}
 
+.btn_social:hover {
+    background-color: #f8f8f8;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+    transform: translateY(-1px);
+    border-color: #d0d0d0;
+}
+
+.btn_social:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .btn_social > img{
-    width: 40px;
-    height:40px;
-    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
 }
-.btn_social > img:hover{
-    border:2px solid var(--color_btn_primary);
+
+.text_social {
+    font-weight: 500;
 }
+
+/* Eliminar los separadores */
+.buttom_group::before {
+    display: none;
+}
+
+.buttom_group::after {
+    display: none;
+}
+
 /* @media (min-width: 768px) and (max-width: 991px) {} */
 
 @media (min-width: 1025px) { 
@@ -244,6 +275,34 @@ mat-error{
       .content{
         height: 100%;
       }
+}
+
+@media (max-width: 768px) {
+    .buttom_group {
+        width: 90%;
+    }
+    
+    .btn_social {
+        max-width: 250px;
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+    
+    .buttom_group::after {
+        width: 90%;
+    }
+}
+
+@media (min-width: 1025px) {
+    .buttom_group {
+        margin: 20px 0;
+    }
+    
+    .btn_social {
+        max-width: 300px;
+        height: 48px;
+        font-size: 15px;
+    }
 }
 
   

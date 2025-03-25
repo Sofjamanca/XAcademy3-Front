@@ -133,7 +133,6 @@ export class PaymentDashboardComponent implements OnInit, AfterViewInit {
           lastname: ''
         };
       }
-      
       // Añadir datos de curso
       if (!payment.course) {
         if (payment.course_id) {
@@ -149,7 +148,6 @@ export class PaymentDashboardComponent implements OnInit, AfterViewInit {
                     isActive: courseData.isActive,
                     price: courseData.price
                   };
-                  
                   payment.course = this.courseCache[payment.course_id];
                   this.cdr.detectChanges();
                 }

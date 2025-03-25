@@ -1,5 +1,5 @@
 .container {
-  padding: 20px;
+  padding: 24px;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -7,67 +7,162 @@
 .header {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .header h1 {
   margin-left: 10px;
-  font-size: 24px;
-  margin-bottom: 0;
+  font-size: 28px;
+  font-weight: 600;
   color: #3f51b5;
+  margin-bottom: 0;
 }
 
-.loading, .error-message {
+.loading-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 50px 0;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  margin-top: 20px;
   height: 200px;
-  background-color: #f5f5f5;
-  border-radius: 4px;
-  text-align: center;
-  padding: 20px;
+}
+
+.loading-text {
+  margin-top: 15px;
+  font-size: 16px;
+  color: #666;
 }
 
 .error-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 250px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  text-align: center;
+  padding: 30px;
+  margin-top: 20px;
+}
+
+.error-message mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
   color: #f44336;
+  margin-bottom: 16px;
+}
+
+.error-message p {
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #666;
 }
 
 .error-message button {
   margin-top: 16px;
+  margin: 8px;
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
 }
 
 .teacher-card {
   width: 100%;
-  margin-bottom: 20px;
-  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  background-color: white;
+  transition: all 0.3s ease;
+}
+
+.teacher-avatar {
+  background-color: #3f51b5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.teacher-avatar mat-icon {
+  margin: 0;
 }
 
 .teacher-info {
-  padding: 10px 0;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.info-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.info-item mat-icon {
+  color: #3f51b5;
+}
+
+.courses-section {
+  margin-top: 10px;
 }
 
 .courses-section h2 {
   color: #3f51b5;
   font-size: 24px;
-  margin-bottom: 16px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.courses-count {
+  font-weight: 400;
+  color: #666;
 }
 
 .no-courses {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100px;
-  background-color: #f5f5f5;
-  border-radius: 4px;
-  font-size: 16px;
+  justify-content: center;
+  height: 200px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  font-size: 18px;
   color: #666;
+  margin-top: 20px;
+}
+
+.no-courses mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+  color: #3f51b5;
+  margin-bottom: 16px;
 }
 
 .courses-grid {
@@ -82,57 +177,45 @@
   flex-direction: column;
 }
 
-.course-card mat-card-content {
-  flex-grow: 1;
+button[mat-icon-button], button[mat-button] {
+  transition: all 0.3s ease;
 }
 
-.course-description {
-  max-height: 80px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  margin-bottom: 10px;
+button[mat-icon-button]:hover, button[mat-button]:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.course-details {
-  font-size: 14px;
-}
-
-.course-details p {
-  margin: 5px 0;
-}
-
-img[mat-card-image] {
-  height: 150px;
-  object-fit: cover;
-}
-
-.modalidad-chip {
-  padding: 4px 8px;
-  border-radius: 16px;
-  font-size: 12px;
-  font-weight: 500;
-  display: inline-block;
-}
-
-.virtual-chip {
-  background-color: #e3f2fd;
-  color: #1976d2;
-}
-
-.presencial-chip {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-}
-
-.hibrido-chip {
-  background-color: #fff8e1;
-  color: #ff8f00;
-}
-
+/* Estilos para versión móvil */
 @media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+  
+  .header h1 {
+    font-size: 24px;
+  }
+  
+  .teacher-info {
+    padding: 16px 12px;
+    gap: 12px;
+  }
+  
+  .info-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
   .courses-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .teacher-card mat-card-title {
+    font-size: 20px;
+  }
+  
+  .error-message, .loading-container {
+    padding: 20px;
   }
 } 
