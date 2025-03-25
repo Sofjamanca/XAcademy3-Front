@@ -38,7 +38,6 @@ export class HeaderComponent implements OnInit {
   apiService = inject(ApiService);
   authStateService = inject(AuthStateServiceService);
   userService = inject(UserService);
-  studentService = inject (StudentService);
 
   constructor(private modalService: ModalService) {}
 

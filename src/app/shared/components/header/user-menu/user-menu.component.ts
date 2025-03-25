@@ -42,7 +42,7 @@ export class UserMenuComponent implements OnInit{
   
         setTimeout(() => {
           window.location.reload();
-        }, 300); // Luego recargar
+        }, 300); 
       },
       error: (error) => {
         console.error('Error al cerrar sesión', error);

@@ -47,7 +47,6 @@ export class InscripcionComponent implements OnInit {
     const courseId = Number(this.route.snapshot.paramMap.get('id'));
 
     if (!courseId) {
-      console.error('ID de curso no válido');
       return;
     }
   
@@ -56,13 +55,13 @@ export class InscripcionComponent implements OnInit {
         this.studentData = data;
         if (courseId && this.studentData) {
           this.checkEnrollmentStatus(courseId);
-        } else {
-          console.warn("No hay datos del estudiante disponibles.");
         }
       },
       error => {
-        console.error("Error al obtener los datos del estudiante:", error);
-      }
+        if (error?.error?.message !== 'Token no proporcionado') {
+          this.snackBar.open('No se pudo obtener la información del estudiante.', 'Cerrar', { duration: 3000 });
+        }     
+       }
     );
   
     this.coursesService.getCourseById(courseId).subscribe(
@@ -71,18 +70,12 @@ export class InscripcionComponent implements OnInit {
   
         if (this.curso?.category_id) {
           this.coursesService.getCategoryById(this.curso.category_id).subscribe({
-            next: (category) => {
-              if (category) {
-                this.category = category;
-              }
-            },
-            error: (err) => console.error('Error obteniendo la categoría:', err),
-          });
+            next: (category) => this.category = category,
+            error: () => {}         
+           });
         }
       },
-      (error) => {
-        console.error('Error obteniendo los datos del curso:', error);
-      }
+      () => {}
     );
   }
   
@@ -99,8 +92,6 @@ export class InscripcionComponent implements OnInit {
   
         if (!this.isEnrolled && hasValidData) {
           this.autoEnrollStudent(courseId);
-        } else if (!hasValidData) {
-          console.warn("Datos del estudiante incompletos, no se puede inscribir automáticamente.");
         }
       },
       (error) => {

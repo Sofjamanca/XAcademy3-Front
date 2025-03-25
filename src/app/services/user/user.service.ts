@@ -51,7 +51,7 @@ export class UserService {
         return this.studentService.getStudentByUserId(userId);
       }),
       map((response: any) => response?.student?.id || null),
-      catchError(() => of(null)) // No tirar error, solo devolver null si no hay student
+      catchError(() => of(null)) 
     ).subscribe((studentId: number | null) => {
       this.studentIdSubject.next(studentId);
     });
