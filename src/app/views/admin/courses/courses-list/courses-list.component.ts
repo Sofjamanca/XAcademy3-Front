@@ -15,6 +15,8 @@ import { CreateCourseComponent } from '../../../../shared/components/create-cour
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+
 @Component({
   selector: 'admin-courses-list',
   standalone: true,
@@ -25,16 +27,26 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatIconModule,
     MatPaginatorModule,
     MatSlideToggleModule,
-    MatTooltipModule
+    MatTooltipModule,
+    NgxSkeletonLoaderModule,
   ],
   templateUrl: './courses-list.component.html',
-  styleUrls: ['./courses-list.component.css']
+  styleUrls: ['./courses-list.component.css'],
 })
 export class CoursesListComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'title', 'quota', 'teacher', 'endDate', 'status', 'actions'];
+  displayedColumns: string[] = [
+    'id',
+    'title',
+    'quota',
+    'teacher',
+    'endDate',
+    'status',
+    'actions',
+  ];
   courses: Course[] = [];
   teachers: Teacher[] = [];
   teachersMap: Map<number, string> = new Map();
+  loading: boolean = true;
 
   constructor(
     private coursesService: CoursesService,
@@ -49,24 +61,27 @@ export class CoursesListComponent implements OnInit {
   }
 
   loadData() {
+    this.loading = true;
     // Cargar cursos y profesores en paralelo
     forkJoin({
       courses: this.coursesService.getCourses(),
-      teachers: this.teacherService.getTeachers()
+      teachers: this.teacherService.getTeachers(),
     }).subscribe({
       next: (data) => {
         this.courses = data.courses;
         this.teachers = data.teachers;
-        
-        this.teachers.forEach(teacher => {
+
+        this.teachers.forEach((teacher) => {
           if (teacher.user && teacher.id) {
             this.teachersMap.set(teacher.id, teacher.user.name);
           }
         });
+        this.loading = false;
       },
       error: (error) => {
         console.error('Error cargando datos:', error);
-      }
+        this.loading = false;
+      },
     });
   }
 
@@ -97,7 +112,7 @@ export class CoursesListComponent implements OnInit {
 
   getEndDate(course: Course): string {
     if (!course.endDate) return 'Sin fecha de finalización';
-  
+
     const date = new Date(course.endDate);
     return date.toISOString().split('T')[0].split('-').reverse().join('/');
   }
@@ -109,17 +124,15 @@ export class CoursesListComponent implements OnInit {
         next: () => {
           this.snackBar.open('Estado del curso actualizado', 'Cerrar', {
             duration: 3000,
-            panelClass: 'success-snackbar'
+            panelClass: 'success-snackbar',
           });
           course.isActive = newStatus;
         },
-      error: (error) => {
-        console.error('Error al cambiar el estado del curso:', error);
-      }
-    });
-    console.log(course.isActive, newStatus);
-  
+        error: (error) => {
+          console.error('Error al cambiar el estado del curso:', error);
+        },
+      });
+      console.log(course.isActive, newStatus);
+    }
   }
 }
-
-} 

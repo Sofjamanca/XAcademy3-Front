@@ -10,7 +10,7 @@ import { Category, Course } from '../../../core/models/course.model';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import {LayoutModule} from '@angular/cdk/layout';
+import { LayoutModule } from '@angular/cdk/layout';
 import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
@@ -25,12 +25,11 @@ import { BreakpointObserver } from '@angular/cdk/layout';
     CommonModule,
     RouterModule,
     MatIconModule,
-    LayoutModule
+    LayoutModule,
   ],
   templateUrl: './courses-page.component.html',
-  styleUrl: './courses-page.component.css'
+  styleUrl: './courses-page.component.css',
 })
-
 export class CoursesPageComponent implements OnInit {
   @ViewChild('filterModal') filterModal!: TemplateRef<any>;
 
@@ -49,7 +48,6 @@ export class CoursesPageComponent implements OnInit {
   totalPages: number = 0;
   isMobile: boolean = false;
 
-
   constructor(
     private coursesSvc: CoursesService,
     private route: ActivatedRoute,
@@ -58,14 +56,15 @@ export class CoursesPageComponent implements OnInit {
   ) {
     this.breakpointObserver
       .observe(['(max-width: 768px)'])
-      .subscribe(result => {
+      .subscribe((result) => {
         this.isMobile = result.matches;
       });
   }
 
   ngOnInit() {
+    this.loading = true;
     // Verificar si hay un parámetro de búsqueda
-    this.route.queryParamMap.subscribe(params => {
+    this.route.queryParamMap.subscribe((params) => {
       const search = params.get('search');
       this.searchTerm = search ? search.trim() : '';
       this.isSearching = !!this.searchTerm;
@@ -96,16 +95,16 @@ export class CoursesPageComponent implements OnInit {
     document.querySelector('.container')?.classList.add('blur-background');
 
     const dialogRef = this.dialog.open(this.filterModal, {
-    width: '90%',
-    maxWidth: '400px',
-    maxHeight: '90vh',
-    panelClass: ['scrollable-modal', 'filter-modal'],
-    backdropClass: 'filter-modal-overlay',
-    hasBackdrop: true
+      width: '90%',
+      maxWidth: '400px',
+      maxHeight: '90vh',
+      panelClass: ['scrollable-modal', 'filter-modal'],
+      backdropClass: 'filter-modal-overlay',
+      hasBackdrop: true,
     });
 
     dialogRef.afterClosed().subscribe(() => {
-    document.querySelector('.container')?.classList.remove('blur-background');
+      document.querySelector('.container')?.classList.remove('blur-background');
     });
   }
 
@@ -122,13 +121,15 @@ export class CoursesPageComponent implements OnInit {
 
   loadCourses() {
     this.loading = true;
-    this.coursesSvc.getFilteredCourses(
-      this.selectedCategories,
-      this.selectedPrice,
-      this.selectedOrder,
-      this.currentPage,
-      this.pageSize
-    ).subscribe({
+    this.coursesSvc
+      .getFilteredCourses(
+        this.selectedCategories,
+        this.selectedPrice,
+        this.selectedOrder,
+        this.currentPage,
+        this.pageSize
+      )
+      .subscribe({
         next: (data) => {
           this.courses = data.courses;
           this.totalItems = data.totalItems;
@@ -138,33 +139,33 @@ export class CoursesPageComponent implements OnInit {
         error: (error) => {
           console.error('Error al cargar cursos:', error);
           this.loading = false;
-        }
+        },
       });
   }
 
   searchCourses() {
     this.loading = true;
-    this.coursesSvc.searchCourses(this.searchTerm)
-      .subscribe({
-        next: (courses) => {
-          this.courses = courses;
-          this.loading = false;
-        },
-        error: (error) => {
-          console.error('Error al buscar cursos:', error);
-          this.loading = false;
-        }
-      });
+    this.coursesSvc.searchCourses(this.searchTerm).subscribe({
+      next: (courses) => {
+        this.courses = courses;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error al buscar cursos:', error);
+        this.loading = false;
+      },
+    });
   }
 
   onCategorySelected(event: { categoryId: number; selected: boolean }) {
-
     if (event.selected) {
       if (!this.selectedCategories.includes(event.categoryId)) {
         this.selectedCategories.push(event.categoryId);
       }
     } else {
-      this.selectedCategories = this.selectedCategories.filter(id => id !== event.categoryId);
+      this.selectedCategories = this.selectedCategories.filter(
+        (id) => id !== event.categoryId
+      );
     }
 
     if (!this.isSearching) {

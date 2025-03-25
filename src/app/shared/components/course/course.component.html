@@ -1,76 +1,225 @@
 <div class="main-container">
-
-  <div class="course-header" [ngClass]="{ 'unavailable': isQuotaZero }" style="background-image: url('/assets/images/portada.webp')">
+  <div
+    class="course-header"
+    [ngClass]="{ unavailable: isQuotaZero }"
+    style="background-image: url('/assets/images/portada.webp')"
+  >
     <div class="info-portada">
-    <h2 class="title">{{ course?.title }}</h2>
-      <span class="tag">Nuevo</span>
-      <span class="students">👥 {{ inscriptionCount }}</span>
-      <span class="teacher">👨‍🏫 Profesor: {{ course?.teacherName || 'No asignado' }}</span>
+      <!-- Skeleton para el título -->
+      <ng-container *ngIf="!loading; else titleSkeleton"
+        ><h2 class="title">{{ course?.title }}</h2>
+        <span class="tag">Nuevo</span>
+        <span class="students">👥 {{ inscriptionCount }}</span>
+        <span class="teacher"
+          >👨‍🏫 Profesor: {{ course?.teacherName || "No asignado" }}</span
+        >
+      </ng-container>
+
+      <ng-template #titleSkeleton>
+        <ngx-skeleton-loader
+          class="title-skeleton"
+          [theme]="{
+            height: '32px',
+            width: '250px',
+            'margin-bottom': '12px',
+            'background-color': 'rgba(255,255,255,0.3)'
+          }"
+        >
+        </ngx-skeleton-loader>
+        <div class="subtitle-skeleton">
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '20px',
+              width: '80px',
+              'margin-bottom': '8px',
+              'background-color': 'rgba(255,255,255,0.3)'
+            }"
+          >
+          </ngx-skeleton-loader>
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '16px',
+              width: '120px',
+              'margin-bottom': '8px',
+              'background-color': 'rgba(255,255,255,0.3)'
+            }"
+          >
+          </ngx-skeleton-loader>
+        </div>
+      </ng-template>
     </div>
-    <div class="course-status"[ngClass]="{ 'unavailable': isQuotaZero }">
-      {{ isQuotaZero ? 'Sin cupos' : 'Disponible' }}
+    <div class="course-status" [ngClass]="{ unavailable: isQuotaZero }">
+      {{ isQuotaZero ? "Sin cupos" : "Disponible" }}
     </div>
   </div>
 
-
   <div class="page-container">
+    <!-- Skeleton para info del curso -->
     <div class="course-info">
-      <p class="info"><strong>📖 Descripción:</strong> {{ course?.description }}</p>
-      <p class="info"><strong>⏳ Duración:</strong> {{ course?.hours }} horas</p>
-      <p class="info"><strong>📅 Fecha inicio:</strong> {{ course?.startDate }}</p>
-      <p class="info"><strong>📅 Fecha fin:</strong> {{ course?.endDate }}</p>
-      <p class="info"><strong>🎯 Modalidad:</strong> {{ course?.modalidad }}</p>
-      <p class="info"><strong>📖 Categoría:</strong> {{ course?.categoryTitle || 'Sin categoría' }}</p>
-
-      <div class="price-container">
-        <p class="price">
-          <strong>💰 Precio:</strong> ${{ course?.price }}
+      <ng-container *ngIf="!loading; else descriptionSkeleton">
+        <p class="info">
+          <strong>📖 Descripción:</strong> {{ course?.description }}
         </p>
-      </div>
-      
-      <div class="payment-methods-section">
-        <h3 class="payment-title">Medios de Pago</h3>
-        <div class="payment-methods">
-          <div class="payment-icon">
-            <img src="assets/images/mp/MP1.webp" alt="Mercado Pago">
-          </div>
-          <div class="payment-icon">
-            <img src="assets/images/mp/MP2.webp" alt="Visa">
-          </div>
-          <div class="payment-icon">
-            <img src="assets/images/mp/MP3.webp" alt="Mastercard">
-          </div>
-          <div class="payment-icon">
-            <img src="assets/images/mp/MP4.webp" alt="Rapipago">
-          </div>
-          <div class="payment-icon">
-            <img src="assets/images/mp/MP5.webp" alt="Efectivo">
-          </div>
-          <div class="payment-icon">
-            <img src="assets/images/mp/MP6.webp" alt="Otro método">
+        <p class="info">
+          <strong>⏳ Duración:</strong> {{ course?.hours }} horas
+        </p>
+        <p class="info">
+          <strong>📅 Fecha inicio:</strong> {{ course?.startDate }}
+        </p>
+        <p class="info"><strong>📅 Fecha fin:</strong> {{ course?.endDate }}</p>
+        <p class="info">
+          <strong>🎯 Modalidad:</strong> {{ course?.modalidad }}
+        </p>
+        <p class="info">
+          <strong>📖 Categoría:</strong>
+          {{ course?.categoryTitle || "Sin categoría" }}
+        </p>
+      </ng-container>
+
+      <ng-template #descriptionSkeleton>
+        <div *ngFor="let i of [1, 2, 3, 4, 5, 6]">
+          <ngx-skeleton-loader
+            [theme]="{ height: '24px', 'margin-bottom': '16px', width: '50%' }"
+          >
+          </ngx-skeleton-loader>
+        </div>
+      </ng-template>
+
+      <!-- Skeleton para el precio -->
+      <ng-container *ngIf="!loading; else priceSkeleton">
+        <div class="price-container">
+          <p class="price"><strong>💰 Precio:</strong> ${{ course?.price }}</p>
+        </div>
+
+        <div class="payment-methods-section">
+          <h3 class="payment-title">Medios de Pago</h3>
+          <div class="payment-methods">
+            <div class="payment-icon">
+              <img src="assets/images/mp/MP1.webp" alt="Mercado Pago" />
+            </div>
+            <div class="payment-icon">
+              <img src="assets/images/mp/MP2.webp" alt="Visa" />
+            </div>
+            <div class="payment-icon">
+              <img src="assets/images/mp/MP3.webp" alt="Mastercard" />
+            </div>
+            <div class="payment-icon">
+              <img src="assets/images/mp/MP4.webp" alt="Rapipago" />
+            </div>
+            <div class="payment-icon">
+              <img src="assets/images/mp/MP5.webp" alt="Efectivo" />
+            </div>
+            <div class="payment-icon">
+              <img src="assets/images/mp/MP6.webp" alt="Otro método" />
+            </div>
           </div>
         </div>
-      </div>
-      <button mat-button color="accent" class="home-button animate-scale" (click)="goHome()">Volver al Home</button>
+      </ng-container>
+
+      <ng-template #priceSkeleton>
+        <div class="price-container">
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '60px',
+              width: '100%',
+              margin: '20px 0',
+              'border-radius': '8px'
+            }"
+          >
+          </ngx-skeleton-loader>
+        </div>
+
+        <div class="payment-methods-section">
+          <ngx-skeleton-loader
+            [theme]="{
+              height: '24px',
+              width: '150px',
+              'margin-bottom': '15px'
+            }"
+          >
+          </ngx-skeleton-loader>
+
+          <div class="payment-methods">
+            <ngx-skeleton-loader
+              count="6"
+              [theme]="{
+                height: '40px',
+                width: '40px',
+                margin: '5px',
+                'border-radius': '50%'
+              }"
+            >
+            </ngx-skeleton-loader>
+          </div>
+        </div>
+      </ng-template>
+
+      <button
+        mat-button
+        color="accent"
+        class="home-button animate-scale"
+        (click)="goHome()"
+      >
+        Volver al Home
+      </button>
     </div>
 
-
+    <!-- Tarjeta flotante con skeleton -->
     <mat-card class="floating-card">
-      <img [src]="course?.image_url" alt="Imagen del curso" class="course-thumbnail">
-      <button mat-raised-button [ngClass]="{ 'warning': isLowQuota }" 
-      class="start-button" (click)="isQuotaZero ? goCourses() : verificarInscripcion()">
-        {{ isQuotaZero ? 'Ver otros cursos' : 'Empezar curso' }}
-      </button>
+      <ng-container *ngIf="!loading; else cardSkeleton">
+        <img
+          [src]="course?.image_url"
+          alt="Imagen del curso"
+          class="course-thumbnail"
+        />
+        <button
+          mat-raised-button
+          [ngClass]="{ warning: isLowQuota }"
+          class="start-button"
+          (click)="isQuotaZero ? goCourses() : verificarInscripcion()"
+        >
+          {{ isQuotaZero ? "Ver otros cursos" : "Empezar curso" }}
+        </button>
 
+        <div *ngIf="isLowQuota" class="last-places-warning">
+          🔥 ¡Quedan los últimos lugares de inscripción!
+        </div>
 
-      <div *ngIf="isLowQuota" class="last-places-warning">
-        🔥 ¡Quedan los últimos lugares de inscripción!
-      </div>
+        <div class="course-includes">
+          <p>✅ Certificado de finalización</p>
+          <p>📥 Material descargable</p>
+        </div>
+      </ng-container>
 
-      <div class="course-includes">
-        <p>✅ Certificado de finalización</p>
-        <p>📥 Material descargable</p>
-      </div>
+      <ng-template #cardSkeleton>
+        <ngx-skeleton-loader
+          [theme]="{
+            height: '180px',
+            width: '100%',
+            'margin-bottom': '15px',
+            'border-radius': '8px'
+          }"
+        >
+        </ngx-skeleton-loader>
+
+        <ngx-skeleton-loader
+          [theme]="{
+            height: '40px',
+            width: '100%',
+            'margin-bottom': '15px',
+            'border-radius': '20px'
+          }"
+        >
+        </ngx-skeleton-loader>
+
+        <div class="course-includes">
+          <ngx-skeleton-loader
+            *ngFor="let i of [1, 2]"
+            [theme]="{ height: '16px', width: '70%', 'margin-bottom': '10px' }"
+          >
+          </ngx-skeleton-loader>
+        </div>
+      </ng-template>
     </mat-card>
-
+  </div>
 </div>
