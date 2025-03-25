@@ -2,12 +2,14 @@
   flex: 1;
   width: 100px;
   min-width: 150px;
-  border: 1px solid red;
 }
 
 
 @media (min-width: 768px) {
   .input-group{
     width: 80%;
+  }
+  .form-control {
+    width: 250px;
   }
 }

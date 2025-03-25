@@ -1,21 +1,26 @@
 <div class="student-profile-layout">
-  <div class="mobile-overlay" [class.active]="!isCollapsed && isMobile" (click)="toggleSidenav()"></div>
+  <div class="mobile-overlay" 
+       [class.active]="!isCollapsed && isMobile" 
+       (click)="toggleSidenav()">
+  </div>
 
   <aside class="sidebar" [class.collapsed]="isCollapsed">
     <div class="sidebar-header">
-      <img class="student-icon" src="/assets/images/icon_gral.webp" alt="Icono estudiante">
-      <h2 *ngIf="!isCollapsed">Perfil Estudiante</h2>
-      <button mat-icon-button (click)="toggleSidenav()">
-        <mat-icon>{{ isCollapsed ? 'menu' : 'chevron_left' }}</mat-icon>
+      <div class="logo-container">
+        <!-- <img class="student-icon" src="/assets/images/icon_gral.webp" alt="Icono estudiante"> -->
+        <h2 *ngIf="!isCollapsed">Perfil Estudiante</h2>
+      </div>
+      <button mat-icon-button class="toggle-btn" (click)="toggleSidenav()">
+        <mat-icon>{{isCollapsed ? 'menu' : 'chevron_left'}}</mat-icon>
       </button>
     </div>
 
     <nav class="sidebar-nav">
-      <a routerLink="/perfil/mis-cursos" routerLinkActive="active" class="nav-item" (click)="closeSidenavOnMobile()">
+      <a routerLink="/perfil/mis-cursos" routerLinkActive="active" class="nav-item" (click)="isMobile && toggleSidenav()">
         <mat-icon>school</mat-icon>
         <span *ngIf="!isCollapsed">Mis cursos</span>
       </a>
-      <a routerLink="/perfil/pagos" routerLinkActive="active" class="nav-item" (click)="closeSidenavOnMobile()">
+      <a routerLink="/perfil/pagos" routerLinkActive="active" class="nav-item" (click)="isMobile && toggleSidenav()">
         <mat-icon>paid</mat-icon>
         <span *ngIf="!isCollapsed">Pagos</span>
       </a>
@@ -41,7 +46,10 @@
     </ng-template>
   </main>
   
-  <button mat-icon-button class="mobile-menu-btn" *ngIf="isMobile" (click)="toggleSidenav()">
-    <mat-icon>menu</mat-icon>
-  </button>
+  <button mat-icon-button 
+            class="mobile-menu-btn"
+            *ngIf="isMobile && isCollapsed"
+            (click)="isCollapsed = false">
+      <mat-icon>menu</mat-icon>
+    </button>
 </div>

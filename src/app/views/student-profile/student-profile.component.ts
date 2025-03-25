@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, Inject, HostListener } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { MaterialModule } from '../../material/material.module';
 import { CommonModule, NgIf, NgFor } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -14,6 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { LocalStorageService } from '../../services/localstorage/local-storage.service';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
+import { filter } from 'rxjs';
 @Component({
   selector: 'app-student-profile',
   standalone: true,
@@ -26,8 +27,8 @@ import { PLATFORM_ID } from '@angular/core';
 export class StudentProfileComponent implements OnInit{
   userName: string | null = null;
   isStudent: boolean = false;
-  isMobile: boolean = false;
-  isCollapsed = false; 
+  isCollapsed = false;
+  isMobile = false;
   userId: number | null = null;
   studentId: number | null = null;
 
@@ -41,14 +42,16 @@ export class StudentProfileComponent implements OnInit{
     }
     this.isStudent = this.apiService.isStudent();
     this.getUserData();
-    this.deviceHelper.watchDeviceChange((isMobile: boolean) => {
-      this.isMobile = isMobile;
-      if (this.isMobile) {
-        this.isCollapsed = true; 
-      } else {
-        this.isCollapsed = false; 
-      }
-    });
+    this.checkScreenSize();
+        
+        // Escuchar cambios de ruta
+        this.router.events
+          .pipe(filter(event => event instanceof NavigationEnd))
+          .subscribe(() => {
+            if (this.isMobile) {
+              this.isCollapsed = true; // Colapsar sidebar al cambiar de ruta
+            }
+          });
   }
   
   getUserData(): void {
@@ -88,21 +91,20 @@ export class StudentProfileComponent implements OnInit{
       }
     );
   }
+@HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkScreenSize();
+  }
 
 
-
-  toggleSidenav() {
+  checkScreenSize() {
+    this.isMobile = window.innerWidth <= 768;
     if (this.isMobile) {
-      this.isCollapsed = !this.isCollapsed;
-    } else {
-      this.isCollapsed = !this.isCollapsed;
+      this.isCollapsed = true; // Colapsar automáticamente en móvil
     }
   }
-  
 
-  closeSidenavOnMobile() {
-    if (this.isMobile) {
-      this.isCollapsed = true; 
-    }
+  toggleSidenav() {
+    this.isCollapsed = !this.isCollapsed;
   }
 }

@@ -1,9 +1,10 @@
 import { Component, OnInit, HostListener, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-admin-layout',
@@ -32,27 +33,30 @@ export class AdminLayoutComponent implements OnInit {
 
   ];
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.checkScreenSize();
-    }
+    this.checkScreenSize();
+    
+    // Escuchar cambios de ruta
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        if (this.isMobile) {
+          this.isCollapsed = true; // Colapsar sidebar al cambiar de ruta
+        }
+      });
   }
 
-  @HostListener('window:resize')
+  @HostListener('window:resize', ['$event'])
   onResize() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.checkScreenSize();
-    }
+    this.checkScreenSize();
   }
 
   checkScreenSize() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.isMobile = window.innerWidth < 768;
-      if (this.isMobile) {
-        this.isCollapsed = true;
-      }
+    this.isMobile = window.innerWidth <= 768;
+    if (this.isMobile) {
+      this.isCollapsed = true; // Colapsar automáticamente en móvil
     }
   }
 
