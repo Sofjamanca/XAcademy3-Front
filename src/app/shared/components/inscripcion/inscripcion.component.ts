@@ -45,14 +45,12 @@ export class InscripcionComponent implements OnInit {
 
   ngOnInit(): void {
     const courseId = Number(this.route.snapshot.paramMap.get('id'));
-  
-    // Verificar que el courseId sea válido
+
     if (!courseId) {
       console.error('ID de curso no válido');
       return;
     }
   
-    // Obtener los datos del estudiante y realizar la lógica de enrolamiento
     this.apiService.getMe().subscribe(
       data => {
         this.studentData = data;
@@ -67,13 +65,11 @@ export class InscripcionComponent implements OnInit {
       }
     );
   
-    // Obtener los detalles del curso
     this.coursesService.getCourseById(courseId).subscribe(
       (courseData) => {
         this.curso = courseData;
   
         if (this.curso?.category_id) {
-          // Obtener la categoría del curso
           this.coursesService.getCategoryById(this.curso.category_id).subscribe({
             next: (category) => {
               if (category) {
@@ -89,7 +85,6 @@ export class InscripcionComponent implements OnInit {
       }
     );
   }
-  
   
 
   checkEnrollmentStatus(courseId: number) {

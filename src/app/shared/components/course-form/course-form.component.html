@@ -19,8 +19,9 @@
 
           <div *ngIf="input.type === 'date'">
             <div class="conteiner-date">
-              <input matInput [formControlName]="input.atr" [matDatepicker]="picker" formControlName="startDate"
-                [min]="minDate">
+              <input matInput  [formControlName]="input.atr" [matDatepicker]="picker" 
+              [max]="input?.max" 
+              [min]="input?.getMin ? input.getMin(cursoForm.value) : input?.min">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </div>

@@ -86,7 +86,7 @@ export class CreateCourseComponent implements OnInit {
       {label:'Modalidad',atr:'modalidad', options: 
         [{label: 'Presencial', value: "PRESENCIAL"},{label: 'Virtual', value: "VIRTUAL"}, {label: 'Híbrido', value: "HIBRIDO"}],  type: 'select'},
       {label:'Fecha inicio',atr:'startDate',  type: 'date', min:new Date()},
-      {label:'Fecha fin',atr:'endDate', type: 'date', getMin:(data: any)=> data.startDate ? new Date(data.startDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]},
+      {label:'Fecha fin',atr:'endDate', type: 'date', getMin:(data: any)=> data.startDate ? new Date(data.startDate) : new Date()},
       {label:'Precio',atr:'price',  type: 'number'},
       {label:'Cupo',atr:'quota',  type: 'number'},
       {atr:'image_url',  type: 'media', require: false},
