@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ArticleComponent } from '../../shared/components/article/article.component';
 import { NewsService } from '../../services/news/news.service';
 import { Article } from '../../core/models/article.model';
+import { TestimonialsComponent } from './testimonials/testimonials.component';
 
 @Component({
   selector: 'views-landing-page',
@@ -19,6 +20,7 @@ import { Article } from '../../core/models/article.model';
     CommonModule,
     MatButtonModule,
     ArticleComponent,
+    TestimonialsComponent,
   ],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css',
