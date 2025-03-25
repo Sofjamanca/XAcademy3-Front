@@ -99,13 +99,11 @@
   align-items: center;
   gap: 10px;
 }
-<<<<<<< Updated upstream
-=======
+
 .description{
   width:70%;
   text-align: justify;
 }
->>>>>>> Stashed changes
 
 @keyframes fadeInUp {
   from {
