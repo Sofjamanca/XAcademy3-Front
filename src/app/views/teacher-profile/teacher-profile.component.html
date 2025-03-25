@@ -69,11 +69,13 @@
           <app-card *ngFor="let course of courses"
             [title]="course.title || ''"
             [description]="course.description || ''"
-            [image]="course.image_url || '/assets/images/course-placeholder.webp'"
-            [action]="'Editar curso'"
+            [category]="getCategoryTitle(course.category_id)"
+            [image]="course.image_url || ''"
+            [action]="'Administrar curso'"
             [showDetails]="true"
             [price]="course.price ? course.price.toString() : ''"
             [quota]="course.quota || null"
+            [showFavoriteIcon]="false"
             (actionClick)="course.id ? editCourse(course.id) : null">
           </app-card>
         </div>

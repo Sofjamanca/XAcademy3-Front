@@ -138,6 +138,14 @@ export class CourseComponent implements OnInit {
     });
   }
 
+  formatDate(date: string): string {
+    return new Date(date).toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+
   goHome() {
     this.router.navigate(['/home']);
   }

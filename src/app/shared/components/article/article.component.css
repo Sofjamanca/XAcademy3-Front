@@ -13,7 +13,7 @@
 .article-image-container {
   position: relative;
   overflow: hidden;
-  max-height: 200px;
+  max-height: 300px;
 }
 
 .article-image {
@@ -46,7 +46,7 @@
   margin: 0 0 10px 0;
   color: #333;
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .article-description {
@@ -86,4 +86,13 @@ mat-card-actions {
     align-items: flex-start;
     gap: 5px;
   }
+}
+
+.button-article{
+  background-color: var(--color_btn_accent) !important;
+  border: 0;
+  height: 35px;
+  padding: 20px;
+  color: #fff;
+  border-radius: 8px;
 }
