@@ -78,7 +78,7 @@ export class CourseComponent implements OnInit {
 
           if (this.course.teacher_id) {
             this.teacherService
-              .getTeacherById(this.course.teacher_id)
+              .getTeacherByIdCourse(this.course.teacher_id)
               .subscribe({
                 next: (teacher) => {
                   this.course.teacherName = teacher.user?.name || 'Desconocido';
