@@ -28,11 +28,6 @@
       </div>
     </mat-card-content>
     
-    <mat-card-actions *ngIf="!showFullContent">
-      <button class="button-article" mat-button color="primary" (click)="$event.stopPropagation(); goToArticle(article.id || 0)">
-        LEER MÁS
-        <mat-icon>arrow_forward</mat-icon>
-      </button>
-    </mat-card-actions>
+
   </mat-card>
 </div>
