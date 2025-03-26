@@ -1,43 +1,16 @@
 .hero-container{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   width: 100vw;
-  min-height:100vh;
-  overflow:hidden;
+  height: 240px;
   position: relative;
-} 
-.carousel-item:not(:first-child)::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(to bottom, rgba(245, 104, 13, .2), rgba(0, 59, 117,1) 80%);
-  z-index: 1;
-}
-.carousel-inner {
-  min-width: 100vw;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
   overflow: hidden;
 }
-
-.carousel-inner img {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  object-fit: cover;
-  transition: opacity 0.8s ease-in-out;
+.container_carrousel{
+  width:100%;
+  height:240px;
 }
-
-.carousel-item {
-  height: 100vh;
-  transition: transform 0.6s ease-in-out;
+.carousel_photo{
+  min-width: 100vw;
+  height:100%;
 }
 .carousel-caption{
   position: absolute;
@@ -52,6 +25,16 @@
   width: 60%;
   text-align: center;
   color: white;
+}
+.carousel-item:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to bottom, rgba(245, 104, 13, .2), rgba(0, 59, 117,1) 80%);
+  z-index: 1;
 }
 .carousel-caption > h1{
   color:white;
@@ -70,13 +53,62 @@
   width:100px;
   color:white;
   border:1px solid white;
+}
+.carousel-control-prev[_ngcontent-ng-c1062828629], 
+.carousel-control-next[_ngcontent-ng-c1062828629] {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, .5);
+}
+.carousel-control-prev,
+.carousel-control-next {
+  color:white;
+  position: absolute;
+  z-index: 900; 
+}
+
+.carousel-control-next[_ngcontent-ng-c1062828629]{
+  right:8%;
+  top: 40%;
+}
+.carousel-control-prev[_ngcontent-ng-c1062828629]{
+  left:4%;
+  top: 40%;
+} 
+
+.carousel-control-next {
+  right: 10px;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .hero-container{
+    width: 100vw;
+    height: 440px;
+  }
+  .carousel-control-prev[_ngcontent-ng-c1062828629], 
+.carousel-control-next[_ngcontent-ng-c1062828629] {
+  top: 80%;
+}
+.carousel-item:not(:first-child)::before {
+  height:500px;
+  width: 100%;
+}
+
 
 }
 
 
 @media (min-width: 1024px) {
   .hero-container{
-    height:60%;
+    width: 100vw;
+    min-height:100vh;
+  } 
+  .carousel-inner {
+    min-width: 100vw;
+    min-height: 100vh;
+  }
+  .carousel-item {
+    height: 100vh;
   }
   .carousel-caption{
     width: 50%;
@@ -88,6 +120,20 @@
   .carousel-caption > p{
     font-size: 1rem;
   }
+  .carousel-control-prev[_ngcontent-ng-c1062828629], 
+.carousel-control-next[_ngcontent-ng-c1062828629] {
+  transform: translateY(40%);
+  width: 50px;
+  height: 50px;
+}
+.carousel-control-next[_ngcontent-ng-c1062828629]{
+  right:5%;
+  top: 90%;
+}
+.carousel-control-prev[_ngcontent-ng-c1062828629]{
+  left:5%;
+  top: 90%;
+} 
 }
 
 @media only screen and (min-width : 1824px) {

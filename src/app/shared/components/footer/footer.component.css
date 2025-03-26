@@ -9,7 +9,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 0 auto; 
+  
 }
 
 .swiper-container {
@@ -70,6 +70,7 @@
   background: rgba(0, 0, 0, 0.08);
   padding: 5px 0;
   border-radius: 0 0 15px 15px;
+  
 }
 
 .swiper-pagination {
@@ -150,7 +151,11 @@ html, body {
   display: grid;
   grid-template-rows: 1fr auto;
 }
-
+@media (max-width: 768px) {
+  .footer-container {
+    margin-bottom: 5rem;
+  }
+}
 
 @media (min-width: 1024px) {
   .swiper-slide {

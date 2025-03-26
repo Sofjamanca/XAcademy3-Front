@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+
   background-color: #F8F9FA;
 }
 
@@ -88,6 +89,7 @@
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.8s ease-out forwards;
+  border:1px solid red;
 }
 
 .info-descripcion {
@@ -176,7 +178,11 @@
   line-height: 1.6;
   white-space: pre-line;
 }
-
+.description{
+  width:70%;
+  text-align: justify;
+  border:1px solid red;
+}
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -372,12 +378,7 @@
     text-align: left;
   }
 
-  .info-portada .tag {
-    display: inline-block;
-    margin: 5px 0;
-    font-size: 14px;
-  }
-
+  .info-portada .tag,
   .info-portada .students,
   .info-portada .teacher {
     display: flex;

@@ -1,5 +1,5 @@
 import { Component  } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgFor } from '@angular/common';
 import { CardComponent } from './shared/components/card/card.component';
@@ -18,9 +18,6 @@ import { MatInputModule } from '@angular/material/input';
   standalone: true,
   imports: [
     HeaderComponent,
-    LandingPageComponent, 
-    CardComponent, 
-    NgFor,
     RouterOutlet, 
     MaterialModule, 
     FooterComponent, 
@@ -32,4 +29,16 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class AppComponent {
   title = 'XAcademy3-Front';
+  showFooter = true;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        // Ocultar footer en las rutas especificadas
+        const hiddenRoutes = ['/admin', '/perfil', '/profesor'];
+        this.showFooter = !hiddenRoutes.some(route => event.url.includes(route));
+      }
+    });
+  }
+  
 }
