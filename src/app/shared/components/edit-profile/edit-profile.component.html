@@ -1,51 +1,73 @@
 <div class="edit-profile-container">
+  <div class="title-student">
+    <mat-icon>edit_square</mat-icon>
+    <span>Editar perfil</span>
+  </div>
   <mat-card>
-    <mat-card-header>
-      <mat-card-title>Editar Perfil</mat-card-title>
-    </mat-card-header>
     <mat-card-content>
       <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
         <div class="user-name">
           <mat-form-field appearance="outline">
             <mat-label>Nombre</mat-label>
             <input matInput formControlName="name" type="text" class="flex-input">
+            <mat-error *ngIf="profileForm.get('name')?.hasError('required') && profileForm.get('name')?.touched">
+              El nombre es requerido.
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Apellido</mat-label>
             <input matInput formControlName="lastname" type="text" class="flex-input">
-          </mat-form-field>
+          <mat-error *ngIf="profileForm.get('lastname')?.hasError('required') && profileForm.get('lastname')?.touched">
+            El apellido es requerido.
+          </mat-error>
+        </mat-form-field>
         </div>
 
         <div class="personal-info">
           <mat-form-field appearance="outline">
             <mat-label>DNI</mat-label>
-            <input matInput formControlName="dni" type="number" class="flex-input">
+            <input matInput formControlName="dni" type="text" class="flex-input" inputmode="numeric" pattern="[0-9]{7,8}" maxlength="8">            <mat-error *ngIf="profileForm.get('dni')?.hasError('required') && profileForm.get('dni')?.touched">
+              El DNI es requerido.
+            </mat-error>
+            <mat-error *ngIf="profileForm.get('dni')?.hasError('pattern') && profileForm.get('dni')?.touched">
+              El DNI debe ser un número válido.
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Fecha de Nacimiento</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="birthday">
+            <input matInput [matDatepicker]="picker" formControlName="birthday" [max]="today">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="profileForm.get('birthday')?.hasError('invalidDate') && profileForm.get('birthday')?.touched">
+              La fecha de nacimiento debe ser válida y mayor de 18 años.            </mat-error>
           </mat-form-field>
         </div>
 
         <div class="contact">
           <mat-form-field appearance="outline">
             <mat-label>Teléfono</mat-label>
-            <input matInput formControlName="phone" type="text" class="flex-input">
+            <input matInput formControlName="phone" type="text" class="flex-input" inputmode="numeric" pattern="[0-9]{7,10}" maxlength="10">            <mat-error *ngIf="profileForm.get('phone')?.hasError('required') && profileForm.get('phone')?.touched">
+              El teléfono es requerido.
+            </mat-error>
+            <mat-error *ngIf="profileForm.get('phone')?.hasError('pattern') && profileForm.get('phone')?.touched">
+              El teléfono debe ser un número válido.
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Dirección</mat-label>
             <input matInput formControlName="address">
-          </mat-form-field>
+          <mat-error *ngIf="profileForm.get('address')?.hasError('required') && profileForm.get('address')?.touched">
+            La dirección es requerida.
+          </mat-error>
+        </mat-form-field>
         </div>
 
         <div class="form-actions">
           <button mat-button type="button" (click)="goBack()">Cancelar</button>
-          <button mat-raised-button color="primary" type="submit" [disabled]="profileForm.invalid">
+          <button mat-raised-button color="primary" type="submit" [disabled]="profileForm.invalid || !profileForm.dirty">
             Guardar Cambios
           </button>
         </div>

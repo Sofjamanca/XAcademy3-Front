@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, AfterViewChecked  } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, AfterViewChecked, ViewChild, AfterViewInit } from '@angular/core';
 import { PaymentsService } from '../../../services/payments/payments.service';
 import { StudentService } from '../../../services/student/student.service';
 import { ApiService } from '../../../services/api.service';
@@ -7,15 +7,23 @@ import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { MaterialModule } from '../../../material/material.module';
 import { CoursesService } from '../../../services/courses/courses.service';
 import { BehaviorSubject } from 'rxjs';
+import { MatTable } from '@angular/material/table';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatSortModule } from '@angular/material/sort';
 
 @Component({
   selector: 'app-pending',
   standalone: true,
-  imports: [CommonModule, NgFor, NgIf, MaterialModule],
+  imports: [CommonModule, NgFor, NgIf, MaterialModule, MatSortModule],
   templateUrl: './pending.component.html',
   styleUrl: './pending.component.css'
 })
-export class PendingComponent implements OnInit, AfterViewChecked {
+export class PendingComponent implements OnInit, AfterViewChecked, AfterViewInit {
+  @ViewChild('pendingTable') pendingTable!: MatTable<any>;
+  @ViewChild('completedTable') completedTable!: MatTable<any>;
+  @ViewChild('pendingSort') pendingSort!: MatSort;
+  @ViewChild('completedSort') completedSort!: MatSort;
+
   payments: any[] = [];
   studentId: number | null = null;
   userId: number | null = null;
@@ -23,6 +31,22 @@ export class PendingComponent implements OnInit, AfterViewChecked {
   completedPayments: any[] = [];
   private paymentUpdated$ = new BehaviorSubject<boolean>(false);
 
+  // Variables para el ordenamiento
+  currentPendingSort: Sort = { active: '', direction: '' };
+  currentCompletedSort: Sort = { active: '', direction: '' };
+  pageSize = 10;
+  currentPendingPage = 1;
+  currentCompletedPage = 1;
+  totalPendingItems = 0;
+  totalCompletedItems = 0;
+
+  // Mapeo de nombres de columnas del front al backend
+  private columnMapping: { [key: string]: string } = {
+    'course': 'courses',
+    'status': 'status',
+    'amount': 'course_id',
+    'date': 'createdAt'
+  };
 
   constructor(
     private snackBar: MatSnackBar,
@@ -36,6 +60,19 @@ export class PendingComponent implements OnInit, AfterViewChecked {
   ngOnInit(): void {
     this.getUserData(); 
     this.paymentUpdated$;
+  }
+
+  ngAfterViewInit(): void {
+    if (this.pendingSort) {
+      this.pendingSort.sortChange.subscribe((sort: Sort) => {
+        this.onPendingSortChange(sort);
+      });
+    }
+    if (this.completedSort) {
+      this.completedSort.sortChange.subscribe((sort: Sort) => {
+        this.onCompletedSortChange(sort);
+      });
+    }
   }
   
   ngAfterViewChecked(): void {
@@ -77,33 +114,53 @@ export class PendingComponent implements OnInit, AfterViewChecked {
 
   loadPayments(): void {
     if (this.studentId !== null) {
-      this.paymentsService.getPaymentsByStudent(this.studentId, 'PENDIENTE').subscribe({
-        next: (data) => {
-          this.pendingPayments = data.payments;
-          this.pendingPayments.forEach(payment => {
-            this.getCourseData(payment);
-          });
-        },
-        error: (error) => {
-          console.error('Error al obtener los pagos pendientes:', error);
-        }
-      });
-
-      this.paymentsService.getPaymentsByStudent(this.studentId, 'PAGADO').subscribe({
-        next: (data) => {
-          this.completedPayments = data.payments;
-          this.completedPayments.forEach(payment => {
-            this.getCourseData(payment);
-          });
-        },
-        error: (error) => {
-          console.error('Error al obtener los pagos realizados:', error);
-        }
-      });
+      this.loadPendingPayments();
+      this.loadCompletedPayments();
     } else {
       console.error('No se ha encontrado un ID de estudiante válido.');
       this.snackBar.open('No se ha encontrado un ID de estudiante válido.', 'Cerrar', { duration: 3000 });
     }
+  }
+
+  loadPendingPayments(orderBy: string = '', direction: string = ''): void {
+    this.paymentsService.getPaymentsByStudent(
+      this.studentId!,
+      'PENDIENTE'
+    ).subscribe({
+      next: (data) => {
+        this.pendingPayments = data.payments;
+        this.totalPendingItems = data.totalItems;
+        this.pendingPayments.forEach(payment => {
+          this.getCourseData(payment);
+        });
+      },
+      error: (error) => {
+        console.error('Error al obtener los pagos pendientes:', error);
+      }
+    });
+  }
+
+  loadCompletedPayments(orderBy: string = '', direction: string = ''): void {
+    this.paymentsService.getPaymentsByStudent(
+      this.studentId!,
+      'PAGADO'
+    ).subscribe({
+      next: (data) => {
+        this.completedPayments = data.payments;
+          this.completedPayments.forEach(payment => {
+            payment.updatedAt = this.parseDate(payment.updatedAt);
+            return payment;          
+          });
+          
+        this.totalCompletedItems = data.totalItems;
+        this.completedPayments.forEach(payment => {
+          this.getCourseData(payment);
+        });
+      },
+      error: (error) => {
+        console.error('Error al obtener los pagos realizados:', error);
+      }
+    });
   }
 
   getCourseData(payment: any): void {
@@ -121,10 +178,8 @@ export class PendingComponent implements OnInit, AfterViewChecked {
 
   getPrice(payment: any): void {
     this.coursesService.getCourseById(payment.course_id).subscribe(courseData => {
-      console.log(courseData)
       payment.coursePrice = courseData.price;
     });
-    console.log(payment.coursePrice)
   }
 
   pagar(payment: any): void {
@@ -156,6 +211,39 @@ export class PendingComponent implements OnInit, AfterViewChecked {
   onTabChange(event: any): void {
     this.cdr.detectChanges();
   }
+
+  parseDate(dateString: string | undefined): string | null {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+
+    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+  }
   
+
+  onPendingSortChange(sort: Sort): void {
+    this.currentPendingSort = sort;
+    this.currentPendingPage = 1;
+    const orderBy = this.columnMapping[sort.active] || sort.active;
+    this.loadPendingPayments(orderBy, sort.direction);
+  }
+
+  onCompletedSortChange(sort: Sort): void {
+    this.currentCompletedSort = sort;
+    this.currentCompletedPage = 1;
+    const orderBy = this.columnMapping[sort.active] || sort.active;
+    this.loadCompletedPayments(orderBy, sort.direction);
+  }
+
+  onPendingPageChange(event: any): void {
+    this.currentPendingPage = event.pageIndex + 1;
+    const orderBy = this.columnMapping[this.currentPendingSort.active] || this.currentPendingSort.active;
+    this.loadPendingPayments(orderBy, this.currentPendingSort.direction);
+  }
+
+  onCompletedPageChange(event: any): void {
+    this.currentCompletedPage = event.pageIndex + 1;
+    const orderBy = this.columnMapping[this.currentCompletedSort.active] || this.currentCompletedSort.active;
+    this.loadCompletedPayments(orderBy, this.currentCompletedSort.direction);
+  }
 }
   

@@ -143,7 +143,6 @@ export class AuthModalComponent implements OnInit {
 
     this.apiService.login({ email, password }).subscribe({
       next: (response) => {
-
         // Guarda los tokens correctamente en LocalStorageService
         this.localstorageService.setItem('token', response.accessToken);
         this.localstorageService.setItem('refreshToken', response.refreshToken);
@@ -151,11 +150,14 @@ export class AuthModalComponent implements OnInit {
         // Guarda el nombre del usuario
         this.localstorageService.setItem('userName', response.user.name);
         this.successfulManagement(response);
-         window.location.reload();
+        window.location.reload();
         this.openSnackBar('Inicio de sesión exitoso', 'Cerrar');
-       
       },
-      error: (error) => this.openSnackBar(`Error: ${error.error.message}`, 'Cerrar')
+      error: (error) => {
+        this.loading = false;
+        const errorMessage = error.error?.message || 'Error al iniciar sesión. Por favor, verifica tus credenciales.';
+        this.openSnackBar(errorMessage, 'Cerrar');
+      }
     });
   }
 

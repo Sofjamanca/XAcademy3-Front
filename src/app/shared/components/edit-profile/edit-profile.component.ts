@@ -16,6 +16,8 @@ import { ApiService } from '../../../services/api.service';
 })
 export class EditProfileComponent {
   profileForm: FormGroup;
+  birthdayError: boolean = false;
+  today: string = new Date().toISOString().split('T')[0];
 
   constructor(
     private fb: FormBuilder,
@@ -35,8 +37,9 @@ export class EditProfileComponent {
   }
 
   ngOnInit() {
-    this.apiService.getMe().subscribe({
+    this.apiService.getMeEdit().subscribe({
       next: (data) => {
+        console.log(data); 
         if (data) {
           this.profileForm.patchValue({
             name: data.name,
@@ -55,6 +58,25 @@ export class EditProfileComponent {
         });
       }
     });
+
+    this.profileForm.get('birthday')?.valueChanges.subscribe(() => {
+      this.validateBirthday();
+    });
+  }
+
+
+  validateBirthday() {
+    const birthday = new Date(this.profileForm.get('birthday')?.value);
+    const today = new Date();
+    const age = today.getFullYear() - birthday.getFullYear();
+
+    if (birthday > today || age < 18) {
+      this.birthdayError = true;
+      this.profileForm.get('birthday')?.setErrors({ invalidDate: true });
+    } else {
+      this.birthdayError = false;
+      this.profileForm.get('birthday')?.setErrors(null); 
+    }
   }
 
   onSubmit() {

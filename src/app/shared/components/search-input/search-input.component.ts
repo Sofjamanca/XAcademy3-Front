@@ -30,7 +30,6 @@ export class SearchInputComponent implements OnInit {
     this.route.queryParamMap.subscribe(params => {
       const search = params.get('search');
       if (search) {
-        // console.log('Parámetro de búsqueda encontrado en URL:', search);
         this.searchQuery = search;
       }
     });
@@ -38,8 +37,6 @@ export class SearchInputComponent implements OnInit {
 
   search() {
     if (this.searchQuery.trim()) {
-      // console.log('Realizando búsqueda con término:', this.searchQuery.trim());
-
       // Navegar a la página de cursos con el parámetro de búsqueda
       // y preservar otros parámetros que puedan existir
       this.router.navigate(['/courses'], {

@@ -31,13 +31,31 @@
       <table mat-table [dataSource]="dataSource" class="full-width-table">
         <!-- ID Column -->
         <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <th mat-header-cell *matHeaderCellDef>
+            <div class="sort-header" (click)="isColumnSortable('id') && sortData('id')">
+              ID
+              <span class="sort-icons" *ngIf="isColumnSortable('id')">
+                <mat-icon *ngIf="sortColumn === 'id' && sortDirection === 'asc'">arrow_upward</mat-icon>
+                <mat-icon *ngIf="sortColumn === 'id' && sortDirection === 'desc'">arrow_downward</mat-icon>
+                <mat-icon *ngIf="sortColumn !== 'id'" class="sort-inactive">unfold_more</mat-icon>
+              </span>
+            </div>
+          </th>
           <td mat-cell *matCellDef="let article">{{article.id}}</td>
         </ng-container>
 
         <!-- Title Column -->
         <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef>Título</th>
+          <th mat-header-cell *matHeaderCellDef>
+            <div class="sort-header" (click)="isColumnSortable('title') && sortData('title')">
+              Título
+              <span class="sort-icons" *ngIf="isColumnSortable('title')">
+                <mat-icon *ngIf="sortColumn === 'title' && sortDirection === 'asc'">arrow_upward</mat-icon>
+                <mat-icon *ngIf="sortColumn === 'title' && sortDirection === 'desc'">arrow_downward</mat-icon>
+                <mat-icon *ngIf="sortColumn !== 'title'" class="sort-inactive">unfold_more</mat-icon>
+              </span>
+            </div>
+          </th>
           <td mat-cell *matCellDef="let article">
             <span [matTooltip]="article.title" class="ellipsis-text">{{article.title}}</span>
           </td>
@@ -45,7 +63,16 @@
 
         <!-- Created Date Column -->
         <ng-container matColumnDef="createdAt">
-          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <th mat-header-cell *matHeaderCellDef>
+            <div class="sort-header" (click)="isColumnSortable('createdAt') && sortData('createdAt')">
+              Fecha
+              <span class="sort-icons" *ngIf="isColumnSortable('createdAt')">
+                <mat-icon *ngIf="sortColumn === 'createdAt' && sortDirection === 'asc'">arrow_upward</mat-icon>
+                <mat-icon *ngIf="sortColumn === 'createdAt' && sortDirection === 'desc'">arrow_downward</mat-icon>
+                <mat-icon *ngIf="sortColumn !== 'createdAt'" class="sort-inactive">unfold_more</mat-icon>
+              </span>
+            </div>
+          </th>
           <td mat-cell *matCellDef="let article">{{formatDate(article.createdAt)}}</td>
         </ng-container>
 
@@ -68,6 +95,15 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
+      
+      <!-- Paginación -->
+      <shared-pagination
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageIndex]="currentPage - 1"
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        (page)="onPageChange($event)"
+      ></shared-pagination>
     </div>
   </ng-container>
 </div>

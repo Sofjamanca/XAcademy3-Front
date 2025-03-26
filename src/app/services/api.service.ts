@@ -208,6 +208,31 @@ export class ApiService {
     );
   }
   
+  getMeEdit(): Observable<any> {
+    let token: string | null = null;
+    if (isPlatformBrowser(this.platformId)) {
+      token = this.localStorageService.getItem('token') || localStorage.getItem('token');
+    }
+    if (!token) {
+      return throwError(() => new Error('Token no proporcionado'));
+    }
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/me`, { headers }).pipe(
+      map(data => ({
+        user_id: data.id,
+        name: data.name,
+        lastname: data.lastname,
+        dni: data.dni,
+        phone: data.phone,
+        birthday: data.birthday,
+        address: data.address
+      })),
+      catchError(error => {
+        return throwError(() => new Error(error));
+      })
+    );
+  }
+
   updateUserProfile(userData: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/update-profile`, userData);
   }

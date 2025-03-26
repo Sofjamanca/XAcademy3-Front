@@ -41,21 +41,63 @@
       <mat-table mat-table [dataSource]="teachers" class="full-width-table">
         <!-- ID Column -->
         <ng-container matColumnDef="id">
-          <mat-header-cell mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+          <mat-header-cell mat-header-cell *matHeaderCellDef>
+            <div class="sort-header" (click)="isColumnSortable('id') && sortData('id')">
+              ID
+              <span class="sort-icons" *ngIf="isColumnSortable('id')">
+                <mat-icon *ngIf="sortColumn === 'id' && sortDirection === 'asc'">arrow_upward</mat-icon>
+                <mat-icon *ngIf="sortColumn === 'id' && sortDirection === 'desc'">arrow_downward</mat-icon>
+                <mat-icon *ngIf="sortColumn !== 'id'" class="sort-inactive">unfold_more</mat-icon>
+              </span>
+            </div>
+          </mat-header-cell>
           <mat-cell mat-cell *matCellDef="let teacher">{{ teacher.id }}</mat-cell>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="name">
-          <mat-header-cell mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+          <mat-header-cell mat-header-cell *matHeaderCellDef>
+            <div class="sort-header" (click)="isColumnSortable('name') && sortData('name')">
+              Nombre
+              <span class="sort-icons" *ngIf="isColumnSortable('name')">
+                <mat-icon *ngIf="sortColumn === 'name' && sortDirection === 'asc'">arrow_upward</mat-icon>
+                <mat-icon *ngIf="sortColumn === 'name' && sortDirection === 'desc'">arrow_downward</mat-icon>
+                <mat-icon *ngIf="sortColumn !== 'name'" class="sort-inactive">unfold_more</mat-icon>
+              </span>
+            </div>
+          </mat-header-cell>
           <mat-cell mat-cell *matCellDef="let teacher">
             {{ teacher.user.name }} {{ teacher.user.lastname }}
           </mat-cell>
         </ng-container>
 
+        <!-- Specialty Column -->
+        <ng-container matColumnDef="specialty">
+          <mat-header-cell mat-header-cell *matHeaderCellDef>
+            <div class="sort-header" (click)="isColumnSortable('specialty') && sortData('specialty')">
+              Especialidad
+              <span class="sort-icons" *ngIf="isColumnSortable('specialty')">
+                <mat-icon *ngIf="sortColumn === 'specialty' && sortDirection === 'asc'">arrow_upward</mat-icon>
+                <mat-icon *ngIf="sortColumn === 'specialty' && sortDirection === 'desc'">arrow_downward</mat-icon>
+                <mat-icon *ngIf="sortColumn !== 'specialty'" class="sort-inactive">unfold_more</mat-icon>
+              </span>
+            </div>
+          </mat-header-cell>
+          <mat-cell mat-cell *matCellDef="let teacher">{{ teacher.specialty }}</mat-cell>
+        </ng-container>
+
         <!-- Email Column -->
         <ng-container matColumnDef="email">
-          <mat-header-cell mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+          <mat-header-cell mat-header-cell *matHeaderCellDef>
+            <div class="sort-header" (click)="isColumnSortable('email') && sortData('email')">
+              Email
+              <span class="sort-icons" *ngIf="isColumnSortable('email')">
+                <mat-icon *ngIf="sortColumn === 'email' && sortDirection === 'asc'">arrow_upward</mat-icon>
+                <mat-icon *ngIf="sortColumn === 'email' && sortDirection === 'desc'">arrow_downward</mat-icon>
+                <mat-icon *ngIf="sortColumn !== 'email'" class="sort-inactive">unfold_more</mat-icon>
+              </span>
+            </div>
+          </mat-header-cell>
           <mat-cell mat-cell *matCellDef="let teacher">{{ teacher.user.email }}</mat-cell>
         </ng-container>
 
@@ -88,10 +130,13 @@
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
       </mat-table>
 
-      <mat-paginator
-        [pageSizeOptions]="[5, 10, 25, 100]"
-        aria-label="Seleccionar página de profesores"
-      ></mat-paginator>
+      <shared-pagination
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageIndex]="currentPage - 1"
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        (page)="onPageChange($event)"
+      ></shared-pagination>
     </div>
   </ng-template>
 </div>

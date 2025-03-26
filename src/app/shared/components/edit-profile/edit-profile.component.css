@@ -9,6 +9,21 @@ mat-card-title {
 
 mat-form-field {
   width: 100%;
+  position: relative;
+}
+
+.error-container {
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+.mat-error {
+  color: red;
+  font-size: 0.875em;
+  margin-top: 5px;
 }
 
 .edit-profile-container {

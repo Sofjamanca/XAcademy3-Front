@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -15,7 +15,7 @@ export class NewsService {
     }
 
     getNewsById(id: number): Observable<any> {
-        return this.http.get<any>(`${this.apiUrl}/${id}`);
+        return this.http.get<any>(`${this.apiUrl}/view/${id}`);
     }
 
     createNews(news: any): Observable<any> {
@@ -28,5 +28,21 @@ export class NewsService {
 
     deleteNews(id: number): Observable<any> {
         return this.http.delete<any>(`${this.apiUrl}/${id}`);
+    }
+
+    getOrderedNews(sortColumn: string, sortDirection: string, currentPage: number, pageSize: number): Observable<any> {
+        let params = new HttpParams()
+            .set('page', currentPage.toString())
+            .set('limit', pageSize.toString());
+        
+        if (sortColumn) {
+            params = params.set('column', sortColumn);
+        }
+        
+        if (sortDirection) {
+            params = params.set('direction', sortDirection);
+        }
+        
+        return this.http.get<any>(`${this.apiUrl}/ordered`, { params });    
     }
 }

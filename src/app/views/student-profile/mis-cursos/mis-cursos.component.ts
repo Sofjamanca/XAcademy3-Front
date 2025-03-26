@@ -3,11 +3,12 @@ import { StudentService } from '../../../services/student/student.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { CardComponent } from '../../../shared/components/card/card.component';
+import { MaterialModule } from '../../../material/material.module';
 
 @Component({
   selector: 'app-mis-cursos',
   standalone: true,
-  imports: [CommonModule, MatCardModule, CardComponent],
+  imports: [MaterialModule, CommonModule, MatCardModule, CardComponent],
   templateUrl: './mis-cursos.component.html',
   styleUrl: './mis-cursos.component.css'
 })

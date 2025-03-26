@@ -165,7 +165,6 @@ export class GradeDialogComponent implements OnInit {
       studentCondition: [data.student.studentCondition || 'EN_CURSO', Validators.required],
       comments: ['']
     });
-    console.log(this.data.student);
   }
 
   ngOnInit(): void {

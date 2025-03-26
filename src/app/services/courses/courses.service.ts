@@ -50,9 +50,8 @@ export class CoursesService {
   }
 
   searchCourses(searchTerm: string): Observable<Course[]> {
-    // console.log(`Buscando cursos con término: "${searchTerm}"`);
     return this.http.get<Course[]>(`${this.apiUrl}search/${searchTerm}`).pipe(
-      tap(results => console.log(`Resultados de búsqueda para "${searchTerm}":`, results))
+      tap(() => {})
     );
   }
 
@@ -87,6 +86,28 @@ export class CoursesService {
 
   getLastestCourses(): Observable<Course[]> {
     return this.http.get<Course[]>(`${this.apiUrl}lastest`);
+  }
+
+  getOrderedCourses(
+    column: string = '', 
+    direction: string = 'asc',
+    page: number = 1, 
+    limit: number = 10
+  ): Observable<CourseResponse> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    if (column) {
+      params = params.set('column', column);
+      params = params.set('direction', direction);
+    }
+
+    return this.http.get<CourseResponse>(`${this.apiUrl}ordered`, { params });
+  }
+
+  getActiveCourses(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}active`);
   }
 
 }

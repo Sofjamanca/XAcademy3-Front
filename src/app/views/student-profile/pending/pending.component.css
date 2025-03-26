@@ -75,6 +75,21 @@ p {
     margin-left: 25px;
 }
 
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+}
+
+.pending-chip {
+  background-color: #ffdbb4;
+  color: #000000;
+}
+
+
 @media (max-width: 768px) {
     .mat-table, mat-header-row, mat-row {
       display: block;
