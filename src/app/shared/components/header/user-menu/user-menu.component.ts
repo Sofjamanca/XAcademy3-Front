@@ -37,7 +37,6 @@ export class UserMenuComponent implements OnInit{
   logout() {
     this.apiService.logout().subscribe({
       next: () => {
-        console.log('Sesión cerrada exitosamente.');
         this.router.navigate(['/home']);
   
         setTimeout(() => {

@@ -67,10 +67,6 @@ export class StudentManagementComponent implements OnInit {
 
   private saveStudentGrade(student: Student, gradeData: any): void {
     if (!student.student_id || !this.courseId) return;
-    
-    console.log('Antes de actualizar - student.qualification:', student.qualification);
-    console.log('gradeData recibido:', gradeData);
-    
     // Convertir la calificación a número entero
     const qualification = parseInt(gradeData.qualification, 10);
     
@@ -82,7 +78,6 @@ export class StudentManagementComponent implements OnInit {
         // Actualizar la condición del estudiante si el backend la devuelve
         if (response && response.studentCondition) {
           student.studentCondition = response.studentCondition;
-          console.log('Condición actualizada desde la respuesta:', student.studentCondition);
         } else {
           // Si el backend no devuelve la condición, hacer una consulta adicional
           if (student.student_id) {
@@ -90,7 +85,6 @@ export class StudentManagementComponent implements OnInit {
               next: (studentData) => {
                 if (studentData && studentData.studentCondition) {
                   student.studentCondition = studentData.studentCondition;
-                  console.log('Condición actualizada mediante consulta adicional:', student.studentCondition);
                 }
               },
               error: (err) => console.error('Error al obtener la condición actualizada:', err)
@@ -98,8 +92,6 @@ export class StudentManagementComponent implements OnInit {
           }
         }
         
-        console.log('Después de actualizar - student.qualification:', student.qualification);
-        console.log('Después de actualizar - student.studentCondition:', student.studentCondition);
         this.notificationService.showSuccess('Calificación guardada correctamente');
       },
       error: (error: any) => {

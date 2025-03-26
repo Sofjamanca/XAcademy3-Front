@@ -5,11 +5,9 @@
     </div>
   
     <ng-container *ngIf="!isLoading">
-      <div class="header-section">
-        <h2 class="section-title">
-          <mat-icon>event_note</mat-icon>
-          Mis Asistencias
-        </h2>
+      <div class="title-student">
+        <mat-icon>event_note</mat-icon>
+        <span> Historial de Asistencias </span>
       </div>
   
       <div *ngIf="coursesAttendanceDetails.length === 0" class="no-data-message">

@@ -1,4 +1,7 @@
-<h2>Historial de Pagos</h2>
+<div class="title-student">
+  <mat-icon>savings</mat-icon>
+  <span>Historial de Pagos</span>
+</div>
 
 <mat-tab-group (selectedTabChange)="onTabChange($event)">
   <mat-tab label="Pendientes">
@@ -16,9 +19,9 @@
       <ng-container matColumnDef="status">
         <mat-header-cell *matHeaderCellDef> Estado </mat-header-cell>
         <mat-cell *matCellDef="let payment" data-label="Estado"> 
-          <mat-chip color="warn">
+          <span class="status-chip pending-chip">
             <mat-icon>hourglass_top</mat-icon> Pendiente
-          </mat-chip>
+          </span>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="amount">

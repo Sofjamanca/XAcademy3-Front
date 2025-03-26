@@ -76,4 +76,28 @@ main::-webkit-scrollbar {
 }
 
 
+.title-student{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; 
+    align-items: flex-start;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #403a3a;
+    margin: 5px;
+    line-height: 1.2; 
+    gap: 0.5rem;
+}
+
+ .title-student mat-icon{
+    color: #000000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;       
+    height: 28px;      
+    overflow: visible;
+    font-size: 28px;  
+    line-height: normal; 
+ }
 

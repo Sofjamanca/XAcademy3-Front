@@ -31,8 +31,7 @@ export class AuthStateServiceService {
     this.isAuthenticatedSubject.next(isAuthenticated);
   }
 
-  setUserName(name: string | null): void { // Nuevo método
-    console.log('AuthStateServiceService: setUserName llamado', name);
+  setUserName(name: string | null): void {
     this.userNameSubject.next(name);
   }
 

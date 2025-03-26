@@ -93,6 +93,11 @@ export class PendingComponent implements OnInit, AfterViewChecked {
         next: (data) => {
           this.completedPayments = data.payments;
           this.completedPayments.forEach(payment => {
+            payment.updatedAt = this.parseDate(payment.updatedAt);
+            return payment;          
+          });
+          
+          this.completedPayments.forEach(payment => {
             this.getCourseData(payment);
           });
         },
@@ -121,10 +126,8 @@ export class PendingComponent implements OnInit, AfterViewChecked {
 
   getPrice(payment: any): void {
     this.coursesService.getCourseById(payment.course_id).subscribe(courseData => {
-      console.log(courseData)
       payment.coursePrice = courseData.price;
     });
-    console.log(payment.coursePrice)
   }
 
   pagar(payment: any): void {
@@ -156,6 +159,14 @@ export class PendingComponent implements OnInit, AfterViewChecked {
   onTabChange(event: any): void {
     this.cdr.detectChanges();
   }
+
+  parseDate(dateString: string | undefined): string | null {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+
+    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+  }
+  
   
 }
   

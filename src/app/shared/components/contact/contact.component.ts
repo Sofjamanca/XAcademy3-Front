@@ -95,7 +95,6 @@ export class ContactComponent implements OnInit{
 
       emailjs.send('service_vf7d7lk', 'template_y2qfuzc', formData, 'gERchL2IHqJiGIhkj')
         .then(response => {
-          console.log('Mensaje enviado con éxito!', response);
           this.snackBar.open('✅ Gracias por tu mensaje. Nos pondremos en contacto pronto.', 'Cerrar', {
             duration: 3000,
             panelClass: ['success-snackbar']

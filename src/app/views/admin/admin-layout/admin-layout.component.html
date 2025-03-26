@@ -19,6 +19,7 @@
       <a *ngFor="let item of menuItems" 
          [routerLink]="item.route" 
          routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: true }"
          [matTooltip]="isCollapsed ? item.label : ''"
          matTooltipPosition="right"
          class="nav-item"

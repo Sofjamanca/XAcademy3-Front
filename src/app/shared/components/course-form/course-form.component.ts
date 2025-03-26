@@ -159,7 +159,6 @@ export class CourseFormComponent implements OnInit, OnChanges {
   
       // Si se subió una imagen, guardarla en la propiedad correcta
       if (this.imageFile) {
-        console.log('Subiendo imagen...', this.imageFile);
         this.uploadImage(this.imageFile)
           .then(imageUrl => {
             formValues.imageUrl = imageUrl;
@@ -180,8 +179,6 @@ export class CourseFormComponent implements OnInit, OnChanges {
         this.emitFormEvent(formValues);
         this.isLoading = false;
       }
-    } else {
-      console.log('Formulario inválido, revisar los campos', this.cursoForm.errors);
     }
   }
 
@@ -207,7 +204,7 @@ export class CourseFormComponent implements OnInit, OnChanges {
   
         uploadTask.on(
           "state_changed",
-          (snapshot) => console.log(`Progreso: ${(snapshot.bytesTransferred / snapshot.totalBytes) * 100}%`),
+          (snapshot) => {},
           reject,
           () => getDownloadURL(uploadTask.snapshot.ref).then(resolve).catch(reject)
         );

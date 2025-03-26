@@ -1,11 +1,9 @@
 import { inject, Component, OnInit, ElementRef, ViewChild  } from '@angular/core';
 import { MaterialModule } from '../../../material/material.module';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
 import { CalendarOptions, EventInput } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import esLocale from '@fullcalendar/core/locales/es';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { Chart } from 'chart.js';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, DoughnutController, Title } from 'chart.js';
@@ -14,7 +12,6 @@ import { UserService } from '../../../services/user/user.service';
 import { StudentService } from '../../../services/student/student.service';
 import { PaymentsService } from '../../../services/payments/payments.service';
 import { ClassService } from '../../../services/class/class.service';
-import { AssistService } from '../../../services/assist/assist.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -96,9 +93,6 @@ export class HomeStudentComponent implements OnInit {
   cursosInscritos: Curso[] = [];
 
   constructor(
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar,
-    private assistService: AssistService,
     private studentService: StudentService,
     private paymentsService: PaymentsService,
     private classService: ClassService,
@@ -165,9 +159,6 @@ export class HomeStudentComponent implements OnInit {
     }
   }
   
-  
-  
-  
   ngAfterViewInit(): void {
     if (this.totalClases > 0) {
       setTimeout(() => this.actualizarGraficoAsistencia(), 0);
@@ -194,8 +185,6 @@ export class HomeStudentComponent implements OnInit {
       });
     }
   }
-  
-
 
   actualizarGraficoAsistencia(): void {
     if (!this.chartCanvas || !this.chartCanvas.nativeElement) {
@@ -272,8 +261,6 @@ export class HomeStudentComponent implements OnInit {
     });
   }
   
-
-
   getPendingPayments(studentId: number): void {
     this.paymentsService.getTotalPendingPayments(studentId).subscribe(
       (response) => {

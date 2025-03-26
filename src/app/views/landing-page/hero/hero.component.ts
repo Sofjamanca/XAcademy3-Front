@@ -24,6 +24,7 @@ export class HeroComponent implements OnInit{
   ngOnInit(): void {
     this.loadLatestCourses();
   }
+
   loadLatestCourses() {
     this.coursesServices.getLastestCourses().subscribe({
       next: (data) => {
@@ -33,7 +34,7 @@ export class HeroComponent implements OnInit{
           safe_image_url: this.sanitizer.bypassSecurityTrustUrl(course.image_url || ''),
         }));
       },
-      error: (error) => console.log(error)
+      error: () => {}
     });
   }
 

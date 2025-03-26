@@ -1,5 +1,10 @@
 <div class="dashboard-container">
-  <h1 *ngIf="(userService?.userName$ | async) as userName">¡Embarquémonos en un camino de aventura, {{userName}}!</h1>
+  <div class="title-student">
+    <mat-icon>mood</mat-icon>
+    <span *ngIf="(userService?.userName$ | async) as userName">
+      ¡Vamos a emprender una aventura increíble, {{userName}}!
+    </span>
+  </div>
   <div class="dashboard-cards">
     <mat-card *ngFor="let card of dashboardCards" class="dashboard-card" [style.border-color]="card.color">
       <mat-card-content>

@@ -132,7 +132,6 @@ export class CoursesListComponent implements OnInit {
           console.error('Error al cambiar el estado del curso:', error);
         },
       });
-      console.log(course.isActive, newStatus);
     }
   }
 }
