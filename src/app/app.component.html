@@ -1,9 +1,10 @@
-<shared-header></shared-header>
+
 
 <div class="app-container">
+    <shared-header></shared-header>
     <main class="content-container">
         <router-outlet></router-outlet>
     </main>
+    
 </div>
-
-<shared-footer></shared-footer>
+<shared-footer *ngIf="showFooter"></shared-footer>

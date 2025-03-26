@@ -29,6 +29,7 @@ import { ContactComponent } from './shared/components/contact/contact.component'
 import { CreditsComponent } from './shared/components/credits/credits.component';
 import { AttendanceManagementComponent } from './views/course-management/components/attendance-management/attendance-management.component';
 import { AttendanceStudentComponent } from './views/student-profile/attendance-student/attendance-student.component';
+import { studentGuard } from './guards/student.guard';
 
 export const routes: Routes = [
   {
@@ -178,7 +179,7 @@ export const routes: Routes = [
       import('./views/student-profile/student-profile.component').then(
         (m) => m.StudentProfileComponent
       ),
-    // canActivateChild: [loginGuard],
+    canActivateChild: [studentGuard ],
     children: [
       {
         path: '',

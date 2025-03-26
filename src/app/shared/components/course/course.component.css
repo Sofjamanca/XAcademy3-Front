@@ -3,7 +3,8 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  background-color: #F8F9FA;
+
+  background-color: #f8f9fa;
 }
 
 .course-header {
@@ -66,15 +67,15 @@
   padding-top: 20px;
 }
 
-.icon-students{
+.icon-students {
   padding-top: 3px;
 }
 
-.icon-teacher{
+.icon-teacher {
   padding-top: 3px;
 }
 
-.icon-price{
+.icon-price {
   padding-top: 3px;
   margin-right: 15px;
 }
@@ -176,7 +177,10 @@
   line-height: 1.6;
   white-space: pre-line;
 }
-
+.description {
+  width: 70%;
+  text-align: justify;
+}
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -372,12 +376,7 @@
     text-align: left;
   }
 
-  .info-portada .tag {
-    display: inline-block;
-    margin: 5px 0;
-    font-size: 14px;
-  }
-
+  .info-portada .tag,
   .info-portada .students,
   .info-portada .teacher {
     display: flex;
@@ -509,7 +508,7 @@
   color: #3498db;
 }
 
-.info-title{
+.info-title {
   font-size: 0.2rem;
 }
 
@@ -554,7 +553,6 @@
   transition: transform 0.2s;
 }
 
-
 .dato-item mat-icon {
   color: #005cbb;
   font-size: 24px;
@@ -582,19 +580,19 @@
     grid-template-columns: 1fr;
     gap: 10px;
   }
-  
+
   .dato-item {
     padding: 10px 15px;
   }
-  
+
   .dato-item mat-icon {
     font-size: 20px;
   }
-  
+
   .dato-item strong {
     font-size: 13px;
   }
-  
+
   .dato-item span {
     font-size: 15px;
   }

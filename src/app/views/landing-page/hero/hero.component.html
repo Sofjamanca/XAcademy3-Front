@@ -1,8 +1,8 @@
 <section class="hero-container" aria-label="Hero Section">
-  <div id="hero-carousel" class="carousel slide" data-bs-ride="carousel" aria-label="Hero Carousel">
+  
+  <div class="container_carrousel" data-aos="zoom-in-up">
+    <div id="carouselExampleFade" class="carousel slide carousel-fade carousel_photo" data-bs-ride="carousel" data-bs-interval="2500">
     <div class="carousel-inner">
-      
-      <!-- Imagen local primero -->
       <div class="carousel-item active">
         <img 
           [src]="imgInfo"
@@ -11,7 +11,6 @@
         >
       </div>
 
-      <!-- Luego los cursos -->
       <div *ngFor="let course of courses; let i = index" class="carousel-item">
         <img 
           [src]="course.safe_image_url" 
@@ -27,18 +26,17 @@
           <button class="btn btn-primary custon_btn" (click)="goToCourseDetail(course.id, $event)">Ver curso</button>
         </div>
       </div>
-
+      
     </div>
-    
-    <!-- Controles de navegación -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev" aria-label="Previous">
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#hero-carousel" data-bs-slide="next" aria-label="Next">
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
     </button>
-
+  </div>
+  
   </div>
 </section>
