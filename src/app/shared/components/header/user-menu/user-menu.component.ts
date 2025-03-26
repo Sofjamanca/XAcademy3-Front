@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, ChangeDetectorRef, Output } from '@angular/core';
 import { MaterialModule } from '../../../../material/material.module';
 import { ApiService } from '../../../../services/api.service';
 import { Router } from '@angular/router';
@@ -21,7 +21,8 @@ export class UserMenuComponent implements OnInit{
   isTeacher: boolean = false;
   showStudentPanel: boolean = false;
   private studentIdSubscription: Subscription | null = null;
-
+  @Output() onLogout = new EventEmitter<void>(); 
+  
   constructor(private cdr: ChangeDetectorRef, private router: Router){}
 
   ngOnInit(): void {
