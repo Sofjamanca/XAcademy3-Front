@@ -9,9 +9,13 @@
       <ng-container *ngIf="!loading; else titleSkeleton"
         ><h2 class="title">{{ course?.title }}</h2>
         <span class="tag">Nuevo</span>
-        <span class="students">👥 {{ inscriptionCount }}</span>
+        <span class="students">
+          <mat-icon class="icon-students">person</mat-icon>
+          Alumnos: {{ inscriptionCount }}
+        </span>
+        <mat-icon class="icon-teacher">school</mat-icon>
         <span class="teacher"
-          >👨‍🏫 Profesor: {{ course?.teacherName || "No asignado" }}</span
+          >Profesor: {{ course?.teacherName || "No asignado" }}</span
         >
       </ng-container>
 
@@ -57,33 +61,45 @@
     <!-- Skeleton para info del curso -->
     <div class="course-info">
       <ng-container *ngIf="!loading; else descriptionSkeleton">
-        <span class="info_descripcion">
-          <p class="info"><strong>📖 Descripción:</strong></p> 
+        <div class="info-descripcion">
+          <p class="info">
+            <mat-icon>description</mat-icon>
+            <strong>Descripción</strong> 
+          </p>
           <p class="description">{{ course?.description }}</p>
-        </span>
-        <span class="info_details">
-          <p><strong>⏳ Duración:</strong></p>
-          <p class="info">{{ course?.hours }} horas</p> 
-        </span>
-        <span class="info_details">
-          <p><strong><mat-icon>calendar_month</mat-icon> Fecha inicio:</strong></p>
-          <p class="info">{{ course?.startDate }}</p>
-           
-        </span>
-        <span class="info_details">
-          <p><strong><mat-icon>calendar_month</mat-icon> Fecha fin:</strong></p>
-          <p class="info">{{ course?.endDate }}</p>
-          </span>
-           
-        <span class="info_details">
-          <p><strong>🎯 Modalidad:</strong> </p>
-          <p class="info">{{ course?.modalidad }}</p>          
-        </span>
-        <span class="info_details">
-          <p><strong>📖 Categoría:</strong></p>
-          <p class="info">{{ course?.categoryTitle || "Sin categoría" }}</p>
-          
-        </span>
+        </div>
+        
+        <div class="curso-datos">
+          <div class="info-descripcion">
+            <p class="info">
+            <mat-icon>calendar_month</mat-icon>
+              <strong>Comienza</strong>
+              <span>{{ formatDate(course?.startDate) }}</span>
+            </p>
+          </div>
+          <div class="info-descripcion">
+            <p class="info">
+            <mat-icon>calendar_month</mat-icon>
+              <strong>Finaliza</strong>
+              <span>{{ formatDate(course?.endDate) }}</span>
+            </p>
+          </div>
+          <div class="info-descripcion">
+            <p class="info">
+            <mat-icon>schedule</mat-icon>
+              <strong>Duración</strong>
+              <span>{{ course?.hours }} horas</span>
+            </p>
+          </div>
+          <div class="info-descripcion">
+            <p class="info">
+            <mat-icon>school</mat-icon>
+              <strong>Modalidad</strong>
+              <span>{{ course?.modalidad }}</span>
+            </p>
+          </div>
+        </div>
+        
       </ng-container>
 
       <ng-template #descriptionSkeleton>
@@ -95,10 +111,73 @@
         </div>
       </ng-template>
 
+      <div class="info_clases">
+        <p class="info">
+          <mat-icon>school</mat-icon>
+          <strong>Clases</strong>
+        </p>
+        <div class="classes-list">
+          <ng-container *ngIf="!loading; else classesSkeleton">
+            <mat-accordion *ngIf="classes && classes.length > 0; else noClasses" class="classes-accordion">
+              <mat-expansion-panel *ngFor="let class of classes" 
+                                 [expanded]="class.id === expandedClassId"
+                                 (opened)="toggleClassExpansion(class.id)" class="class-panel">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <div class="class-header">
+                      <span class="class-topic">{{ class.topic || 'Clase sin tema' }}</span>
+                    </div>
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    <span class="class-date">{{ getClassDate(class) }}</span>
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                
+                <div class="class-content">
+                  <p class="class-description">
+                    <mat-icon>schedule</mat-icon>
+                    <span>Fecha: {{ getClassDate(class) }}</span>
+                  </p>
+                  <p class="class-description">
+                    <mat-icon>person</mat-icon>
+                    <span>Profesor: {{ course?.teacherName || 'No asignado' }}</span>
+                  </p>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
+
+            <ng-template #noClasses>
+              <div class="no-classes-message">
+                <mat-icon>warning</mat-icon>
+                <p>No hay clases disponibles para este curso</p>
+              </div>
+            </ng-template>
+          </ng-container>
+
+          <ng-template #classesSkeleton>
+            <div class="skeleton-classes">
+              <ngx-skeleton-loader
+                count="3"
+                [theme]="{
+                  height: '60px',
+                  width: '100%',
+                  'margin-bottom': '10px',
+                  'border-radius': '4px',
+                  'background-color': '#f0f0f0'
+                }"
+              >
+              </ngx-skeleton-loader>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
       <!-- Skeleton para el precio -->
       <ng-container *ngIf="!loading; else priceSkeleton">
         <div class="price-container">
-          <p class="price"><strong>💰 Precio:</strong> ${{ course?.price }}</p>
+          <p class="price">
+            <mat-icon class="icon-price">payments</mat-icon>
+            <strong>Precio:</strong> ${{ course?.price }}</p>
         </div>
 
         <div class="payment-methods-section">

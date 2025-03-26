@@ -1,0 +1,34 @@
+<div class="testimonials-container">
+  <h2 class="section-title">Lo que dicen nuestros estudiantes</h2>
+
+  <div class="testimonials-grid">
+    <ng-container *ngFor="let testimonial of testimonials">
+      <mat-card class="testimonial-card">
+        <div class="testimonial-header">
+          <img
+            [src]="testimonial.profileImage"
+            alt="Foto de perfil"
+            class="testimonial-avatar"
+          />
+          <div class="testimonial-info">
+            <mat-card-title>{{ testimonial.name }}</mat-card-title>
+            <mat-card-subtitle>{{ testimonial.course }}</mat-card-subtitle>
+            <div class="rating">
+              <mat-icon
+                *ngFor="let star of [1, 2, 3, 4, 5]"
+                [class.filled]="star <= testimonial.rating"
+              >
+                star
+              </mat-icon>
+            </div>
+          </div>
+        </div>
+        <mat-card-content>
+          <blockquote>
+            <p>"{{ testimonial.quote }}"</p>
+          </blockquote>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+  </div>
+</div>

@@ -7,8 +7,9 @@ import { Teacher } from '../../core/models/teacher.model';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { AuthStateServiceService } from "../../services/state/auth-state-service.service";
-import { Course } from '../../core/models/course.model';
+import { Category, Course } from '../../core/models/course.model';
 import { CardComponent } from '../../shared/components/card/card.component';
+import { CoursesService } from '../../services/courses/courses.service';
 
 @Component({
     selector: 'app-teacher-profile',
@@ -31,12 +32,14 @@ export class TeacherProfileComponent implements OnInit {
     loading: boolean = true;
     error: string | null = null;
     isCollapsed = false;
+    categories?: Category[];
 
     constructor(
         private localStorageService: LocalStorageService,
         private teacherService: TeacherService,
         private authStateService: AuthStateServiceService,
-        private router: Router
+        private router: Router,
+        private coursesSvc: CoursesService
     ) { }
 
     toggleSidenav() {
@@ -48,6 +51,7 @@ export class TeacherProfileComponent implements OnInit {
             this.router.navigate(['/course-management', courseId]);
         }
     }
+    
 
     ngOnInit(): void {
         // verificar si el usuario tiene rol de profesor
@@ -83,6 +87,13 @@ export class TeacherProfileComponent implements OnInit {
             this.error = 'No tienes permisos de profesor para acceder a esta página';
         }
     }
+    getCategoryTitle(category_id?: number): string {
+        return (
+          this.categories?.find((cat) => cat.id === category_id)?.title ||
+          'Sin categoría'
+        );
+      }
+    
 
     loadTeacherProfile(): void {
         if (this.userId) {
@@ -93,7 +104,9 @@ export class TeacherProfileComponent implements OnInit {
                     // extraer el objeto teacher del response
                     if (response && response.teacher) {
                         this.teacher = response.teacher;
-                        
+                        this.coursesSvc.getCategories().subscribe((categories) => {
+                            this.categories = categories;
+                        });
                         // extraer los cursos directamente de la respuesta, no del profesor
                         if (response.courses && Array.isArray(response.courses)) {
                             this.courses = response.courses;

@@ -16,6 +16,11 @@
     </div>
 
     <nav class="sidebar-nav">
+      <a routerLink="/perfil" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item" (click)="isMobile && toggleSidenav()">
+      <mat-icon>home</mat-icon>
+      <span *ngIf="!isCollapsed">Home</span>
+      </a>
+
       <a routerLink="/perfil/mis-cursos" routerLinkActive="active" class="nav-item" (click)="isMobile && toggleSidenav()">
         <mat-icon>school</mat-icon>
         <span *ngIf="!isCollapsed">Mis cursos</span>
@@ -23,6 +28,10 @@
       <a routerLink="/perfil/pagos" routerLinkActive="active" class="nav-item" (click)="isMobile && toggleSidenav()">
         <mat-icon>paid</mat-icon>
         <span *ngIf="!isCollapsed">Pagos</span>
+      </a>
+      <a routerLink="/perfil/asistencias" routerLinkActive="active" class="nav-item" (click)="isMobile && toggleSidenav()">
+        <mat-icon>info</mat-icon>
+        <span *ngIf="!isCollapsed">Asistencia</span>
       </a>
       <a [routerLink]="['/perfil/certificates', studentId]" routerLinkActive="active" class="nav-item">
         <mat-icon>workspace_premium</mat-icon>

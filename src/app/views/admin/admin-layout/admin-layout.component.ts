@@ -29,8 +29,6 @@ export class AdminLayoutComponent implements OnInit {
     { icon: 'people', label: 'Profesores', route: '/admin/profesores' },
     { icon: 'payments', label: 'Pagos', route: '/admin/pagos' },
     { icon: 'newspaper', label: 'Noticias', route: '/admin/noticias' },
-    { icon: 'settings', label: 'Configuracion', route: '/admin/ajustes' },
-
   ];
 
   constructor(private router: Router) {}

@@ -24,4 +24,8 @@ export class ClassService {
     return this.http.post<Class>(`${this.apiUrl}newclase`, newClass);
   }
   
+  getCountTotalClass(studentId: number): Observable<any> {
+    return this.http.get<any[]>(`${this.apiUrl}totalClasses/${studentId}`); 
+  }
+
 }

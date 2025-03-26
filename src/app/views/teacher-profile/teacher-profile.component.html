@@ -12,7 +12,7 @@
     <nav class="sidebar-nav">
       <a routerLink="./mis-cursos" routerLinkActive="active" class="nav-item">
         <mat-icon>school</mat-icon>
-        <span *ngIf="!isCollapsed">Mis Cursos</span>
+        <span *ngIf="!isCollapsed" class="nav-item-text">Mis Cursos</span>
       </a>
       <a routerLink="./perfil" routerLinkActive="active" class="nav-item">
         <mat-icon>person</mat-icon>
@@ -69,11 +69,13 @@
           <app-card *ngFor="let course of courses"
             [title]="course.title || ''"
             [description]="course.description || ''"
-            [image]="course.image_url || '/assets/images/course-placeholder.webp'"
-            [action]="'Editar curso'"
+            [category]="getCategoryTitle(course.category_id)"
+            [image]="course.image_url || ''"
+            [action]="'Administrar curso'"
             [showDetails]="true"
             [price]="course.price ? course.price.toString() : ''"
             [quota]="course.quota || null"
+            [showFavoriteIcon]="false"
             (actionClick)="course.id ? editCourse(course.id) : null">
           </app-card>
         </div>

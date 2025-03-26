@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, COMPILER_OPTIONS } from '@angular/core';
 import { CoursesService } from '../../../services/courses/courses.service';
 import { MaterialModule } from '../../../material/material.module';
 import { CommonModule } from '@angular/common';
@@ -10,13 +10,16 @@ import { ApiService } from '../../../services/api.service';
 import { StudentService } from '../../../services/student/student.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { Class } from '../../../core/models/class.model';
+import { ClassService } from '../../../services/class/class.service';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-course',
   standalone: true,
-  imports: [MaterialModule, CommonModule, NgxSkeletonLoaderModule],
+  imports: [MaterialModule, CommonModule, NgxSkeletonLoaderModule, MatExpansionModule],
   templateUrl: './course.component.html',
-  styleUrls: ['./course.component.scss'],
+  styleUrls: ['./course.component.css'],
 })
 export class CourseComponent implements OnInit {
   courseDetails!: Course;
@@ -26,6 +29,8 @@ export class CourseComponent implements OnInit {
   isLowQuota: boolean = false;
   inscriptionCount: number = 0;
   loading: boolean = true;
+  classes: Class[] = [];
+  expandedClassId: number | null = null;
 
   constructor(
     private coursesService: CoursesService,
@@ -35,7 +40,8 @@ export class CourseComponent implements OnInit {
     private teacherService: TeacherService,
     private studentService: StudentService,
     private apiService: ApiService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private classService: ClassService
   ) {}
 
   ngOnInit() {
@@ -72,7 +78,7 @@ export class CourseComponent implements OnInit {
 
           if (this.course.teacher_id) {
             this.teacherService
-              .getTeacherById(this.course.teacher_id)
+              .getTeacherByIdCourse(this.course.teacher_id)
               .subscribe({
                 next: (teacher) => {
                   this.course.teacherName = teacher.user?.name || 'Desconocido';
@@ -96,6 +102,7 @@ export class CourseComponent implements OnInit {
                   console.error('Error obteniendo la categoría:', err),
               });
           }
+          this.loadClasses(courseId);
           this.loading = false;
           this.cdr.detectChanges();
         },
@@ -105,6 +112,38 @@ export class CourseComponent implements OnInit {
         },
       });
     }
+  }
+
+  loadClasses(courseId: number) {
+    this.classService.getClassesByCourseId(courseId).subscribe({
+      next: (response: any) => {
+        this.classes = response.clases || response;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error obteniendo las clases:', err);
+      }
+    });
+  }
+
+  toggleClassExpansion(classId: number) {
+    this.expandedClassId = this.expandedClassId === classId ? null : classId;
+  }
+
+  getClassDate(classItem: Class): string {
+    return new Date(classItem.class_date).toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+
+  formatDate(date: string): string {
+    return new Date(date).toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   }
 
   goHome() {

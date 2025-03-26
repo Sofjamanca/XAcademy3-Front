@@ -8,6 +8,8 @@
     flex-direction: column;
     min-height: 100vh;
     position: relative;
+    background-color: #F8F9FA;
+
 }
 shared-footer {
     width: 100%;
