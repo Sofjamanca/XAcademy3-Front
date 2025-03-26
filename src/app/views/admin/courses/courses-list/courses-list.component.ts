@@ -151,7 +151,7 @@ export class CoursesListComponent implements OnInit {
   }
 
   viewCourse(course: Course) {
-    this.router.navigate(['/admin/cursos/ver', course.id]);
+    this.router.navigate(['/course/', course.id]);
   }
 
   editCourse(course: Course) {
