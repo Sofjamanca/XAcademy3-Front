@@ -74,7 +74,8 @@ export class HeaderComponent implements OnInit {
     { text: 'Inicio', route: '/home', icon: 'home' },
     { text: 'Cursos', route: '/courses', icon: 'library_books' },
     { text: 'Nosotros', route: '/we', icon: 'groups' },
-    {text: 'Créditos', route: '/contact', icon: 'paid'},
+    {text: 'Contacto', route: '/contact', icon: 'mail'},
+    {text: 'Créditos', route: '/credits', icon: 'paid'},
   ];
   activeMenuItem: string = 'Inicio';
   // menuOpen: boolean = false;
@@ -100,9 +101,9 @@ export class HeaderComponent implements OnInit {
 
   private checkScreenSize(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.isMobile = window.innerWidth <= 768;
+      this.isMobile = window.innerWidth <= 1023; // Cambia de 768 a 1024
     } else {
-      this.isMobile = false; // Valor por defecto para SSR
+      this.isMobile = false;
     }
   }
   

@@ -34,7 +34,9 @@ export class AppComponent {
   constructor(private router: Router) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        this.showFooter = !event.url.includes('/admin');
+        // Ocultar footer en las rutas especificadas
+        const hiddenRoutes = ['/admin', '/perfil', '/profesor'];
+        this.showFooter = !hiddenRoutes.some(route => event.url.includes(route));
       }
     });
   }
