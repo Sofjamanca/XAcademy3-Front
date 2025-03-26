@@ -60,4 +60,14 @@ export class PaymentsService {
     return this.http.get<{ total: number }>(`${this.baseUrl}/countPending/${studentId}`);
   }
 
+  getOrderedPayments(
+    orderBy: string = '', 
+    direction: string = 'asc',
+    page: number = 1, 
+    limit: number = 10,
+    studentId: number,
+    status: string): Observable<{payments: any[], totalItems: number, currentPage: number, totalPages: number, hasNextPage: boolean, hasPreviousPage: boolean}> {
+    return this.http.get<any>(`${this.baseUrl}/ordered/${studentId}?orderBy=${orderBy}&direction=${direction}&page=${page}&limit=${limit}&status=${status}`);
+  }
+
 }

@@ -12,7 +12,7 @@
     <nav class="sidebar-nav">
       <a routerLink="./mis-cursos" routerLinkActive="active" class="nav-item">
         <mat-icon>school</mat-icon>
-        <span *ngIf="!isCollapsed" class="nav-item-text">Mis Cursos</span>
+        <span *ngIf="!isCollapsed">Mis Cursos</span>
       </a>
       <a routerLink="./perfil" routerLinkActive="active" class="nav-item">
         <mat-icon>person</mat-icon>
@@ -58,11 +58,8 @@
         <h3>Mis Cursos</h3>
         
         <div *ngIf="courses.length === 0" class="no-content">
-          <p>No tienes cursos creados todavía.</p>
-          <button mat-raised-button color="primary" routerLink="/courses/create">
-            <mat-icon>add</mat-icon>
-            Crear un curso
-          </button>
+          <p>No tienes cursos asignados todavía.</p>
+          
         </div>
         
         <div *ngIf="courses.length > 0" class="courses-grid">

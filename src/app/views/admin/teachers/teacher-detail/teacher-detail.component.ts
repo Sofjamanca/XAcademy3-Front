@@ -11,7 +11,6 @@ import { TeacherService } from '../../../../services/teacher/teacher.service';
 import { Teacher } from '../../../../core/models/teacher.model';
 import { Course } from '../../../../core/models/course.model';
 import { CardComponent } from '../../../../shared/components/card/card.component';
-
 @Component({
   selector: 'app-teacher-detail',
   standalone: true,

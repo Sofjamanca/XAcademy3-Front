@@ -115,14 +115,6 @@
   gap: 24px;
 }
 
-.nav-item-text {
-    color: #3f51b5;
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-    text-align: left;
-}
-
 .welcome-card {
   background: #3f51b5;
   color: white;
