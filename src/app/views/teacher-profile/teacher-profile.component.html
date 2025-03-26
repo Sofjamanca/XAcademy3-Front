@@ -1,33 +1,4 @@
 <div class="perfil-layout">
-  <!-- Sidebar a la izquierda -->
-  <aside class="sidebar" [class.collapsed]="isCollapsed">
-    <div class="sidebar-header">
-      <img class="teacher-icon" src="/assets/images/icon_gral.webp" alt="Icono profesor">
-      <h2 *ngIf="!isCollapsed">Perfil Profesor</h2>
-      <button mat-icon-button (click)="toggleSidenav()">
-        <mat-icon>{{ isCollapsed ? 'menu' : 'chevron_left' }}</mat-icon>
-      </button>
-    </div>
-    
-    <nav class="sidebar-nav">
-      <a routerLink="./mis-cursos" routerLinkActive="active" class="nav-item">
-        <mat-icon>school</mat-icon>
-        <span *ngIf="!isCollapsed">Mis Cursos</span>
-      </a>
-      <a routerLink="./perfil" routerLinkActive="active" class="nav-item">
-        <mat-icon>person</mat-icon>
-        <span *ngIf="!isCollapsed">Alumnos</span>
-      </a>
-      <a routerLink="./cuotas" routerLinkActive="active" class="nav-item">
-        <mat-icon>payments</mat-icon>
-        <span *ngIf="!isCollapsed">Cuotas</span>
-      </a>
-      <a routerLink="editar" routerLinkActive="active" class="nav-item">
-        <mat-icon>edit</mat-icon>
-        <span *ngIf="!isCollapsed">Editar perfil</span>
-      </a>
-    </nav>
-  </aside>    
 
   <main class="main-content">
     <div *ngIf="loading" class="loading-container">
