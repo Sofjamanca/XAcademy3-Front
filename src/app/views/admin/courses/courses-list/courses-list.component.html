@@ -44,13 +44,31 @@
       <table mat-table [dataSource]="courses" class="full-width-table">
         <!-- ID Column -->
         <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <th mat-header-cell *matHeaderCellDef>
+            <div class="sort-header" (click)="isColumnSortable('id') && sortData('id')">
+              ID
+              <span class="sort-icons" *ngIf="isColumnSortable('id')">
+                <mat-icon *ngIf="sortColumn === 'id' && sortDirection === 'asc'">arrow_upward</mat-icon>
+                <mat-icon *ngIf="sortColumn === 'id' && sortDirection === 'desc'">arrow_downward</mat-icon>
+                <mat-icon *ngIf="sortColumn !== 'id'" class="sort-inactive">unfold_more</mat-icon>
+              </span>
+            </div>
+          </th>
           <td mat-cell *matCellDef="let course">{{ course.id }}</td>
         </ng-container>
 
         <!-- Title Column -->
         <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef>Título</th>
+          <th mat-header-cell *matHeaderCellDef>
+            <div class="sort-header" (click)="isColumnSortable('title') && sortData('title')">
+              Título
+              <span class="sort-icons" *ngIf="isColumnSortable('title')">
+                <mat-icon *ngIf="sortColumn === 'title' && sortDirection === 'asc'">arrow_upward</mat-icon>
+                <mat-icon *ngIf="sortColumn === 'title' && sortDirection === 'desc'">arrow_downward</mat-icon>
+                <mat-icon *ngIf="sortColumn !== 'title'" class="sort-inactive">unfold_more</mat-icon>
+              </span>
+            </div>
+          </th>
           <td mat-cell *matCellDef="let course">
             <span [matTooltip]="course.title" class="ellipsis-text">{{ course.title }}</span>
           </td>
@@ -58,13 +76,31 @@
 
         <!-- Cuota Column -->
         <ng-container matColumnDef="quota">
-          <th mat-header-cell *matHeaderCellDef>Cupos</th>
+          <th mat-header-cell *matHeaderCellDef>
+            <div class="sort-header" (click)="isColumnSortable('quota') && sortData('quota')">
+              Cupos
+              <span class="sort-icons" *ngIf="isColumnSortable('quota')">
+                <mat-icon *ngIf="sortColumn === 'quota' && sortDirection === 'asc'">arrow_upward</mat-icon>
+                <mat-icon *ngIf="sortColumn === 'quota' && sortDirection === 'desc'">arrow_downward</mat-icon>
+                <mat-icon *ngIf="sortColumn !== 'quota'" class="sort-inactive">unfold_more</mat-icon>
+              </span>
+            </div>
+          </th>
           <td mat-cell *matCellDef="let course">{{ course.quota }}</td>
         </ng-container>
 
         <!-- Estado Column -->
         <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <th mat-header-cell *matHeaderCellDef>
+            <div class="sort-header" (click)="isColumnSortable('status') && sortData('status')">
+              Estado
+              <span class="sort-icons" *ngIf="isColumnSortable('status')">
+                <mat-icon *ngIf="sortColumn === 'status' && sortDirection === 'asc'">arrow_upward</mat-icon>
+                <mat-icon *ngIf="sortColumn === 'status' && sortDirection === 'desc'">arrow_downward</mat-icon>
+                <mat-icon *ngIf="sortColumn !== 'status'" class="sort-inactive">unfold_more</mat-icon>
+              </span>
+            </div>
+          </th>
           <td mat-cell *matCellDef="let course">
             <mat-slide-toggle
               [checked]="course.isActive"
@@ -87,13 +123,31 @@
 
         <!-- Fecha de finalización Column -->
         <ng-container matColumnDef="endDate">
-          <th mat-header-cell *matHeaderCellDef>Finaliza</th>
+          <th mat-header-cell *matHeaderCellDef>
+            <div class="sort-header" (click)="isColumnSortable('endDate') && sortData('endDate')">
+              Finaliza
+              <span class="sort-icons" *ngIf="isColumnSortable('endDate')">
+                <mat-icon *ngIf="sortColumn === 'endDate' && sortDirection === 'asc'">arrow_upward</mat-icon>
+                <mat-icon *ngIf="sortColumn === 'endDate' && sortDirection === 'desc'">arrow_downward</mat-icon>
+                <mat-icon *ngIf="sortColumn !== 'endDate'" class="sort-inactive">unfold_more</mat-icon>
+              </span>
+            </div>
+          </th>
           <td mat-cell *matCellDef="let course">{{ getEndDate(course) }}</td>
         </ng-container>
 
         <!-- Profesor Column -->
         <ng-container matColumnDef="teacher">
-          <th mat-header-cell *matHeaderCellDef>Profesor</th>
+          <th mat-header-cell *matHeaderCellDef>
+            <div class="sort-header" (click)="isColumnSortable('teacher') && sortData('teacher')">
+              Profesor
+              <span class="sort-icons" *ngIf="isColumnSortable('teacher')">
+                <mat-icon *ngIf="sortColumn === 'teacher' && sortDirection === 'asc'">arrow_upward</mat-icon>
+                <mat-icon *ngIf="sortColumn === 'teacher' && sortDirection === 'desc'">arrow_downward</mat-icon>
+                <mat-icon *ngIf="sortColumn !== 'teacher'" class="sort-inactive">unfold_more</mat-icon>
+              </span>
+            </div>
+          </th>
           <td mat-cell *matCellDef="let course">
             <span [matTooltip]="getTeacherName(course)" class="ellipsis-text">{{ getTeacherName(course) }}</span>
           </td>
@@ -120,7 +174,6 @@
               >
                 <mat-icon>edit</mat-icon>
               </button>
-           
             </div>
           </td>
         </ng-container>
@@ -128,6 +181,15 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
+      
+      <!-- Reemplazar paginador estándar por el componente compartido -->
+      <shared-pagination
+        [length]="totalItems"
+        [pageSize]="pageSize"
+        [pageIndex]="currentPage - 1"
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        (page)="onPageChange($event)"
+      ></shared-pagination>
     </div>
   </ng-container>
 </div>

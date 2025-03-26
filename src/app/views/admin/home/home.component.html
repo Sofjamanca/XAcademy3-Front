@@ -56,20 +56,38 @@
 
   <div class="dashboard-charts">
     <mat-card class="chart-card">
-      <mat-card-header>
-        <mat-card-title>Actividad Reciente</mat-card-title>
-      </mat-card-header>
+      <div class="card-header">
+        <div class="header-icon">
+          <mat-icon>insert_chart</mat-icon>
+        </div>
+        <h2>Inscripciones por Periodo</h2>
+      </div>
       <mat-card-content>
-        <p>Contenido del gráfico pendiente</p>
+        <div class="chart-container" [class.loading]="loadingInscriptionChart">
+          <div *ngIf="loadingInscriptionChart" class="chart-loading">
+            <mat-icon class="loading-icon">hourglass_empty</mat-icon>
+            <p>Cargando datos...</p>
+          </div>
+          <canvas #inscriptionChart></canvas>
+        </div>
       </mat-card-content>
     </mat-card>
 
     <mat-card class="chart-card">
-      <mat-card-header>
-        <mat-card-title>Estadísticas</mat-card-title>
-      </mat-card-header>
+      <div class="card-header">
+        <div class="header-icon">
+          <mat-icon>pie_chart</mat-icon>
+        </div>
+        <h2>Distribución de Cursos por Categoría</h2>
+      </div>
       <mat-card-content>
-        <p>Contenido de estadísticas pendiente</p>
+        <div class="chart-container" [class.loading]="loadingCategoryChart">
+          <div *ngIf="loadingCategoryChart" class="chart-loading">
+            <mat-icon class="loading-icon">hourglass_empty</mat-icon>
+            <p>Cargando datos...</p>
+          </div>
+          <canvas #categoryChart></canvas>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>

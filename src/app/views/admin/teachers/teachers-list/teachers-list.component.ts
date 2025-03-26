@@ -9,9 +9,10 @@ import { CoursesService } from '../../../../services/courses/courses.service';
 import { Course } from '../../../../core/models/course.model';
 import { Router, RouterModule } from '@angular/router';
 import { TeacherService } from '../../../../services/teacher/teacher.service';
-import { Teacher } from '../../../../core/models/teacher.model';
+import { Teacher, TeacherResponse } from '../../../../core/models/teacher.model';
 import { forkJoin } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'admin-teachers-list',
@@ -25,45 +26,93 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     MatTooltipModule,
     RouterModule,
     NgxSkeletonLoaderModule,
+    PaginationComponent,
   ],
   templateUrl: './teachers-list.component.html',
   styleUrls: ['./teachers-list.component.css'],
 })
 export class TeachersListComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'name', 'email', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'specialty', 'email', 'actions'];
   teachers: Teacher[] = [];
   teachersMap: Map<number, string> = new Map();
   loading: boolean = true;
+  teachersResponse: TeacherResponse | null = null;
+
+  // Propiedades para paginación
+  totalItems: number = 0;
+  currentPage: number = 1;
+  pageSize: number = 10;
+  totalPages: number = 0;
+
+  // Propiedades para ordenamiento
+  sortColumn: string = '';
+  sortDirection: string = 'asc';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private teacherService: TeacherService, private router: Router) {}
 
   ngOnInit() {
-    this.loadTeachers();
+    this.loadOrderedTeachers();
   }
 
-  loadTeachers() {
+  loadOrderedTeachers() {
     this.loading = true;
 
-    this.teacherService.getTeachers().subscribe(
-      (teachers) => {
-        this.teachers = teachers;
-        this.teachers.forEach((teacher) => {
-          this.teachersMap.set(teacher.id, teacher.user.name);
-        });
+    this.teacherService.getOrderedTeachers(
+      this.sortColumn,
+      this.sortDirection,
+      this.currentPage,
+      this.pageSize
+    ).subscribe({
+      next: (response) => {
+        this.teachers = response.teachers;
+        this.totalItems = response.totalItems;
+        this.totalPages = response.totalPages;
         this.loading = false;
       },
-      (error) => {
-        console.error('Error loading teachers:', error);
+      error: (error) => {
+        console.error('Error loading ordered teachers:', error);
         this.loading = false;
       }
-    );
+    });
+  }
+
+  // Método para manejar el ordenamiento cuando se hace clic en una columna
+  sortData(column: string) {
+    // Si ya estamos ordenando por esta columna, cambiar dirección
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      // Si es una columna nueva, establecer como columna activa
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+    
+    // Resetear a la primera página
+    this.currentPage = 1;
+    
+    // Cargar los profesores ordenados
+    this.loadOrderedTeachers();
+  }
+
+  // Método para manejar cambios de página
+  onPageChange(event: any) {
+    this.currentPage = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.loadOrderedTeachers();
+  }
+
+  // Método para determinar si una columna es ordenable
+  isColumnSortable(column: string): boolean {
+    // Lista de columnas que pueden ordenarse
+    const sortableColumns = ['id', 'name', 'email'];
+    return sortableColumns.includes(column);
   }
 
   deleteTeacher(teacher: Teacher) {
     this.teacherService.deleteTeacher(teacher.id).subscribe(() => {
-      this.loadTeachers();
+      this.loadOrderedTeachers();
     });
   }
 

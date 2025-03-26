@@ -13,6 +13,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Article } from '../../../../core/models/article.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
+
 @Component({
   selector: 'app-list-articles',
   standalone: true,
@@ -24,7 +26,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatIconModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    PaginationComponent,
   ],
   templateUrl: './list-articles.component.html',
   styleUrls: ['./list-articles.component.css']
@@ -33,6 +36,14 @@ export class ListArticlesComponent implements OnInit {
   displayedColumns: string[] = ['id', 'title', 'createdAt', 'actions'];
   dataSource = new MatTableDataSource<Article>();
   isLoading: boolean = true;
+
+  totalItems: number = 0;
+  currentPage: number = 1;
+  pageSize: number = 10;
+  totalPages: number = 0;
+
+  sortColumn: string = '';
+  sortDirection: string = 'asc';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -53,9 +64,18 @@ export class ListArticlesComponent implements OnInit {
 
   loadArticles() {
     this.isLoading = true;
-    this.newsService.getNews().subscribe({
-      next: (news) => {
-        this.dataSource.data = news;
+    console.log(`Solicitando artículos ordenados por ${this.sortColumn} en dirección ${this.sortDirection}`);
+    
+    this.newsService.getOrderedNews(this.sortColumn, this.sortDirection, this.currentPage, this.pageSize).subscribe({
+      next: (response) => {
+        console.log('Respuesta del servidor:', response);
+        
+        // Mapear los datos de la respuesta
+        this.dataSource.data = response.news || [];
+        this.totalItems = response.total || 0;
+        this.totalPages = response.totalPages || Math.ceil(this.totalItems / this.pageSize) || 0;
+        
+        console.log(`Recibidos ${this.dataSource.data.length} artículos de un total de ${this.totalItems}`);
         this.isLoading = false;
       },
       error: (error) => {
@@ -65,6 +85,39 @@ export class ListArticlesComponent implements OnInit {
     });
   }
 
+  sortData(column: string) {
+    const columnMap: { [key: string]: string } = {
+      'id': 'id',
+      'title': 'title',
+      'createdAt': 'date'
+    };
+
+    const backendColumn = columnMap[column] || column;
+    
+    if (this.sortColumn === backendColumn) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = backendColumn;
+      this.sortDirection = 'asc';
+    }
+    
+    this.currentPage = 1;
+    
+    console.log(`Ordenando por ${this.sortColumn} en dirección ${this.sortDirection}`);
+    this.loadArticles();
+  }
+
+  onPageChange(event: any) {
+    this.currentPage = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.loadArticles();
+  }
+  
+  isColumnSortable(column: string): boolean {
+    return ['id', 'title', 'createdAt'].includes(column);
+  }
+
+  
   createArticle() {
     this.router.navigate(['/admin/noticias/crear']);
   }

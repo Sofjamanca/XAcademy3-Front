@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Teacher } from '../../core/models/teacher.model';
+import { Teacher, TeacherResponse } from '../../core/models/teacher.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -49,6 +49,24 @@ export class TeacherService {
   // Método para asignar el rol de profesor a un usuario existente
   assignTeacherRole(userData: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/assign-role`, userData);
+  }
+
+  getOrderedTeachers(
+    column: string = '', 
+    direction: string = 'asc',
+    page: number = 1, 
+    limit: number = 10
+  ): Observable<TeacherResponse> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    if (column) {
+      params = params.set('column', column);
+      params = params.set('direction', direction);
+    }
+
+    return this.http.get<TeacherResponse>(`${this.baseUrl}ordered`, { params });
   }
 }
 
