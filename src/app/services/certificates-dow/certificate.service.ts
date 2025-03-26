@@ -22,8 +22,7 @@ export class CertificateService {
       { responseType: 'blob' }
     );
   }
-  checkAndGenerateCertificates(studentId: number, courseId: number): Observable<any> {
-    const url = `${this.apiUrl}/certificates/${studentId}/${courseId}`;
-    return this.http.get(url);
+  checkCertificateRequirements(studentId: number, courseId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/check/${studentId}/${courseId}`);
   }
 }

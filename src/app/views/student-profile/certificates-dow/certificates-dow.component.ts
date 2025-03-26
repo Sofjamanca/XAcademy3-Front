@@ -14,50 +14,81 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class CertificatesDowComponent implements OnInit {
   certificados: any[] = [];
+  courses: any[] = [];
   studentId: number = 0;
-  courseId: number = 0;
   loading: boolean = false;
+  courseStatus: { [key: number]: { canGenerate: boolean, message: string } } = {};
 
   constructor(private snackBar: MatSnackBar, private route: ActivatedRoute, private certificadoService: CertificateService) { }
 
   ngOnInit(): void {
     this.studentId = Number(this.route.snapshot.paramMap.get('id'));
-    this.courseId = Number(this.route.snapshot.paramMap.get('id'));
-    this.loadCertificates();
+    this.loadStudentData();
   }
-  loadCertificates(): void {
+  loadStudentData(): void {
+    this.studentId = Number(this.route.snapshot.paramMap.get('id'));
+    if (this.studentId) {
+      this.certificadoService.getCertificates(this.studentId).subscribe(
+        (data: any) => {  
+          this.certificados = data?.certificados ?? []; 
+        },
+        (error) => {
+          console.error('Error fetching certificates:', error);
+        }
+      );
+    }
+  }
+
+
+  checkCoursesStatus(): void {
+    this.courses.forEach(course => {
+      this.certificadoService.checkCertificateRequirements(this.studentId, course.id).subscribe({
+        next: (response: any) => {
+          this.courseStatus[course.id] = {
+            canGenerate: response.action === 'generate',
+            message: response.message
+          };
+        },
+        error: (err) => {
+          this.courseStatus[course.id] = {
+            canGenerate: false,
+            message: err.error?.message || 'Error al verificar requisitos'
+          };
+        }
+      });
+    });
+    this.loading = false;
+  }
+
+  handleCertificateAction(courseId: number): void {
     this.loading = true;
-    this.certificadoService.getCertificates(this.studentId).subscribe({
-      next: (response: any) => {
-        this.certificados = response.certificados || [];
-        console.log('Certificados recibidos:', this.certificados); // Para depuración
-        this.loading = false;
+    this.certificadoService.generateOrDownloadCertificate(this.studentId, courseId).subscribe({
+      next: (response: Blob) => {
+        this.downloadFile(response, this.studentId, courseId);
+        this.loadStudentData(); // Recargar datos para actualizar estado
       },
       error: (err) => {
-        console.error('Error fetching certificates:', err);
-        this.snackBar.open('Error al cargar certificados', 'Cerrar', { duration: 3000 });
+        console.error('Error:', err);
+        this.showError(err.error?.message || 'Error al procesar certificado');
         this.loading = false;
       }
     });
   }
 
-  handleCertificateAction(studentId: number, courseId: number): void {
+  checkCertificateRequirements(): void {
     this.loading = true;
-  
-    // Llama al servicio para verificar si el certificado ya existe o debe generarse
-    this.certificadoService.generateOrDownloadCertificate(studentId, courseId).subscribe({
-      next: (response: Blob) => {
-        // Descargar el archivo si ya está disponible
-        this.downloadFile(response, studentId, courseId);
-        this.loadCertificates(); // Recargar la lista para actualizar el estado
+    this.certificadoService.checkCertificateRequirements(this.studentId, courseId).subscribe({
+      next: (response: any) => {
+        if (response.action === 'download') {
+          this.snackBar.open('Certificado listo para descargar', 'Cerrar', { duration: 3000 });
+          this.handleCertificateAction(courseId); // Descargar automáticamente
+        } else {
+          this.snackBar.open(response.message, 'Cerrar', { duration: 5000 });
+        }
       },
       error: (err) => {
         console.error('Error:', err);
-        let errorMessage = 'Error al procesar certificado';
-        if (err.error?.message) {
-          errorMessage = err.error.message;
-        }
-        this.snackBar.open(errorMessage, 'Cerrar', { duration: 5000 });
+        this.showError(err.error?.message || 'No cumple los requisitos');
       },
       complete: () => this.loading = false
     });
@@ -74,24 +105,10 @@ export class CertificatesDowComponent implements OnInit {
     window.URL.revokeObjectURL(url);
   }
 
-  checkAndGenerateCertificates(): void {
-    if (!this.studentId || !this.courseId) {
-      this.snackBar.open('Debe proporcionar un estudiante y un curso.', 'Cerrar', { duration: 5000 });
-      return;
-    }
-  
-    this.loading = true;
-  
-    this.certificadoService.checkAndGenerateCertificates(this.studentId, this.courseId).subscribe({
-      next: (response: any) => {
-        this.snackBar.open(response.message || 'Certificados generados correctamente', 'Cerrar', { duration: 5000 });
-        this.loadCertificates(); // Actualiza la lista de certificados
-      },
-      error: (err) => {
-        console.error('Error al generar certificados:', err);
-        this.snackBar.open('Error al generar certificados', 'Cerrar', { duration: 5000 });
-      },
-      complete: () => (this.loading = false),
+  private showError(message: string): void {
+    this.snackBar.open(message, 'Cerrar', { 
+      duration: 5000,
+      panelClass: ['error-snackbar']
     });
   }
   

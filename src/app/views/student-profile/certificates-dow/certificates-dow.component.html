@@ -37,7 +37,7 @@
         <!-- Opcional: Botón para generar certificados si cumple requisitos -->
         <button 
           *ngIf="studentId"
-          (click)="checkAndGenerateCertificates()"
+          (click)="checkCertificateRequirements()"
           class="btn-generate">
           Verificar y Generar Certificados
         </button>
