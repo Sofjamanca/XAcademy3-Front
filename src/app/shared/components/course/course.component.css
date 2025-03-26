@@ -4,7 +4,7 @@
   align-items: center;
   width: 100%;
 
-  background-color: #F8F9FA;
+  background-color: #f8f9fa;
 }
 
 .course-header {
@@ -67,15 +67,15 @@
   padding-top: 20px;
 }
 
-.icon-students{
+.icon-students {
   padding-top: 3px;
 }
 
-.icon-teacher{
+.icon-teacher {
   padding-top: 3px;
 }
 
-.icon-price{
+.icon-price {
   padding-top: 3px;
   margin-right: 15px;
 }
@@ -89,7 +89,6 @@
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.8s ease-out forwards;
-  border:1px solid red;
 }
 
 .info-descripcion {
@@ -178,10 +177,9 @@
   line-height: 1.6;
   white-space: pre-line;
 }
-.description{
-  width:70%;
+.description {
+  width: 70%;
   text-align: justify;
-  border:1px solid red;
 }
 @keyframes fadeInUp {
   from {
@@ -510,7 +508,7 @@
   color: #3498db;
 }
 
-.info-title{
+.info-title {
   font-size: 0.2rem;
 }
 
@@ -555,7 +553,6 @@
   transition: transform 0.2s;
 }
 
-
 .dato-item mat-icon {
   color: #005cbb;
   font-size: 24px;
@@ -583,19 +580,19 @@
     grid-template-columns: 1fr;
     gap: 10px;
   }
-  
+
   .dato-item {
     padding: 10px 15px;
   }
-  
+
   .dato-item mat-icon {
     font-size: 20px;
   }
-  
+
   .dato-item strong {
     font-size: 13px;
   }
-  
+
   .dato-item span {
     font-size: 15px;
   }
