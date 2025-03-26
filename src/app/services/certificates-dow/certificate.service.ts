@@ -6,15 +6,24 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CertificateService {
-  private apiUrl: string = 'http://localhost:3001/api/certificates/';
+  private apiUrl: string = 'http://localhost:3001/api/certificates';
   constructor(private http: HttpClient) {
    }
 
-  getCertificates(studentId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}view/${studentId}`);
+   getCertificates(studentId: number): Observable<any> {
+    // Coincide con la ruta definida en el router
+    return this.http.get(`${this.apiUrl}/student/${studentId}`);
   }
 
-  generarCertificado(studentId: number, courseId: number): Observable<Blob> {
-    return this.http.post(`${this.apiUrl}generar-certificado`, { student_id: studentId, course_id: courseId }, { responseType: 'blob' });
-  }  
+  generateOrDownloadCertificate(studentId: number, courseId: number): Observable<Blob> {
+    return this.http.post(
+      `${this.apiUrl}/generate`, 
+      { student_id: studentId, course_id: courseId },
+      { responseType: 'blob' }
+    );
+  }
+  checkAndGenerateCertificates(studentId: number, courseId: number): Observable<any> {
+    const url = `${this.apiUrl}/certificates/${studentId}/${courseId}`;
+    return this.http.get(url);
+  }
 }
