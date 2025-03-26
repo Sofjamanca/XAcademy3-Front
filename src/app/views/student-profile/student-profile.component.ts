@@ -93,15 +93,20 @@ export class StudentProfileComponent implements OnInit{
   }
 @HostListener('window:resize', ['$event'])
   onResize() {
-    this.checkScreenSize();
+    if (isPlatformBrowser(this.platformId)) {
+      this.checkScreenSize();
+    }
   }
 
 
   checkScreenSize() {
-    this.isMobile = window.innerWidth <= 768;
-    if (this.isMobile) {
-      this.isCollapsed = true; // Colapsar automáticamente en móvil
+    if (isPlatformBrowser(this.platformId)) {
+      this.isMobile = window.innerWidth <= 768;
+      if (this.isMobile) {
+        this.isCollapsed = true; // Colapsar automáticamente en móvil
+      }
     }
+  
   }
 
   toggleSidenav() {
