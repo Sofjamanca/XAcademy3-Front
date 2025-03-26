@@ -1,11 +1,11 @@
-<nav class="menu">
-  <ul class="nav-menu" *ngIf="menuItems">
-    <li *ngFor="let menuItem of menuItems" (click)="itemClicked()">
-      <button mat-button 
-      class="nav-btn" 
-      [routerLink]="menuItem.route"
-      routerLinkActive="active"
-      >{{menuItem.text}}</button>
-    </li>
-  </ul>
-</nav>
+<!-- header-menu.component.html -->
+<nav [class.mobile-version]="isMobile" [class.tablet-version]="isTablet">
+    <ul class="nav-menu">
+      <li *ngFor="let item of menuItems" (click)="itemClick.emit()">
+        <a [routerLink]="item.route" routerLinkActive="active">
+          <mat-icon *ngIf="isMobile || isTablet">{{item.icon}}</mat-icon>
+          <span>{{item.text}}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>

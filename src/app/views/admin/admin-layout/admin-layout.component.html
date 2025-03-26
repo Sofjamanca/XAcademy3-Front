@@ -34,8 +34,8 @@
     <!-- Botón de menú para móvil -->
     <button mat-icon-button 
             class="mobile-menu-btn"
-            *ngIf="isMobile"
-            (click)="toggleSidenav()">
+            *ngIf="isMobile && isCollapsed"
+            (click)="isCollapsed = false">
       <mat-icon>menu</mat-icon>
     </button>
     <router-outlet></router-outlet>

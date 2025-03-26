@@ -5,11 +5,15 @@
 
 <mat-tab-group (selectedTabChange)="onTabChange($event)">
   <mat-tab label="Pendientes">
-    <mat-table [dataSource]="pendingPayments" *ngIf="pendingPayments.length > 0; else noPendingPayments" class="mat-elevation-z8">
-
+    <mat-table [dataSource]="pendingPayments" 
+              matSort 
+              #pendingSort="matSort"
+              (matSortChange)="onPendingSortChange($event)"
+              *ngIf="pendingPayments.length > 0; else noPendingPayments" 
+              class="mat-elevation-z8">
 
       <ng-container matColumnDef="course">
-        <mat-header-cell *matHeaderCellDef> Curso </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Curso </mat-header-cell>
         <mat-cell *matCellDef="let payment" data-label="Curso"> 
           <mat-icon>school</mat-icon> 
           {{ payment.courseTitle }} 
@@ -17,15 +21,23 @@
       </ng-container>
 
       <ng-container matColumnDef="status">
-        <mat-header-cell *matHeaderCellDef> Estado </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Estado </mat-header-cell>
         <mat-cell *matCellDef="let payment" data-label="Estado"> 
           <span class="status-chip pending-chip">
             <mat-icon>hourglass_top</mat-icon> Pendiente
           </span>
         </mat-cell>
       </ng-container>
+
+      <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </mat-header-cell>
+        <mat-cell *matCellDef="let payment" data-label="Fecha"> 
+          {{ payment.createdAt | date:'dd/MM/yyyy' }} 
+        </mat-cell>
+      </ng-container>
+
       <ng-container matColumnDef="amount">
-        <mat-header-cell *matHeaderCellDef> Monto </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Monto </mat-header-cell>
         <mat-cell *matCellDef="let payment" data-label="Monto"> 
           <strong>{{ payment.coursePrice | currency:'USD' }}</strong>
         </mat-cell>
@@ -40,10 +52,21 @@
         </mat-cell>
       </ng-container>
 
-      <mat-header-row *matHeaderRowDef="['course', 'status', 'amount', 'action']"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: ['course', 'status', 'amount', 'action'];"></mat-row>
+      <mat-header-row *matHeaderRowDef="['course', 'status', 'date', 'amount', 'action']"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: ['course', 'status', 'date', 'amount', 'action'];"></mat-row>
 
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="5">No hay datos disponibles</td>
+      </tr>
     </mat-table>
+
+    <mat-paginator [pageSize]="pageSize"
+                   [pageSizeOptions]="[5, 10, 25, 100]"
+                   [length]="totalPendingItems"
+                   [pageIndex]="currentPendingPage - 1"
+                   (page)="onPendingPageChange($event)"
+                   aria-label="Seleccionar página">
+    </mat-paginator>
 
     <ng-template #noPendingPayments>
       <p>No hay pagos pendientes.</p>
@@ -51,11 +74,15 @@
   </mat-tab>
 
   <mat-tab label="Pagados">
-    <mat-table [dataSource]="completedPayments" *ngIf="completedPayments.length > 0; else noCompletedPayments" class="mat-elevation-z8">
-
+    <mat-table [dataSource]="completedPayments" 
+              matSort 
+              #completedSort="matSort"
+              (matSortChange)="onCompletedSortChange($event)"
+              *ngIf="completedPayments.length > 0; else noCompletedPayments" 
+              class="mat-elevation-z8">
 
       <ng-container matColumnDef="course">
-        <mat-header-cell *matHeaderCellDef> Curso </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Curso </mat-header-cell>
         <mat-cell *matCellDef="let payment" data-label="Curso"> 
           <mat-icon>school</mat-icon> 
           {{ payment.courseTitle }} 
@@ -63,14 +90,14 @@
       </ng-container>
  
       <ng-container matColumnDef="date">
-        <mat-header-cell *matHeaderCellDef> Fecha de Pago </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de Pago </mat-header-cell>
         <mat-cell *matCellDef="let payment" data-label="Fecha de pago"> 
           {{ payment.updatedAt | date:'dd/MM/yyyy' }} 
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="approved">
-        <mat-header-cell *matHeaderCellDef> Aprobado </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Aprobado </mat-header-cell>
         <mat-cell *matCellDef="let payment" data-label="Aprobado"> 
           <mat-icon class="aprobado">verified</mat-icon>
           <ng-template #notApproved><mat-icon>cancel</mat-icon></ng-template>
@@ -78,7 +105,7 @@
       </ng-container>
 
       <ng-container matColumnDef="amount">
-        <mat-header-cell *matHeaderCellDef> Monto </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Monto </mat-header-cell>
         <mat-cell *matCellDef="let payment" data-label="Monto"> 
           <strong>{{ payment.coursePrice | currency:'$' }}</strong>
         </mat-cell>
@@ -87,7 +114,18 @@
       <mat-header-row *matHeaderRowDef="['course', 'date', 'approved', 'amount']"></mat-header-row>
       <mat-row *matRowDef="let row; columns: ['course', 'date', 'approved', 'amount'];"></mat-row>
 
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No hay datos disponibles</td>
+      </tr>
     </mat-table>
+
+    <mat-paginator [pageSize]="pageSize"
+                   [pageSizeOptions]="[5, 10, 25, 100]"
+                   [length]="totalCompletedItems"
+                   [pageIndex]="currentCompletedPage - 1"
+                   (page)="onCompletedPageChange($event)"
+                   aria-label="Seleccionar página">
+    </mat-paginator>
 
     <ng-template #noCompletedPayments>
       <p>No hay pagos realizados.</p>

@@ -1,16 +1,22 @@
 .form-control {
   flex: 1;
-  max-width: 400px;
+  width: 100px;
   min-width: 150px;
 }
-
-@media (max-width: 600px) {
+@media (min-width: 769px) and (max-width: 1024px) {
+  .input-group{
+    display: 300px;
+  }
   .form-control {
-    max-width: 200px;
+    width: 250px;
   }
 }
+
 @media (min-width: 768px) {
   .input-group{
-    width: 80%;
+    width: 100%;
+  }
+  .form-control {
+    width: 180px;
   }
 }

@@ -31,11 +31,11 @@
   display: flex;
   flex-direction: column;
   box-shadow: 2px 0 8px rgba(0,0,0,0.15);
-  z-index: 1000;
+  z-index: 900;
 }
 
 .sidebar.collapsed {
-  width: 90px;
+  width: 70px;
 }
 
 .sidebar-header {
@@ -120,29 +120,47 @@
 .mobile-menu-btn {
   display: none;
   position: fixed;
-  top: 16px;
+  top: 4.5rem;
   left: 16px;
-  z-index: 900;
+  z-index: 10001;
   background-color: #1a237e;
   color: white;
 }
-
+/* Para desktop */
+@media (min-width: 769px) {
+  .sidebar {
+    width: 80px; /* Ancho cuando está colapsado */
+  }
+  
+  .sidebar:not(.collapsed) {
+    width: 280px; /* Ancho cuando está expandido */
+  }
+  
+  .mobile-menu-btn {
+    display: none; /* Oculta el botón móvil en desktop */
+  }
+}
 @media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: block;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+  
   .sidebar {
     position: fixed;
     height: 100vh;
     transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
   }
   
   .sidebar:not(.collapsed) {
     transform: translateX(0);
   }
-
-  .mobile-menu-btn {
+  
+  .mobile-overlay.active {
     display: block;
-  }
-
-  .main-content {
-    padding-top: 80px;
+    opacity: 1;
   }
 } 

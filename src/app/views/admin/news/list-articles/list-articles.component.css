@@ -281,3 +281,38 @@ button[color="warn"] {
     margin: 0 2px;
   }
 }
+
+/* Estilos para las cabeceras ordenables */
+.sort-header {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.sort-icons {
+  display: flex;
+  margin-left: 4px;
+}
+
+.sort-inactive {
+  color: #ccc;
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+}
+
+th.mat-header-cell {
+  font-weight: bold;
+}
+
+.sort-header:hover {
+  color: #3f51b5;
+}
+
+th mat-icon {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  vertical-align: middle;
+}

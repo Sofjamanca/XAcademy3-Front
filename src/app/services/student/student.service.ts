@@ -74,6 +74,14 @@ export class StudentService {
     return this.http.get<{ total: number }>(`${this.baseUrl}/countInscriptions`);
   }
   
+  getMonthlyEnrollmentStats(year?: number): Observable<any[]> {
+    let url = `${this.baseUrl}/monthly-stats`;
+    if (year) {
+      url += `?year=${year}`;
+    }
+    return this.http.get<any[]>(url);
+  }
+  
 
   
   

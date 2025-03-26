@@ -22,3 +22,11 @@ export interface Teacher {
   user: User;
   courses: Course[];
 }
+
+export interface TeacherResponse {
+  teachers: Teacher[];
+  totalItems: number;
+  currentPage: number;
+  totalPages: number;
+}
+
