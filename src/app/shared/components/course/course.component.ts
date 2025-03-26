@@ -169,7 +169,6 @@ export class CourseComponent implements OnInit {
           {
             duration: 5000,
             horizontalPosition: 'center',
-            verticalPosition: 'top',
           }
         )
         .onAction()

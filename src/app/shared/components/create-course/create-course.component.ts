@@ -64,17 +64,14 @@ export class CreateCourseComponent implements OnInit {
 
     const id = this.route.snapshot.paramMap.get('id');
     this.cursoId = id !== null ? +id : 0;
-    console.log(this.cursoId);
     if (this.cursoId) {
       // Si hay ID, estamos en edición
       this.tipo = 'editar';
-      console.log('el tipo es:',this.tipo);
       this.cargarCurso(this.cursoId);
 
     } else {
       // Si no hay ID, es un curso nuevo
       this.tipo = 'crear';
-      console.log('el tipo es:',this.tipo);
     }
 
     this.inputs =   [
@@ -126,7 +123,6 @@ export class CreateCourseComponent implements OnInit {
         }
   
         this.cursoExistente = curso;
-        console.log('Curso Existente', this.cursoExistente);
   
         
         //Aplicar valores al formulario
@@ -144,7 +140,6 @@ export class CreateCourseComponent implements OnInit {
             image_url: curso.image_url ?? ''
           });
   
-          console.log('Formulario actualizado:', this.cursoForm.value);
         
       },
       error: (error) => console.error('Error al cargar el curso:', error)
@@ -152,10 +147,8 @@ export class CreateCourseComponent implements OnInit {
   }
   
   getCategories() {
-    console.log('Ejecutando getCategories...');
   this.coursesService.getCategories().subscribe({
     next: (categories) => {
-      console.log('Categorías recibidas:', categories);
       this.updateInput('category_id', 'options', categories.map(category => ({ label: category.title, value: category.id })));
     },
     error: (error) => console.error('Error al obtener categorías:', error)
@@ -163,10 +156,8 @@ export class CreateCourseComponent implements OnInit {
   }
   
   getTeachers() {
-    console.log('Ejecutando getCategories...');
     this.teacherService.getTeachers().subscribe({
       next: (teachers) => {
-        console.log('Profesores recibidos:', teachers);
         this.updateInput('teacher_id','options',teachers.map((teacher)=>{ return {label:teacher.user.name, value: teacher.id }}));
       },
       error: (error) => console.error('Error al obtener profesores:', error)
@@ -179,35 +170,29 @@ export class CreateCourseComponent implements OnInit {
   }
   
   crearCurso(event: any) {
-    console.log('Formulario enviado:', event);
   
     const curso: Course = {
       ...event
     };
   
-    console.log('Curso a guardar:', curso);
   
     if (this.tipo === 'editar') {
       // Actualizar curso existente
           
       this.coursesService.updateCourse(this.cursoId, curso).subscribe({
         next: (response) => {
-          console.log('Curso actualizado exitosamente:', response);
           this.snackBar.open('Curso actualizado con éxito', 'Cerrar', { duration: 3000 });
           this.cdr.detectChanges(); 
           this.router.navigate(['/admin/cursos']);
         },
         error: (error) => {
-          console.error('Error al actualizar curso:', error);
           this.snackBar.open('Error al actualizar el curso: ' + error.message, 'Cerrar', { duration: 3000 });
         }
       });
     } else if(this.tipo === 'crear'){
-      console.log("entra aca");
       // Crear nuevo curso
       this.coursesService.addCourse(curso).subscribe({
         next: (response) => {
-          console.log('Curso creado exitosamente:', response);
           this.snackBar.open('Curso creado con éxito', 'Cerrar', { duration: 3000 });
           this.router.navigate(['/admin/cursos']);
         },

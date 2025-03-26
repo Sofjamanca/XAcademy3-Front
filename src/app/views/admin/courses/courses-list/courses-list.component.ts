@@ -158,10 +158,6 @@ export class CoursesListComponent implements OnInit {
     this.router.navigate(['/admin/cursos/editar/', course.id]);
   }
 
-  deleteCourse(course: Course) {
-    console.log('Eliminar curso:', course);
-  }
-
   getStatus(course: Course): string {
     return course.status === 'active' ? 'Activo' : 'Inactivo';
   }

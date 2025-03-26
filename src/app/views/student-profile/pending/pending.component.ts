@@ -181,10 +181,8 @@ export class PendingComponent implements OnInit, AfterViewChecked, AfterViewInit
 
   getPrice(payment: any): void {
     this.coursesService.getCourseById(payment.course_id).subscribe(courseData => {
-      console.log(courseData)
       payment.coursePrice = courseData.price;
     });
-    console.log(payment.coursePrice)
   }
 
   pagar(payment: any): void {
