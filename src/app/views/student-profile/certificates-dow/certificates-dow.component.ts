@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MaterialModule } from '../../../material/material.module';
 import { NgIf, NgFor, CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CoursesService } from '../../../services/courses/courses.service';
 
 @Component({
   selector: 'app-certificates-dow',
@@ -16,13 +17,20 @@ export class CertificatesDowComponent implements OnInit {
   certificados: any[] = [];
   courses: any[] = [];
   studentId: number = 0;
+  courseId: number = 0;
   loading: boolean = false;
   courseStatus: { [key: number]: { canGenerate: boolean, message: string } } = {};
 
-  constructor(private snackBar: MatSnackBar, private route: ActivatedRoute, private certificadoService: CertificateService) { }
+  constructor(
+    private snackBar: MatSnackBar, 
+    private route: ActivatedRoute, 
+    private certificadoService: CertificateService,
+    private courseService: CoursesService
+  ) { }
 
   ngOnInit(): void {
-    this.studentId = Number(this.route.snapshot.paramMap.get('id'));
+    this.route.snapshot.paramMap.get('studentId');
+    this.courseService.getCourseById(this.courseId) 
     this.loadStudentData();
   }
   loadStudentData(): void {
@@ -37,22 +45,45 @@ export class CertificatesDowComponent implements OnInit {
         }
       );
     }
+    this.courseId = Number(this.route.snapshot.paramMap.get('id'));
+    if (this.courseId) {
+      this.courseService.getCourseById(this.courseId).subscribe(
+        (data: any) => {  
+          this.courses = data?.course ?? []; 
+        },
+        (error) => {
+          console.error('Error fetching cursos:', error);
+        }
+      );
+    }
   }
 
 
   checkCoursesStatus(): void {
     this.courses.forEach(course => {
-      this.certificadoService.checkCertificateRequirements(this.studentId, course.id).subscribe({
-        next: (response: any) => {
-          this.courseStatus[course.id] = {
-            canGenerate: response.action === 'generate',
-            message: response.message
-          };
+      this.courseService.getCourseById(course.id).subscribe({
+        
+        next: (validCourse) => {
+          console.log(validCourse);
+          this.certificadoService.checkCertificateRequirements(this.studentId, validCourse.id!).subscribe({
+            next: (response: any) => {
+              this.courseStatus[course.id] = {
+                canGenerate: response.action === 'generate',
+                message: response.message
+              };
+            },
+            error: (err) => {
+              this.courseStatus[course.id] = {
+                canGenerate: false,
+                message: err.error?.message || 'Error al verificar requisitos'
+              };
+            }
+          });
         },
-        error: (err) => {
+        error: () => {
           this.courseStatus[course.id] = {
             canGenerate: false,
-            message: err.error?.message || 'Error al verificar requisitos'
+            message: 'El curso no es válido'
           };
         }
       });
@@ -75,13 +106,21 @@ export class CertificatesDowComponent implements OnInit {
     });
   }
 
-  checkCertificateRequirements(): void {
+  checkCertificateRequirements(courseId?: number): void {
     this.loading = true;
-    this.certificadoService.checkCertificateRequirements(this.studentId, courseId).subscribe({
+    const targetCourseId = courseId || this.courseId;
+    
+    if (!targetCourseId) {
+      this.showError('No se especificó un curso válido');
+      this.loading = false;
+      return;
+    }
+    this.certificadoService.checkCertificateRequirements(this.studentId, this.courseId).subscribe({
+      
       next: (response: any) => {
         if (response.action === 'download') {
           this.snackBar.open('Certificado listo para descargar', 'Cerrar', { duration: 3000 });
-          this.handleCertificateAction(courseId); // Descargar automáticamente
+          this.handleCertificateAction(this.courseId); // Descargar automáticamente
         } else {
           this.snackBar.open(response.message, 'Cerrar', { duration: 5000 });
         }

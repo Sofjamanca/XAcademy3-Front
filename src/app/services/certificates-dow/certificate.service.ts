@@ -23,6 +23,7 @@ export class CertificateService {
     );
   }
   checkCertificateRequirements(studentId: number, courseId: number): Observable<any> {
+    console.log('curso',courseId);
     return this.http.get(`${this.apiUrl}/check/${studentId}/${courseId}`);
   }
 }

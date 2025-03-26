@@ -3,9 +3,6 @@
   <p>Procesando certificado...</p>
 </div>
 
-<div class="certificates-container">
-  <h1>🎓 Mis Certificados</h1>
-
   <div class="certificates-container">
     <h1>🎓 Mis Certificados</h1>
   
@@ -22,7 +19,7 @@
         
         <div class="certificate-footer">
           <button 
-            (click)="handleCertificateAction(cert.student_id, cert.course_id)" 
+            (click)="handleCertificateAction(cert.course_id)" 
             class="btn"
             [disabled]="loading">
             {{ cert.file_path ? 'Descargar Certificado' : 'Generar Certificado' }}
@@ -37,8 +34,9 @@
         <!-- Opcional: Botón para generar certificados si cumple requisitos -->
         <button 
           *ngIf="studentId"
-          (click)="checkCertificateRequirements()"
-          class="btn-generate">
+          (click)="checkCertificateRequirements(certificados[0]?.course_id)"
+          class="btn-generate"
+          [disabled]="!certificados.length">
           Verificar y Generar Certificados
         </button>
       </div>
