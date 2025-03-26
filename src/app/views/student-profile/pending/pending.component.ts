@@ -123,11 +123,7 @@ export class PendingComponent implements OnInit, AfterViewChecked, AfterViewInit
   }
 
   loadPendingPayments(orderBy: string = '', direction: string = ''): void {
-    this.paymentsService.getOrderedPayments(
-      orderBy,
-      direction,
-      this.currentPendingPage,
-      this.pageSize,
+    this.paymentsService.getPaymentsByStudent(
       this.studentId!,
       'PENDIENTE'
     ).subscribe({
@@ -145,11 +141,7 @@ export class PendingComponent implements OnInit, AfterViewChecked, AfterViewInit
   }
 
   loadCompletedPayments(orderBy: string = '', direction: string = ''): void {
-    this.paymentsService.getOrderedPayments(
-      orderBy,
-      direction,
-      this.currentCompletedPage,
-      this.pageSize,
+    this.paymentsService.getPaymentsByStudent(
       this.studentId!,
       'PAGADO'
     ).subscribe({

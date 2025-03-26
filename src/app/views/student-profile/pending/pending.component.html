@@ -119,14 +119,6 @@
       </tr>
     </mat-table>
 
-    <mat-paginator [pageSize]="pageSize"
-                   [pageSizeOptions]="[5, 10, 25, 100]"
-                   [length]="totalCompletedItems"
-                   [pageIndex]="currentCompletedPage - 1"
-                   (page)="onCompletedPageChange($event)"
-                   aria-label="Seleccionar página">
-    </mat-paginator>
-
     <ng-template #noCompletedPayments>
       <p>No hay pagos realizados.</p>
     </ng-template>
