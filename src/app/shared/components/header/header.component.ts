@@ -15,6 +15,7 @@ import { UserMenuComponent } from "./user-menu/user-menu.component";
 import { UserService } from '../../../services/user/user.service';
 import { StudentService } from '../../../services/student/student.service';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
+import { debounceTime, fromEvent, Subscription } from 'rxjs';
 
 
 @Component({
@@ -48,7 +49,10 @@ export class HeaderComponent implements OnInit {
   @Input() imgLogo: string = 'assets/images/logo.webp';
   menuOpen = false;
   isMobile = false;
+  isTablet = false;
   isScrolled = false;
+
+  private resizeSub!: Subscription;
 
   constructor(private modalService: ModalService,
     @Inject(PLATFORM_ID) private platformId: Object
@@ -65,10 +69,14 @@ export class HeaderComponent implements OnInit {
 
     if (isPlatformBrowser(this.platformId)) {
       this.checkScreenSize();
+      this.setupResizeListener();
     }
   }
-
-  
+  private setupResizeListener(): void {
+    this.resizeSub = fromEvent(window, 'resize')
+      .pipe(debounceTime(100))
+      .subscribe(() => this.checkScreenSize());
+  }  
 
   menuItems = [
     { text: 'Inicio', route: '/home', icon: 'home' },
